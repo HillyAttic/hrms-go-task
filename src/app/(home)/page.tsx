@@ -10,6 +10,15 @@ export default function Home() {
 
   useEffect(() => {
     if (!loading) {
+      // Check if navigation is from notification click
+      const isNotificationNavigation = typeof window !== 'undefined' &&
+        sessionStorage.getItem('notificationNavigation') === 'true';
+
+      if (isNotificationNavigation) {
+        console.log('[Home] Skipping redirect - notification navigation in progress');
+        return;
+      }
+
       if (user) {
         // If user is authenticated, redirect to dashboard
         router.push('/dashboard');

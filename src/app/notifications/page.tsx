@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Bell, BellOff, Check, X } from "lucide-react";
 import { useEnhancedAuth } from "@/contexts/enhanced-auth.context";
 import { authenticatedFetch } from "@/lib/api-client";
@@ -32,6 +33,7 @@ interface Notification {
 }
 
 export default function NotificationsPage() {
+  const router = useRouter();
   const { user, isAdmin } = useEnhancedAuth();
   const { notifications, loading, markAsRead: markNotificationRead, refetch } = useNotifications();
   const [notificationPermission, setNotificationPermission] = useState<NotificationPermission | null>(null);
@@ -210,7 +212,16 @@ export default function NotificationsPage() {
     markNotificationRead(notification.id);
 
     if (notification.data?.url) {
-      window.location.href = notification.data.url;
+      // Set flag to prevent AuthWrapper from interfering
+      sessionStorage.setItem('notificationNavigation', 'true');
+
+      // Use router.push instead of window.location.href to avoid full page reload
+      router.push(notification.data.url);
+
+      // Clear flag after navigation completes
+      setTimeout(() => {
+        sessionStorage.removeItem('notificationNavigation');
+      }, 2000);
     }
   };
 
