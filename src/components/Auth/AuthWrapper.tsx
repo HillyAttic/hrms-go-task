@@ -33,6 +33,15 @@ export const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
 
     if (loading) return;
 
+    // Check if navigation is from notification click
+    const isNotificationNavigation = typeof window !== 'undefined' &&
+      sessionStorage.getItem('notificationNavigation') === 'true';
+
+    if (isNotificationNavigation) {
+      console.log('[AuthWrapper] Skipping redirect - notification navigation in progress');
+      return;
+    }
+
     const isPublicRoute = publicRoutes.some(route => pathname.startsWith(route));
     const isAuthRoute = authRoutes.some(route => pathname.startsWith(route));
 

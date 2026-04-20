@@ -20,7 +20,8 @@
       "Bash(firebase deploy *)",
       "Bash(find src *)",
       "mcp__plugin_claude-mem_mcp-search__search",
-      "Bash(pkill -f \"next dev\")"
+      "Bash(pkill -f \"next dev\")",
+      "Bash(code-review-graph status *)"
     ]
   }
 }

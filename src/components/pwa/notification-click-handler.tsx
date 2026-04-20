@@ -19,10 +19,18 @@ export function NotificationClickHandler() {
       if (event.data && event.data.type === 'NOTIFICATION_CLICK') {
         const url = event.data.url;
         console.log('[NotificationClick] Navigating to:', url);
-        
+
         // Navigate to the URL
         if (url) {
+          // Set flag to prevent AuthWrapper from interfering
+          sessionStorage.setItem('notificationNavigation', 'true');
+
           router.push(url);
+
+          // Clear flag after navigation completes
+          setTimeout(() => {
+            sessionStorage.removeItem('notificationNavigation');
+          }, 2000);
         }
       }
     };
