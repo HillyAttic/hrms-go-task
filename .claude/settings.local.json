@@ -10,7 +10,8 @@
       "Bash(node *)",
       "Bash(npm install *)",
       "Bash(git log *)",
-      "Bash(xargs grep *)"
+      "Bash(xargs grep *)",
+      "Bash(vercel *)"
     ]
   },
   "disabledMcpjsonServers": [

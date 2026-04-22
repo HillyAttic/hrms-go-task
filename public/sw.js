@@ -1,8 +1,8 @@
 // Progressive Web App Service Worker
 // This service worker handles offline functionality and PWA installation
-// VERSION: 2.0 - Fixed aggressive caching that caused stale JS bundles in production
+// VERSION: 2.1 - Force logo cache refresh for existing users
 
-const CACHE_NAME = 'jpco-dashboard-v3';
+const CACHE_NAME = 'jpco-dashboard-v4';
 
 // Only cache truly static assets that won't change between deployments
 const STATIC_ASSETS = [
@@ -18,15 +18,15 @@ const STATIC_ASSETS = [
 
 // Install event - cache only truly static assets
 self.addEventListener('install', (event) => {
-  console.log('[SW v2.0] Installing...');
+  console.log('[SW v2.1] Installing...');
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then((cache) => {
-        console.log('[SW v2.0] Caching static assets');
+        console.log('[SW v2.1] Caching static assets');
         // Use addAll with error handling - don't fail install if some assets are missing
         return Promise.allSettled(
           STATIC_ASSETS.map(asset => cache.add(asset).catch(err => {
-            console.warn('[SW v2.0] Failed to cache:', asset, err.message);
+            console.warn('[SW v2.1] Failed to cache:', asset, err.message);
           }))
         );
       })
@@ -36,7 +36,7 @@ self.addEventListener('install', (event) => {
 
 // Activate event - clean up ALL old caches to prevent stale content
 self.addEventListener('activate', (event) => {
-  console.log('[SW v2.0] Activating...');
+  console.log('[SW v2.1] Activating...');
   event.waitUntil(
     caches.keys()
       .then((cacheNames) => {
@@ -44,7 +44,7 @@ self.addEventListener('activate', (event) => {
           cacheNames
             .filter((name) => name !== CACHE_NAME)
             .map((name) => {
-              console.log('[SW v2.0] Deleting old cache:', name);
+              console.log('[SW v2.1] Deleting old cache:', name);
               return caches.delete(name);
             })
         );
@@ -146,7 +146,7 @@ self.addEventListener('push', (event) => {
         self.registration.showNotification(title, options)
       );
     } catch (error) {
-      console.error('[SW v2.0] Push notification error:', error);
+      console.error('[SW v2.1] Push notification error:', error);
     }
   }
 });
@@ -170,9 +170,9 @@ self.addEventListener('notificationclose', (event) => {
 // Handle skip waiting message
 self.addEventListener('message', (event) => {
   if (event.data && event.data.type === 'SKIP_WAITING') {
-    console.log('[SW v2.0] Skip waiting requested');
+    console.log('[SW v2.1] Skip waiting requested');
     self.skipWaiting();
   }
 });
 
-console.log('[SW v2.0] Service worker loaded successfully');
+console.log('[SW v2.1] Service worker loaded successfully');
