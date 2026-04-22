@@ -14,6 +14,7 @@ import type { PropsWithChildren } from "react";
 import { Providers } from "./providers";
 import { ServiceWorkerProvider } from "./service-worker-provider";
 import { AuthWrapper } from "@/components/Auth/AuthWrapper";
+import { PWASplashScreen } from "@/components/pwa/pwa-splash-screen";
 import Script from "next/script";
 
 export const metadata: Metadata = {
@@ -74,6 +75,8 @@ export default function RootLayout({ children }: PropsWithChildren) {
       <body className="font-sans antialiased">
         <Providers>
           <ServiceWorkerProvider>
+            <PWASplashScreen />
+
             {/* Skip to main content link for keyboard navigation */}
             <a
               href="#main-content"

@@ -21,7 +21,7 @@ try {
   process.exit(1);
 }
 
-const sourceIcon = path.join(__dirname, '../public/images/logo/720250.svg');
+const sourceIcon = path.join(__dirname, '../public/images/logo/9329651.png');
 const outputDir = path.join(__dirname, '../public/images/logo');
 const iconsDir = path.join(__dirname, '../public/images/icons');
 
