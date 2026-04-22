@@ -348,11 +348,13 @@ export const leaveService = {
         startDate: req.startDate,
         endDate: req.endDate,
         duration: req.totalDays,
+        halfDay: req.halfDay || false,
         reason: req.reason,
         status: req.status as AttendanceLeaveStatus,
         approvedBy: req.approvedBy,
         approvedAt: req.approvedAt,
         rejectionReason: req.rejectionReason,
+        approvalReason: req.approvalReason,
         createdAt: req.createdAt || new Date(),
         updatedAt: req.updatedAt || new Date()
       }));
@@ -389,11 +391,13 @@ export const leaveService = {
         startDate: req.startDate,
         endDate: req.endDate,
         duration: req.totalDays,
+        halfDay: req.halfDay || false,
         reason: req.reason,
         status: req.status as AttendanceLeaveStatus,
         approvedBy: req.approvedBy,
         approvedAt: req.approvedAt,
         rejectionReason: req.rejectionReason,
+        approvalReason: req.approvalReason,
         createdAt: req.createdAt || new Date(),
         updatedAt: req.updatedAt || new Date()
       }));
@@ -418,6 +422,7 @@ export const leaveService = {
           startDate: data.startDate instanceof Date ? data.startDate.toISOString() : data.startDate,
           endDate: data.endDate instanceof Date ? data.endDate.toISOString() : data.endDate,
           reason: data.reason,
+          halfDay: data.halfDay || false,
         }),
       });
 

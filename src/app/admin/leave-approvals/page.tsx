@@ -207,7 +207,14 @@ export default function LeaveApprovalsPage() {
                         </div>
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
-                        {getLeaveTypeLabel(request.leaveType)}
+                        <div className="flex items-center gap-2">
+                          {getLeaveTypeLabel(request.leaveType)}
+                          {request.halfDay && (
+                            <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-purple-100 text-purple-800">
+                              Half Day
+                            </span>
+                          )}
+                        </div>
                       </td>
                       <td className="px-6 py-4 text-sm text-gray-900 dark:text-white">
                         {request.totalDays} {request.totalDays === 1 ? 'day' : 'days'}
@@ -278,7 +285,14 @@ export default function LeaveApprovalsPage() {
                   <div className="grid grid-cols-2 gap-3 text-sm">
                     <div>
                       <div className="text-gray-500 dark:text-gray-400 text-xs">Leave Type</div>
-                      <div className="text-gray-900 dark:text-white font-medium">{getLeaveTypeLabel(request.leaveType)}</div>
+                      <div className="text-gray-900 dark:text-white font-medium flex items-center gap-2">
+                        {getLeaveTypeLabel(request.leaveType)}
+                        {request.halfDay && (
+                          <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-purple-100 text-purple-800">
+                            Half Day
+                          </span>
+                        )}
+                      </div>
                     </div>
                     <div>
                       <div className="text-gray-500 dark:text-gray-400 text-xs">Duration</div>

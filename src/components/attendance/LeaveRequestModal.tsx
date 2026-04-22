@@ -88,11 +88,6 @@ export function LeaveRequestModal({
                 {errors.leaveTypeId.message}
               </p>
             )}
-            {selectedBalance && (
-              <p className="text-sm text-muted-foreground mt-1">
-                No limit - unlimited leave days
-              </p>
-            )}
           </div>
 
           <div className="grid grid-cols-2 gap-4">

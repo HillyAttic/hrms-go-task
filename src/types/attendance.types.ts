@@ -115,6 +115,7 @@ export interface LeaveRequest {
   startDate: Date;
   endDate: Date;
   duration: number; // in days
+  halfDay?: boolean;
   reason: string;
   status: LeaveStatus;
   approvedBy?: string;

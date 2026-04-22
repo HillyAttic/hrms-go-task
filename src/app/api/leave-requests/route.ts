@@ -7,6 +7,7 @@ const createLeaveSchema = z.object({
   startDate: z.string().refine((date) => !isNaN(Date.parse(date))),
   endDate: z.string().refine((date) => !isNaN(Date.parse(date))),
   reason: z.string().min(1).max(500),
+  halfDay: z.boolean().optional(),
 });
 
 /**
@@ -309,7 +310,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const { leaveType, startDate, endDate, reason } = validation.data;
+    const { leaveType, startDate, endDate, reason, halfDay } = validation.data;
 
     // Use Admin SDK to get user profile and create leave request
     const { adminDb } = await import('@/lib/firebase-admin');
@@ -318,8 +319,15 @@ export async function POST(request: NextRequest) {
 
     const start = new Date(startDate);
     const end = new Date(endDate);
-    const diffTime = Math.abs(end.getTime() - start.getTime());
-    const totalDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+
+    // Calculate total days - if halfDay is true, set to 0.5, otherwise calculate normally
+    let totalDays: number;
+    if (halfDay) {
+      totalDays = 0.5;
+    } else {
+      const diffTime = Math.abs(end.getTime() - start.getTime());
+      totalDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+    }
 
     const leaveRequestData = {
       employeeId: authResult.user.uid,
@@ -329,6 +337,7 @@ export async function POST(request: NextRequest) {
       startDate: start,
       endDate: end,
       totalDays,
+      halfDay: halfDay || false,
       reason,
       status: 'pending',
       createdAt: new Date(),
@@ -343,7 +352,8 @@ export async function POST(request: NextRequest) {
       const startStr = start.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
       const endStr = end.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
       const employeeName = leaveRequestData.employeeName;
-      const notifBody = `${employeeName} requested ${leaveType} leave (${totalDays} day${totalDays > 1 ? 's' : ''}) from ${startStr} to ${endStr}`;
+      const daysText = halfDay ? '0.5 day (Half Day)' : `${totalDays} day${totalDays > 1 ? 's' : ''}`;
+      const notifBody = `${employeeName} requested ${leaveType} leave (${daysText}) from ${startStr} to ${endStr}`;
 
       // Check if this employee has an assigned manager
       const hierarchySnapshot = await adminDb

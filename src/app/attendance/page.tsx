@@ -25,6 +25,9 @@ export default function AttendancePage() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loadingLeaves, setLoadingLeaves] = useState(false);
   const [processingId, setProcessingId] = useState<string | null>(null);
+  const [showApproveModal, setShowApproveModal] = useState(false);
+  const [approvalReason, setApprovalReason] = useState('');
+  const [selectedLeaveRequest, setSelectedLeaveRequest] = useState<LeaveRequest | null>(null);
 
   // Auto-open leave modal if query parameter is present
   useEffect(() => {
@@ -90,13 +93,40 @@ export default function AttendancePage() {
     }
   };
 
-  const handleApproveLeave = async (id: string) => {
+  const openApproveModal = (request: LeaveRequest) => {
+    setSelectedLeaveRequest(request);
+    setShowApproveModal(true);
+  };
+
+  const handleApproveLeave = async (id: string, reason?: string) => {
     if (!user) return;
     try {
       setProcessingId(id);
-      await leaveService.approveLeaveRequest(id, user.uid);
+
+      // Use the API route directly to support approval reason
+      const { authenticatedFetch } = await import('@/lib/api-client');
+      const response = await authenticatedFetch(`/api/leave-requests/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'approve',
+          ...(reason && { approvalReason: reason })
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to approve leave');
+      }
+
       toast.success('Leave approved');
       fetchData();
+
+      // Close modal if open
+      if (showApproveModal) {
+        setShowApproveModal(false);
+        setApprovalReason('');
+        setSelectedLeaveRequest(null);
+      }
     } catch (error) {
       console.error('Error approving leave:', error);
       toast.error('Failed to approve leave');
@@ -225,6 +255,9 @@ export default function AttendancePage() {
                       <div className="flex items-center gap-2">
                         <p className="font-semibold text-lg">{request.employeeName}</p>
                         <Badge variant="outline">{request.leaveTypeName}</Badge>
+                        {request.halfDay && (
+                          <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-100">Half Day</Badge>
+                        )}
                       </div>
                       <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                         <span className="font-medium">{request.duration} days</span> • {request.startDate instanceof Date ? request.startDate.toLocaleDateString() : new Date(request.startDate).toLocaleDateString()} to {request.endDate instanceof Date ? request.endDate.toLocaleDateString() : new Date(request.endDate).toLocaleDateString()}
@@ -241,6 +274,16 @@ export default function AttendancePage() {
                       >
                         <CheckCircle className="h-4 w-4 mr-1" />
                         Approve
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="default"
+                        className="bg-blue-600 hover:bg-blue-700 flex-1 sm:flex-none"
+                        onClick={() => openApproveModal(request)}
+                        disabled={processingId === request.id}
+                      >
+                        <CheckCircle className="h-4 w-4 mr-1" />
+                        Approve with Note
                       </Button>
                       <Button
                         size="sm"
@@ -280,6 +323,9 @@ export default function AttendancePage() {
                       <div className="flex items-center gap-2 mb-1">
                         <span className="font-medium text-lg">{request.leaveTypeName}</span>
                         {getStatusBadge(request.status)}
+                        {request.halfDay && (
+                          <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-100">Half Day</Badge>
+                        )}
                       </div>
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
                         <CalendarIcon className="h-3 w-3" />
@@ -392,6 +438,53 @@ export default function AttendancePage() {
         leaveBalances={leaveBalances}
         loading={loadingLeaves}
       />
+
+      {/* Approve with Reason Modal */}
+      {showApproveModal && selectedLeaveRequest && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full">
+            <h3 className="text-lg font-bold mb-4 text-gray-900 dark:text-white">Approve Leave Request</h3>
+            <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                <span className="font-semibold">{selectedLeaveRequest.employeeName}</span> - {selectedLeaveRequest.leaveTypeName}
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                {selectedLeaveRequest.startDate instanceof Date ? selectedLeaveRequest.startDate.toLocaleDateString() : new Date(selectedLeaveRequest.startDate).toLocaleDateString()} to {selectedLeaveRequest.endDate instanceof Date ? selectedLeaveRequest.endDate.toLocaleDateString() : new Date(selectedLeaveRequest.endDate).toLocaleDateString()}
+              </p>
+            </div>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+              Add an optional note for the employee (optional):
+            </p>
+            <textarea
+              value={approvalReason}
+              onChange={(e) => setApprovalReason(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
+              rows={3}
+              placeholder="e.g., Approved. Enjoy your time off!"
+            />
+            <div className="flex gap-2 mt-4">
+              <Button
+                onClick={() => handleApproveLeave(selectedLeaveRequest.id, approvalReason || undefined)}
+                className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+                disabled={processingId === selectedLeaveRequest.id}
+              >
+                {processingId === selectedLeaveRequest.id ? 'Approving...' : 'Approve'}
+              </Button>
+              <Button
+                onClick={() => {
+                  setShowApproveModal(false);
+                  setApprovalReason('');
+                  setSelectedLeaveRequest(null);
+                }}
+                variant="outline"
+                className="flex-1"
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
