@@ -120,6 +120,7 @@ export interface LeaveRequest {
   approvedBy?: string;
   approvedAt?: Date;
   rejectionReason?: string;
+  approvalReason?: string;
   createdAt: Date;
   updatedAt: Date;
 }
