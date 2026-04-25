@@ -244,37 +244,41 @@ export const teamAdminService = {
 
   /**
    * Get teams by member ID
+   * Optimized to use indexed Firestore queries instead of full collection scan
    */
   async getTeamsByMember(memberId: string): Promise<Team[]> {
-    const rawTeams = await baseService.getAll();
-    // Populate members so team.members reflects accurate data (not stale Firestore cache)
-    const allTeams = await Promise.all(rawTeams.map(populateTeamMembers));
+    const { adminDb } = await import('@/lib/firebase-admin');
+
     console.log(`[Team Admin Service] Getting teams for member: ${memberId}`);
-    console.log(`[Team Admin Service] Total teams in database: ${allTeams.length}`);
 
-    const memberTeams = allTeams.filter((team) => {
-      // Check if member is in the members array (by id)
-      const isMember = team.members.some((m) => m.id === memberId);
-      // Check if member is the leader
-      const isLeader = team.leaderId === memberId;
-      // Check if member is in memberIds array
-      const isInMemberIds = team.memberIds && team.memberIds.includes(memberId);
+    // Query 1: Teams where user is in memberIds array (indexed query)
+    const memberTeamsSnapshot = await adminDb
+      .collection('teams')
+      .where('memberIds', 'array-contains', memberId)
+      .get();
 
-      console.log(`[Team Admin Service] Team "${team.name}" (${team.id}):`, {
-        members: team.members.map(m => ({ id: m.id, name: m.name })),
-        memberIds: team.memberIds,
-        leaderId: team.leaderId,
-        isMember,
-        isLeader,
-        isInMemberIds,
-        willInclude: isMember || isLeader || isInMemberIds
-      });
+    // Query 2: Teams where user is the leader (indexed query)
+    const leaderTeamsSnapshot = await adminDb
+      .collection('teams')
+      .where('leaderId', '==', memberId)
+      .get();
 
-      return isMember || isLeader || isInMemberIds;
-    });
+    // Combine and deduplicate team IDs
+    const teamIds = new Set<string>();
+    memberTeamsSnapshot.docs.forEach(doc => teamIds.add(doc.id));
+    leaderTeamsSnapshot.docs.forEach(doc => teamIds.add(doc.id));
 
-    console.log(`[Team Admin Service] Member ${memberId} is in ${memberTeams.length} teams`);
-    return memberTeams;
+    console.log(`[Team Admin Service] Found ${teamIds.size} teams for member ${memberId}`);
+
+    // Fetch full team documents with populated members
+    const teams = await Promise.all(
+      Array.from(teamIds).map(async (teamId) => {
+        const team = await baseService.getById(teamId);
+        return populateTeamMembers(team);
+      })
+    );
+
+    return teams;
   },
 
   /**

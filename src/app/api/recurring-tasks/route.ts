@@ -59,16 +59,23 @@ export async function GET(request: NextRequest) {
     const isAdminOrManager = userRole === 'admin' || userRole === 'manager';
     const { adminDb } = await import('@/lib/firebase-admin');
 
-    // Get user profile for email (needed for team member lookup)
-    let userProfile: any = { email: authResult.user.email, role: userRole };
-    try {
-      const userDoc = await adminDb.collection('users').doc(userId).get();
-      if (userDoc.exists) {
-        userProfile = { ...userProfile, ...userDoc.data() };
+    // Create request-level cache to prevent duplicate queries
+    const { RequestCache } = await import('@/lib/request-cache');
+    const requestCache = new RequestCache();
+
+    // Get user profile for email (needed for team member lookup) - with caching
+    let userProfile: any = await requestCache.getOrFetch(`user-profile-${userId}`, async () => {
+      const profile = { email: authResult.user.email, role: userRole };
+      try {
+        const userDoc = await adminDb.collection('users').doc(userId).get();
+        if (userDoc.exists) {
+          return { ...profile, ...userDoc.data() };
+        }
+      } catch (error) {
+        console.error('[Recurring Tasks API] Error getting user profile:', error);
       }
-    } catch (error) {
-      console.error('[Recurring Tasks API] Error getting user profile:', error);
-    }
+      return profile;
+    });
 
     const { searchParams } = new URL(request.url);
 
@@ -105,23 +112,29 @@ export async function GET(request: NextRequest) {
       const { adminDb } = await import('@/lib/firebase-admin');
       const { teamAdminService } = await import('@/services/team-admin.service');
 
-      // Get employees managed by this manager
-      const hierarchySnapshot = await adminDb
-        .collection('manager-hierarchies')
-        .where('managerId', '==', userId)
-        .limit(1)
-        .get();
+      // Get employees managed by this manager - with caching
+      const managedEmployeeIds = await requestCache.getOrFetch(`manager-hierarchy-${userId}`, async () => {
+        const hierarchySnapshot = await adminDb
+          .collection('manager-hierarchies')
+          .where('managerId', '==', userId)
+          .limit(1)
+          .get();
 
-      const managedEmployeeIds = new Set<string>();
-      if (!hierarchySnapshot.empty) {
-        const hierarchy = hierarchySnapshot.docs[0].data();
-        (hierarchy.employeeIds || []).forEach((id: string) => managedEmployeeIds.add(id));
-      }
+        const ids = new Set<string>();
+        if (!hierarchySnapshot.empty) {
+          const hierarchy = hierarchySnapshot.docs[0].data();
+          (hierarchy.employeeIds || []).forEach((id: string) => ids.add(id));
+        }
+        return ids;
+      });
 
       console.log(`[Recurring Tasks API] Manager ${userId} manages ${managedEmployeeIds.size} employees`);
 
-      // Get teams this manager is a member or leader of
-      const managerTeams = await teamAdminService.getTeamsByMember(userId);
+      // Get teams this manager is a member or leader of - with caching
+      const managerTeams = await requestCache.getOrFetch(`manager-teams-${userId}`, async () => {
+        return await teamAdminService.getTeamsByMember(userId);
+      });
+
       const managerTeamIds = new Set(managerTeams.map((t: any) => t.id).filter(Boolean));
       console.log(`[Recurring Tasks API] Manager ${userId} is in ${managerTeamIds.size} teams`);
 
@@ -161,104 +174,53 @@ export async function GET(request: NextRequest) {
       console.log(`[Recurring Tasks API] Manager ${userId} filtered tasks: ${tasks.length}`);
     } else if (userRole === 'employee') {
       // Employees see only their assigned tasks
+      // OPTIMIZED: Use canonical Firebase Auth UID, skip unnecessary lookups
       const { teamAdminService } = await import('@/services/team-admin.service');
 
-      // OPTIMIZED: Batch all user ID lookups using Admin SDK
-      const userIds = new Set<string>([userId]); // Start with Auth UID
-
+      console.log(`[Recurring Tasks API] Employee ${userId} filtering tasks`);
       console.log(`[Recurring Tasks API] User email: ${userProfile.email}`);
 
-      // Batch query for all user documents by email using Admin SDK
-      try {
-        const [usersSnapshot, empSnapshot] = await Promise.all([
-          // Check users collection
-          (async () => {
-            try {
-              const usersRef = adminDb.collection('users');
-              const emailQuery = usersRef.where('email', '==', userProfile.email);
-              return await emailQuery.get();
-            } catch (error) {
-              console.error(`[Recurring Tasks API] Error finding user by email:`, error);
-              return { docs: [] };
-            }
-          })(),
-          // Check employees collection
-          (async () => {
-            try {
-              const employeesRef = adminDb.collection('employees');
-              const empEmailQuery = employeesRef.where('email', '==', userProfile.email);
-              return await empEmailQuery.get();
-            } catch (error) {
-              console.log(`[Recurring Tasks API] No employees collection found (this is normal)`);
-              return { docs: [] };
-            }
-          })()
-        ]);
+      // Use canonical Firebase Auth UID directly - no need for email-based lookups
+      const userIds = new Set<string>([userId]);
 
-        usersSnapshot.docs.forEach((doc: any) => {
-          userIds.add(doc.id);
-          console.log(`[Recurring Tasks API] Found user document by email: ${doc.id}`);
-        });
-
-        empSnapshot.docs.forEach((doc: any) => {
-          userIds.add(doc.id);
-          console.log(`[Recurring Tasks API] Found employee document by email: ${doc.id}`);
-        });
-      } catch (error) {
-        console.error(`[Recurring Tasks API] Error in batch user lookup:`, error);
-      }
-
-      console.log(`[Recurring Tasks API] All possible user IDs:`, Array.from(userIds));
-
-      // Get teams for ALL possible user IDs in parallel
-      const teamPromises = Array.from(userIds).map(id => teamAdminService.getTeamsByMember(id));
-      const teamResults = await Promise.all(teamPromises);
-
-      // Flatten and deduplicate teams
-      const userTeams: any[] = [];
-      const seenTeamIds = new Set<string>();
-      teamResults.forEach(teams => {
-        teams.forEach(team => {
-          if (team.id && !seenTeamIds.has(team.id)) {
-            seenTeamIds.add(team.id);
-            userTeams.push(team);
-          }
-        });
+      // Get teams for the user - with caching
+      const userTeams = await requestCache.getOrFetch(`employee-teams-${userId}`, async () => {
+        return await teamAdminService.getTeamsByMember(userId);
       });
 
-      const userTeamIds = Array.from(seenTeamIds);
+      const userTeamIds = userTeams.map(t => t.id).filter(Boolean);
 
       console.log(`[Recurring Tasks API] User teams:`, userTeams.map(t => ({ id: t.id, name: t.name })));
       console.log(`[Recurring Tasks API] User team IDs:`, userTeamIds);
 
-      // Pre-fetch team documents for all unique teamIds in the tasks list.
-      // This is a direct fallback: even if getTeamsByMember misses a team,
-      // we can verify membership by checking the hydrated team document directly.
+      // Pre-fetch team documents for all unique teamIds in the tasks list - with caching
       const uniqueTaskTeamIds = [...new Set(tasks.map((t: any) => t.teamId).filter(Boolean))];
-      const teamCache = new Map<string, any>();
-      await Promise.all(uniqueTaskTeamIds.map(async (tid: any) => {
-        try {
-          const team = await teamAdminService.getById(tid);
-          if (team) teamCache.set(tid, team);
-        } catch (err) {
-          console.error(`[Recurring Tasks API] Error fetching team ${tid}:`, err);
-        }
-      }));
+      const teamCache = await requestCache.getOrFetch(`task-teams-cache`, async () => {
+        const cache = new Map<string, any>();
+        await Promise.all(uniqueTaskTeamIds.map(async (tid: any) => {
+          try {
+            const team = await requestCache.getOrFetch(`team-doc-${tid}`, () => teamAdminService.getById(tid));
+            if (team) cache.set(tid, team);
+          } catch (err) {
+            console.error(`[Recurring Tasks API] Error fetching team ${tid}:`, err);
+          }
+        }));
+        return cache;
+      });
 
       const userIdsArray = Array.from(userIds);
 
       // Employees see tasks that are:
       // 1. Directly assigned to them (in contactIds), OR
-      // 2. Assigned to a team they are a member of (via getTeamsByMember), OR
-      // 3. Direct team membership check from the team document (fallback), OR
-      // 4. Assigned to them via team member mappings
+      // 2. Assigned to a team they are a member of, OR
+      // 3. Assigned to them via team member mappings
       tasks = tasks.filter(task => {
-        // Check if task is directly assigned to user (check all possible user IDs)
+        // Check if task is directly assigned to user
         const isDirectlyAssigned = task.contactIds &&
           Array.isArray(task.contactIds) &&
           userIdsArray.some(id => task.contactIds.includes(id));
 
-        // Check if task is assigned to a team the user is a member of (via pre-computed list)
+        // Check if task is assigned to a team the user is a member of
         const isTeamAssigned = task.teamId && userTeamIds.includes(task.teamId);
 
         // Direct fallback: check the specific team document for membership
@@ -292,7 +254,7 @@ export async function GET(request: NextRequest) {
         return isDirectlyAssigned || isTeamAssigned || isDirectTeamMember || isMappedToUser;
       });
 
-      console.log(`[Recurring Tasks API] Team member ${userId} filtered recurring tasks: ${tasks.length} (Calendar view: ${isCalendarView})`);
+      console.log(`[Recurring Tasks API] Employee ${userId} filtered tasks: ${tasks.length}`);
     } else if (userRole === 'admin') {
       console.log(`[Recurring Tasks API] Admin ${userId} viewing all recurring tasks: ${tasks.length} (Calendar view: ${isCalendarView})`);
     }

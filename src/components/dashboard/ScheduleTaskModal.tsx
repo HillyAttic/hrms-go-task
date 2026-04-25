@@ -133,19 +133,34 @@ export function ScheduleTaskModal({
           setEmployees(emps);
         }
 
-        // Load all clients for the task.
-        // Union of: every mapping's clientIds + task-level contactIds.
-        const allTaskClients = await clientService.getAll({ status: 'active', limit: 1000 });
-        const taskClientIds = new Set<string>();
+        // OPTIMIZED: Use cached clients instead of fetching on every modal open
+        const { useCachedClients } = await import('@/hooks/use-cached-clients');
+        const { data: allTaskClients } = useCachedClients();
 
-        teamMemberMappings?.forEach(m => m.clientIds.forEach(id => taskClientIds.add(id)));
-        contactIds?.forEach(id => taskClientIds.add(id));
+        if (!allTaskClients) {
+          // Fallback if cache is not ready
+          const fallbackClients = await clientService.getAll({ status: 'active', limit: 1000 });
+          const taskClientIds = new Set<string>();
 
-        // If we have an explicit client list, filter to it; otherwise show all (shouldn't happen)
-        const filtered = taskClientIds.size > 0
-          ? allTaskClients.filter(c => c.id && taskClientIds.has(c.id))
-          : allTaskClients;
-        setAllClients(filtered);
+          teamMemberMappings?.forEach(m => m.clientIds.forEach(id => taskClientIds.add(id)));
+          contactIds?.forEach(id => taskClientIds.add(id));
+
+          const filtered = taskClientIds.size > 0
+            ? fallbackClients.filter(c => c.id && taskClientIds.has(c.id))
+            : fallbackClients;
+          setAllClients(filtered);
+        } else {
+          // Use cached clients
+          const taskClientIds = new Set<string>();
+
+          teamMemberMappings?.forEach(m => m.clientIds.forEach(id => taskClientIds.add(id)));
+          contactIds?.forEach(id => taskClientIds.add(id));
+
+          const filtered = taskClientIds.size > 0
+            ? allTaskClients.filter(c => c.id && taskClientIds.has(c.id))
+            : allTaskClients;
+          setAllClients(filtered);
+        }
       } catch (error) {
         console.error('Error loading schedule data:', error);
         toast.error('Failed to load scheduling data');

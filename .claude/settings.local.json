@@ -14,7 +14,10 @@
       "Bash(vercel *)",
       "Bash(git checkout *)",
       "Bash(npm test *)",
-      "Bash(npm list *)"
+      "Bash(npm list *)",
+      "Bash(xargs ls *)",
+      "Bash(curl -s http://localhost:3000/dashboard)",
+      "Bash(npx tsc *)"
     ]
   },
   "disabledMcpjsonServers": [

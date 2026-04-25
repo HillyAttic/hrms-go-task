@@ -296,36 +296,75 @@ export default function DashboardPage() {
   };
 
   // Fetch current-period completion counts for all recurring tasks
-  const fetchCompletionStats = async () => {
+  // Optimized: Use batch API and memoize with useCallback
+  const fetchCompletionStats = React.useCallback(async () => {
     const recurringOnly = tasks.filter(t => t.isRecurring && t.id);
     if (recurringOnly.length === 0) return;
+
     const auth = await getAuthLazy();
     const token = await auth.currentUser?.getIdToken(false);
     if (!token) return;
-    const headers = { 'Authorization': `Bearer ${token}` };
-    const newStats = new Map<string, { completed: number; total: number }>();
-    await Promise.all(
-      recurringOnly.map(async (task) => {
-        try {
-          const res = await fetch(`/api/task-completions?recurringTaskId=${task.id}`, { headers });
-          if (!res.ok) return;
-          const completions: ClientTaskCompletion[] = await res.json();
-          const months = generateMonths(task.recurrencePattern!);
-          const currentPeriodKey = months[0]?.key;
-          if (!currentPeriodKey) return;
-          const completed = completions.filter(c => c.isCompleted && c.monthKey === currentPeriodKey).length;
-          const hasTeamMapping = task.teamMemberMappings && task.teamMemberMappings.length > 0;
-          const total = hasTeamMapping
-            ? task.teamMemberMappings!.reduce((s: number, m: { clientIds: string[] }) => s + m.clientIds.length, 0)
-            : (task.contactIds?.length || 0);
-          newStats.set(task.id!, { completed, total });
-        } catch {
-          // silently skip failed stat fetches
-        }
-      })
-    );
-    setTaskCompletionStats(newStats);
-  };
+
+    const headers = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    };
+
+    try {
+      // Use batch API to fetch all completion stats in 1-2 requests
+      const taskIds = recurringOnly.map(t => t.id!);
+      const res = await fetch('/api/task-completions/batch', {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ taskIds })
+      });
+
+      if (!res.ok) {
+        console.error('Failed to fetch batch completion stats');
+        return;
+      }
+
+      const { stats } = await res.json();
+      const newStats = new Map<string, { completed: number; total: number }>();
+
+      // Process stats for each task
+      recurringOnly.forEach(task => {
+        if (!task.id || !stats[task.id]) return;
+
+        const taskStats = stats[task.id];
+        const months = generateMonths(task.recurrencePattern!);
+        const currentPeriodKey = months[0]?.key;
+        if (!currentPeriodKey) return;
+
+        const completed = taskStats.completions.filter(
+          (c: any) => c.isCompleted && c.monthKey === currentPeriodKey
+        ).length;
+
+        const hasTeamMapping = task.teamMemberMappings && task.teamMemberMappings.length > 0;
+        const total = hasTeamMapping
+          ? task.teamMemberMappings!.reduce((s: number, m: { clientIds: string[] }) => s + m.clientIds.length, 0)
+          : (task.contactIds?.length || 0);
+
+        newStats.set(task.id!, { completed, total });
+      });
+
+      setTaskCompletionStats(newStats);
+    } catch (error) {
+      console.error('Error fetching batch completion stats:', error);
+    }
+  }, [tasks]);
+
+  // Trigger completion stats fetch only when recurring tasks change
+  // Use useMemo to track only recurring tasks to avoid unnecessary refetches
+  const recurringTaskIds = React.useMemo(() => {
+    return tasks.filter(t => t.isRecurring && t.id).map(t => t.id).join(',');
+  }, [tasks]);
+
+  useEffect(() => {
+    if (recurringTaskIds) {
+      fetchCompletionStats();
+    }
+  }, [recurringTaskIds, fetchCompletionStats]);
 
   // Open inline report modal for a recurring task
   const openReportModal = async (task: DashboardTask) => {
@@ -339,10 +378,12 @@ export default function DashboardPage() {
       const token = await auth.currentUser?.getIdToken(false);
       if (!token) return;
       const headers = { 'Authorization': `Bearer ${token}` };
+
       const [allClients, completionsRes] = await Promise.all([
         clientService.getAll(),
         fetch(`/api/task-completions?recurringTaskId=${task.id}`, { headers }),
       ]);
+
       const completions: ClientTaskCompletion[] = completionsRes.ok ? await completionsRes.json() : [];
       const hasTeamMapping = task.teamMemberMappings && task.teamMemberMappings.length > 0;
       const allMappedIds = hasTeamMapping
@@ -353,7 +394,8 @@ export default function DashboardPage() {
       );
       setReportModalClients(filtered);
       setReportModalCompletions(completions);
-    } catch {
+    } catch (error) {
+      console.error('Error loading report data:', error);
       toast.error('Failed to load report data');
     } finally {
       setReportModalLoading(false);
@@ -1932,7 +1974,7 @@ export default function DashboardPage() {
       )}
 
       {/* Inline Report Modal */}
-      {showDashboardReportModal && selectedTaskForReport && (
+      {showDashboardReportModal && selectedTaskForReport && createPortal(
         reportModalLoading ? (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white dark:bg-gray-dark rounded-lg p-8 flex flex-col items-center gap-3">
@@ -1953,7 +1995,8 @@ export default function DashboardPage() {
               closeModal();
             }}
           />
-        )
+        ),
+        document.body
       )}
     </div>
   );
