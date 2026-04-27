@@ -56,6 +56,7 @@ export async function GET(request: NextRequest) {
     }
 
     const userId = authResult.user.uid;
+    const userEmail = authResult.user.email;
     const isAdminOrManager = userRole === 'admin' || userRole === 'manager';
     const { adminDb } = await import('@/lib/firebase-admin');
 
@@ -65,7 +66,7 @@ export async function GET(request: NextRequest) {
 
     // Get user profile for email (needed for team member lookup) - with caching
     let userProfile: any = await requestCache.getOrFetch(`user-profile-${userId}`, async () => {
-      const profile = { email: authResult.user.email, role: userRole };
+      const profile = { email: userEmail, role: userRole };
       try {
         const userDoc = await adminDb.collection('users').doc(userId).get();
         if (userDoc.exists) {
