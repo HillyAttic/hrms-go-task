@@ -39,7 +39,7 @@ export const POST = withAuth(async (request: NextRequest) => {
         return snapshot.docs.map(doc => ({
           id: doc.id,
           ...doc.data()
-        }));
+        } as any));
       })
     );
 
