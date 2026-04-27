@@ -249,7 +249,7 @@ export const rosterService = {
   async getMonthlyRosterView(month: number, year: number, userIds?: string[]): Promise<MonthlyRosterView> {
     // Calculate the date range for the month
     const startOfMonth = new Date(year, month - 1, 1);
-    const endOfMonth = new Date(year, month, 0); // Last day of the month
+    const endOfMonth = new Date(year, month, 0, 23, 59, 59, 999); // Last day of the month at end of day
     
     // Get all roster entries without ordering (since single tasks use timeStart, not startDate)
     // We'll sort client-side after fetching
@@ -339,7 +339,7 @@ export const rosterService = {
   async getUserCalendarEvents(userId: string, month: number, year: number): Promise<RosterEntry[]> {
     // Calculate the date range for the month
     const startOfMonth = new Date(year, month - 1, 1);
-    const endOfMonth = new Date(year, month, 0); // Last day of the month
+    const endOfMonth = new Date(year, month, 0, 23, 59, 59, 999); // Last day of the month at end of day
     
     // Get all entries for this user
     const allEntries = await this.getRosterEntries({ userId });
