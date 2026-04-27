@@ -274,11 +274,12 @@ export const teamAdminService = {
     const teams = await Promise.all(
       Array.from(teamIds).map(async (teamId) => {
         const team = await baseService.getById(teamId);
+        if (!team) return null;
         return populateTeamMembers(team);
       })
     );
 
-    return teams;
+    return teams.filter((t): t is Team => t !== null);
   },
 
   /**
