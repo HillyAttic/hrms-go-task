@@ -5,11 +5,17 @@ import { ErrorResponses } from '@/lib/api-error-handler';
 /**
  * GET /api/notifications?userId=xxx
  * Fetch notifications for a user (server-side, bypasses Firestore rules)
- * 
+ *
  * POST /api/notifications
  * Mark notification as read
+ *
+ * @deprecated This endpoint is deprecated as of 2026-04-28.
+ * The notification system now uses real-time Firestore listeners via client SDK.
+ * This route is kept for 1 sprint as a fallback and will be removed after monitoring.
  */
 export async function GET(request: NextRequest) {
+    console.warn('[DEPRECATED] /api/notifications GET endpoint - migrate to client-side onSnapshot listeners');
+
     try {
     // Verify authentication
     const { verifyAuthToken } = await import('@/lib/server-auth');
@@ -115,8 +121,14 @@ export async function GET(request: NextRequest) {
 /**
  * POST /api/notifications
  * Mark notification as read or mark all as read
+ *
+ * @deprecated This endpoint is deprecated as of 2026-04-28.
+ * The notification system now uses direct Firestore writes via client SDK.
+ * This route is kept for 1 sprint as a fallback and will be removed after monitoring.
  */
 export async function POST(request: NextRequest) {
+    console.warn('[DEPRECATED] /api/notifications POST endpoint - migrate to direct Firestore writes');
+
     try {
     // Verify authentication
     const { verifyAuthToken } = await import('@/lib/server-auth');

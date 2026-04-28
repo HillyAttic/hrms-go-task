@@ -134,6 +134,11 @@ class ListenerManager {
     if (listener) {
       listener.lastUpdate = Date.now();
       listener.updateCount++;
+
+      // Development logging for throttle verification
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`[Throttle] ${id}: Update #${listener.updateCount}, Age: ${Date.now() - listener.createdAt}ms`);
+      }
     }
   }
 

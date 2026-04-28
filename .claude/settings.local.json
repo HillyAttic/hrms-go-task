@@ -17,7 +17,9 @@
       "Bash(npm list *)",
       "Bash(xargs ls *)",
       "Bash(curl -s http://localhost:3000/dashboard)",
-      "Bash(npx tsc *)"
+      "Bash(npx tsc *)",
+      "Bash(touch *)",
+      "Bash(grep -E \"\\\\.\\(tsx|ts\\)$\")"
     ]
   },
   "disabledMcpjsonServers": [
