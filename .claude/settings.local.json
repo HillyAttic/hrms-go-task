@@ -20,7 +20,8 @@
       "Bash(npx tsc *)",
       "Bash(touch *)",
       "Bash(grep -E \"\\\\.\\(tsx|ts\\)$\")",
-      "Bash(git show *)"
+      "Bash(git show *)",
+      "Bash(curl -s http://localhost:3000)"
     ]
   },
   "disabledMcpjsonServers": [
