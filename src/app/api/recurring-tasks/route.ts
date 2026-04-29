@@ -238,13 +238,28 @@ export async function GET(request: NextRequest) {
         // Check if task has team member mappings for this user
         const isMappedToUser = task.teamMemberMappings &&
           Array.isArray(task.teamMemberMappings) &&
-          task.teamMemberMappings.some(mapping => userIdsArray.includes(mapping.userId));
+          task.teamMemberMappings.some(mapping => {
+            const matches = userIdsArray.includes(mapping.userId);
+            if (task.teamMemberMappings && task.teamMemberMappings.length > 0) {
+              console.log(`[Recurring Tasks API] Checking mapping for task "${task.title}":`, {
+                mappingUserId: mapping.userId,
+                currentUserId: userId,
+                userIdsArray,
+                matches,
+                mappingUserName: mapping.userName,
+                mappingClientIds: mapping.clientIds
+              });
+            }
+            return matches;
+          });
 
         console.log(`[Recurring Tasks API] Task "${task.title}":`, {
           taskId: task.id,
           teamId: task.teamId,
           contactIdsCount: task.contactIds?.length || 0,
           hasMappings: !!task.teamMemberMappings,
+          mappingsCount: task.teamMemberMappings?.length || 0,
+          mappingsData: task.teamMemberMappings,
           isDirectlyAssigned,
           isTeamAssigned,
           isDirectTeamMember,
