@@ -12,6 +12,13 @@ export interface MISConfiguration {
   sheetUpdatedBy: string;
   createdAt: Timestamp;
   createdBy: string;
+  // New fields for daily form validation
+  formResponseSheetId?: string;
+  formResponseSheetGid?: string;
+  formEmailColumnIndex?: number;
+  formTimestampColumnIndex?: number;
+  formRequiredForClockout?: boolean;
+  googleSheetsApiKey?: string;
 }
 
 export interface MISConfigUpdate {
@@ -19,6 +26,12 @@ export interface MISConfigUpdate {
   formAssignedUsers?: string[];
   sheetUrl?: string;
   sheetAssignedUsers?: string[];
+  formResponseSheetId?: string;
+  formResponseSheetGid?: string;
+  formEmailColumnIndex?: number;
+  formTimestampColumnIndex?: number;
+  formRequiredForClockout?: boolean;
+  googleSheetsApiKey?: string;
   updatedBy: string;
 }
 
@@ -68,6 +81,31 @@ export class MISConfigService {
       updateData.sheetUpdatedBy = updates.updatedBy;
     }
 
+    // New fields for daily form validation
+    if (updates.formResponseSheetId !== undefined) {
+      updateData.formResponseSheetId = updates.formResponseSheetId;
+    }
+
+    if (updates.formResponseSheetGid !== undefined) {
+      updateData.formResponseSheetGid = updates.formResponseSheetGid;
+    }
+
+    if (updates.formEmailColumnIndex !== undefined) {
+      updateData.formEmailColumnIndex = updates.formEmailColumnIndex;
+    }
+
+    if (updates.formTimestampColumnIndex !== undefined) {
+      updateData.formTimestampColumnIndex = updates.formTimestampColumnIndex;
+    }
+
+    if (updates.formRequiredForClockout !== undefined) {
+      updateData.formRequiredForClockout = updates.formRequiredForClockout;
+    }
+
+    if (updates.googleSheetsApiKey !== undefined) {
+      updateData.googleSheetsApiKey = updates.googleSheetsApiKey;
+    }
+
     if (!doc.exists) {
       const newConfig: MISConfiguration = {
         formUrl: updates.formUrl || '',
@@ -80,6 +118,12 @@ export class MISConfigService {
         sheetUpdatedBy: updates.updatedBy,
         createdAt: now,
         createdBy: updates.updatedBy,
+        formResponseSheetId: updates.formResponseSheetId || '',
+        formResponseSheetGid: updates.formResponseSheetGid || '',
+        formEmailColumnIndex: updates.formEmailColumnIndex ?? 1,
+        formTimestampColumnIndex: updates.formTimestampColumnIndex ?? 0,
+        formRequiredForClockout: updates.formRequiredForClockout ?? false,
+        googleSheetsApiKey: updates.googleSheetsApiKey || '',
       };
       await docRef.set(newConfig);
       return newConfig;

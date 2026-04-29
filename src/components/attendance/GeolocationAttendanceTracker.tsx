@@ -418,7 +418,12 @@ export function GeolocationAttendanceTracker() {
       await new Promise(resolve => setTimeout(resolve, 50));
       
     } catch (err: any) {
-      setError(err.message || 'Failed to clock out');
+      // Check if error is due to missing form submission
+      if (err.message && err.message.includes('MIS form')) {
+        setError('⚠️ Please submit today\'s MIS form before clocking out. You can find the form on your dashboard.');
+      } else {
+        setError(err.message || 'Failed to clock out');
+      }
     } finally {
       setLoading(false);
     }

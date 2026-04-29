@@ -112,7 +112,18 @@ export const PUT = withAdminAuth(async (request: AuthenticatedRequest) => {
     const user = request.user!;
     const body = await request.json();
 
-    const { formUrl, formAssignedUsers, sheetUrl, sheetAssignedUsers } = body;
+    const {
+      formUrl,
+      formAssignedUsers,
+      sheetUrl,
+      sheetAssignedUsers,
+      formResponseSheetId,
+      formResponseSheetGid,
+      formEmailColumnIndex,
+      formTimestampColumnIndex,
+      formRequiredForClockout,
+      googleSheetsApiKey,
+    } = body;
 
     if (formUrl !== undefined && formUrl !== '') {
       if (!validateGoogleUrl(formUrl, 'form')) {
@@ -162,6 +173,31 @@ export const PUT = withAdminAuth(async (request: AuthenticatedRequest) => {
         );
       }
       updates.sheetAssignedUsers = sheetAssignedUsers;
+    }
+
+    // New fields for daily form validation
+    if (formResponseSheetId !== undefined) {
+      updates.formResponseSheetId = formResponseSheetId;
+    }
+
+    if (formResponseSheetGid !== undefined) {
+      updates.formResponseSheetGid = formResponseSheetGid;
+    }
+
+    if (formEmailColumnIndex !== undefined) {
+      updates.formEmailColumnIndex = formEmailColumnIndex;
+    }
+
+    if (formTimestampColumnIndex !== undefined) {
+      updates.formTimestampColumnIndex = formTimestampColumnIndex;
+    }
+
+    if (formRequiredForClockout !== undefined) {
+      updates.formRequiredForClockout = formRequiredForClockout;
+    }
+
+    if (googleSheetsApiKey !== undefined) {
+      updates.googleSheetsApiKey = googleSheetsApiKey;
     }
 
     const updatedConfig = await misConfigService.updateMISConfig(updates);
