@@ -275,9 +275,9 @@ export default function NotificationsPage() {
                 Push Notifications
               </h3>
               <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
-                {notificationPermission === 'granted'
+                {notificationPermission === 'granted' && fcmToken
                   ? 'Notifications are enabled'
-                  : 'Enable notifications to receive task updates'}
+                  : 'Notifications are not enabled'}
               </p>
             </div>
           </div>
@@ -306,7 +306,10 @@ export default function NotificationsPage() {
                     Enabling...
                   </>
                 ) : (
-                  'Enable Notifications'
+                  <>
+                    <span className="hidden sm:inline">Enable Notifications</span>
+                    <span className="sm:hidden">Click here to Enable Notification</span>
+                  </>
                 )}
               </button>
             )}
