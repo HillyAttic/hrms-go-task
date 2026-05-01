@@ -1,0 +1,71 @@
+rules_version = '2';
+
+// Firebase Storage Security Rules
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    // Helper function to check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Helper function to check if user is admin
+    function isAdmin() {
+      return request.auth != null &&
+             request.auth.token.role == 'admin';
+    }
+
+    // Helper function to check if user is manager or admin
+    function isManager() {
+      return request.auth != null &&
+             (request.auth.token.role == 'admin' ||
+              request.auth.token.role == 'manager');
+    }
+
+    // Form submissions - allow authenticated users to upload files
+    match /forms/{formId}/{submissionId}/{fieldId}/{fileName} {
+      // Allow authenticated users to upload files for form submissions
+      allow create: if isAuthenticated() &&
+                      request.resource.size < 10 * 1024 * 1024; // Max 10MB
+
+      // Allow authenticated users to read files
+      allow read: if isAuthenticated();
+
+      // Only admins can delete files
+      allow delete: if isAdmin();
+    }
+
+    // Profile pictures
+    match /profile-pictures/{userId}/{fileName} {
+      // Users can upload their own profile picture
+      allow create, update: if isAuthenticated() &&
+                              request.auth.uid == userId &&
+                              request.resource.size < 5 * 1024 * 1024; // Max 5MB
+
+      // Anyone authenticated can read profile pictures
+      allow read: if isAuthenticated();
+
+      // Users can delete their own profile picture, admins can delete any
+      allow delete: if isAuthenticated() &&
+                      (request.auth.uid == userId || isAdmin());
+    }
+
+    // Client documents
+    match /client-documents/{clientId}/{fileName} {
+      // Managers can upload client documents
+      allow create, update: if isManager() &&
+                              request.resource.size < 20 * 1024 * 1024; // Max 20MB
+
+      // All authenticated users can read client documents
+      allow read: if isAuthenticated();
+
+      // Only managers can delete client documents
+      allow delete: if isManager();
+    }
+
+    // Deny all other paths
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

@@ -15,10 +15,12 @@ function serializeSubmission(doc: FirebaseFirestore.DocumentSnapshot): FormSubmi
   if (!data) {
     throw new Error('Document data is undefined');
   }
+
   return {
     id: doc.id,
     ...data,
     submittedAt: data.submittedAt?.toDate?.()?.toISOString() || data.submittedAt,
+    files: data.files || [], // Explicitly include files array
   } as FormSubmission;
 }
 

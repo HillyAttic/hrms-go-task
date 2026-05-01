@@ -26,15 +26,30 @@ export default function UserMultiSelect({
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredUsers = useMemo(() => {
-    if (!searchQuery.trim()) return users;
+    let filtered = users;
 
-    const query = searchQuery.toLowerCase();
-    return users.filter(
-      (user) =>
-        user.displayName.toLowerCase().includes(query) ||
-        user.email.toLowerCase().includes(query)
-    );
-  }, [users, searchQuery]);
+    // Filter by search query
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = users.filter(
+        (user) =>
+          user.displayName.toLowerCase().includes(query) ||
+          user.email.toLowerCase().includes(query)
+      );
+    }
+
+    // Sort: selected users first, then unselected
+    return filtered.sort((a, b) => {
+      const aSelected = selectedUserIds.includes(a.uid);
+      const bSelected = selectedUserIds.includes(b.uid);
+
+      if (aSelected && !bSelected) return -1;
+      if (!aSelected && bSelected) return 1;
+
+      // If both selected or both unselected, sort alphabetically by name
+      return a.displayName.localeCompare(b.displayName);
+    });
+  }, [users, searchQuery, selectedUserIds]);
 
   const toggleUser = (uid: string) => {
     if (selectedUserIds.includes(uid)) {

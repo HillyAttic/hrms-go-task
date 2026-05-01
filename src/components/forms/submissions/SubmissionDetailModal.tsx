@@ -66,15 +66,6 @@ export function SubmissionDetailModal({
     const field = allFields.find((f) => f.id === fieldId);
     const value = submission.data[fieldId];
 
-    console.log('[SubmissionDetailModal] Rendering field:', {
-      fieldId,
-      foundField: !!field,
-      fieldType: field?.type,
-      fieldLabel: field?.label,
-      hasValue: value !== null && value !== undefined && value !== '',
-      value: value
-    });
-
     if (!field) return <span className="text-gray-400">Unknown field</span>;
 
     if (value === null || value === undefined || value === '') {
@@ -185,13 +176,6 @@ export function SubmissionDetailModal({
                   }
                 });
 
-                console.log('[SubmissionDetailModal] Flattened fields:', {
-                  totalFields: displayFields.length,
-                  fieldIds: displayFields.map(f => ({ id: f.id, type: f.type, label: f.label })),
-                  submissionDataKeys: Object.keys(submission.data),
-                  submissionData: submission.data
-                });
-
                 return displayFields
                   .sort((a, b) => a.order - b.order)
                   .map((field) => {
@@ -225,42 +209,67 @@ export function SubmissionDetailModal({
           </div>
 
           {/* File Attachments */}
-          {submission.files && submission.files.length > 0 && (
-            <div>
-              <h3 className="text-sm font-semibold text-gray-900 mb-4">File Attachments</h3>
-              <div className="space-y-2">
-                {submission.files.map((file, index) => {
-                  const field = allFields.find((f) => f.id === file.fieldId);
-                  return (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
-                    >
-                      <div className="flex items-center space-x-3">
-                        <span className="text-2xl">📎</span>
-                        <div>
-                          <div className="text-sm font-medium text-gray-900">
-                            {file.fileName}
+          {(() => {
+            // Check if form has any file fields
+            const hasFileFields = allFields.some(f => f.type === 'file');
+
+            if (!hasFileFields) {
+              return null; // Don't show attachment section if form has no file fields
+            }
+
+            if (submission.files && submission.files.length > 0) {
+              return (
+                <div>
+                  <h3 className="text-sm font-semibold text-gray-900 mb-4">File Attachments</h3>
+                  <div className="space-y-2">
+                    {submission.files.map((file, index) => {
+                      const field = allFields.find((f) => f.id === file.fieldId);
+                      return (
+                        <div
+                          key={index}
+                          className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                        >
+                          <div className="flex items-center space-x-3">
+                            <span className="text-2xl">📎</span>
+                            <div>
+                              <div className="text-sm font-medium text-gray-900">
+                                {file.fileName}
+                              </div>
+                              <div className="text-xs text-gray-500">
+                                {field?.label} • {(file.fileSize / 1024).toFixed(2)} KB
+                              </div>
+                            </div>
                           </div>
-                          <div className="text-xs text-gray-500">
-                            {field?.label} • {(file.fileSize / 1024).toFixed(2)} KB
-                          </div>
+                          <a
+                            href={file.fileUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
+                          >
+                            Download
+                          </a>
                         </div>
-                      </div>
-                      <a
-                        href={file.fileUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
-                      >
-                        Download
-                      </a>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            } else {
+              return (
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                  <div className="flex items-start space-x-3">
+                    <span className="text-yellow-600 text-xl">ℹ️</span>
+                    <div>
+                      <h3 className="text-sm font-semibold text-yellow-900 mb-1">No Attachments</h3>
+                      <p className="text-sm text-yellow-700">
+                        No files were attached to this submission.
+                      </p>
                     </div>
-                  );
-                })}
-              </div>
-            </div>
-          )}
+                  </div>
+                </div>
+              );
+            }
+          })()}
 
           {/* Metadata */}
           {submission.userAgent && (

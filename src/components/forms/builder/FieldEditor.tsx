@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import type { FormField } from '@/types/form.types';
 
@@ -14,6 +14,12 @@ interface FieldEditorProps {
 export function FieldEditor({ field, onUpdate, onDelete, onClose }: FieldEditorProps) {
   const [localField, setLocalField] = useState(field);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
+  // Update local state when field prop changes
+  useEffect(() => {
+    setLocalField(field);
+    setShowDeleteConfirm(false);
+  }, [field]);
 
   const handleUpdate = (updates: Partial<FormField>) => {
     const updated = { ...localField, ...updates };

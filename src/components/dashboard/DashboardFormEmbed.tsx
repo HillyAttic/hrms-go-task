@@ -13,6 +13,7 @@ export default function DashboardFormEmbed() {
   const [template, setTemplate] = useState<FormTemplate | null>(null);
   const [hasAccess, setHasAccess] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const fieldIdCounter = React.useRef(0);
 
   useEffect(() => {
@@ -71,9 +72,13 @@ export default function DashboardFormEmbed() {
   };
 
   const handleSuccess = (submissionId: string) => {
-    toast.success('Form submitted successfully!');
-    // Optionally refresh the form or hide it after submission
-    // For now, just keep it visible so user can submit again if needed
+    // If multiple submissions are NOT allowed, hide the form and show success message
+    if (template && !template.settings.allowMultipleSubmissions) {
+      setIsSubmitted(true);
+    } else {
+      // If multiple submissions are allowed, just show toast
+      toast.success('Form submitted successfully!');
+    }
   };
 
   const handleError = (error: string) => {
@@ -88,6 +93,42 @@ export default function DashboardFormEmbed() {
   // Don't render if form is not published
   if (template.status !== 'published') {
     return null;
+  }
+
+  // If form has been submitted and multiple submissions are not allowed, show success message
+  if (isSubmitted && !template.settings.allowMultipleSubmissions) {
+    return (
+      <Card className="col-span-full">
+        <CardHeader>
+          <CardTitle>Daily MIS Form</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col items-center justify-center py-12 px-4">
+            <div className="rounded-full bg-green-100 p-3 mb-4">
+              <svg
+                className="w-12 h-12 text-green-600"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+            </div>
+            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              {template.settings.successMessage}
+            </h3>
+            <p className="text-gray-600 text-center">
+              Your form has been successfully submitted.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
+    );
   }
 
   return (

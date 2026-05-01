@@ -168,12 +168,6 @@ export const POST = withAuth(async (request) => {
       userAgent: request.headers.get('user-agent') || undefined,
     };
 
-    console.log('[Form Submission] Submission data:', {
-      submitterName: submissionData.submitterName,
-      dataKeys: Object.keys(body.data),
-      dataValues: body.data
-    });
-
     const submission = await formSubmissionService.create(submissionData);
 
     return NextResponse.json({
