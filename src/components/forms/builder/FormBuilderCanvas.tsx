@@ -19,6 +19,7 @@ interface FormBuilderCanvasProps {
   onReorderFields: (fields: FormField[]) => void;
   onAddField: (type: FormFieldType) => void;
   onAddFieldToSection?: (sectionId: string, fieldType: FormFieldType) => void;
+  onSelectedSectionChange?: (sectionId: string | null) => void;
 }
 
 interface FieldPath {
@@ -366,6 +367,7 @@ export function FormBuilderCanvas({
   onReorderFields,
   onAddField,
   onAddFieldToSection,
+  onSelectedSectionChange,
 }: FormBuilderCanvasProps) {
   const [selectedFieldIndex, setSelectedFieldIndex] = useState<number | null>(null);
   const [selectedNestedPath, setSelectedNestedPath] = useState<FieldPath | null>(null);
@@ -379,11 +381,39 @@ export function FormBuilderCanvas({
   const handleNestedFieldClick = (sectionIndex: number, fieldIndex: number) => {
     setSelectedFieldIndex(null);
     setSelectedNestedPath({ sectionIndex, fieldIndex });
+    // Notify parent about selected section
+    const section = fields[sectionIndex];
+    if (section && section.type === 'section' && onSelectedSectionChange) {
+      onSelectedSectionChange(section.id);
+    }
   };
 
   const handleTopLevelFieldClick = (index: number) => {
     setSelectedNestedPath(null);
     setSelectedFieldIndex(index);
+    // Notify parent about selected section
+    const field = fields[index];
+    if (field && field.type === 'section' && onSelectedSectionChange) {
+      onSelectedSectionChange(field.id);
+    } else if (onSelectedSectionChange) {
+      onSelectedSectionChange(null);
+    }
+  };
+
+  const getSelectedSectionId = (): string | null => {
+    if (selectedFieldIndex !== null) {
+      const field = fields[selectedFieldIndex];
+      if (field && field.type === 'section') {
+        return field.id;
+      }
+    }
+    if (selectedNestedPath !== null) {
+      const section = fields[selectedNestedPath.sectionIndex];
+      if (section && section.type === 'section') {
+        return section.id;
+      }
+    }
+    return null;
   };
 
   const getSelectedField = (): FormField | null => {
@@ -435,6 +465,9 @@ export function FormBuilderCanvas({
   const handleCloseEditor = () => {
     setSelectedFieldIndex(null);
     setSelectedNestedPath(null);
+    if (onSelectedSectionChange) {
+      onSelectedSectionChange(null);
+    }
   };
 
   return (

@@ -32,6 +32,7 @@ export default function FormBuilderEditorPage({ params }: { params: Promise<{ id
   const [showPreview, setShowPreview] = useState(false);
   const [activeTab, setActiveTab] = useState<'fields' | 'settings'>('fields');
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [selectedSectionId, setSelectedSectionId] = useState<string | null>(null);
   const fieldIdCounter = React.useRef(0);
 
   const sensors = useSensors(
@@ -456,7 +457,11 @@ export default function FormBuilderEditorPage({ params }: { params: Promise<{ id
               >
                 {/* Mobile: Palette at top, Desktop: Palette on side */}
                 <div className="lg:hidden">
-                  <FieldPalette onAddField={handleAddField} />
+                  <FieldPalette
+                    onAddField={handleAddField}
+                    selectedSectionId={selectedSectionId}
+                    onAddFieldToSection={handleAddFieldToSection}
+                  />
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-6">
@@ -468,10 +473,15 @@ export default function FormBuilderEditorPage({ params }: { params: Promise<{ id
                       onReorderFields={handleReorderFields}
                       onAddField={handleAddField}
                       onAddFieldToSection={handleAddFieldToSection}
+                      onSelectedSectionChange={setSelectedSectionId}
                     />
                   </div>
                   <div className="hidden lg:block lg:col-span-1">
-                    <FieldPalette onAddField={handleAddField} />
+                    <FieldPalette
+                      onAddField={handleAddField}
+                      selectedSectionId={selectedSectionId}
+                      onAddFieldToSection={handleAddFieldToSection}
+                    />
                   </div>
                 </div>
               </motion.div>

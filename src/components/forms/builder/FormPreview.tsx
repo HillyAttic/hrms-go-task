@@ -70,12 +70,6 @@ export function FormPreview({ template, onClose }: FormPreviewProps) {
         {/* Preview Content */}
         <div className="p-6 overflow-y-auto max-h-[calc(90vh-140px)] custom-scrollbar">
           <div className="bg-gradient-to-br from-gray-50 to-blue-50 rounded-xl p-8 border border-gray-200">
-            <div className="mb-6">
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">{template.title}</h3>
-              {template.description && (
-                <p className="text-gray-600">{template.description}</p>
-              )}
-            </div>
             <FormRenderer
               template={template}
               onSuccess={() => {

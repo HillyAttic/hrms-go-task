@@ -32,18 +32,22 @@ export function generateFormSchema(fields: FormField[]): z.ZodObject<any> {
     switch (field.type) {
       case 'text':
         fieldSchema = z.string();
-        if (field.validation?.min) {
+        // If required, ensure non-empty string
+        if (field.required) {
+          fieldSchema = (fieldSchema as z.ZodString).min(1, `${field.label} is required`);
+        }
+        if (field.validation?.minLength) {
           fieldSchema = (fieldSchema as z.ZodString).min(
-            field.validation.min,
+            field.validation.minLength,
             field.validation.customMessage ||
-              `Minimum ${field.validation.min} characters required`
+              `Minimum ${field.validation.minLength} characters required`
           );
         }
-        if (field.validation?.max) {
+        if (field.validation?.maxLength) {
           fieldSchema = (fieldSchema as z.ZodString).max(
-            field.validation.max,
+            field.validation.maxLength,
             field.validation.customMessage ||
-              `Maximum ${field.validation.max} characters allowed`
+              `Maximum ${field.validation.maxLength} characters allowed`
           );
         }
         if (field.validation?.pattern) {
@@ -56,28 +60,38 @@ export function generateFormSchema(fields: FormField[]): z.ZodObject<any> {
 
       case 'textarea':
         fieldSchema = z.string();
-        if (field.validation?.min) {
+        // If required, ensure non-empty string
+        if (field.required) {
+          fieldSchema = (fieldSchema as z.ZodString).min(1, `${field.label} is required`);
+        }
+        if (field.validation?.minLength) {
           fieldSchema = (fieldSchema as z.ZodString).min(
-            field.validation.min,
-            `Minimum ${field.validation.min} characters required`
+            field.validation.minLength,
+            `Minimum ${field.validation.minLength} characters required`
           );
         }
-        if (field.validation?.max) {
+        if (field.validation?.maxLength) {
           fieldSchema = (fieldSchema as z.ZodString).max(
-            field.validation.max,
-            `Maximum ${field.validation.max} characters allowed`
+            field.validation.maxLength,
+            `Maximum ${field.validation.maxLength} characters allowed`
           );
         }
         break;
 
       case 'email':
-        fieldSchema = z.string().email('Invalid email address');
+        fieldSchema = z.string();
+        if (field.required) {
+          fieldSchema = (fieldSchema as z.ZodString).min(1, `${field.label} is required`);
+        }
+        fieldSchema = (fieldSchema as z.ZodString).email('Invalid email address');
         break;
 
       case 'phone':
-        fieldSchema = z
-          .string()
-          .regex(/^\d{10}$/, 'Phone number must be exactly 10 digits');
+        fieldSchema = z.string();
+        if (field.required) {
+          fieldSchema = (fieldSchema as z.ZodString).min(1, `${field.label} is required`);
+        }
+        fieldSchema = (fieldSchema as z.ZodString).regex(/^\d{10}$/, 'Phone number must be exactly 10 digits');
         break;
 
       case 'number':
@@ -118,8 +132,16 @@ export function generateFormSchema(fields: FormField[]): z.ZodObject<any> {
             typeof opt === 'string' ? opt : opt.value
           );
           fieldSchema = z.enum(stringOptions as [string, ...string[]]);
+          if (field.required) {
+            fieldSchema = fieldSchema.refine((val) => val !== undefined && val !== '', {
+              message: `${field.label} is required`,
+            });
+          }
         } else {
           fieldSchema = z.string();
+          if (field.required) {
+            fieldSchema = (fieldSchema as z.ZodString).min(1, `${field.label} is required`);
+          }
         }
         break;
 

@@ -7,6 +7,8 @@ import type { FormFieldType } from '@/types/form.types';
 
 interface FieldPaletteProps {
   onAddField: (type: FormFieldType) => void;
+  selectedSectionId?: string | null;
+  onAddFieldToSection?: (sectionId: string, fieldType: FormFieldType) => void;
 }
 
 const fieldTypes: Array<{
@@ -162,7 +164,19 @@ const fieldTypes: Array<{
   },
 ];
 
-function DraggableFieldItem({ field, index }: { field: typeof fieldTypes[0]; index: number }) {
+function DraggableFieldItem({
+  field,
+  index,
+  onAddField,
+  selectedSectionId,
+  onAddFieldToSection
+}: {
+  field: typeof fieldTypes[0];
+  index: number;
+  onAddField: (type: FormFieldType) => void;
+  selectedSectionId?: string | null;
+  onAddFieldToSection?: (sectionId: string, fieldType: FormFieldType) => void;
+}) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: `palette-${field.type}`,
     data: { type: field.type, source: 'palette' },
@@ -171,22 +185,31 @@ function DraggableFieldItem({ field, index }: { field: typeof fieldTypes[0]; ind
   const colors = ['#3B82F6', '#6366F1', '#8B5CF6', '#EC4899', '#F59E0B'];
   const bgColor = colors[index % colors.length];
 
+  const handlePlusClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (selectedSectionId && onAddFieldToSection) {
+      onAddFieldToSection(selectedSectionId, field.type);
+    } else {
+      onAddField(field.type);
+    }
+  };
+
   return (
     <motion.div
       ref={setNodeRef}
-      {...listeners}
-      {...attributes}
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       whileHover={{ y: -2, scale: 1.01 }}
       whileTap={{ scale: 0.98 }}
-      className={`group relative overflow-hidden border border-gray-200 rounded-lg bg-white cursor-grab active:cursor-grabbing transition-all hover:border-gray-300 hover:shadow-md ${
+      className={`group relative overflow-hidden border border-gray-200 rounded-lg bg-white transition-all hover:border-gray-300 hover:shadow-md ${
         isDragging ? 'opacity-50 shadow-lg' : ''
       }`}
     >
       <div className="relative p-3 flex items-center space-x-3">
         <div
-          className="flex-shrink-0 w-10 h-10 rounded-md flex items-center justify-center text-white shadow-sm"
+          {...attributes}
+          {...listeners}
+          className="flex-shrink-0 w-10 h-10 rounded-md flex items-center justify-center text-white shadow-sm cursor-grab active:cursor-grabbing"
           style={{ backgroundColor: bgColor }}
         >
           {field.icon}
@@ -197,22 +220,26 @@ function DraggableFieldItem({ field, index }: { field: typeof fieldTypes[0]; ind
           <div className="text-xs text-gray-500 mt-0.5">{field.description}</div>
         </div>
 
-        <div className="flex-shrink-0 text-gray-400 group-hover:text-gray-600 transition-colors">
+        <button
+          onClick={handlePlusClick}
+          className="flex-shrink-0 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded p-1 transition-colors"
+          title={selectedSectionId ? "Add to selected section" : "Add to form"}
+        >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
           </svg>
-        </div>
+        </button>
       </div>
     </motion.div>
   );
 }
 
-export function FieldPalette({ onAddField }: FieldPaletteProps) {
+export function FieldPalette({ onAddField, selectedSectionId, onAddFieldToSection }: FieldPaletteProps) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm"
+      className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm lg:sticky lg:top-4"
     >
       <div className="bg-orange-500 px-4 sm:px-6 py-3 sm:py-4 border-b border-orange-600">
         <h3 className="text-lg sm:text-xl font-semibold text-white flex items-center">
@@ -225,7 +252,7 @@ export function FieldPalette({ onAddField }: FieldPaletteProps) {
         <p className="text-orange-100 text-xs mt-1 sm:hidden">Tap to add field</p>
       </div>
 
-      <div className="p-3 sm:p-4 grid grid-cols-2 sm:grid-cols-1 gap-2 max-h-[300px] sm:max-h-[calc(100vh-250px)] overflow-y-auto custom-scrollbar">
+      <div className="p-3 sm:p-4 grid grid-cols-2 sm:grid-cols-1 gap-2 max-h-[300px] lg:max-h-[calc(100vh-200px)] overflow-y-auto custom-scrollbar">
         {fieldTypes.map((field, index) => (
           <motion.div
             key={field.type}
@@ -233,9 +260,15 @@ export function FieldPalette({ onAddField }: FieldPaletteProps) {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.03 }}
           >
-            {/* Desktop: Draggable, Mobile: Click to add */}
+            {/* Desktop: Draggable with click */}
             <div className="hidden sm:block">
-              <DraggableFieldItem field={field} index={index} />
+              <DraggableFieldItem
+                field={field}
+                index={index}
+                onAddField={onAddField}
+                selectedSectionId={selectedSectionId}
+                onAddFieldToSection={onAddFieldToSection}
+              />
             </div>
             <button
               onClick={() => onAddField(field.type)}
