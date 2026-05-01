@@ -229,7 +229,7 @@ function SortableFieldItem({
                   <AnimatePresence>
                     {field.fields.map((nestedField, nestedIndex) => {
                       const isNestedSelected =
-                        selectedNestedPath !== null &&
+                        selectedNestedPath != null &&
                         selectedNestedPath.sectionIndex === parentSectionIndex &&
                         selectedNestedPath.fieldIndex === nestedIndex;
 

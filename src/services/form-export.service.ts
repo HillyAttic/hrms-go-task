@@ -5,6 +5,17 @@ import type {
   FormField,
   ExportFormat,
 } from '@/types/form.types';
+import { Timestamp } from 'firebase/firestore';
+
+/**
+ * Convert submittedAt to Date, handling both Timestamp and string formats
+ */
+function toDate(submittedAt: Timestamp | string): Date {
+  if (typeof submittedAt === 'string') {
+    return new Date(submittedAt);
+  }
+  return submittedAt.toDate();
+}
 
 export const formExportService = {
   /**
@@ -106,7 +117,9 @@ export const formExportService = {
       submission.submittedBy || 'Anonymous',
       submission.submitterEmail || '',
       submission.submitterName || '',
-      submission.submittedAt.toDate().toLocaleString(),
+      typeof submission.submittedAt === 'string'
+        ? new Date(submission.submittedAt).toLocaleString()
+        : submission.submittedAt.toDate().toLocaleString(),
     ];
 
     const fieldData = fields
@@ -197,7 +210,7 @@ export const formExportService = {
     ];
 
     if (submissions.length > 0) {
-      const dates = submissions.map((s) => s.submittedAt.toDate());
+      const dates = submissions.map((s) => toDate(s.submittedAt));
       const earliest = new Date(Math.min(...dates.map((d) => d.getTime())));
       const latest = new Date(Math.max(...dates.map((d) => d.getTime())));
 
