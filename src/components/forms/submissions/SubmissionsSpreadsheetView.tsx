@@ -5,6 +5,7 @@ import type { FormSubmission, FormTemplate, FormField } from '@/types/form.types
 import { flattenFormFields, groupSubmissionsByDay, formatCellValue } from '@/utils/submission-utils';
 import { format } from 'date-fns';
 import { Timestamp } from 'firebase/firestore';
+import { SpreadsheetExportModal } from './SpreadsheetExportModal';
 
 interface SubmissionsSpreadsheetViewProps {
   submissions: FormSubmission[];
@@ -22,6 +23,7 @@ export function SubmissionsSpreadsheetView({
   const [searchTerm, setSearchTerm] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [showExportModal, setShowExportModal] = useState(false);
 
   // Flatten form fields (extract nested fields from sections)
   const flattenedFields = useMemo(() => {
@@ -80,10 +82,20 @@ export function SubmissionsSpreadsheetView({
     <div className="bg-white rounded-lg shadow">
       {/* Header */}
       <div className="p-4 sm:p-6 border-b">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
           <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
             Spreadsheet View ({filteredSubmissions.length} submissions)
           </h2>
+          <button
+            onClick={() => setShowExportModal(true)}
+            disabled={submissions.length === 0}
+            className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base flex items-center justify-center space-x-2"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <span>Export to Excel</span>
+          </button>
         </div>
 
         {/* Filters */}
@@ -383,6 +395,15 @@ export function SubmissionsSpreadsheetView({
           <span className="text-sm text-blue-800">Scroll horizontally to see all columns</span>
         </div>
       </div>
+
+      {/* Export Modal */}
+      {showExportModal && (
+        <SpreadsheetExportModal
+          submissions={submissions}
+          template={template}
+          onClose={() => setShowExportModal(false)}
+        />
+      )}
     </div>
   );
 }

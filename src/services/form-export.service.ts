@@ -86,20 +86,39 @@ export const formExportService = {
   },
 
   /**
+   * Flatten nested form fields (sections contain nested fields)
+   */
+  flattenFields(fields: FormField[]): FormField[] {
+    const flattened: FormField[] = [];
+    const sortedFields = [...fields].sort((a, b) => a.order - b.order);
+
+    sortedFields.forEach((field) => {
+      if (field.type === 'section' && field.fields) {
+        // Add nested fields from section, sorted by their order
+        const sortedNestedFields = [...field.fields].sort((a, b) => a.order - b.order);
+        flattened.push(...sortedNestedFields);
+      } else if (field.type !== 'section') {
+        // Add non-section fields
+        flattened.push(field);
+      }
+    });
+
+    return flattened;
+  },
+
+  /**
    * Generate CSV/Excel headers from form fields
    */
   generateHeaders(fields: FormField[]): string[] {
     const baseHeaders = [
-      'Submission ID',
-      'Submitted By',
       'Submitter Email',
       'Submitter Name',
       'Submitted At',
     ];
 
-    const fieldHeaders = fields
-      .sort((a, b) => a.order - b.order)
-      .map((field) => field.label);
+    // Flatten fields to handle sections
+    const flattenedFields = this.flattenFields(fields);
+    const fieldHeaders = flattenedFields.map((field) => field.label);
 
     return [...baseHeaders, ...fieldHeaders, 'Files'];
   },
@@ -113,8 +132,6 @@ export const formExportService = {
     escapeForCSV: boolean = true
   ): string[] {
     const baseData = [
-      submission.id,
-      submission.submittedBy || 'Anonymous',
       submission.submitterEmail || '',
       submission.submitterName || '',
       typeof submission.submittedAt === 'string'
@@ -122,12 +139,12 @@ export const formExportService = {
         : submission.submittedAt.toDate().toLocaleString(),
     ];
 
-    const fieldData = fields
-      .sort((a, b) => a.order - b.order)
-      .map((field) => {
-        const value = submission.data[field.id];
-        return this.formatFieldValue(value, field, escapeForCSV);
-      });
+    // Flatten fields to handle sections
+    const flattenedFields = this.flattenFields(fields);
+    const fieldData = flattenedFields.map((field) => {
+      const value = submission.data[field.id];
+      return this.formatFieldValue(value, field, escapeForCSV);
+    });
 
     const filesData = submission.files
       ? submission.files.map((f) => f.fileName).join('; ')

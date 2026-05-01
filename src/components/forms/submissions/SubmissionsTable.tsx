@@ -3,7 +3,7 @@
 import React, { useState, useMemo } from 'react';
 import type { FormSubmission, FormTemplate } from '@/types/form.types';
 import { SubmissionDetailModal } from './SubmissionDetailModal';
-import { SubmissionExportModal } from './SubmissionExportModal';
+import { SpreadsheetExportModal } from './SpreadsheetExportModal';
 import { groupSubmissionsByDay } from '@/utils/submission-utils';
 
 interface SubmissionsTableProps {
@@ -311,9 +311,9 @@ export function SubmissionsTable({
       )}
 
       {showExportModal && (
-        <SubmissionExportModal
-          formId={template.id}
-          formTitle={template.title}
+        <SpreadsheetExportModal
+          submissions={submissions}
+          template={template}
           onClose={() => setShowExportModal(false)}
         />
       )}

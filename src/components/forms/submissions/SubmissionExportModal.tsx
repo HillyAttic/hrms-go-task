@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { authenticatedFetch } from '@/lib/api-client';
 import { toast } from 'react-toastify';
+import { useModal } from '@/contexts/modal-context';
 
 interface SubmissionExportModalProps {
   formId: string;
@@ -15,10 +16,19 @@ export function SubmissionExportModal({
   formTitle,
   onClose,
 }: SubmissionExportModalProps) {
+  const { openModal, closeModal } = useModal();
   const [format, setFormat] = useState<'csv' | 'excel'>('csv');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [exporting, setExporting] = useState(false);
+
+  // Notify modal context when modal opens/closes
+  useEffect(() => {
+    openModal();
+    return () => {
+      closeModal();
+    };
+  }, [openModal, closeModal]);
 
   const handleExport = async () => {
     try {
@@ -89,7 +99,7 @@ export function SubmissionExportModal({
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4">
       <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
         {/* Header */}
         <div className="border-b px-6 py-4 flex items-center justify-between">
