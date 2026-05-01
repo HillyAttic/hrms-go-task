@@ -51,10 +51,18 @@ export async function GET(request: NextRequest) {
           response.dailyFormId = misConfig.dailyFormTemplateId;
 
           // Check if user has submitted the form today
+          console.log('[Status API] Checking form submission for:', {
+            formId: misConfig.dailyFormTemplateId,
+            userId: employeeId,
+            date: new Date().toISOString()
+          });
+
           const submissionCheck = await formSubmissionService.checkUserSubmissionToday(
             misConfig.dailyFormTemplateId,
             employeeId
           );
+
+          console.log('[Status API] Form submission check result:', submissionCheck);
 
           response.formSubmitted = submissionCheck.submitted;
         }

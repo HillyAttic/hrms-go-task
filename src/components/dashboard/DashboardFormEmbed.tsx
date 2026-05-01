@@ -79,16 +79,26 @@ export default function DashboardFormEmbed() {
             const finalTemplate = { ...fetchedTemplate, fields: fixedFields };
             setTemplate(finalTemplate);
 
-            // Check if user has already submitted this form (if multiple submissions not allowed)
+            // Check if user has already submitted this form TODAY (if multiple submissions not allowed)
             if (!finalTemplate.settings.allowMultipleSubmissions) {
-              const submissionsResponse = await authenticatedFetch(
-                `/api/forms/submissions?formId=${dailyFormTemplateId}&submittedBy=${user?.uid}&limit=1`
+              // Use the check-today endpoint to see if submitted today
+              const checkTodayResponse = await authenticatedFetch(
+                `/api/forms/submissions/check-today`,
+                {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    formId: dailyFormTemplateId,
+                    userId: user?.uid
+                  })
+                }
               );
 
-              if (submissionsResponse.ok) {
-                const submissionsData = await submissionsResponse.json();
-                if (submissionsData.success && submissionsData.submissions.length > 0) {
-                  // User has already submitted this form
+              if (checkTodayResponse.ok) {
+                const checkResult = await checkTodayResponse.json();
+                console.log('[DashboardFormEmbed] Check today result:', checkResult);
+                if (checkResult.submitted) {
+                  // User has already submitted this form TODAY
                   setIsSubmitted(true);
                 }
               }

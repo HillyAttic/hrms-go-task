@@ -82,27 +82,27 @@ export function GeolocationAttendanceTracker() {
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (!document.hidden && auth.user) {
-        console.log('Page became visible, reloading status');
+        console.log('Page became visible, reloading status to check form submission');
         loadStatus();
       }
     };
 
     const handleFocus = () => {
       if (auth.user) {
-        console.log('Window focused, reloading status');
+        console.log('Window focused, reloading status to check form submission');
         loadStatus();
       }
     };
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
     window.addEventListener('focus', handleFocus);
-    
+
     // Also load status immediately when component mounts
     if (auth.user) {
       console.log('Component mounted, loading status immediately');
       loadStatus();
     }
-    
+
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('focus', handleFocus);
@@ -145,14 +145,16 @@ export function GeolocationAttendanceTracker() {
 
       // Update form submission status from API response
       if (result.formSubmissionRequired !== undefined) {
-        setFormSubmissionRequired(result.formSubmissionRequired);
-        setFormSubmitted(result.formSubmitted || false);
-        setDailyFormId(result.dailyFormId || null);
-        console.log('Form submission status:', {
+        console.log('Form submission status from API:', {
           required: result.formSubmissionRequired,
           submitted: result.formSubmitted,
           formId: result.dailyFormId
         });
+        setFormSubmissionRequired(result.formSubmissionRequired);
+        setFormSubmitted(result.formSubmitted || false);
+        setDailyFormId(result.dailyFormId || null);
+      } else {
+        console.log('No form submission status in API response');
       }
 
       // Check if user has already clocked in today (even if they've clocked out)
@@ -173,6 +175,8 @@ export function GeolocationAttendanceTracker() {
       }
 
       console.log('Final mapped status:', mappedStatus);
+      console.log('Final form submission state - Required:', result.formSubmissionRequired, 'Submitted:', result.formSubmitted);
+
       setStatus({
         status: mappedStatus,
         data: result
@@ -715,7 +719,7 @@ export function GeolocationAttendanceTracker() {
             <>
               <Button
                 onClick={handleClockOut}
-                disabled={loading}
+                disabled={loading || (formSubmissionRequired && !formSubmitted)}
                 variant="destructive"
                 className="w-full h-12 text-lg"
                 size="lg"
@@ -735,21 +739,21 @@ export function GeolocationAttendanceTracker() {
 
               {/* Warning banner if form required but not submitted */}
               {formSubmissionRequired && !formSubmitted && (
-                <div className="mt-3 p-3 bg-yellow-50 dark:bg-yellow-900/20 border-2 border-yellow-400 dark:border-yellow-600 rounded-lg">
+                <div className="mt-3 p-3 bg-red-50 dark:bg-red-900/20 border-2 border-red-500 dark:border-red-600 rounded-lg">
                   <div className="flex items-start gap-2">
-                    <AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" />
+                    <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
                     <div className="flex-1">
-                      <p className="text-sm font-semibold text-yellow-900 dark:text-yellow-200">
-                        ⚠️ Form Submission Required
+                      <p className="text-sm font-bold text-red-900 dark:text-red-200">
+                        Clock Out Disabled
                       </p>
-                      <p className="text-xs text-yellow-800 dark:text-yellow-300 mt-1">
-                        Please submit today's MIS form before clocking out.
+                      <p className="text-xs text-red-800 dark:text-red-300 mt-1">
+                        You must submit today's DMR (Daily Monitoring Report) form before you can clock out. The clock-out button is disabled until you complete the form.
                       </p>
                       <a
                         href="/dashboard"
-                        className="text-xs text-blue-600 dark:text-blue-400 hover:underline mt-2 inline-block font-medium"
+                        className="text-xs text-blue-600 dark:text-blue-400 hover:underline mt-2 inline-block font-bold"
                       >
-                        Go to Dashboard to submit form →
+                        Click here to go to dashboard
                       </a>
                     </div>
                   </div>
