@@ -138,9 +138,9 @@ export default function MISAccessibilityPage() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-5xl">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">MIS Accessibility</h1>
-        <p className="mt-2 text-gray-600 dark:text-gray-400">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">MIS Accessibility</h1>
+        <p className="mt-2 text-sm sm:text-base text-gray-600 dark:text-gray-400">
           Configure daily form and submission tracking for users
         </p>
       </div>
@@ -150,20 +150,20 @@ export default function MISAccessibilityPage() {
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
         </div>
       ) : (
-        <div className="space-y-8">
+        <div className="space-y-6 sm:space-y-8">
           {/* Daily Form Configuration */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4 sm:mb-6">
               Daily Form Configuration
             </h2>
 
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               {/* Form Template Selector */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Daily Form Template
                 </label>
-                <div className="flex space-x-3">
+                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
                   <select
                     value={dailyFormTemplateId}
                     onChange={(e) => setDailyFormTemplateId(e.target.value)}
@@ -186,7 +186,7 @@ export default function MISAccessibilityPage() {
                   </select>
                   <button
                     onClick={() => router.push('/forms/builder/new')}
-                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 whitespace-nowrap"
+                    className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 whitespace-nowrap"
                   >
                     + Create New Form
                   </button>
@@ -206,36 +206,38 @@ export default function MISAccessibilityPage() {
               />
 
               {/* Clock-out Requirement */}
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-6">
-                <div className="flex items-center gap-3">
+              <div className="border-t border-gray-200 dark:border-gray-700 pt-4 sm:pt-6">
+                <div className="flex items-start gap-3">
                   <input
                     type="checkbox"
                     id="formRequiredForClockout"
                     checked={formRequiredForClockout}
                     onChange={(e) => setFormRequiredForClockout(e.target.checked)}
-                    className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    className="mt-0.5 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   />
-                  <label
-                    htmlFor="formRequiredForClockout"
-                    className="text-sm font-medium text-gray-700 dark:text-gray-300"
-                  >
-                    Require daily form submission before clock-out
-                  </label>
+                  <div className="flex-1">
+                    <label
+                      htmlFor="formRequiredForClockout"
+                      className="text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer"
+                    >
+                      Require daily form submission before clock-out
+                    </label>
+                    <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+                      When enabled, assigned users must submit the daily form before they can clock out
+                    </p>
+                  </div>
                 </div>
-                <p className="mt-2 text-xs text-gray-500 dark:text-gray-400 ml-7">
-                  When enabled, assigned users must submit the daily form before they can clock out
-                </p>
               </div>
             </div>
           </div>
 
           {/* Submissions Access */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
-            <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4 sm:mb-6">
               Submissions Access
             </h2>
 
-            <div className="space-y-6">
+            <div className="space-y-4 sm:space-y-6">
               <UserMultiSelect
                 users={users}
                 selectedUserIds={sheetAssignedUsers}
@@ -254,7 +256,7 @@ export default function MISAccessibilityPage() {
             <button
               onClick={handleSave}
               disabled={saving}
-              className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {saving ? 'Saving...' : 'Save Configuration'}
             </button>

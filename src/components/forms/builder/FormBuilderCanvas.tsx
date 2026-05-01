@@ -139,7 +139,7 @@ function SortableFieldItem({
     return icons[type] || icons.text;
   };
 
-  const colors = ['#FFE500', '#FF6B00', '#FF006B', '#00FFE5', '#00FF85'];
+  const colors = ['#3B82F6', '#6366F1', '#8B5CF6', '#EC4899', '#F59E0B'];
   const bgColor = colors[index % colors.length];
 
   // Special rendering for section type
@@ -167,33 +167,33 @@ function SortableFieldItem({
           <div
             {...attributes}
             {...listeners}
-            className="absolute left-0 top-0 bottom-0 w-10 flex items-center justify-center cursor-grab active:cursor-grabbing border-r border-slate-300 transition-colors hover:bg-slate-100"
+            className="hidden sm:flex absolute left-0 top-0 bottom-0 w-10 items-center justify-center cursor-grab active:cursor-grabbing border-r border-slate-300 transition-colors hover:bg-slate-100"
           >
             <svg className="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M4 8h16M4 16h16" />
             </svg>
           </div>
 
-          <div className="pl-14 pr-5 py-4">
+          <div className="pl-5 sm:pl-14 pr-5 py-4">
             <div className="flex items-start justify-between">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center space-x-3 mb-2">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-md bg-slate-500 flex items-center justify-center text-white shadow-sm">
+                  <div className="flex-shrink-0 w-8 h-8 rounded-md bg-indigo-600 flex items-center justify-center text-white shadow-sm">
                     {getFieldIcon(field.type)}
                   </div>
-                  <span className={`font-bold text-lg ${isSelected ? 'text-slate-700' : 'text-slate-900'}`}>
+                  <span className={`font-bold text-base ${isSelected ? 'text-indigo-700' : 'text-gray-900'}`}>
                     {field.label}
                   </span>
                 </div>
 
                 {field.description && (
-                  <p className={`text-sm mt-2 ${isSelected ? 'text-slate-600' : 'text-slate-500'}`}>
+                  <p className={`text-sm mt-2 ${isSelected ? 'text-gray-600' : 'text-gray-500'}`}>
                     {field.description}
                   </p>
                 )}
 
                 <div className="flex items-center space-x-2 mt-2">
-                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200">
+                  <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-indigo-100 text-indigo-700 border border-indigo-200">
                     Section Header
                   </span>
                 </div>
@@ -203,7 +203,7 @@ function SortableFieldItem({
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className={`transition-colors ${isSelected ? 'text-slate-500' : 'text-slate-400 group-hover:text-slate-600'}`}
+                  className={`transition-colors ${isSelected ? 'text-indigo-500' : 'text-gray-400 group-hover:text-gray-600'}`}
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
@@ -297,24 +297,24 @@ function SortableFieldItem({
         <div
           {...attributes}
           {...listeners}
-          className="absolute left-0 top-0 bottom-0 w-10 flex items-center justify-center cursor-grab active:cursor-grabbing border-r border-gray-200 transition-colors hover:bg-gray-50"
+          className="hidden sm:flex absolute left-0 top-0 bottom-0 w-10 items-center justify-center cursor-grab active:cursor-grabbing border-r border-gray-200 transition-colors hover:bg-gray-50"
         >
           <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M4 8h16M4 16h16" />
           </svg>
         </div>
 
-        <div className="pl-14 pr-5 py-4">
+          <div className="pl-5 sm:pl-14 pr-5 py-3 sm:py-4">
           <div className="flex items-start justify-between">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center space-x-3 mb-2">
+            <div className="flex-1 min-w-0 pr-2">
+              <div className="flex items-center space-x-2 sm:space-x-3 mb-2">
                 <div
-                  className="flex-shrink-0 w-8 h-8 rounded-md flex items-center justify-center text-white shadow-sm"
+                  className="flex-shrink-0 w-7 h-7 sm:w-8 sm:h-8 rounded-md flex items-center justify-center text-white shadow-sm"
                   style={{ backgroundColor: bgColor }}
                 >
                   {getFieldIcon(field.type)}
                 </div>
-                <span className={`font-semibold truncate text-base ${isSelected ? 'text-indigo-700' : 'text-gray-900'}`}>
+                <span className={`font-semibold text-sm leading-tight break-words ${isSelected ? 'text-indigo-700' : 'text-gray-900'}`}>
                   {field.label}
                 </span>
                 {field.required && (
@@ -322,8 +322,8 @@ function SortableFieldItem({
                 )}
               </div>
 
-              <div className="flex items-center space-x-2 mt-2">
-                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-700 border border-gray-200">
+              <div className="flex items-center flex-wrap gap-2 mt-2">
+                <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-700 border border-blue-200">
                   {field.type}
                 </span>
                 {field.validation?.min !== undefined && (
@@ -335,7 +335,7 @@ function SortableFieldItem({
               </div>
 
               {field.helpText && (
-                <p className={`text-sm mt-2 line-clamp-2 ${isSelected ? 'text-gray-700' : 'text-gray-500'}`}>
+                <p className={`text-xs sm:text-sm mt-2 line-clamp-2 ${isSelected ? 'text-gray-700' : 'text-gray-500'}`}>
                   {field.helpText}
                 </p>
               )}
@@ -438,29 +438,29 @@ export function FormBuilderCanvas({
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-5 gap-4 lg:gap-6">
       {/* Canvas Area */}
-      <div className="lg:col-span-2">
+      <div className="lg:col-span-3">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm"
         >
-          <div className="bg-indigo-500 px-6 py-4 border-b border-indigo-600">
-            <h3 className="text-xl font-semibold text-white flex items-center">
-              <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="bg-indigo-500 px-4 sm:px-6 py-3 sm:py-4 border-b border-indigo-600">
+            <h3 className="text-lg sm:text-xl font-semibold text-white flex items-center">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </svg>
               Canvas
             </h3>
-            <p className="text-indigo-100 text-sm mt-1">
+            <p className="text-indigo-100 text-xs sm:text-sm mt-1">
               {sortedFields.length} field{sortedFields.length !== 1 ? 's' : ''}
             </p>
           </div>
 
           <div
             ref={setCanvasRef}
-            className={`p-6 min-h-[500px] transition-all ${
+            className={`p-4 sm:p-6 min-h-[500px] transition-all ${
               isOver ? 'bg-indigo-50/50' : 'bg-gray-50/30'
             }`}
           >
@@ -518,7 +518,7 @@ export function FormBuilderCanvas({
       </div>
 
       {/* Field Editor */}
-      <div className="lg:col-span-1">
+      <div className="lg:col-span-2">
         <AnimatePresence mode="wait">
           {getSelectedField() ? (
             <motion.div

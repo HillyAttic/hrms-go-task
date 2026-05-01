@@ -353,68 +353,68 @@ export default function FormBuilderEditorPage({ params }: { params: Promise<{ id
           animate={{ y: 0, opacity: 1 }}
           className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-20"
         >
-          <div className="max-w-7xl mx-auto px-6 py-6">
-            <div className="flex items-center justify-between">
-              <div className="flex-1 max-w-2xl">
-                <input
-                  type="text"
-                  value={template.title}
-                  onChange={(e) => setTemplate({ ...template, title: e.target.value })}
-                  className="text-3xl font-bold text-gray-900 border-none focus:outline-none focus:ring-0 w-full bg-transparent placeholder-gray-400"
-                  placeholder="Form Title"
-                />
-                <input
-                  type="text"
-                  value={template.description || ''}
-                  onChange={(e) => setTemplate({ ...template, description: e.target.value })}
-                  className="text-sm text-gray-600 border-none focus:outline-none focus:ring-0 w-full mt-2 bg-transparent placeholder-gray-400"
-                  placeholder="Add description here..."
-                />
-              </div>
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
+            {/* Title and Description */}
+            <div className="mb-4">
+              <input
+                type="text"
+                value={template.title}
+                onChange={(e) => setTemplate({ ...template, title: e.target.value })}
+                className="text-2xl sm:text-3xl font-bold text-gray-900 border-none focus:outline-none focus:ring-0 w-full bg-transparent placeholder-gray-400"
+                placeholder="Form Title"
+              />
+              <input
+                type="text"
+                value={template.description || ''}
+                onChange={(e) => setTemplate({ ...template, description: e.target.value })}
+                className="text-sm text-gray-600 border-none focus:outline-none focus:ring-0 w-full mt-2 bg-transparent placeholder-gray-400"
+                placeholder="Add description here..."
+              />
+            </div>
 
-              <div className="flex items-center space-x-3">
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => setShowPreview(true)}
-                  className="px-5 py-2.5 text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 font-medium text-sm rounded-lg transition-all flex items-center space-x-2"
-                >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                  </svg>
-                  <span>Preview</span>
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={handleSave}
-                  disabled={saving}
-                  className="px-6 py-2.5 bg-orange-500 hover:bg-orange-600 text-white font-medium text-sm rounded-lg disabled:opacity-50 transition-all flex items-center space-x-2"
-                >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-                  </svg>
-                  <span>{saving ? 'Saving...' : 'Save'}</span>
-                </motion.button>
-                <motion.button
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => router.push('/forms/builder')}
-                  className="px-4 py-2.5 text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 font-medium text-sm rounded-lg transition-all"
-                >
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </motion.button>
-              </div>
+            {/* Action Buttons */}
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => setShowPreview(true)}
+                className="flex-1 sm:flex-none px-4 py-2 text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 font-medium text-sm rounded-lg transition-all flex items-center justify-center space-x-2"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+                <span>Preview</span>
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={handleSave}
+                disabled={saving}
+                className="flex-1 sm:flex-none px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white font-medium text-sm rounded-lg disabled:opacity-50 transition-all flex items-center justify-center space-x-2"
+              >
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                </svg>
+                <span>{saving ? 'Saving...' : 'Save'}</span>
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => router.push('/forms/builder')}
+                className="px-3 py-2 text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 font-medium text-sm rounded-lg transition-all"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </motion.button>
             </div>
 
             {/* Tabs */}
-            <div className="flex space-x-2 mt-6">
+            <div className="flex space-x-2">
               <button
                 onClick={() => setActiveTab('fields')}
-                className={`px-5 py-2.5 text-sm font-medium rounded-lg transition-all flex items-center space-x-2 ${
+                className={`flex-1 sm:flex-none px-4 py-2 text-sm font-medium rounded-lg transition-all flex items-center justify-center space-x-2 ${
                   activeTab === 'fields'
                     ? 'bg-indigo-500 text-white shadow-md'
                     : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
@@ -427,7 +427,7 @@ export default function FormBuilderEditorPage({ params }: { params: Promise<{ id
               </button>
               <button
                 onClick={() => setActiveTab('settings')}
-                className={`px-5 py-2.5 text-sm font-medium rounded-lg transition-all flex items-center space-x-2 ${
+                className={`flex-1 sm:flex-none px-4 py-2 text-sm font-medium rounded-lg transition-all flex items-center justify-center space-x-2 ${
                   activeTab === 'settings'
                     ? 'bg-indigo-500 text-white shadow-md'
                     : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
@@ -444,7 +444,7 @@ export default function FormBuilderEditorPage({ params }: { params: Promise<{ id
         </motion.div>
 
         {/* Content */}
-        <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
           <AnimatePresence mode="wait">
             {activeTab === 'fields' ? (
               <motion.div
@@ -452,20 +452,27 @@ export default function FormBuilderEditorPage({ params }: { params: Promise<{ id
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
-                className="grid grid-cols-1 lg:grid-cols-4 gap-6"
+                className="space-y-4"
               >
-                <div className="lg:col-span-3">
-                  <FormBuilderCanvas
-                    fields={template.fields}
-                    onUpdateField={handleUpdateField}
-                    onDeleteField={handleDeleteField}
-                    onReorderFields={handleReorderFields}
-                    onAddField={handleAddField}
-                    onAddFieldToSection={handleAddFieldToSection}
-                  />
-                </div>
-                <div className="lg:col-span-1">
+                {/* Mobile: Palette at top, Desktop: Palette on side */}
+                <div className="lg:hidden">
                   <FieldPalette onAddField={handleAddField} />
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 lg:gap-6">
+                  <div className="lg:col-span-3">
+                    <FormBuilderCanvas
+                      fields={template.fields}
+                      onUpdateField={handleUpdateField}
+                      onDeleteField={handleDeleteField}
+                      onReorderFields={handleReorderFields}
+                      onAddField={handleAddField}
+                      onAddFieldToSection={handleAddFieldToSection}
+                    />
+                  </div>
+                  <div className="hidden lg:block lg:col-span-1">
+                    <FieldPalette onAddField={handleAddField} />
+                  </div>
                 </div>
               </motion.div>
             ) : (

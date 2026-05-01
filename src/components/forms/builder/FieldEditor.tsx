@@ -56,13 +56,13 @@ export function FieldEditor({ field, onUpdate, onDelete, onClose }: FieldEditorP
       className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm"
     >
       {/* Header */}
-      <div className="bg-pink-500 px-6 py-4 border-b border-pink-600">
+      <div className="bg-pink-500 px-4 sm:px-6 py-3 sm:py-4 border-b border-pink-600">
         <div className="flex items-center justify-between">
-          <h3 className="text-xl font-semibold text-white flex items-center">
-            <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <h3 className="text-lg sm:text-xl font-semibold text-white flex items-center">
+            <svg className="w-4 h-4 sm:w-5 sm:h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
             </svg>
-            Editor
+            Edit Field
           </h3>
           <button
             onClick={onClose}
@@ -76,7 +76,7 @@ export function FieldEditor({ field, onUpdate, onDelete, onClose }: FieldEditorP
       </div>
 
       {/* Content */}
-      <div className="p-6 space-y-5 max-h-[calc(100vh-300px)] overflow-y-auto custom-scrollbar">
+      <div className="p-4 sm:p-6 space-y-4 sm:space-y-5 max-h-[calc(100vh-300px)] overflow-y-auto custom-scrollbar">
         {/* Label */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -281,17 +281,17 @@ export function FieldEditor({ field, onUpdate, onDelete, onClose }: FieldEditorP
 
         {/* Options for select/radio/checkbox */}
         {needsOptions && (
-          <div className="space-y-3 p-4 bg-green-50 rounded-lg border border-green-200">
+          <div className="space-y-3 p-3 sm:p-4 bg-blue-50 rounded-lg border border-blue-200">
             <div className="flex items-center justify-between">
-              <div className="font-medium text-gray-900 flex items-center">
-                <svg className="w-5 h-5 mr-2 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="text-sm font-medium text-gray-900 flex items-center">
+                <svg className="w-4 h-4 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                 </svg>
                 Options
               </div>
               <button
                 onClick={handleAddOption}
-                className="px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition-colors"
+                className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-medium rounded-lg transition-colors"
               >
                 + Add
               </button>
@@ -306,21 +306,21 @@ export function FieldEditor({ field, onUpdate, onDelete, onClose }: FieldEditorP
                   exit={{ opacity: 0, x: 10 }}
                   className="flex items-center space-x-2"
                 >
-                  <div className="flex-shrink-0 w-7 h-7 bg-green-600 text-white flex items-center justify-center text-xs font-medium rounded">
+                  <div className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white flex items-center justify-center text-xs font-medium rounded">
                     {index + 1}
                   </div>
                   <input
                     type="text"
                     value={typeof option === 'string' ? option : option.label}
                     onChange={(e) => handleUpdateOption(index, e.target.value)}
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="flex-1 px-2 sm:px-3 py-1.5 sm:py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     placeholder={`Option ${index + 1}`}
                   />
                   <button
                     onClick={() => handleRemoveOption(index)}
-                    className="flex-shrink-0 p-1.5 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                    className="flex-shrink-0 p-1 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
                   >
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                     </svg>
                   </button>
@@ -329,7 +329,7 @@ export function FieldEditor({ field, onUpdate, onDelete, onClose }: FieldEditorP
             </div>
 
             {(!localField.options || localField.options.length === 0) && (
-              <div className="text-center py-6 text-gray-500 text-sm">
+              <div className="text-center py-4 text-gray-500 text-xs sm:text-sm">
                 No options yet
               </div>
             )}
@@ -391,7 +391,7 @@ export function FieldEditor({ field, onUpdate, onDelete, onClose }: FieldEditorP
       </div>
 
       {/* Footer */}
-      <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
+      <div className="px-4 sm:px-6 py-3 sm:py-4 bg-gray-50 border-t border-gray-200">
         {showDeleteConfirm ? (
           <div className="space-y-3">
             <p className="text-sm text-gray-700 font-medium flex items-center">
@@ -400,7 +400,7 @@ export function FieldEditor({ field, onUpdate, onDelete, onClose }: FieldEditorP
               </svg>
               Delete this field?
             </p>
-            <div className="flex space-x-2">
+            <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
               <button
                 onClick={() => {
                   onDelete();
