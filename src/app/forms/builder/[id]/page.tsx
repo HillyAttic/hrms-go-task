@@ -3,7 +3,16 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { DndContext, DragOverlay, closestCenter, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
+import {
+  DndContext,
+  DragOverlay,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  DragStartEvent,
+  DragEndEvent,
+} from '@dnd-kit/core';
 import { authenticatedFetch } from '@/lib/api-client';
 import type { FormTemplate, FormField, FormFieldType } from '@/types/form.types';
 import { FormBuilderCanvas } from '@/components/forms/builder/FormBuilderCanvas';
@@ -22,6 +31,7 @@ export default function FormBuilderEditorPage({ params }: { params: Promise<{ id
   const [saving, setSaving] = useState(false);
   const [showPreview, setShowPreview] = useState(false);
   const [activeTab, setActiveTab] = useState<'fields' | 'settings'>('fields');
+  const [activeId, setActiveId] = useState<string | null>(null);
   const fieldIdCounter = React.useRef(0);
 
   const sensors = useSensors(
@@ -212,27 +222,73 @@ export default function FormBuilderEditorPage({ params }: { params: Promise<{ id
     });
   };
 
+  const handleDragStart = (event: DragStartEvent) => {
+    setActiveId(event.active.id as string);
+  };
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    setActiveId(null);
+
+    if (!over || !template) return;
+
+    // Check if dragging from palette to canvas
+    if (active.data.current?.source === 'palette') {
+      if (over.id === 'canvas-drop-zone' || over.data.current?.type === 'field') {
+        const fieldType = active.data.current.type as FormFieldType;
+        handleAddField(fieldType);
+      }
+      return;
+    }
+
+    // Reordering existing fields within canvas
+    if (active.data.current?.type === 'field' && over.data.current?.type === 'field') {
+      if (active.id === over.id) return;
+
+      const oldIndex = template.fields.findIndex((f) => f.id === active.id);
+      const newIndex = template.fields.findIndex((f) => f.id === over.id);
+
+      if (oldIndex !== -1 && newIndex !== -1) {
+        const reorderedFields = [...template.fields];
+        const [movedField] = reorderedFields.splice(oldIndex, 1);
+        reorderedFields.splice(newIndex, 0, movedField);
+
+        reorderedFields.forEach((field, index) => {
+          field.order = index;
+        });
+
+        setTemplate({
+          ...template,
+          fields: reorderedFields,
+        });
+      }
+    }
+  };
+
+  const handleDragCancel = () => {
+    setActiveId(null);
+  };
+
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+      <div className="flex items-center justify-center min-h-screen bg-[#FFFEF5] grid-pattern">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           className="text-center"
         >
-          <div className="relative w-20 h-20 mx-auto mb-6">
-            <motion.div
-              className="absolute inset-0 rounded-full border-4 border-blue-200"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 1, repeat: Infinity, ease: 'linear' }}
-            />
-            <motion.div
-              className="absolute inset-2 rounded-full border-4 border-purple-500 border-t-transparent"
-              animate={{ rotate: -360 }}
-              transition={{ duration: 1.5, repeat: Infinity, ease: 'linear' }}
-            />
-          </div>
-          <p className="text-lg font-semibold text-gray-700">Loading form builder...</p>
+          <motion.div
+            className="w-32 h-32 mx-auto mb-6 bg-[#FFE500] border-4 border-black brutal-border-yellow"
+            animate={{ rotate: [0, 5, -5, 0] }}
+            transition={{ duration: 0.5, repeat: Infinity }}
+          >
+            <div className="w-full h-full flex items-center justify-center text-6xl">
+              ⚡
+            </div>
+          </motion.div>
+          <p className="text-2xl font-black text-black uppercase" style={{ fontFamily: 'Syne, sans-serif' }}>
+            LOADING...
+          </p>
         </motion.div>
       </div>
     );
@@ -241,113 +297,93 @@ export default function FormBuilderEditorPage({ params }: { params: Promise<{ id
   if (!template) return null;
 
   return (
-    <DndContext sensors={sensors} collisionDetection={closestCenter}>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragStart={handleDragStart}
+      onDragEnd={handleDragEnd}
+      onDragCancel={handleDragCancel}
+    >
+      <div className="min-h-screen bg-[#FFFEF5] grid-pattern form-builder-neo">
         {/* Header */}
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="bg-white/80 backdrop-blur-lg border-b border-gray-200 sticky top-0 z-20 shadow-sm"
+          className="bg-[#FFE500] border-b-4 border-black sticky top-0 z-20 noise-texture"
         >
-          <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="max-w-7xl mx-auto px-6 py-6">
             <div className="flex items-center justify-between">
               <div className="flex-1 max-w-2xl">
                 <input
                   type="text"
                   value={template.title}
                   onChange={(e) => setTemplate({ ...template, title: e.target.value })}
-                  className="text-2xl font-bold text-gray-900 border-none focus:outline-none focus:ring-0 w-full bg-transparent placeholder-gray-400"
-                  placeholder="Form Title"
+                  className="text-4xl font-black text-black border-none focus:outline-none focus:ring-0 w-full bg-transparent placeholder-black/40 uppercase tracking-tight"
+                  placeholder="FORM TITLE"
+                  style={{ fontFamily: 'Syne, sans-serif' }}
                 />
                 <input
                   type="text"
                   value={template.description || ''}
                   onChange={(e) => setTemplate({ ...template, description: e.target.value })}
-                  className="text-sm text-gray-600 border-none focus:outline-none focus:ring-0 w-full mt-1 bg-transparent placeholder-gray-400"
-                  placeholder="Add a description to help users understand this form"
+                  className="text-sm text-black/70 border-none focus:outline-none focus:ring-0 w-full mt-2 bg-transparent placeholder-black/30 form-builder-mono"
+                  placeholder="// Add description here..."
                 />
               </div>
 
               <div className="flex items-center space-x-3">
                 <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ y: -2 }}
+                  whileTap={{ y: 0 }}
                   onClick={() => setShowPreview(true)}
-                  className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center shadow-sm"
+                  className="px-5 py-3 text-black bg-white border-4 border-black font-bold uppercase text-sm brutal-hover transition-all form-builder-mono"
                 >
-                  <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                  </svg>
-                  Preview
+                  👁 PREVIEW
                 </motion.button>
                 <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ y: -2 }}
+                  whileTap={{ y: 0 }}
                   onClick={handleSave}
                   disabled={saving}
-                  className="px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 disabled:opacity-50 transition-all flex items-center shadow-md"
+                  className="px-6 py-3 bg-[#FF6B00] text-white border-4 border-black font-black uppercase text-sm brutal-hover disabled:opacity-50 transition-all"
+                  style={{ fontFamily: 'Syne, sans-serif' }}
                 >
-                  {saving ? (
-                    <>
-                      <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                      </svg>
-                      Saving...
-                    </>
-                  ) : (
-                    <>
-                      <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                      Save Form
-                    </>
-                  )}
+                  {saving ? '⏳ SAVING...' : '💾 SAVE'}
                 </motion.button>
                 <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  whileHover={{ y: -2 }}
+                  whileTap={{ y: 0 }}
                   onClick={() => router.push('/forms/builder')}
-                  className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors shadow-sm"
+                  className="px-5 py-3 text-black bg-white border-4 border-black font-bold uppercase text-sm brutal-hover transition-all form-builder-mono"
                 >
-                  Close
+                  ✕
                 </motion.button>
               </div>
             </div>
 
             {/* Tabs */}
-            <div className="flex space-x-1 mt-6 bg-gray-100 rounded-lg p-1 w-fit">
+            <div className="flex space-x-3 mt-6">
               <button
                 onClick={() => setActiveTab('fields')}
-                className={`px-6 py-2 text-sm font-semibold rounded-md transition-all ${
+                className={`px-6 py-3 text-sm font-black uppercase border-4 border-black transition-all brutal-hover ${
                   activeTab === 'fields'
-                    ? 'bg-white text-blue-600 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-900'
+                    ? 'bg-black text-[#FFE500]'
+                    : 'bg-white text-black'
                 }`}
+                style={{ fontFamily: 'Syne, sans-serif' }}
               >
-                <span className="flex items-center">
-                  <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                  </svg>
-                  Form Fields
-                </span>
+                📝 FIELDS
               </button>
               <button
                 onClick={() => setActiveTab('settings')}
-                className={`px-6 py-2 text-sm font-semibold rounded-md transition-all ${
+                className={`px-6 py-3 text-sm font-black uppercase border-4 border-black transition-all brutal-hover ${
                   activeTab === 'settings'
-                    ? 'bg-white text-blue-600 shadow-sm'
-                    : 'text-gray-600 hover:text-gray-900'
+                    ? 'bg-black text-[#FFE500]'
+                    : 'bg-white text-black'
                 }`}
+                style={{ fontFamily: 'Syne, sans-serif' }}
               >
-                <span className="flex items-center">
-                  <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  Settings
-                </span>
+                ⚙️ SETTINGS
               </button>
             </div>
           </div>
@@ -405,6 +441,15 @@ export default function FormBuilderEditorPage({ params }: { params: Promise<{ id
           )}
         </AnimatePresence>
       </div>
+
+      {/* Drag Overlay */}
+      <DragOverlay>
+        {activeId ? (
+          <div className="bg-[#FFE500] border-4 border-black shadow-2xl p-4 opacity-90 brutal-border">
+            <div className="font-black text-black uppercase form-builder-neo">DRAGGING...</div>
+          </div>
+        ) : null}
+      </DragOverlay>
     </DndContext>
   );
 }

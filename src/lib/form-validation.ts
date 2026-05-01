@@ -64,7 +64,7 @@ export function generateFormSchema(fields: FormField[]): z.ZodObject<any> {
 
       case 'number':
         fieldSchema = z.coerce.number({
-          invalid_type_error: 'Must be a valid number',
+          errorMap: () => ({ message: 'Must be a valid number' }),
         });
         if (field.validation?.min !== undefined) {
           fieldSchema = (fieldSchema as z.ZodNumber).min(
@@ -84,7 +84,7 @@ export function generateFormSchema(fields: FormField[]): z.ZodObject<any> {
 
       case 'date':
         fieldSchema = z.coerce.date({
-          invalid_type_error: 'Invalid date',
+          errorMap: () => ({ message: 'Invalid date' }),
         });
         break;
 
@@ -100,8 +100,7 @@ export function generateFormSchema(fields: FormField[]): z.ZodObject<any> {
       case 'select':
       case 'radio':
         if (field.options && field.options.length > 0) {
-          const values = field.options.map((o) => o.value);
-          fieldSchema = z.enum(values as [string, ...string[]], {
+          fieldSchema = z.enum(field.options as [string, ...string[]], {
             errorMap: () => ({ message: 'Please select a valid option' }),
           });
         } else {
@@ -112,7 +111,7 @@ export function generateFormSchema(fields: FormField[]): z.ZodObject<any> {
       case 'multiselect':
       case 'checkbox':
         fieldSchema = z.array(z.string(), {
-          invalid_type_error: 'Must be an array of values',
+          errorMap: () => ({ message: 'Must be an array of values' }),
         });
         if (field.validation?.min) {
           fieldSchema = (fieldSchema as z.ZodArray<any>).min(

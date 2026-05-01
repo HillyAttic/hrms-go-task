@@ -151,40 +151,44 @@ const fieldTypes: Array<{
   },
 ];
 
-function DraggableFieldItem({ field }: { field: typeof fieldTypes[0] }) {
+function DraggableFieldItem({ field, index }: { field: typeof fieldTypes[0]; index: number }) {
   const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
     id: `palette-${field.type}`,
     data: { type: field.type, source: 'palette' },
   });
+
+  const colors = ['#FFE500', '#FF6B00', '#FF006B', '#00FFE5', '#00FF85'];
+  const bgColor = colors[index % colors.length];
 
   return (
     <motion.div
       ref={setNodeRef}
       {...listeners}
       {...attributes}
-      initial={{ opacity: 0, x: -20 }}
-      animate={{ opacity: 1, x: 0 }}
-      whileHover={{ scale: 1.02, y: -2 }}
-      whileTap={{ scale: 0.98 }}
-      className={`group relative overflow-hidden rounded-xl border-2 border-gray-200 bg-white cursor-grab active:cursor-grabbing transition-all ${
-        isDragging ? 'opacity-50 shadow-2xl' : 'hover:border-gray-300 hover:shadow-lg'
+      initial={{ opacity: 0, x: -20, rotate: -2 }}
+      animate={{ opacity: 1, x: 0, rotate: 0 }}
+      whileHover={{ y: -4, rotate: 1 }}
+      whileTap={{ scale: 0.95 }}
+      className={`group relative overflow-hidden border-4 border-black bg-white cursor-grab active:cursor-grabbing transition-all ${
+        isDragging ? 'opacity-50 shadow-2xl' : 'brutal-hover'
       }`}
+      style={{ boxShadow: '4px 4px 0 #000' }}
     >
-      <div className={`absolute inset-0 bg-gradient-to-br ${field.color} opacity-0 group-hover:opacity-5 transition-opacity`} />
+      <div className="absolute inset-0 noise-texture opacity-10 pointer-events-none" />
 
       <div className="relative p-4 flex items-center space-x-3">
-        <div className={`flex-shrink-0 w-10 h-10 rounded-lg bg-gradient-to-br ${field.color} flex items-center justify-center text-white shadow-md`}>
+        <div className="flex-shrink-0 w-12 h-12 border-3 border-black flex items-center justify-center text-black font-black" style={{ backgroundColor: bgColor }}>
           {field.icon}
         </div>
 
         <div className="flex-1 min-w-0">
-          <div className="font-semibold text-gray-900 text-sm">{field.label}</div>
-          <div className="text-xs text-gray-500 mt-0.5">{field.description}</div>
+          <div className="font-black text-black text-sm uppercase form-builder-neo">{field.label}</div>
+          <div className="text-xs text-black/60 mt-0.5 font-bold form-builder-mono">// {field.description}</div>
         </div>
 
-        <div className="flex-shrink-0 text-gray-400 group-hover:text-gray-600 transition-colors">
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+        <div className="flex-shrink-0 text-black group-hover:text-[#FF6B00] transition-colors">
+          <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
           </svg>
         </div>
       </div>
@@ -195,39 +199,34 @@ function DraggableFieldItem({ field }: { field: typeof fieldTypes[0] }) {
 export function FieldPalette({ onAddField }: FieldPaletteProps) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden"
+      initial={{ opacity: 0, y: 20, rotate: 1 }}
+      animate={{ opacity: 1, y: 0, rotate: 0 }}
+      className="bg-white border-4 border-black overflow-hidden brutal-border-orange"
     >
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4">
-        <h3 className="text-lg font-bold text-white flex items-center">
-          <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-          </svg>
-          Field Components
+      <div className="bg-[#FF6B00] px-6 py-5 border-b-4 border-black noise-texture">
+        <h3 className="text-2xl font-black text-black flex items-center uppercase form-builder-neo">
+          🎨 PALETTE
         </h3>
-        <p className="text-blue-100 text-sm mt-1">Drag fields to the canvas</p>
+        <p className="text-black/70 text-sm mt-1 font-bold form-builder-mono">// Drag to canvas</p>
       </div>
 
-      <div className="p-4 space-y-2 max-h-[calc(100vh-250px)] overflow-y-auto custom-scrollbar">
+      <div className="p-4 space-y-3 max-h-[calc(100vh-250px)] overflow-y-auto custom-scrollbar">
         {fieldTypes.map((field, index) => (
           <motion.div
             key={field.type}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.03 }}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: index * 0.05 }}
           >
-            <DraggableFieldItem field={field} />
+            <DraggableFieldItem field={field} index={index} />
           </motion.div>
         ))}
       </div>
 
-      <div className="px-6 py-4 bg-gray-50 border-t border-gray-200">
-        <div className="flex items-start space-x-2 text-xs text-gray-600">
-          <svg className="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span>Drag and drop fields onto the canvas to build your form</span>
+      <div className="px-6 py-4 bg-[#FFE500] border-t-4 border-black">
+        <div className="flex items-start space-x-2 text-xs text-black font-bold form-builder-mono">
+          <span className="text-2xl">💡</span>
+          <span>DRAG FIELDS TO BUILD YOUR FORM</span>
         </div>
       </div>
     </motion.div>

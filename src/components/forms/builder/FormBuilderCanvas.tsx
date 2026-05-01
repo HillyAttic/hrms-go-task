@@ -2,21 +2,9 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useDroppable } from '@dnd-kit/core';
 import {
-  DndContext,
-  DragOverlay,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragStartEvent,
-  DragEndEvent,
-} from '@dnd-kit/core';
-import {
-  arrayMove,
   SortableContext,
-  sortableKeyboardCoordinates,
   verticalListSortingStrategy,
 } from '@dnd-kit/sortable';
 import { useSortable } from '@dnd-kit/sortable';
@@ -50,7 +38,10 @@ function SortableFieldItem({
     transform,
     transition,
     isDragging,
-  } = useSortable({ id: field.id });
+  } = useSortable({
+    id: field.id,
+    data: { type: 'field', field },
+  });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -124,66 +115,73 @@ function SortableFieldItem({
     return icons[type] || icons.text;
   };
 
+  const colors = ['#FFE500', '#FF6B00', '#FF006B', '#00FFE5', '#00FF85'];
+  const bgColor = colors[index % colors.length];
+
   return (
     <motion.div
       ref={setNodeRef}
       style={style}
       layout
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.9 }}
-      whileHover={{ scale: isDragging ? 1 : 1.01 }}
+      initial={{ opacity: 0, x: -50, rotate: -2 }}
+      animate={{ opacity: 1, x: 0, rotate: 0 }}
+      exit={{ opacity: 0, scale: 0.9, rotate: 2 }}
+      whileHover={{ y: isDragging ? 0 : -4, rotate: isDragging ? 0 : 1 }}
       className={`group relative ${isDragging ? 'z-50 opacity-50' : ''}`}
     >
       <div
         onClick={onClick}
-        className={`relative overflow-hidden rounded-xl border-2 transition-all cursor-pointer ${
+        className={`relative overflow-hidden border-4 border-black transition-all cursor-pointer ${
           isSelected
-            ? 'border-blue-500 bg-blue-50 shadow-lg'
-            : 'border-gray-200 bg-white hover:border-gray-300 hover:shadow-md'
+            ? 'bg-black'
+            : 'bg-white brutal-hover'
         }`}
+        style={{
+          boxShadow: isSelected ? `8px 8px 0 ${bgColor}` : '6px 6px 0 #000'
+        }}
       >
         {/* Drag Handle */}
         <div
           {...attributes}
           {...listeners}
-          className="absolute left-0 top-0 bottom-0 w-8 flex items-center justify-center cursor-grab active:cursor-grabbing bg-gray-50 border-r border-gray-200 hover:bg-gray-100 transition-colors"
+          className="absolute left-0 top-0 bottom-0 w-12 flex items-center justify-center cursor-grab active:cursor-grabbing border-r-4 border-black transition-colors"
+          style={{ backgroundColor: bgColor }}
         >
-          <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8h16M4 16h16" />
+          <svg className="w-5 h-5 text-black" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4 8h16M4 16h16" />
           </svg>
         </div>
 
-        <div className="pl-12 pr-4 py-4">
+        <div className="pl-16 pr-6 py-5">
           <div className="flex items-start justify-between">
             <div className="flex-1 min-w-0">
-              <div className="flex items-center space-x-2 mb-1">
-                <div className="flex-shrink-0 w-6 h-6 rounded bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white">
+              <div className="flex items-center space-x-3 mb-2">
+                <div className="flex-shrink-0 w-8 h-8 border-3 border-black flex items-center justify-center text-black font-black" style={{ backgroundColor: bgColor }}>
                   {getFieldIcon(field.type)}
                 </div>
-                <span className="font-semibold text-gray-900 truncate">
+                <span className={`font-black uppercase truncate form-builder-neo text-lg ${isSelected ? 'text-[#FFE500]' : 'text-black'}`}>
                   {field.label}
                 </span>
                 {field.required && (
-                  <span className="flex-shrink-0 text-red-500 text-sm font-bold">*</span>
+                  <span className="flex-shrink-0 text-[#FF006B] text-xl font-black">*</span>
                 )}
               </div>
 
-              <div className="flex items-center space-x-2 mt-2">
-                <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-700">
+              <div className="flex items-center space-x-2 mt-3">
+                <span className="inline-flex items-center px-3 py-1 border-2 border-black text-xs font-bold bg-white text-black uppercase form-builder-mono">
                   {field.type}
                 </span>
                 {field.validation?.min !== undefined && (
-                  <span className="text-xs text-gray-500">Min: {field.validation.min}</span>
+                  <span className="text-xs font-bold text-black/60 form-builder-mono">MIN: {field.validation.min}</span>
                 )}
                 {field.validation?.max !== undefined && (
-                  <span className="text-xs text-gray-500">Max: {field.validation.max}</span>
+                  <span className="text-xs font-bold text-black/60 form-builder-mono">MAX: {field.validation.max}</span>
                 )}
               </div>
 
               {field.helpText && (
-                <p className="text-sm text-gray-500 mt-2 line-clamp-2">
-                  {field.helpText}
+                <p className={`text-sm mt-3 line-clamp-2 form-builder-mono ${isSelected ? 'text-white' : 'text-black/70'}`}>
+                  // {field.helpText}
                 </p>
               )}
             </div>
@@ -192,25 +190,18 @@ function SortableFieldItem({
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                className="text-gray-400 group-hover:text-blue-500 transition-colors"
+                className={`transition-colors ${isSelected ? 'text-[#FFE500]' : 'text-black group-hover:text-[#FF6B00]'}`}
               >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                 </svg>
               </motion.div>
             </div>
           </div>
         </div>
 
-        {/* Selection Indicator */}
-        {isSelected && (
-          <motion.div
-            layoutId="selection"
-            className="absolute inset-0 border-2 border-blue-500 rounded-xl pointer-events-none"
-            initial={false}
-            transition={{ type: 'spring', stiffness: 500, damping: 30 }}
-          />
-        )}
+        {/* Noise texture overlay */}
+        <div className="absolute inset-0 noise-texture pointer-events-none opacity-20" />
       </div>
     </motion.div>
   );
@@ -224,183 +215,121 @@ export function FormBuilderCanvas({
   onAddField,
 }: FormBuilderCanvasProps) {
   const [selectedFieldIndex, setSelectedFieldIndex] = useState<number | null>(null);
-  const [activeId, setActiveId] = useState<string | null>(null);
 
-  const sensors = useSensors(
-    useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8,
-      },
-    }),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
+  const { setNodeRef: setCanvasRef, isOver } = useDroppable({
+    id: 'canvas-drop-zone',
+  });
 
   const sortedFields = [...fields].sort((a, b) => a.order - b.order);
 
-  const handleDragStart = (event: DragStartEvent) => {
-    setActiveId(event.active.id as string);
-  };
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    const { active, over } = event;
-
-    if (!over) {
-      setActiveId(null);
-      return;
-    }
-
-    // Check if dragging from palette
-    if (active.data.current?.source === 'palette') {
-      const fieldType = active.data.current.type as FormFieldType;
-      onAddField(fieldType);
-      setActiveId(null);
-      return;
-    }
-
-    // Reordering existing fields
-    if (active.id !== over.id) {
-      const oldIndex = sortedFields.findIndex((f) => f.id === active.id);
-      const newIndex = sortedFields.findIndex((f) => f.id === over.id);
-
-      const reorderedFields = arrayMove(sortedFields, oldIndex, newIndex);
-      reorderedFields.forEach((field, index) => {
-        field.order = index;
-      });
-
-      onReorderFields(reorderedFields);
-    }
-
-    setActiveId(null);
-  };
-
-  const handleDragCancel = () => {
-    setActiveId(null);
-  };
-
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragStart={handleDragStart}
-      onDragEnd={handleDragEnd}
-      onDragCancel={handleDragCancel}
-    >
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Canvas Area */}
-        <div className="lg:col-span-2">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden"
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      {/* Canvas Area */}
+      <div className="lg:col-span-2">
+        <motion.div
+          initial={{ opacity: 0, y: 20, rotate: -1 }}
+          animate={{ opacity: 1, y: 0, rotate: 0 }}
+          className="bg-white border-4 border-black overflow-hidden brutal-border-cyan"
+        >
+          <div className="bg-[#00FFE5] px-6 py-5 border-b-4 border-black noise-texture">
+            <h3 className="text-2xl font-black text-black flex items-center uppercase form-builder-neo">
+              📋 CANVAS
+            </h3>
+            <p className="text-black/70 text-sm mt-1 font-bold form-builder-mono">
+              {sortedFields.length} FIELD{sortedFields.length !== 1 ? 'S' : ''}
+            </p>
+          </div>
+
+          <div
+            ref={setCanvasRef}
+            className={`p-6 min-h-[500px] diagonal-stripes transition-all ${
+              isOver ? 'bg-[#00FFE5]/10' : ''
+            }`}
           >
-            <div className="bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-4">
-              <h3 className="text-lg font-bold text-white flex items-center">
-                <svg className="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                Form Canvas
-              </h3>
-              <p className="text-indigo-100 text-sm mt-1">
-                {sortedFields.length} {sortedFields.length === 1 ? 'field' : 'fields'}
-              </p>
-            </div>
-
-            <div className="p-6 min-h-[500px]">
-              {sortedFields.length === 0 ? (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="flex flex-col items-center justify-center h-[400px] text-center"
-                >
-                  <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-100 to-indigo-100 flex items-center justify-center mb-6">
-                    <svg className="w-12 h-12 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                    </svg>
-                  </div>
-                  <h4 className="text-xl font-semibold text-gray-900 mb-2">
-                    Start Building Your Form
-                  </h4>
-                  <p className="text-gray-500 max-w-sm">
-                    Drag and drop field components from the right panel to create your form
-                  </p>
-                </motion.div>
-              ) : (
-                <SortableContext
-                  items={sortedFields.map((f) => f.id)}
-                  strategy={verticalListSortingStrategy}
-                >
-                  <div className="space-y-3">
-                    <AnimatePresence>
-                      {sortedFields.map((field, index) => {
-                        const actualIndex = fields.findIndex((f) => f.id === field.id);
-                        return (
-                          <SortableFieldItem
-                            key={field.id}
-                            field={field}
-                            index={index}
-                            isSelected={selectedFieldIndex === actualIndex}
-                            onClick={() => setSelectedFieldIndex(actualIndex)}
-                          />
-                        );
-                      })}
-                    </AnimatePresence>
-                  </div>
-                </SortableContext>
-              )}
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Field Editor */}
-        <div className="lg:col-span-1">
-          <AnimatePresence mode="wait">
-            {selectedFieldIndex !== null && fields[selectedFieldIndex] ? (
+            {sortedFields.length === 0 ? (
               <motion.div
-                key="editor"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="flex flex-col items-center justify-center h-[400px] text-center"
               >
-                <FieldEditor
-                  field={fields[selectedFieldIndex]}
-                  onUpdate={(updatedField) => onUpdateField(selectedFieldIndex, updatedField)}
-                  onDelete={() => {
-                    onDeleteField(selectedFieldIndex);
-                    setSelectedFieldIndex(null);
-                  }}
-                  onClose={() => setSelectedFieldIndex(null)}
-                />
+                <motion.div
+                  className="w-32 h-32 bg-[#FFE500] border-4 border-black flex items-center justify-center mb-6 brutal-border-yellow"
+                  animate={{ rotate: [0, -5, 5, 0] }}
+                  transition={{ duration: 2, repeat: Infinity }}
+                >
+                  <span className="text-6xl">➕</span>
+                </motion.div>
+                <h4 className="text-3xl font-black text-black mb-3 uppercase form-builder-neo">
+                  DROP FIELDS HERE
+                </h4>
+                <p className="text-black/60 max-w-sm font-bold form-builder-mono">
+                  // Drag components from the palette →
+                </p>
               </motion.div>
             ) : (
-              <motion.div
-                key="placeholder"
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: 20 }}
-                className="bg-white rounded-2xl shadow-xl border border-gray-200 p-8 text-center"
+              <SortableContext
+                items={sortedFields.map((f) => f.id)}
+                strategy={verticalListSortingStrategy}
               >
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center mx-auto mb-4">
-                  <svg className="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                  </svg>
+                <div className="space-y-4">
+                  <AnimatePresence>
+                    {sortedFields.map((field, index) => {
+                      const actualIndex = fields.findIndex((f) => f.id === field.id);
+                      return (
+                        <SortableFieldItem
+                          key={field.id}
+                          field={field}
+                          index={index}
+                          isSelected={selectedFieldIndex === actualIndex}
+                          onClick={() => setSelectedFieldIndex(actualIndex)}
+                        />
+                      );
+                    })}
+                  </AnimatePresence>
                 </div>
-                <p className="text-gray-500 font-medium">Select a field to edit</p>
-                <p className="text-sm text-gray-400 mt-2">Click on any field to customize its properties</p>
-              </motion.div>
+              </SortableContext>
             )}
-          </AnimatePresence>
-        </div>
+          </div>
+        </motion.div>
       </div>
 
-      <DragOverlay>
-        {activeId ? (
-          <div className="bg-white rounded-xl border-2 border-blue-500 shadow-2xl p-4 opacity-90">
-            <div className="font-semibold text-gray-900">Dragging...</div>
-          </div>
-        ) : null}
-      </DragOverlay>
-    </DndContext>
+      {/* Field Editor */}
+      <div className="lg:col-span-1">
+        <AnimatePresence mode="wait">
+          {selectedFieldIndex !== null && fields[selectedFieldIndex] ? (
+            <motion.div
+              key="editor"
+              initial={{ opacity: 0, x: 20, rotate: 2 }}
+              animate={{ opacity: 1, x: 0, rotate: 0 }}
+              exit={{ opacity: 0, x: 20, rotate: -2 }}
+            >
+              <FieldEditor
+                field={fields[selectedFieldIndex]}
+                onUpdate={(updatedField) => onUpdateField(selectedFieldIndex, updatedField)}
+                onDelete={() => {
+                  onDeleteField(selectedFieldIndex);
+                  setSelectedFieldIndex(null);
+                }}
+                onClose={() => setSelectedFieldIndex(null)}
+              />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="placeholder"
+              initial={{ opacity: 0, x: 20, rotate: 2 }}
+              animate={{ opacity: 1, x: 0, rotate: 0 }}
+              exit={{ opacity: 0, x: 20, rotate: -2 }}
+              className="bg-white border-4 border-black p-8 text-center brutal-border-pink"
+            >
+              <div className="w-24 h-24 bg-[#FF006B] border-4 border-black flex items-center justify-center mx-auto mb-6">
+                <span className="text-5xl">✏️</span>
+              </div>
+              <p className="text-black font-black text-xl uppercase mb-2 form-builder-neo">NO SELECTION</p>
+              <p className="text-black/60 font-bold form-builder-mono text-sm">// Click a field to edit</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+    </div>
   );
 }

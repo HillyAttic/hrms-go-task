@@ -38,6 +38,8 @@ export type UserRole = 'admin' | 'manager' | 'employee';
 export interface FieldValidation {
   min?: number;
   max?: number;
+  minLength?: number;
+  maxLength?: number;
   pattern?: string;
   customMessage?: string;
 }
@@ -45,10 +47,15 @@ export interface FieldValidation {
 /**
  * Option for select, radio, and checkbox fields
  */
-export interface FieldOption {
-  id?: string; // Unique identifier for React keys
-  label: string;
-  value: string;
+export type FieldOption = string;
+
+/**
+ * File upload configuration
+ */
+export interface FileConfig {
+  acceptedTypes?: string[];
+  maxSize?: number; // in bytes
+  multiple?: boolean;
 }
 
 /**
@@ -68,9 +75,12 @@ export interface FormField {
 
   // Field-specific options
   options?: FieldOption[]; // for select, radio, checkbox, multiselect
-  accept?: string; // for file uploads (e.g., '.pdf,.doc,.docx')
-  maxFileSize?: number; // in bytes
-  multiple?: boolean; // for file uploads
+  fileConfig?: FileConfig; // for file uploads
+
+  // Legacy fields (deprecated, use fileConfig instead)
+  accept?: string;
+  maxFileSize?: number;
+  multiple?: boolean;
 }
 
 /**
