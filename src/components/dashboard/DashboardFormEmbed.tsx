@@ -14,13 +14,28 @@ export default function DashboardFormEmbed() {
   const [hasAccess, setHasAccess] = useState(false);
   const [loading, setLoading] = useState(true);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [userIsClockedIn, setUserIsClockedIn] = useState(false);
+  const [dailyFormTemplateId, setDailyFormTemplateId] = useState<string | null>(null);
   const fieldIdCounter = React.useRef(0);
 
   useEffect(() => {
     if (user) {
       fetchFormData();
+      checkClockInStatus();
     }
   }, [user]);
+
+  const checkClockInStatus = async () => {
+    try {
+      const response = await authenticatedFetch(`/api/attendance/status?employeeId=${user?.uid}`);
+      if (response.ok) {
+        const status = await response.json();
+        setUserIsClockedIn(status.isClockedIn || false);
+      }
+    } catch (error) {
+      console.error('Error checking clock-in status:', error);
+    }
+  };
 
   const fetchFormData = async () => {
     try {
@@ -38,6 +53,7 @@ export default function DashboardFormEmbed() {
       const dailyFormTemplateId = configData.data.dailyFormTemplateId;
 
       setHasAccess(hasFormAccess);
+      setDailyFormTemplateId(dailyFormTemplateId);
 
       // If user has access and there's a form configured, fetch the template
       if (hasFormAccess && dailyFormTemplateId) {
@@ -95,6 +111,13 @@ export default function DashboardFormEmbed() {
       // If multiple submissions are allowed, just show toast
       toast.success('Form submitted successfully!');
     }
+
+    // Broadcast form submission event for real-time sync with attendance tracker
+    if (dailyFormTemplateId) {
+      window.dispatchEvent(new CustomEvent('formSubmitted', {
+        detail: { formId: dailyFormTemplateId }
+      }));
+    }
   };
 
   const handleError = (error: string) => {
@@ -138,7 +161,7 @@ export default function DashboardFormEmbed() {
                   Form Submitted Successfully
                 </p>
                 <p className="text-sm text-green-700 dark:text-green-300">
-                  {template.settings.successMessage}
+                  Thank you for your submission! You can now clock out when ready.
                 </p>
               </div>
             </div>
@@ -152,6 +175,35 @@ export default function DashboardFormEmbed() {
     <Card className="col-span-full">
       <CardContent className="pt-6">
         <div className="w-full">
+          {/* Warning banner if user is clocked in and hasn't submitted */}
+          {!isSubmitted && userIsClockedIn && (
+            <div className="mb-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 border-2 border-yellow-400 dark:border-yellow-600 rounded-lg">
+              <div className="flex items-start gap-3">
+                <svg
+                  className="w-6 h-6 text-yellow-600 dark:text-yellow-400 flex-shrink-0"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                  />
+                </svg>
+                <div>
+                  <h3 className="font-semibold text-yellow-900 dark:text-yellow-200">
+                    ⚠️ Form Submission Required
+                  </h3>
+                  <p className="text-sm text-yellow-800 dark:text-yellow-300 mt-1">
+                    You must submit this form before you can clock out today. Please complete all required fields below.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+
           <FormRenderer
             template={template}
             onSuccess={handleSuccess}

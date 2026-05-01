@@ -74,6 +74,10 @@ export interface CurrentAttendanceStatus {
   breakDuration: number; // in seconds
   currentRecordId?: string;
   currentBreakId?: string;
+  // Form submission requirement for clock-out
+  formSubmissionRequired?: boolean;
+  formSubmitted?: boolean;
+  dailyFormId?: string | null;
 }
 
 // Leave Types

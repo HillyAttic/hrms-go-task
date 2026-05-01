@@ -28,7 +28,43 @@ export async function GET(request: NextRequest) {
 
     const status = await attendanceAdminService.getCurrentStatus(employeeId);
 
-    return NextResponse.json(status, { status: 200 });
+    // Enhance response with form submission status
+    const response: any = {
+      ...status,
+      formSubmissionRequired: false,
+      formSubmitted: false,
+      dailyFormId: null
+    };
+
+    // Check MIS config for form submission requirement
+    try {
+      const { misConfigService } = await import('@/services/mis-config.service');
+      const { formSubmissionService } = await import('@/services/form-submission.service');
+
+      const misConfig = await misConfigService.getMISConfig();
+
+      if (misConfig && misConfig.formRequiredForClockout) {
+        const isAssigned = misConfig.formAssignedUsers.includes(employeeId);
+
+        if (isAssigned && misConfig.dailyFormTemplateId) {
+          response.formSubmissionRequired = true;
+          response.dailyFormId = misConfig.dailyFormTemplateId;
+
+          // Check if user has submitted the form today
+          const submissionCheck = await formSubmissionService.checkUserSubmissionToday(
+            misConfig.dailyFormTemplateId,
+            employeeId
+          );
+
+          response.formSubmitted = submissionCheck.submitted;
+        }
+      }
+    } catch (error) {
+      console.error('Error checking form submission status:', error);
+      // Don't fail the entire request if form check fails
+    }
+
+    return NextResponse.json(response, { status: 200 });
   } catch (error: any) {
     console.error('Get status error:', error);
     return NextResponse.json(

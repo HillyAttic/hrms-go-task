@@ -52,7 +52,12 @@ export function GeolocationAttendanceTracker() {
   const [error, setError] = useState('');
   const [permissionStatus, setPermissionStatus] = useState<'granted' | 'denied' | 'prompt' | 'unknown'>('unknown');
   const [showLocationDeniedModal, setShowLocationDeniedModal] = useState(false);
-  
+
+  // Form submission tracking
+  const [formSubmissionRequired, setFormSubmissionRequired] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [dailyFormId, setDailyFormId] = useState<string | null>(null);
+
   // Check if we're running in a secure context (HTTPS)
   const isSecureContext = typeof window !== 'undefined' ? window.isSecureContext : true;
 
@@ -119,17 +124,41 @@ export function GeolocationAttendanceTracker() {
 
   const loadStatus = async () => {
     if (!auth.user) return;
-    
+
     try {
       console.log('Loading status for user:', auth.user.uid);
       setStatus({ status: 'loading', data: null });
-      const result = await attendanceService.getCurrentStatus(auth.user.uid);
+
+      // Call the API endpoint instead of the client service to get form submission status
+      const response = await fetch(`/api/attendance/status?employeeId=${auth.user.uid}`, {
+        headers: {
+          'Authorization': `Bearer ${await auth.user.getIdToken()}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch attendance status');
+      }
+
+      const result = await response.json();
       console.log('getCurrentStatus result:', result);
-      
+
+      // Update form submission status from API response
+      if (result.formSubmissionRequired !== undefined) {
+        setFormSubmissionRequired(result.formSubmissionRequired);
+        setFormSubmitted(result.formSubmitted || false);
+        setDailyFormId(result.dailyFormId || null);
+        console.log('Form submission status:', {
+          required: result.formSubmissionRequired,
+          submitted: result.formSubmitted,
+          formId: result.dailyFormId
+        });
+      }
+
       // Check if user has already clocked in today (even if they've clocked out)
       const hasClockedInToday = await attendanceService.hasClockedInToday(auth.user.uid);
       console.log('hasClockedInToday:', hasClockedInToday);
-      
+
       // Map the service response to our status format
       let mappedStatus: AttendanceStatus['status'] = 'NOT_CLOCKED_IN';
       if (result.isClockedIn) {
@@ -142,7 +171,7 @@ export function GeolocationAttendanceTracker() {
       } else {
         console.log('User is not clocked in');
       }
-      
+
       console.log('Final mapped status:', mappedStatus);
       setStatus({
         status: mappedStatus,
@@ -150,10 +179,10 @@ export function GeolocationAttendanceTracker() {
       });
     } catch (err: any) {
       console.error('Error loading status:', err);
-      setStatus({ 
-        status: 'error', 
-        data: null, 
-        error: err.message || 'Failed to load attendance status' 
+      setStatus({
+        status: 'error',
+        data: null,
+        error: err.message || 'Failed to load attendance status'
       });
     }
   };
@@ -418,8 +447,19 @@ export function GeolocationAttendanceTracker() {
       await new Promise(resolve => setTimeout(resolve, 50));
       
     } catch (err: any) {
-      // Check if error is due to missing form submission
-      if (err.message && err.message.includes('MIS form')) {
+      // Parse error response to check for form submission requirement
+      let errorData;
+      try {
+        errorData = JSON.parse(err.message);
+      } catch {
+        errorData = { message: err.message };
+      }
+
+      if (errorData.requiresFormSubmission || errorData.message?.includes('Form Submission Required')) {
+        setError(
+          '⚠️ Form Submission Required\n\nPlease submit today\'s MIS form before clocking out. You can find the form on your dashboard.'
+        );
+      } else if (err.message && err.message.includes('MIS form')) {
         setError('⚠️ Please submit today\'s MIS form before clocking out. You can find the form on your dashboard.');
       } else {
         setError(err.message || 'Failed to clock out');
@@ -436,6 +476,23 @@ export function GeolocationAttendanceTracker() {
       console.log('GeolocationAttendanceTracker unmounted');
     };
   }, []);
+
+  // Listen for form submission events from dashboard
+  useEffect(() => {
+    const handleFormSubmitted = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      if (customEvent.detail?.formId === dailyFormId) {
+        console.log('Form submitted event received, updating state');
+        setFormSubmitted(true);
+        setError(''); // Clear any form-related errors
+      }
+    };
+
+    window.addEventListener('formSubmitted', handleFormSubmitted);
+    return () => {
+      window.removeEventListener('formSubmitted', handleFormSubmitted);
+    };
+  }, [dailyFormId]);
 
   const getStatusMessage = () => {
     switch (status.status) {
@@ -655,25 +712,50 @@ export function GeolocationAttendanceTracker() {
           )}
 
           {(status.status === 'CLOCKED_IN' || status.status === 'ON_BREAK') && (
-            <Button
-              onClick={handleClockOut}
-              disabled={loading}
-              variant="destructive"
-              className="w-full h-12 text-lg"
-              size="lg"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                  Recording Clock Out...
-                </>
-              ) : (
-                <>
-                  <LogOut className="mr-2 h-5 w-5" />
-                  Clock Out
-                </>
+            <>
+              <Button
+                onClick={handleClockOut}
+                disabled={loading}
+                variant="destructive"
+                className="w-full h-12 text-lg"
+                size="lg"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                    Recording Clock Out...
+                  </>
+                ) : (
+                  <>
+                    <LogOut className="mr-2 h-5 w-5" />
+                    Clock Out
+                  </>
+                )}
+              </Button>
+
+              {/* Warning banner if form required but not submitted */}
+              {formSubmissionRequired && !formSubmitted && (
+                <div className="mt-3 p-3 bg-yellow-50 dark:bg-yellow-900/20 border-2 border-yellow-400 dark:border-yellow-600 rounded-lg">
+                  <div className="flex items-start gap-2">
+                    <AlertCircle className="w-5 h-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" />
+                    <div className="flex-1">
+                      <p className="text-sm font-semibold text-yellow-900 dark:text-yellow-200">
+                        ⚠️ Form Submission Required
+                      </p>
+                      <p className="text-xs text-yellow-800 dark:text-yellow-300 mt-1">
+                        Please submit today's MIS form before clocking out.
+                      </p>
+                      <a
+                        href="/dashboard"
+                        className="text-xs text-blue-600 dark:text-blue-400 hover:underline mt-2 inline-block font-medium"
+                      >
+                        Go to Dashboard to submit form →
+                      </a>
+                    </div>
+                  </div>
+                </div>
               )}
-            </Button>
+            </>
           )}
 
           {status.status === 'CLOCKED_OUT' && (
