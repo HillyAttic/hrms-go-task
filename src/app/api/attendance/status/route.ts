@@ -16,18 +16,63 @@ export async function GET(request: NextRequest) {
       return ErrorResponses.forbidden('Insufficient permissions');
     }
 
-    // Use authenticated user's ID (employees can only check their own status)
-    const employeeId = authResult.user.uid;
+    const searchParams = request.nextUrl.searchParams;
+    const employeeId = searchParams.get('employeeId');
 
-    // Use Admin SDK to get status (bypasses security rules)
+    if (!employeeId) {
+      return NextResponse.json(
+        { error: 'Bad Request', message: 'Employee ID is required' },
+        { status: 400 }
+      );
+    }
+
     const status = await attendanceAdminService.getCurrentStatus(employeeId);
-    const hasClockedIn = await attendanceAdminService.hasClockedInToday(employeeId);
 
-    return NextResponse.json({
-      success: true,
-      status,
-      hasClockedInToday: hasClockedIn,
-    });
+    // Enhance response with form submission status
+    const response: any = {
+      ...status,
+      formSubmissionRequired: false,
+      formSubmitted: false,
+      dailyFormId: null
+    };
+
+    // Check MIS config for form submission requirement
+    try {
+      const { misConfigService } = await import('@/services/mis-config.service');
+      const { formSubmissionService } = await import('@/services/form-submission.service');
+
+      const misConfig = await misConfigService.getMISConfig();
+
+      if (misConfig && misConfig.formRequiredForClockout) {
+        const isAssigned = misConfig.formAssignedUsers.includes(employeeId);
+
+        if (isAssigned && misConfig.dailyFormTemplateId) {
+          response.formSubmissionRequired = true;
+          response.dailyFormId = misConfig.dailyFormTemplateId;
+
+          // Check if user has submitted the form today
+          console.log('[Status API] Checking form submission for:', {
+            formId: misConfig.dailyFormTemplateId,
+            userId: employeeId,
+            date: new Date().toISOString()
+          });
+
+          const submissionCheck = await formSubmissionService.checkUserSubmissionToday(
+            misConfig.dailyFormTemplateId,
+            employeeId
+          );
+
+          console.log('[Status API] Form submission check result:', submissionCheck);
+
+          response.formSubmitted = submissionCheck.submitted;
+        }
+      }
+    } catch (error) {
+      console.error('Error checking form submission status:', error);
+      // Don't fail the entire request if form check fails
+    }
+
+    return NextResponse.json(response, { status: 200 });
   } catch (error: any) {
     console.error('Get attendance status error:', error);
     return NextResponse.json(

@@ -214,11 +214,32 @@ export const formSubmissionService = {
   ): Promise<{ submitted: boolean; submissionId?: string }> {
     const { adminDb } = await import('@/lib/firebase-admin');
 
-    const startOfDay = new Date(date);
-    startOfDay.setHours(0, 0, 0, 0);
+    // Work entirely in UTC to match Firestore timestamps
+    // Get UTC date components from the input date
+    const startOfDay = new Date(Date.UTC(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate(),
+      0, 0, 0, 0
+    ));
 
-    const endOfDay = new Date(date);
-    endOfDay.setHours(23, 59, 59, 999);
+    const endOfDay = new Date(Date.UTC(
+      date.getUTCFullYear(),
+      date.getUTCMonth(),
+      date.getUTCDate(),
+      23, 59, 59, 999
+    ));
+
+    console.log('[checkUserSubmissionToday] Query params:', {
+      formId,
+      userId,
+      inputDate: date.toISOString(),
+      startOfDay: startOfDay.toISOString(),
+      endOfDay: endOfDay.toISOString(),
+      startTimestamp: startOfDay.getTime(),
+      endTimestamp: endOfDay.getTime(),
+      isValid: endOfDay.getTime() > startOfDay.getTime()
+    });
 
     const snapshot = await adminDb
       .collection(COLLECTION)
@@ -228,6 +249,17 @@ export const formSubmissionService = {
       .where('submittedAt', '<=', Timestamp.fromDate(endOfDay))
       .limit(1)
       .get();
+
+    console.log('[checkUserSubmissionToday] Query result:', {
+      empty: snapshot.empty,
+      size: snapshot.size,
+      docs: snapshot.docs.map(doc => ({
+        id: doc.id,
+        formId: doc.data().formId,
+        submittedBy: doc.data().submittedBy,
+        submittedAt: doc.data().submittedAt
+      }))
+    });
 
     if (snapshot.empty) {
       return { submitted: false };

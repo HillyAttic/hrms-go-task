@@ -27,15 +27,27 @@ export async function POST(request: NextRequest) {
     });
 
     // Check if daily form submission is required
+    console.log('[Clock-out API] ========================================');
+    console.log('[Clock-out API] Checking form submission requirement');
+    console.log('[Clock-out API] User ID:', authResult.user.uid);
+
     const misConfig = await misConfigService.getMISConfig();
+    console.log('[Clock-out API] MIS Config:', {
+      exists: !!misConfig,
+      formRequiredForClockout: misConfig?.formRequiredForClockout,
+      dailyFormTemplateId: misConfig?.dailyFormTemplateId,
+      formAssignedUsersCount: misConfig?.formAssignedUsers?.length
+    });
 
     if (misConfig && misConfig.formRequiredForClockout) {
       // Check if user is assigned to the form
       const isAssigned = misConfig.formAssignedUsers.includes(authResult.user.uid);
+      console.log('[Clock-out API] User assigned to form:', isAssigned);
 
       if (isAssigned) {
         // Validate that user has submitted the form today
         if (!misConfig.dailyFormTemplateId) {
+          console.log('[Clock-out API] ERROR: No form template ID configured');
           return NextResponse.json(
             {
               error: 'Configuration Error',
@@ -46,13 +58,22 @@ export async function POST(request: NextRequest) {
         }
 
         try {
+          console.log('[Clock-out API] Checking form submission for:', {
+            formId: misConfig.dailyFormTemplateId,
+            userId: authResult.user.uid,
+            currentTime: new Date().toISOString()
+          });
+
           // Check if user submitted the daily form today (replaces Google Sheets check)
           const submissionCheck = await formSubmissionService.checkUserSubmissionToday(
             misConfig.dailyFormTemplateId,
             authResult.user.uid
           );
 
+          console.log('[Clock-out API] Form submission check result:', submissionCheck);
+
           if (!submissionCheck.submitted) {
+            console.log('[Clock-out API] BLOCKING CLOCK-OUT: Form not submitted');
             return NextResponse.json(
               {
                 error: 'Form Submission Required',
@@ -62,8 +83,10 @@ export async function POST(request: NextRequest) {
               { status: 400 }
             );
           }
+
+          console.log('[Clock-out API] Form submission validated - allowing clock-out');
         } catch (error: any) {
-          console.error('Error checking form submission:', error);
+          console.error('[Clock-out API] Error checking form submission:', error);
           return NextResponse.json(
             {
               error: 'Validation Error',
@@ -73,8 +96,15 @@ export async function POST(request: NextRequest) {
             { status: 500 }
           );
         }
+      } else {
+        console.log('[Clock-out API] User not assigned to form - skipping validation');
       }
+    } else {
+      console.log('[Clock-out API] Form requirement disabled or no config - skipping validation');
     }
+
+    console.log('[Clock-out API] Proceeding with clock-out');
+    console.log('[Clock-out API] ========================================');
 
     const record = await attendanceAdminService.clockOut(validatedData.recordId, {
       timestamp: validatedData.timestamp,

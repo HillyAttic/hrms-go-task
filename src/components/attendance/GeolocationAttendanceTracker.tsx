@@ -52,7 +52,12 @@ export function GeolocationAttendanceTracker() {
   const [error, setError] = useState('');
   const [permissionStatus, setPermissionStatus] = useState<'granted' | 'denied' | 'prompt' | 'unknown'>('unknown');
   const [showLocationDeniedModal, setShowLocationDeniedModal] = useState(false);
-  
+
+  // Form submission tracking
+  const [formSubmissionRequired, setFormSubmissionRequired] = useState(false);
+  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [dailyFormId, setDailyFormId] = useState<string | null>(null);
+
   // Check if we're running in a secure context (HTTPS)
   const isSecureContext = typeof window !== 'undefined' ? window.isSecureContext : true;
 
@@ -77,27 +82,27 @@ export function GeolocationAttendanceTracker() {
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (!document.hidden && auth.user) {
-        console.log('Page became visible, reloading status');
+        console.log('Page became visible, reloading status to check form submission');
         loadStatus();
       }
     };
 
     const handleFocus = () => {
       if (auth.user) {
-        console.log('Window focused, reloading status');
+        console.log('Window focused, reloading status to check form submission');
         loadStatus();
       }
     };
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
     window.addEventListener('focus', handleFocus);
-    
+
     // Also load status immediately when component mounts
     if (auth.user) {
       console.log('Component mounted, loading status immediately');
       loadStatus();
     }
-    
+
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
       window.removeEventListener('focus', handleFocus);
@@ -124,26 +129,44 @@ export function GeolocationAttendanceTracker() {
       console.log('Loading status for user:', auth.user.uid);
       setStatus({ status: 'loading', data: null });
 
-      // Use API route (Admin SDK) instead of client SDK — avoids Firestore security rule blocks
-      const response = await authenticatedFetch('/api/attendance/status');
+      // Call the API endpoint instead of the client service to get form submission status
+      const response = await fetch(`/api/attendance/status?employeeId=${auth.user.uid}`, {
+        headers: {
+          'Authorization': `Bearer ${await auth.user.getIdToken()}`
+        }
+      });
 
       if (!response.ok) {
-        const errText = await response.text();
-        throw new Error(`Status API error (${response.status}): ${errText}`);
+        throw new Error('Failed to fetch attendance status');
       }
 
-      const data = await response.json();
-      console.log('API status result:', data.status);
-      console.log('hasClockedInToday:', data.hasClockedInToday);
+      const result = await response.json();
+      console.log('getCurrentStatus result:', result);
 
-      const currentStatus = data.status;
+      // Update form submission status from API response
+      if (result.formSubmissionRequired !== undefined) {
+        console.log('Form submission status from API:', {
+          required: result.formSubmissionRequired,
+          submitted: result.formSubmitted,
+          formId: result.dailyFormId
+        });
+        setFormSubmissionRequired(result.formSubmissionRequired);
+        setFormSubmitted(result.formSubmitted || false);
+        setDailyFormId(result.dailyFormId || null);
+      } else {
+        console.log('No form submission status in API response');
+      }
+
+      // Check if user has already clocked in today (even if they've clocked out)
+      const hasClockedInToday = await attendanceService.hasClockedInToday(auth.user.uid);
+      console.log('hasClockedInToday:', hasClockedInToday);
 
       // Map the service response to our status format
       let mappedStatus: AttendanceStatus['status'] = 'NOT_CLOCKED_IN';
-      if (currentStatus.isClockedIn) {
-        mappedStatus = currentStatus.isOnBreak ? 'ON_BREAK' : 'CLOCKED_IN';
+      if (result.isClockedIn) {
+        mappedStatus = result.isOnBreak ? 'ON_BREAK' : 'CLOCKED_IN';
         console.log('User is clocked in, status:', mappedStatus);
-      } else if (!currentStatus.isClockedIn && data.hasClockedInToday) {
+      } else if (!result.isClockedIn && hasClockedInToday) {
         // User has already clocked in today but is not currently clocked in
         mappedStatus = 'CLOCKED_OUT';
         console.log('User has clocked out for today');
@@ -152,9 +175,11 @@ export function GeolocationAttendanceTracker() {
       }
 
       console.log('Final mapped status:', mappedStatus);
+      console.log('Final form submission state - Required:', result.formSubmissionRequired, 'Submitted:', result.formSubmitted);
+
       setStatus({
         status: mappedStatus,
-        data: currentStatus
+        data: result
       });
     } catch (err: any) {
       console.error('Error loading status:', err);
@@ -429,8 +454,19 @@ export function GeolocationAttendanceTracker() {
       await new Promise(resolve => setTimeout(resolve, 50));
       
     } catch (err: any) {
-      // Check if error is due to missing form submission
-      if (err.message && err.message.includes('MIS form')) {
+      // Parse error response to check for form submission requirement
+      let errorData;
+      try {
+        errorData = JSON.parse(err.message);
+      } catch {
+        errorData = { message: err.message };
+      }
+
+      if (errorData.requiresFormSubmission || errorData.message?.includes('Form Submission Required')) {
+        setError(
+          '⚠️ Form Submission Required\n\nPlease submit today\'s MIS form before clocking out. You can find the form on your dashboard.'
+        );
+      } else if (err.message && err.message.includes('MIS form')) {
         setError('⚠️ Please submit today\'s MIS form before clocking out. You can find the form on your dashboard.');
       } else {
         setError(err.message || 'Failed to clock out');
@@ -447,6 +483,23 @@ export function GeolocationAttendanceTracker() {
       console.log('GeolocationAttendanceTracker unmounted');
     };
   }, []);
+
+  // Listen for form submission events from dashboard
+  useEffect(() => {
+    const handleFormSubmitted = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      if (customEvent.detail?.formId === dailyFormId) {
+        console.log('Form submitted event received, updating state');
+        setFormSubmitted(true);
+        setError(''); // Clear any form-related errors
+      }
+    };
+
+    window.addEventListener('formSubmitted', handleFormSubmitted);
+    return () => {
+      window.removeEventListener('formSubmitted', handleFormSubmitted);
+    };
+  }, [dailyFormId]);
 
   const getStatusMessage = () => {
     switch (status.status) {
@@ -666,25 +719,50 @@ export function GeolocationAttendanceTracker() {
           )}
 
           {(status.status === 'CLOCKED_IN' || status.status === 'ON_BREAK') && (
-            <Button
-              onClick={handleClockOut}
-              disabled={loading}
-              variant="destructive"
-              className="w-full h-12 text-lg"
-              size="lg"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                  Recording Clock Out...
-                </>
-              ) : (
-                <>
-                  <LogOut className="mr-2 h-5 w-5" />
-                  Clock Out
-                </>
+            <>
+              <Button
+                onClick={handleClockOut}
+                disabled={loading || (formSubmissionRequired && !formSubmitted)}
+                variant="destructive"
+                className="w-full h-12 text-lg"
+                size="lg"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                    Recording Clock Out...
+                  </>
+                ) : (
+                  <>
+                    <LogOut className="mr-2 h-5 w-5" />
+                    Clock Out
+                  </>
+                )}
+              </Button>
+
+              {/* Warning banner if form required but not submitted */}
+              {formSubmissionRequired && !formSubmitted && (
+                <div className="mt-3 p-3 bg-red-50 dark:bg-red-900/20 border-2 border-red-500 dark:border-red-600 rounded-lg">
+                  <div className="flex items-start gap-2">
+                    <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                    <div className="flex-1">
+                      <p className="text-sm font-bold text-red-900 dark:text-red-200">
+                        Clock Out Disabled
+                      </p>
+                      <p className="text-xs text-red-800 dark:text-red-300 mt-1">
+                        You must submit today's DMR (Daily Monitoring Report) form before you can clock out. The clock-out button is disabled until you complete the form.
+                      </p>
+                      <a
+                        href="/dashboard"
+                        className="text-xs text-blue-600 dark:text-blue-400 hover:underline mt-2 inline-block font-bold"
+                      >
+                        Click here to go to dashboard
+                      </a>
+                    </div>
+                  </div>
+                </div>
               )}
-            </Button>
+            </>
           )}
 
           {status.status === 'CLOCKED_OUT' && (

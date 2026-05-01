@@ -1047,6 +1047,9 @@ export default function DashboardPage() {
         />
       </div>
 
+      {/* MIS Form Embed */}
+      <DashboardFormEmbed />
+
       {/* Kanban Board Section - Admin and Manager */}
       {canViewAllTasks && (
         <div className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-dark p-4 sm:p-6">
@@ -1102,9 +1105,6 @@ export default function DashboardPage() {
           )}
         </div>
       )}
-
-      {/* MIS Form Embed */}
-      <DashboardFormEmbed />
 
       {/* ✅ OPTIMIZATION: Charts load progressively */}
       {/* First Row: Task Distribution Chart and Quick Actions in 2-column grid for desktop */}
