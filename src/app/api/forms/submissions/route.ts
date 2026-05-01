@@ -4,7 +4,6 @@ import { formSubmissionService } from '@/services/form-submission.service';
 import { formTemplateService } from '@/services/form-template.service';
 import { handleApiError } from '@/lib/api-error-handler';
 import type { FormSubmissionFilters } from '@/types/form.types';
-import { roleManagementService } from '@/services/role-management.service';
 
 /**
  * GET /api/forms/submissions
@@ -118,31 +117,43 @@ export const POST = withAuth(async (request) => {
       }
     }
 
-    // Fetch user profile to get display name
-    const userProfile = await roleManagementService.getUserProfile(user.uid);
+    // Fetch user profile from Firestore using Admin SDK
+    let submitterName: string | undefined;
 
-    // Fallback chain: userProfile.displayName -> Firebase Auth displayName -> email
-    let submitterName = userProfile?.displayName;
+    try {
+      const { adminDb } = await import('@/lib/firebase-admin');
+      const userDoc = await adminDb.collection('users').doc(user.uid).get();
 
-    // If no displayName in Firestore profile, try to get it from Firebase Auth
+      if (userDoc.exists) {
+        const userData = userDoc.data();
+        submitterName = userData?.displayName;
+        console.log('[Form Submission] User profile from Firestore:', {
+          uid: user.uid,
+          displayName: userData?.displayName,
+          email: userData?.email,
+          hasProfile: true
+        });
+      } else {
+        console.log('[Form Submission] No Firestore profile found for user:', user.uid);
+      }
+    } catch (error) {
+      console.error('[Form Submission] Error fetching user profile:', error);
+    }
+
+    // Fallback chain: Firestore displayName -> Firebase Auth displayName -> email
     if (!submitterName) {
       try {
         const { adminAuth } = await import('@/lib/firebase-admin');
         const authUser = await adminAuth.getUser(user.uid);
         submitterName = authUser.displayName || user.email || undefined;
+        console.log('[Form Submission] Using Firebase Auth displayName:', authUser.displayName);
       } catch (error) {
         console.error('[Form Submission] Error fetching Firebase Auth user:', error);
         submitterName = user.email || undefined;
       }
     }
 
-    console.log('[Form Submission] User profile:', {
-      uid: user.uid,
-      email: user.email,
-      displayName: userProfile?.displayName,
-      hasProfile: !!userProfile,
-      finalSubmitterName: submitterName
-    });
+    console.log('[Form Submission] Final submitter name:', submitterName);
 
     // Create submission
     const submissionData = {
