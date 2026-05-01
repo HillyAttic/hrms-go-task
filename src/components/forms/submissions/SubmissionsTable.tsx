@@ -10,6 +10,8 @@ interface SubmissionsTableProps {
   template: FormTemplate;
   onRefresh: () => void;
   onDelete?: (id: string) => void;
+  onModalOpen?: () => void;
+  onModalClose?: () => void;
 }
 
 export function SubmissionsTable({
@@ -17,12 +19,24 @@ export function SubmissionsTable({
   template,
   onRefresh,
   onDelete,
+  onModalOpen,
+  onModalClose,
 }: SubmissionsTableProps) {
   const [selectedSubmission, setSelectedSubmission] = useState<FormSubmission | null>(null);
   const [showExportModal, setShowExportModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+
+  // Notify parent when modal state changes
+  React.useEffect(() => {
+    const isModalOpen = !!selectedSubmission || showExportModal;
+    if (isModalOpen) {
+      onModalOpen?.();
+    } else {
+      onModalClose?.();
+    }
+  }, [selectedSubmission, showExportModal, onModalOpen, onModalClose]);
 
   // Filter submissions
   const filteredSubmissions = submissions.filter((submission) => {
@@ -153,9 +167,9 @@ export function SubmissionsTable({
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {submission.submittedAt && typeof submission.submittedAt === 'object' && 'toDate' in submission.submittedAt
-                      ? submission.submittedAt.toDate().toLocaleString()
-                      : new Date(submission.submittedAt).toLocaleString()}
+                    {typeof submission.submittedAt === 'string'
+                      ? new Date(submission.submittedAt).toLocaleString()
+                      : submission.submittedAt.toDate().toLocaleString()}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {submission.files && submission.files.length > 0 ? (

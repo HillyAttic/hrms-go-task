@@ -4,6 +4,7 @@ import { formSubmissionService } from '@/services/form-submission.service';
 import { formTemplateService } from '@/services/form-template.service';
 import { handleApiError } from '@/lib/api-error-handler';
 import type { FormSubmissionFilters } from '@/types/form.types';
+import { roleManagementService } from '@/services/role-management.service';
 
 /**
  * GET /api/forms/submissions
@@ -117,18 +118,50 @@ export const POST = withAuth(async (request) => {
       }
     }
 
+    // Fetch user profile to get display name
+    const userProfile = await roleManagementService.getUserProfile(user.uid);
+
+    // Fallback chain: userProfile.displayName -> Firebase Auth displayName -> email
+    let submitterName = userProfile?.displayName;
+
+    // If no displayName in Firestore profile, try to get it from Firebase Auth
+    if (!submitterName) {
+      try {
+        const { adminAuth } = await import('@/lib/firebase-admin');
+        const authUser = await adminAuth.getUser(user.uid);
+        submitterName = authUser.displayName || user.email || undefined;
+      } catch (error) {
+        console.error('[Form Submission] Error fetching Firebase Auth user:', error);
+        submitterName = user.email || undefined;
+      }
+    }
+
+    console.log('[Form Submission] User profile:', {
+      uid: user.uid,
+      email: user.email,
+      displayName: userProfile?.displayName,
+      hasProfile: !!userProfile,
+      finalSubmitterName: submitterName
+    });
+
     // Create submission
     const submissionData = {
       formId: body.formId,
       formTitle: template.title,
       submittedBy: user.uid,
       submitterEmail: user.email || undefined,
-      submitterName: body.submitterName || user.email || undefined,
+      submitterName: submitterName,
       data: body.data,
       files: body.files || [],
       ipAddress: request.headers.get('x-forwarded-for') || undefined,
       userAgent: request.headers.get('user-agent') || undefined,
     };
+
+    console.log('[Form Submission] Submission data:', {
+      submitterName: submissionData.submitterName,
+      dataKeys: Object.keys(body.data),
+      dataValues: body.data
+    });
 
     const submission = await formSubmissionService.create(submissionData);
 

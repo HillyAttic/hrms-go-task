@@ -20,6 +20,20 @@ export function SubmissionDetailModal({
 }: SubmissionDetailModalProps) {
   const [toggling, setToggling] = React.useState(false);
 
+  // Flatten all fields including nested ones from sections
+  const allFields = React.useMemo(() => {
+    const fields: any[] = [];
+    template.fields.forEach((field) => {
+      if (field.type === 'section' && field.fields) {
+        // Add nested fields only (not the section itself for lookup)
+        fields.push(...field.fields);
+      } else if (field.type !== 'section') {
+        fields.push(field);
+      }
+    });
+    return fields;
+  }, [template.fields]);
+
   const handleToggleFlag = async () => {
     try {
       setToggling(true);
@@ -49,8 +63,17 @@ export function SubmissionDetailModal({
   };
 
   const renderFieldValue = (fieldId: string) => {
-    const field = template.fields.find((f) => f.id === fieldId);
+    const field = allFields.find((f) => f.id === fieldId);
     const value = submission.data[fieldId];
+
+    console.log('[SubmissionDetailModal] Rendering field:', {
+      fieldId,
+      foundField: !!field,
+      fieldType: field?.type,
+      fieldLabel: field?.label,
+      hasValue: value !== null && value !== undefined && value !== '',
+      value: value
+    });
 
     if (!field) return <span className="text-gray-400">Unknown field</span>;
 
@@ -96,9 +119,9 @@ export function SubmissionDetailModal({
             <h2 className="text-xl font-semibold text-gray-900">Submission Details</h2>
             <p className="text-sm text-gray-500 mt-1">
               Submitted by {submission.submitterName || 'Anonymous'} on{' '}
-              {submission.submittedAt && typeof submission.submittedAt === 'object' && 'toDate' in submission.submittedAt
-                ? submission.submittedAt.toDate().toLocaleString()
-                : new Date(submission.submittedAt).toLocaleString()}
+              {typeof submission.submittedAt === 'string'
+                ? new Date(submission.submittedAt).toLocaleString()
+                : submission.submittedAt.toDate().toLocaleString()}
             </p>
           </div>
           <button
@@ -130,9 +153,9 @@ export function SubmissionDetailModal({
               <div>
                 <span className="text-gray-600">Submitted At:</span>
                 <span className="ml-2 font-medium">
-                  {submission.submittedAt && typeof submission.submittedAt === 'object' && 'toDate' in submission.submittedAt
-                    ? submission.submittedAt.toDate().toLocaleString()
-                    : new Date(submission.submittedAt).toLocaleString()}
+                  {typeof submission.submittedAt === 'string'
+                    ? new Date(submission.submittedAt).toLocaleString()
+                    : submission.submittedAt.toDate().toLocaleString()}
                 </span>
               </div>
               <div>
@@ -148,19 +171,56 @@ export function SubmissionDetailModal({
           <div>
             <h3 className="text-sm font-semibold text-gray-900 mb-4">Responses</h3>
             <div className="space-y-4">
-              {template.fields
-                .sort((a, b) => a.order - b.order)
-                .map((field) => (
-                  <div key={field.id} className="border-b pb-4">
-                    <div className="text-sm font-medium text-gray-700 mb-2">
-                      {field.label}
-                      {field.required && <span className="text-red-500 ml-1">*</span>}
-                    </div>
-                    <div className="text-sm text-gray-900">
-                      {renderFieldValue(field.id)}
-                    </div>
-                  </div>
-                ))}
+              {(() => {
+                // Flatten all fields including nested ones from sections
+                const displayFields: any[] = [];
+                template.fields.forEach((field) => {
+                  if (field.type === 'section' && field.fields) {
+                    // Add section header
+                    displayFields.push(field);
+                    // Add nested fields
+                    displayFields.push(...field.fields);
+                  } else if (field.type !== 'section') {
+                    displayFields.push(field);
+                  }
+                });
+
+                console.log('[SubmissionDetailModal] Flattened fields:', {
+                  totalFields: displayFields.length,
+                  fieldIds: displayFields.map(f => ({ id: f.id, type: f.type, label: f.label })),
+                  submissionDataKeys: Object.keys(submission.data),
+                  submissionData: submission.data
+                });
+
+                return displayFields
+                  .sort((a, b) => a.order - b.order)
+                  .map((field) => {
+                    // Render section header differently
+                    if (field.type === 'section') {
+                      return (
+                        <div key={field.id} className="py-6 border-t-2 border-gray-300 mt-8 first:mt-0 first:pt-0 first:border-t-0">
+                          <h2 className="text-2xl font-bold text-gray-900 mb-2">{field.label}</h2>
+                          {field.description && (
+                            <p className="text-sm text-gray-600 mt-1">{field.description}</p>
+                          )}
+                        </div>
+                      );
+                    }
+
+                    // Render regular field
+                    return (
+                      <div key={field.id} className="border-b pb-4">
+                        <div className="text-sm font-medium text-gray-700 mb-2">
+                          {field.label}
+                          {field.required && <span className="text-red-500 ml-1">*</span>}
+                        </div>
+                        <div className="text-sm text-gray-900">
+                          {renderFieldValue(field.id)}
+                        </div>
+                      </div>
+                    );
+                  });
+              })()}
             </div>
           </div>
 
@@ -170,7 +230,7 @@ export function SubmissionDetailModal({
               <h3 className="text-sm font-semibold text-gray-900 mb-4">File Attachments</h3>
               <div className="space-y-2">
                 {submission.files.map((file, index) => {
-                  const field = template.fields.find((f) => f.id === file.fieldId);
+                  const field = allFields.find((f) => f.id === file.fieldId);
                   return (
                     <div
                       key={index}

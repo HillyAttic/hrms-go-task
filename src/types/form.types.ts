@@ -162,7 +162,7 @@ export interface FormSubmission {
   files?: FileAttachment[];
 
   // Metadata
-  submittedAt: Timestamp;
+  submittedAt: Timestamp | string; // Timestamp on server, ISO string on client
   ipAddress?: string;
   userAgent?: string;
 

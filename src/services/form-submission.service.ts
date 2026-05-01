@@ -7,6 +7,21 @@ import type {
 
 const COLLECTION = 'form_submissions';
 
+/**
+ * Helper function to serialize Firestore Timestamp to ISO string
+ */
+function serializeSubmission(doc: FirebaseFirestore.DocumentSnapshot): FormSubmission {
+  const data = doc.data();
+  if (!data) {
+    throw new Error('Document data is undefined');
+  }
+  return {
+    id: doc.id,
+    ...data,
+    submittedAt: data.submittedAt?.toDate?.()?.toISOString() || data.submittedAt,
+  } as FormSubmission;
+}
+
 export const formSubmissionService = {
   /**
    * Get all form submissions with optional filters and pagination
@@ -60,10 +75,7 @@ export const formSubmissionService = {
     }
 
     const snapshot = await query.get();
-    const submissions = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as FormSubmission[];
+    const submissions = snapshot.docs.map((doc) => serializeSubmission(doc));
 
     return { submissions, total };
   },
@@ -77,10 +89,7 @@ export const formSubmissionService = {
 
     if (!doc.exists) return null;
 
-    return {
-      id: doc.id,
-      ...doc.data(),
-    } as FormSubmission;
+    return serializeSubmission(doc);
   },
 
   /**
@@ -274,9 +283,6 @@ export const formSubmissionService = {
       .limit(limit)
       .get();
 
-    return snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    })) as FormSubmission[];
+    return snapshot.docs.map((doc) => serializeSubmission(doc));
   },
 };

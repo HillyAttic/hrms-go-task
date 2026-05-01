@@ -1,0 +1,424 @@
+
+> free-jpco-nextjs@1.2.2 dev
+> next dev
+
+   ▲ Next.js 16.0.10 (Turbopack)
+   - Local:         http://localhost:3000
+   - Network:       http://192.168.1.21:3000
+   - Environments: .env.local
+   - Experiments (use with caution):
+     ✓ optimizeCss
+     · optimizePackageImports
+
+ ✓ Starting...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+ ✓ Ready in 2.1s
+ ○ Compiling /dashboard ...
+ GET /dashboard 200 in 31.4s (compile: 29.6s, render: 1798ms)
+ GET /mis-tracker 200 in 26.2s (compile: 21.4s, render: 4.8s)
+ GET /mis-tracker 200 in 6.1s (compile: 1459ms, render: 4.6s)
+ GET /admin/mis-accessibility 200 in 31.8s (compile: 28.3s, render: 3.6s)
+ GET /dashboard 200 in 2.9s (compile: 1856ms, render: 1047ms)
+ GET /dashboard 200 in 169ms (compile: 10ms, render: 159ms)
+ ○ Compiling /api/tasks ...
+[AdminService:recurring-tasks] Fetching documents
+ GET /api/mis-config 200 in 1390ms (compile: 14ms, render: 1377ms)
+ GET /api/tasks 200 in 7.6s (compile: 4.2s, render: 3.4s)
+ GET /api/mis-config 200 in 7.7s (compile: 5.7s, render: 1977ms)
+ GET /api/admin/users 200 in 1777ms (compile: 491ms, render: 1286ms)
+[AdminService:recurring-tasks] Found 7 documents
+[Recurring Tasks API] Total tasks fetched: 7
+[Recurring Tasks API] User Firebase Auth UID: HEN5EXqthwYTgwxXCLoz7pqFl453
+[Recurring Tasks API] User role: employee
+[Recurring Tasks API] Is Admin/Manager: false
+[Recurring Tasks API] Is Calendar View: false
+[Recurring Tasks API] Employee HEN5EXqthwYTgwxXCLoz7pqFl453 filtering tasks
+[Recurring Tasks API] User email: naveen@gmail.com
+[Team Admin Service] Getting teams for member: HEN5EXqthwYTgwxXCLoz7pqFl453
+ GET /api/mis-config 200 in 347ms (compile: 25ms, render: 322ms)
+ GET /api/mis-config 200 in 383ms (compile: 99ms, render: 284ms)
+ GET /api/admin/users 200 in 501ms (compile: 233ms, render: 268ms)
+[Team Admin Service] Found 3 teams for member HEN5EXqthwYTgwxXCLoz7pqFl453
+ GET /api/mis-config 200 in 211ms (compile: 112ms, render: 99ms)
+[populateTeamMembers] Processing team: STEALDEALS {
+  leaderId: 'PE575NOxk7XjTQeozdHPsOja8xE3',
+  memberIds: [ 'HEN5EXqthwYTgwxXCLoz7pqFl453' ],
+  existingMembers: 1
+}
+[populateTeamMembers] Processing team: Accounting Visits {
+  leaderId: 'XQ4QQsyhf21BeGKIrsCY',
+  memberIds: [
+    'LQWys6MavpMqOx5lXixVBY1GDnk1',
+    'BHptYF6WdxTqsarSX3gBrlyqn2B3',
+    'PE575NOxk7XjTQeozdHPsOja8xE3',
+    'HEN5EXqthwYTgwxXCLoz7pqFl453'
+  ],
+  existingMembers: 4
+}
+[populateTeamMembers] Processing team: ITR Filing {
+  leaderId: 'PE575NOxk7XjTQeozdHPsOja8xE3',
+  memberIds: [
+    'PE575NOxk7XjTQeozdHPsOja8xE3',
+    'LQWys6MavpMqOx5lXixVBY1GDnk1',
+    'HEN5EXqthwYTgwxXCLoz7pqFl453'
+  ],
+  existingMembers: 3
+}
+[populateTeamMembers] Found leader: Balram Yadav
+[populateTeamMembers] Fetching 1 members from 'users' collection
+[populateTeamMembers] Leader not found in 'users' collection: XQ4QQsyhf21BeGKIrsCY
+[populateTeamMembers] Fetching 4 members from 'users' collection
+[populateTeamMembers] Found leader: Balram Yadav
+[populateTeamMembers] Fetching 3 members from 'users' collection
+[populateTeamMembers] Added member: Naveen
+[populateTeamMembers] Result for STEALDEALS: { leaderName: 'Balram Yadav', membersCount: 1, members: [ 'Naveen' ] }
+[populateTeamMembers] Added member: Ajay Chaudhary
+[populateTeamMembers] Added member: Balram Yadav
+[populateTeamMembers] Member not found in 'users' collection: BHptYF6WdxTqsarSX3gBrlyqn2B3
+[populateTeamMembers] Added member: Ajay Chaudhary
+[populateTeamMembers] Added member: Balram Yadav
+[populateTeamMembers] Added member: Naveen
+[populateTeamMembers] Result for ITR Filing: {
+  leaderName: 'Balram Yadav',
+  membersCount: 3,
+  members: [ 'Balram Yadav', 'Ajay Chaudhary', 'Naveen' ]
+}
+[populateTeamMembers] Added member: Naveen
+[populateTeamMembers] Result for Accounting Visits: {
+  leaderName: '',
+  membersCount: 3,
+  members: [ 'Ajay Chaudhary', 'Balram Yadav', 'Naveen' ]
+}
+[Recurring Tasks API] User teams: [
+  { id: 'BGGnearjtUk3ka7IDsQd', name: 'ITR Filing' },
+  { id: 'LGvrDw0zFoRh0vbhXM77', name: 'Accounting Visits' },
+  { id: 'fK5jSnhUc25rCq33pedS', name: 'STEALDEALS' }
+]
+[Recurring Tasks API] User team IDs: [
+  'BGGnearjtUk3ka7IDsQd',
+  'LGvrDw0zFoRh0vbhXM77',
+  'fK5jSnhUc25rCq33pedS'
+]
+ GET /api/mis-config 200 in 84ms (compile: 10ms, render: 74ms)
+[populateTeamMembers] Processing team: 	TDS Filing   {
+  leaderId: 'g8pnad3rXbPWjpilDORXViHdQXY2',
+  memberIds: [ 'CsqOaakJYcXrPXoBZO4ZzgJLydp1' ],
+  existingMembers: 1
+}
+[populateTeamMembers] Processing team: GST Monthly Compliance {
+  leaderId: 'uUrZNMF6ZXcJhS2RpdIeYC8MT0a2',
+  memberIds: [
+    'g8pnad3rXbPWjpilDORXViHdQXY2',
+    'CsqOaakJYcXrPXoBZO4ZzgJLydp1',
+    'PE575NOxk7XjTQeozdHPsOja8xE3'
+  ],
+  existingMembers: 3
+}
+[populateTeamMembers] Found leader: Poonam Kumari
+[populateTeamMembers] Fetching 1 members from 'users' collection
+[populateTeamMembers] Found leader: Khushi Garg
+[populateTeamMembers] Fetching 3 members from 'users' collection
+[populateTeamMembers] Added member: Shashank Kumar
+[populateTeamMembers] Result for 	TDS Filing  : {
+  leaderName: 'Poonam Kumari',
+  membersCount: 1,
+  members: [ 'Shashank Kumar' ]
+}
+[populateTeamMembers] Added member: Poonam Kumari
+[populateTeamMembers] Added member: Shashank Kumar
+[populateTeamMembers] Added member: Balram Yadav
+[populateTeamMembers] Result for GST Monthly Compliance: {
+  leaderName: 'Khushi Garg',
+  membersCount: 3,
+  members: [ 'Poonam Kumari', 'Shashank Kumar', 'Balram Yadav' ]
+}
+[Recurring Tasks API] Task "GSTR1": {
+  taskId: 'Ptvmbhr7wC8KYBViwjp7',
+  teamId: 'M9l3lSwL7NhKApx1QIcZ',
+  contactIdsCount: 72,
+  hasMappings: false,
+  mappingsCount: 0,
+  mappingsData: undefined,
+  isDirectlyAssigned: false,
+  isTeamAssigned: false,
+  isDirectTeamMember: false,
+  isMappedToUser: undefined,
+  willShow: undefined
+}
+[Recurring Tasks API] Task "IFF Filing": {
+  taskId: 'NQeoLJkVnKiU2OtRPBTl',
+  teamId: 'M9l3lSwL7NhKApx1QIcZ',
+  contactIdsCount: 56,
+  hasMappings: false,
+  mappingsCount: 0,
+  mappingsData: undefined,
+  isDirectlyAssigned: false,
+  isTeamAssigned: false,
+  isDirectTeamMember: false,
+  isMappedToUser: undefined,
+  willShow: undefined
+}
+[Recurring Tasks API] Task "GSTR3B Filing": {
+  taskId: 'pSL0Pk6WuvQGJRFSbZ8e',
+  teamId: 'M9l3lSwL7NhKApx1QIcZ',
+  contactIdsCount: 128,
+  hasMappings: false,
+  mappingsCount: 0,
+  mappingsData: undefined,
+  isDirectlyAssigned: false,
+  isTeamAssigned: false,
+  isDirectTeamMember: false,
+  isMappedToUser: undefined,
+  willShow: undefined
+}
+[Recurring Tasks API] Checking mapping for task "Accounting Visits_Book Review": {
+  mappingUserId: 'LQWys6MavpMqOx5lXixVBY1GDnk1',
+  currentUserId: 'HEN5EXqthwYTgwxXCLoz7pqFl453',
+  userIdsArray: [ 'HEN5EXqthwYTgwxXCLoz7pqFl453' ],
+  matches: false,
+  mappingUserName: 'Ajay Chaudhary',
+  mappingClientIds: [
+    'IgXcLKRjoyM4Y2sLIQ7X',
+    'waQlaIn09wb90p8jHT3q',
+    'qElLVf5vu7Ul3CHT4O1Z',
+    'L6vQdJbRayCh21BTfnfa',
+    'bLmFOcndJdX5sKHLM6VX',
+    'BDtFz8kBHHOlqeqpHpKS',
+    'Wt80a35EMdChAEzkRAhk',
+    'oD1G8TTb7XUzR7nh03Qf',
+    'zH5MQwQkffFGiMoN2jLN'
+  ]
+}
+[Recurring Tasks API] Checking mapping for task "Accounting Visits_Book Review": {
+  mappingUserId: 'PE575NOxk7XjTQeozdHPsOja8xE3',
+  currentUserId: 'HEN5EXqthwYTgwxXCLoz7pqFl453',
+  userIdsArray: [ 'HEN5EXqthwYTgwxXCLoz7pqFl453' ],
+  matches: false,
+  mappingUserName: 'Balram Yadav',
+  mappingClientIds: [
+    'o22ltVgUlj3Aip612WhA',
+    'uxpHkJb6X42kGKPndLau',
+    'Wt80a35EMdChAEzkRAhk'
+  ]
+}
+[Recurring Tasks API] Task "Accounting Visits_Book Review": {
+  taskId: '5RPZ2zpsrwWdkq1Qirgy',
+  teamId: undefined,
+  contactIdsCount: 0,
+  hasMappings: true,
+  mappingsCount: 2,
+  mappingsData: [
+    {
+      userId: 'LQWys6MavpMqOx5lXixVBY1GDnk1',
+      userName: 'Ajay Chaudhary',
+      clientIds: [Array]
+    },
+    {
+      userId: 'PE575NOxk7XjTQeozdHPsOja8xE3',
+      userName: 'Balram Yadav',
+      clientIds: [Array]
+    }
+  ],
+  isDirectlyAssigned: false,
+  isTeamAssigned: undefined,
+  isDirectTeamMember: undefined,
+  isMappedToUser: false,
+  willShow: false
+}
+[Recurring Tasks API] Task "TDS Return Filing": {
+  taskId: 'LlzOi6xDJdVpy7zZSqar',
+  teamId: 'iNCsMKDC7caPWfMNWuMQ',
+  contactIdsCount: 27,
+  hasMappings: false,
+  mappingsCount: 0,
+  mappingsData: undefined,
+  isDirectlyAssigned: false,
+  isTeamAssigned: false,
+  isDirectTeamMember: false,
+  isMappedToUser: undefined,
+  willShow: undefined
+}
+[Recurring Tasks API] Checking mapping for task " Audit of ICICI Bank": {
+  mappingUserId: 'KuXI2KLCQYNFoqO9TqKkT46UfAd2',
+  currentUserId: 'HEN5EXqthwYTgwxXCLoz7pqFl453',
+  userIdsArray: [ 'HEN5EXqthwYTgwxXCLoz7pqFl453' ],
+  matches: false,
+  mappingUserName: 'Minakshi Gupta',
+  mappingClientIds: [
+    'DfTnrUbTc7wzjeGcgW7i',
+    'DOHvG4SoxR4ZVwAUFJYt',
+    'FJGF2bmwrMyfLVCNqFbQ'
+  ]
+}
+[Recurring Tasks API] Task " Audit of ICICI Bank": {
+  taskId: 'fHDgKFRFcqdPpZklxZH3',
+  teamId: undefined,
+  contactIdsCount: 0,
+  hasMappings: true,
+  mappingsCount: 1,
+  mappingsData: [
+    {
+      userId: 'KuXI2KLCQYNFoqO9TqKkT46UfAd2',
+      userName: 'Minakshi Gupta',
+      clientIds: [Array]
+    }
+  ],
+  isDirectlyAssigned: false,
+  isTeamAssigned: undefined,
+  isDirectTeamMember: undefined,
+  isMappedToUser: false,
+  willShow: false
+}
+[Recurring Tasks API] Checking mapping for task "Audit of BU_Bandhan Bank": {
+  mappingUserId: 'KuXI2KLCQYNFoqO9TqKkT46UfAd2',
+  currentUserId: 'HEN5EXqthwYTgwxXCLoz7pqFl453',
+  userIdsArray: [ 'HEN5EXqthwYTgwxXCLoz7pqFl453' ],
+  matches: false,
+  mappingUserName: 'Minakshi Gupta',
+  mappingClientIds: [
+    '00ZaM5RATlOEX5pLuEpz', 't8UBlbkRQXtzwRpG7vVO',
+    'YtUkRGPpWkIyvKXkb1Od', 'MNtoy54ARz2Xm8R7lJtU',
+    'jT51olN0uy3GySZG4AzV', 'KbjiEeFcI2wgHngUDZOT',
+    'i094jLhIpKyC1VlWGaiS', '9TKbvVVm2RpDKjg9sudz',
+    'CQk5YGKZbhBjXiUjQnku', 'gpQZUOhbJOWyrCR7SygQ',
+    'qPVaiEqo78UzGOoZYv1Q', 'GvGJE3MYmgu4qEUZy69X',
+    'bP1CI3kVwTLmYB1NlRL3', 'CmM7zI62YcmhqEIbrERY',
+    'tEgIJum1cuefVCH8epsc', 'lZbKqF9wCDoUb8jQQJoN',
+    'WwE9aRUdfhnXGGAnk7Gq', '0M4sp8Aw0VLvwOk6eByQ',
+    'zpNk5RteMY7DzuADRT4N', 'O0N3FhoHRIP6P42sJeBC',
+    'M3wiTFpXHtN0N50ceKNQ', 'zglCoRqICJ5FySbMf2Pm',
+    'gtoWje9GMyiQZOA4KBL0', 'JZ039Z8sRewHeExvrZDw',
+    'oOiCeCD6NDbxsyLA29yI', '0HO4NThVvQW2dbDYTueW',
+    'TrYQ75WqbSikC3T6Gfhk', 'XzcpZvuIWkvXQINAyIE8',
+    'TIZDP60xh2J9y3cVf18a', 'AtI2nxnKNzrI9CWvVKJr',
+    '1Gy42xsgv3osaaz1V6VG', 'aliLtx1fALsfK2IMrDDB',
+    'CAp0nlgX7ZKRBv1Z3vqa', 'KnKAJUEDik2YcVmMAf4U',
+    'WeKNHpHHOFGgjA96Vd9n', 'T9xmf3JGJLRa191wtde1',
+    'GTjW4ZhD6vGJmbB8YPBe', 'enkPiJdp8PDkpaLYKGPv',
+    'ZN5YSpxXPsWl0X9tWGgL', 'BUMoSH3f2bE4tKdUyCNH',
+    'gdpLFqeOiZC1Di6mg4Ea', 'siBU6DLwe03JAwMkhs9a',
+    'g4xlVyFI53HQOapX1xxV', 'w74fzGg1aCg4omf2rkJH',
+    'pITDyQYQuX0cAbZ5UkyN', 'm1iZfiFA9GDur5zfQUtB',
+    'xG3ln2FtjVJ7p3wxJbsE', 'yK1lJc50z2rtECCan0mr',
+    'UmAwrbfuR0AZN3LIKbrP', 'O1ooffgtYgSNP8CR8aG5'
+  ]
+}
+[Recurring Tasks API] Task "Audit of BU_Bandhan Bank": {
+  taskId: 'iTgjrqKB1PSLiUPSZLfv',
+  teamId: undefined,
+  contactIdsCount: 0,
+  hasMappings: true,
+  mappingsCount: 1,
+  mappingsData: [
+    {
+      userId: 'KuXI2KLCQYNFoqO9TqKkT46UfAd2',
+      userName: 'Minakshi Gupta',
+      clientIds: [Array]
+    }
+  ],
+  isDirectlyAssigned: false,
+  isTeamAssigned: undefined,
+  isDirectTeamMember: undefined,
+  isMappedToUser: false,
+  willShow: false
+}
+[Recurring Tasks API] Employee HEN5EXqthwYTgwxXCLoz7pqFl453 filtered tasks: 0
+ GET /api/recurring-tasks 200 in 9.0s (compile: 5.8s, render: 3.2s)
+ GET /api/mis-config 200 in 40ms (compile: 5ms, render: 35ms)
+ GET /api/mis-config 200 in 44ms (compile: 6ms, render: 38ms)
+ GET /api/mis-config 200 in 45ms (compile: 6ms, render: 38ms)
+ GET /api/mis-config 200 in 39ms (compile: 6ms, render: 33ms)
+ GET /api/mis-config 200 in 41ms (compile: 5ms, render: 36ms)
+ GET /api/mis-config 200 in 58ms (compile: 20ms, render: 38ms)
+ GET /api/forms/templates/dK0D8ziCvcROvPhFnx3k 200 in 5.4s (compile: 5.4s, render: 57ms)
+ GET /api/forms/templates/dK0D8ziCvcROvPhFnx3k 200 in 1839ms (compile: 1776ms, render: 63ms)
+ GET /api/forms/templates/dK0D8ziCvcROvPhFnx3k 200 in 59ms (compile: 25ms, render: 34ms)
+ GET /api/forms/templates/dK0D8ziCvcROvPhFnx3k 200 in 51ms (compile: 19ms, render: 32ms)
+ GET /api/mis-config 200 in 557ms (compile: 3ms, render: 554ms)
+ GET /api/mis-config 200 in 46ms (compile: 5ms, render: 41ms)
+ GET /api/forms/submissions?formId=dK0D8ziCvcROvPhFnx3k 200 in 3.1s (compile: 3.0s, render: 92ms)
+ GET /api/mis-config 200 in 52ms (compile: 5ms, render: 47ms)
+ GET /api/forms/submissions?formId=dK0D8ziCvcROvPhFnx3k 200 in 83ms (compile: 8ms, render: 75ms)
+ GET /api/mis-config 200 in 63ms (compile: 5ms, render: 58ms)
+ GET /api/forms/templates/dK0D8ziCvcROvPhFnx3k 200 in 61ms (compile: 23ms, render: 37ms)
+ GET /api/forms/templates/dK0D8ziCvcROvPhFnx3k 200 in 35ms (compile: 4ms, render: 31ms)
+ GET /api/forms/submissions?formId=dK0D8ziCvcROvPhFnx3k 200 in 69ms (compile: 4ms, render: 65ms)
+ GET /api/forms/submissions?formId=dK0D8ziCvcROvPhFnx3k 200 in 60ms (compile: 4ms, render: 56ms)
+ DELETE /api/forms/submissions/89fTZTswQXkrJspHdgKk 200 in 1477ms
+ GET /mis-tracker 200 in 515ms (compile: 12ms, render: 503ms)
+ GET /mis-tracker 200 in 337ms (compile: 78ms, render: 259ms)
+ GET /api/mis-config 200 in 49ms (compile: 5ms, render: 44ms)
+ GET /api/mis-config 200 in 48ms (compile: 4ms, render: 44ms)
+ GET /api/mis-config 200 in 38ms (compile: 5ms, render: 33ms)
+ GET /api/forms/templates/dK0D8ziCvcROvPhFnx3k 200 in 74ms (compile: 41ms, render: 33ms)
+ GET /api/mis-config 200 in 98ms (compile: 53ms, render: 44ms)
+ GET /api/forms/submissions?formId=dK0D8ziCvcROvPhFnx3k 200 in 95ms (compile: 4ms, render: 91ms)
+ GET /api/forms/templates/dK0D8ziCvcROvPhFnx3k 200 in 45ms (compile: 12ms, render: 33ms)
+ GET /api/forms/submissions?formId=dK0D8ziCvcROvPhFnx3k 200 in 75ms (compile: 6ms, render: 69ms)
+ DELETE /api/forms/submissions/89fTZTswQXkrJspHdgKk 200 in 70ms (compile: 15ms, render: 55ms)
+ GET /api/mis-config 200 in 43ms (compile: 7ms, render: 36ms)
+ GET /api/forms/templates/dK0D8ziCvcROvPhFnx3k 200 in 58ms (compile: 25ms, render: 33ms)
+ GET /api/forms/submissions?formId=dK0D8ziCvcROvPhFnx3k 200 in 85ms (compile: 4ms, render: 81ms)
+ GET /mis-tracker 200 in 151ms (compile: 7ms, render: 144ms)
+ GET /mis-tracker 200 in 416ms (compile: 109ms, render: 307ms)
+ GET /api/mis-config 200 in 34ms (compile: 4ms, render: 30ms)
+ GET /api/mis-config 200 in 34ms (compile: 4ms, render: 31ms)
+ GET /api/mis-config 200 in 44ms (compile: 5ms, render: 38ms)
+ GET /api/forms/templates/dK0D8ziCvcROvPhFnx3k 200 in 44ms (compile: 5ms, render: 39ms)
+ GET /api/mis-config 200 in 40ms (compile: 11ms, render: 29ms)
+ GET /api/forms/submissions?formId=dK0D8ziCvcROvPhFnx3k 200 in 127ms (compile: 65ms, render: 62ms)
+ GET /api/forms/templates/dK0D8ziCvcROvPhFnx3k 200 in 76ms (compile: 39ms, render: 36ms)
+ GET /api/forms/submissions?formId=dK0D8ziCvcROvPhFnx3k 200 in 87ms (compile: 28ms, render: 59ms)
+[2026-05-01T12:03:31.115Z]  @firebase/firestore: Firestore (11.10.0): Error using user provided cache. Falling back to memory cache: FirebaseError: [code=unimplemented]: IndexedDB persistence is only available on platforms that support LocalStorage.
+Error getting user profile: [Error [FirebaseError]: Missing or insufficient permissions.] {
+  code: 'permission-denied',
+  customData: undefined,
+  toString: [Function (anonymous)]
+}
+[Form Submission] User profile: {
+  uid: 'HEN5EXqthwYTgwxXCLoz7pqFl453',
+  email: 'naveen@gmail.com',
+  displayName: undefined,
+  hasProfile: false
+}
+[Form Submission] Submission data: {
+  submitterName: 'naveen@gmail.com',
+  dataKeys: [
+    'field_1777631984052_3',
+    'field_1777632006698_5',
+    'field_1777632063053_6',
+    'field_1777632268680_1',
+    'field_1777632493914_2',
+    'field_1777632568926_4',
+    'field_1777632616503_5',
+    'field_1777632779256_6',
+    'field_1777632874665_8',
+    'field_1777632957561_9'
+  ],
+  dataValues: {
+    field_1777631984052_3: '2',
+    field_1777632006698_5: '2',
+    field_1777632063053_6: '3',
+    field_1777632268680_1: 'yes',
+    field_1777632493914_2: 'yes',
+    field_1777632568926_4: 'yes',
+    field_1777632616503_5: 'no',
+    field_1777632779256_6: 'yes',
+    field_1777632874665_8: '3',
+    field_1777632957561_9: 'no'
+  }
+}
+ POST /api/forms/submissions 200 in 495ms (compile: 4ms, render: 490ms)
+ GET /mis-tracker 200 in 106ms (compile: 6ms, render: 99ms)
+ GET /api/mis-config 200 in 48ms (compile: 4ms, render: 44ms)
+ GET /api/mis-config 200 in 98ms (compile: 58ms, render: 41ms)
+ GET /api/forms/templates/dK0D8ziCvcROvPhFnx3k 200 in 76ms (compile: 36ms, render: 40ms)
+ GET /api/mis-config 200 in 94ms (compile: 58ms, render: 36ms)
+ GET /api/mis-config 200 in 77ms (compile: 45ms, render: 32ms)
+ GET /api/forms/submissions?formId=dK0D8ziCvcROvPhFnx3k 200 in 82ms (compile: 8ms, render: 74ms)
+ GET /api/forms/templates/dK0D8ziCvcROvPhFnx3k 200 in 35ms (compile: 5ms, render: 30ms)
+ GET /api/forms/submissions?formId=dK0D8ziCvcROvPhFnx3k 200 in 69ms (compile: 10ms, render: 59ms)
+[2026-05-01T12:05:01.412Z]  @firebase/firestore: Firestore (11.10.0): GrpcConnection RPC 'Listen' stream 0x56dc506d error. Code: 1 Message: 1 CANCELLED: Disconnecting idle stream. Timed out waiting for new targets.
+ GET /api/debug/user-profile 401 in 329ms (compile: 323ms, render: 6ms)
+ GET /api/debug/user-profile 401 in 23ms (compile: 16ms, render: 8ms)
+ GET /api/debug/user-profile 401 in 24ms (compile: 13ms, render: 11ms)

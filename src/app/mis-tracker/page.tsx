@@ -7,10 +7,12 @@ import { useAuthEnhanced } from '@/hooks/use-auth-enhanced';
 import { authenticatedFetch } from '@/lib/api-client';
 import { SubmissionsTable } from '@/components/forms/submissions/SubmissionsTable';
 import type { FormSubmission, FormTemplate } from '@/types/form.types';
+import { useModal } from '@/contexts/modal-context';
 
 export default function MISTrackerPage() {
   const router = useRouter();
   const { user, loading: authLoading } = useAuthEnhanced();
+  const { openModal, closeModal } = useModal();
 
   const [loading, setLoading] = useState(true);
   const [hasAccess, setHasAccess] = useState(false);
@@ -179,6 +181,8 @@ export default function MISTrackerPage() {
           template={template}
           onRefresh={fetchData}
           onDelete={handleDelete}
+          onModalOpen={openModal}
+          onModalClose={closeModal}
         />
       </div>
     </div>
