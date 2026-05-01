@@ -6,7 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { generateFormSchema } from '@/lib/form-validation';
 import { FormField } from './FormField';
 import { FormSubmitButton } from './FormSubmitButton';
-import type { FormTemplate } from '@/types/form.types';
+import type { FormTemplate, FormField as FormFieldType } from '@/types/form.types';
 import { toast } from 'react-toastify';
 import { authenticatedFetch } from '@/lib/api-client';
 
@@ -48,7 +48,7 @@ export function FormRenderer({
       const formData = { ...data };
 
       // Flatten all fields including nested ones
-      const allFields: FormField[] = [];
+      const allFields: FormFieldType[] = [];
       template.fields.forEach((field) => {
         if (field.type === 'section' && field.fields) {
           allFields.push(...field.fields);
