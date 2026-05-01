@@ -60,7 +60,23 @@ export default function DashboardFormEmbed() {
               return field;
             });
 
-            setTemplate({ ...fetchedTemplate, fields: fixedFields });
+            const finalTemplate = { ...fetchedTemplate, fields: fixedFields };
+            setTemplate(finalTemplate);
+
+            // Check if user has already submitted this form (if multiple submissions not allowed)
+            if (!finalTemplate.settings.allowMultipleSubmissions) {
+              const submissionsResponse = await authenticatedFetch(
+                `/api/forms/submissions?formId=${dailyFormTemplateId}&submittedBy=${user?.uid}&limit=1`
+              );
+
+              if (submissionsResponse.ok) {
+                const submissionsData = await submissionsResponse.json();
+                if (submissionsData.success && submissionsData.submissions.length > 0) {
+                  // User has already submitted this form
+                  setIsSubmitted(true);
+                }
+              }
+            }
           }
         }
       }
@@ -103,28 +119,32 @@ export default function DashboardFormEmbed() {
           <CardTitle>Daily MIS Form</CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="flex flex-col items-center justify-center py-12 px-4">
-            <div className="rounded-full bg-green-100 p-3 mb-4">
-              <svg
-                className="w-12 h-12 text-green-600"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
+          <div className="p-6 space-y-6">
+            <div className="space-y-3">
+              <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-md border border-green-200 dark:border-green-800">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
+                  className="h-8 w-8 text-green-600 dark:text-green-400 mx-auto mb-2"
+                >
+                  <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+                  <path d="m9 11 3 3L22 4"></path>
+                </svg>
+                <p className="font-medium text-green-800 dark:text-green-200">
+                  Form Submitted Successfully
+                </p>
+                <p className="text-sm text-green-700 dark:text-green-300">
+                  {template.settings.successMessage}
+                </p>
+              </div>
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">
-              {template.settings.successMessage}
-            </h3>
-            <p className="text-gray-600 text-center">
-              Your form has been successfully submitted.
-            </p>
           </div>
         </CardContent>
       </Card>

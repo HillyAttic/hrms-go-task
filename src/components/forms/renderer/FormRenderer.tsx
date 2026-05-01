@@ -115,11 +115,8 @@ export function FormRenderer({
         throw new Error(result.error || 'Failed to submit form');
       }
 
-      // Only show toast if multiple submissions are allowed
-      // Otherwise, parent component will handle the success message
-      if (template.settings.allowMultipleSubmissions) {
-        toast.success(result.message || 'Form submitted successfully!');
-      }
+      // Show success toast with the custom message from form settings
+      toast.success(result.message || 'Form submitted successfully!');
 
       if (onSuccess) {
         onSuccess(result.submission.id);
