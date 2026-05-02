@@ -30,7 +30,7 @@ export function PWASplashScreen() {
     <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#020d1a]">
       <div className="w-64 h-64">
         <DotLottieReact
-          src="https://lottie.host/bb6fce6a-9e65-430d-8310-8138c178d463/XCPRVDtq3D.lottie"
+          src="https://lottie.host/0f9de11b-81b5-44f0-a176-9d40c8c91354/5SN6fm3CAC.lottie"
           loop
           autoplay
         />
