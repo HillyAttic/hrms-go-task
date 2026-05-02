@@ -147,7 +147,7 @@ export function SubmissionDetailModal({
               </div>
               <div>
                 <span className="text-gray-600">Email:</span>
-                <span className="ml-2 font-medium">
+                <span className="ml-2 font-medium break-all">
                   {submission.submitterEmail || 'N/A'}
                 </span>
               </div>
