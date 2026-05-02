@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { FormRenderer } from '@/components/forms/renderer/FormRenderer';
 import type { FormTemplate } from '@/types/form.types';
 import { toast } from 'react-toastify';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 export default function DashboardFormEmbed() {
   const { user } = useAuthEnhanced();
@@ -140,46 +141,12 @@ export default function DashboardFormEmbed() {
       <Card className="col-span-full">
         <CardContent className="pt-6">
           <div className="flex items-center justify-center py-12">
-            <style jsx>{`
-              .dmr-loader {
-                width: fit-content;
-                font-size: 40px;
-                line-height: 1.5;
-                font-family: system-ui, sans-serif;
-                font-weight: bold;
-                text-transform: uppercase;
-                color: transparent;
-                -webkit-text-stroke: 1px #000;
-                background:
-                  radial-gradient(1.13em at 50% 1.6em, #000 99%, transparent 101%) calc(50% - 1.6em) 0/3.2em 100% text,
-                  radial-gradient(1.13em at 50% -0.8em, transparent 99%, #000 101%) 50% 0.8em/3.2em 100% repeat-x text;
-                -webkit-background-clip: text;
-                background-clip: text;
-                animation: l9 2s linear infinite;
-              }
-
-              .dmr-loader::before {
-                content: "Loading";
-              }
-
-              @media (prefers-color-scheme: dark) {
-                .dmr-loader {
-                  -webkit-text-stroke: 1px #fff;
-                  background:
-                    radial-gradient(1.13em at 50% 1.6em, #fff 99%, transparent 101%) calc(50% - 1.6em) 0/3.2em 100% text,
-                    radial-gradient(1.13em at 50% -0.8em, transparent 99%, #fff 101%) 50% 0.8em/3.2em 100% repeat-x text;
-                  -webkit-background-clip: text;
-                  background-clip: text;
-                }
-              }
-
-              @keyframes l9 {
-                to {
-                  background-position: calc(50% + 1.6em) 0, calc(50% + 3.2em) 0.8em;
-                }
-              }
-            `}</style>
-            <div className="dmr-loader"></div>
+            <DotLottieReact
+              src="https://lottie.host/bb6fce6a-9e65-430d-8310-8138c178d463/XCPRVDtq3D.lottie"
+              loop
+              autoplay
+              style={{ width: 200, height: 200 }}
+            />
           </div>
         </CardContent>
       </Card>
