@@ -201,7 +201,7 @@ export function MobileCalendarView({ tasks, onTaskClick }: MobileCalendarViewPro
   const handleDateClick = (date: Date) => {
     setSelectedDate(date);
     setShowBottomSheet(true);
-    openModal();
+    // Don't call openModal() here - bottom sheet should not hide the bottom nav
   };
 
   const days = React.useMemo(() => getDaysInMonth(currentDate), [currentDate, getDaysInMonth]);
@@ -405,7 +405,7 @@ export function MobileCalendarView({ tasks, onTaskClick }: MobileCalendarViewPro
           {/* Backdrop */}
           <div
             className="fixed inset-0 bg-black/40 z-40 transition-opacity"
-            onClick={() => { setShowBottomSheet(false); closeModal(); }}
+            onClick={() => { setShowBottomSheet(false); }}
           />
           {/* Sheet */}
           <div className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-[#1e1e36] rounded-t-2xl shadow-2xl max-h-[60vh] animate-slide-up">
@@ -425,7 +425,7 @@ export function MobileCalendarView({ tasks, onTaskClick }: MobileCalendarViewPro
                 </p>
               </div>
               <button
-                onClick={() => { setShowBottomSheet(false); closeModal(); }}
+                onClick={() => { setShowBottomSheet(false); }}
                 className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
               >
                 <XMarkIcon className="w-5 h-5 text-gray-500 dark:text-gray-400" />
@@ -442,7 +442,6 @@ export function MobileCalendarView({ tasks, onTaskClick }: MobileCalendarViewPro
                       className="flex items-start gap-3 p-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-gray-700/50 cursor-pointer hover:bg-gray-100 dark:hover:bg-white/10 transition-all active:scale-[0.98]"
                       onClick={(e) => {
                         setShowBottomSheet(false);
-                        closeModal();
                         handleTaskClick(task, e);
                       }}
                     >

@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { FormRenderer } from '@/components/forms/renderer/FormRenderer';
 import type { FormTemplate } from '@/types/form.types';
 import { toast } from 'react-toastify';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
 export default function DashboardFormEmbed() {
   const { user } = useAuthEnhanced();
@@ -134,8 +135,26 @@ export default function DashboardFormEmbed() {
     toast.error(error);
   };
 
-  // Don't render anything if loading, no access, or no template
-  if (loading || !hasAccess || !template) {
+  // Show loading animation while fetching form data
+  if (loading) {
+    return (
+      <Card className="col-span-full">
+        <CardContent className="pt-6">
+          <div className="flex items-center justify-center py-12">
+            <DotLottieReact
+              src="https://lottie.host/bb6fce6a-9e65-430d-8310-8138c178d463/XCPRVDtq3D.lottie"
+              loop
+              autoplay
+              style={{ width: 200, height: 200 }}
+            />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // Don't render anything if no access or no template
+  if (!hasAccess || !template) {
     return null;
   }
 
