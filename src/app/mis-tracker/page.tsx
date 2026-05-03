@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { useAuthEnhanced } from '@/hooks/use-auth-enhanced';
 import { authenticatedFetch } from '@/lib/api-client';
@@ -12,11 +12,14 @@ import { useModal } from '@/contexts/modal-context';
 
 export default function MISTrackerPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { user, loading: authLoading } = useAuthEnhanced();
   const { openModal, closeModal } = useModal();
 
   const [loading, setLoading] = useState(true);
   const [hasAccess, setHasAccess] = useState(false);
+  const [availableForms, setAvailableForms] = useState<FormTemplate[]>([]);
+  const [selectedFormId, setSelectedFormId] = useState<string | null>(null);
   const [template, setTemplate] = useState<FormTemplate | null>(null);
   const [submissions, setSubmissions] = useState<FormSubmission[]>([]);
 
@@ -43,11 +46,25 @@ export default function MISTrackerPage() {
     }
   }, [authLoading, user]);
 
+  // Refetch data when URL params change
+  useEffect(() => {
+    const formIdFromUrl = searchParams.get('formId');
+    if (formIdFromUrl && formIdFromUrl !== selectedFormId && !authLoading && user) {
+      fetchData();
+    }
+  }, [searchParams]);
+
+  const handleFormChange = (formId: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set('formId', formId);
+    router.push(`/mis-tracker?${params.toString()}`);
+  };
+
   const fetchData = async () => {
     try {
       setLoading(true);
 
-      // Get MIS config
+      // 1. Get MIS config (for access control and default form)
       const configResponse = await authenticatedFetch('/api/mis-config');
       const configData = await configResponse.json();
 
@@ -62,16 +79,55 @@ export default function MISTrackerPage() {
         return;
       }
 
-      const dailyFormTemplateId = configData.data.dailyFormTemplateId;
+      // 2. Fetch all published forms
+      const formsResponse = await authenticatedFetch('/api/forms/templates?status=published');
+      const formsResult = await formsResponse.json();
 
-      if (!dailyFormTemplateId) {
-        // No form configured yet
+      if (!formsResponse.ok || !formsResult.success) {
+        toast.error('Failed to load forms');
         return;
       }
 
-      // Fetch form template
+      const forms = formsResult.templates || [];
+      setAvailableForms(forms);
+
+      if (forms.length === 0) {
+        // No published forms available
+        return;
+      }
+
+      // 3. Determine which form to display (priority order)
+      let formToDisplay: string | null = null;
+
+      const formIdFromUrl = searchParams.get('formId');
+      if (formIdFromUrl && forms.some((f: FormTemplate) => f.id === formIdFromUrl)) {
+        // URL param is valid
+        formToDisplay = formIdFromUrl;
+      } else if (configData.data.dailyFormTemplateId &&
+                 forms.some((f: FormTemplate) => f.id === configData.data.dailyFormTemplateId)) {
+        // Use MIS config default
+        formToDisplay = configData.data.dailyFormTemplateId;
+      } else if (forms.length > 0) {
+        // Use first form
+        formToDisplay = forms[0].id;
+      }
+
+      if (!formToDisplay) {
+        return;
+      }
+
+      // 4. Update URL if needed
+      if (!formIdFromUrl || formIdFromUrl !== formToDisplay) {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set('formId', formToDisplay);
+        router.replace(`/mis-tracker?${params.toString()}`, { scroll: false });
+      }
+
+      setSelectedFormId(formToDisplay);
+
+      // 5. Fetch form template and submissions for selected form
       const templateResponse = await authenticatedFetch(
-        `/api/forms/templates/${dailyFormTemplateId}`
+        `/api/forms/templates/${formToDisplay}`
       );
       const templateResult = await templateResponse.json();
 
@@ -80,7 +136,7 @@ export default function MISTrackerPage() {
 
         // Fetch submissions
         const submissionsResponse = await authenticatedFetch(
-          `/api/forms/submissions?formId=${dailyFormTemplateId}`
+          `/api/forms/submissions?formId=${formToDisplay}`
         );
         const submissionsResult = await submissionsResponse.json();
 
@@ -162,23 +218,31 @@ export default function MISTrackerPage() {
     );
   }
 
-  if (!template) {
+  if (availableForms.length === 0 && !loading) {
     return (
       <div className="flex items-center justify-center min-h-screen px-4">
         <div className="text-center max-w-md">
           <div className="mb-4 text-6xl">📋</div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            No Form Configured
+            No Forms Available
           </h1>
           <p className="text-gray-600 dark:text-gray-400 mb-6">
-            The daily MIS form has not been configured yet. Please contact your administrator.
+            No published forms found. Create and publish a form to get started.
           </p>
-          <button
-            onClick={() => router.push('/dashboard')}
-            className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200"
-          >
-            Go to Dashboard
-          </button>
+          <div className="flex gap-3 justify-center">
+            <button
+              onClick={() => router.push('/forms/builder')}
+              className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200"
+            >
+              Go to Form Builder
+            </button>
+            <button
+              onClick={() => router.push('/dashboard')}
+              className="px-6 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-medium rounded-lg transition-colors duration-200"
+            >
+              Go to Dashboard
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -191,42 +255,59 @@ export default function MISTrackerPage() {
           <div>
             <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">MIS Tracker</h1>
             <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1">
-              View and manage daily form submissions
+              View and manage form submissions
             </p>
           </div>
 
-          {/* View Toggle */}
-          <div className="flex items-center space-x-1 bg-gray-100 dark:bg-gray-700 rounded-lg p-1 w-full sm:w-auto">
-            <button
-              onClick={() => setViewMode('table')}
-              className={`flex-1 sm:flex-none px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors ${
-                viewMode === 'table'
-                  ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-              }`}
-            >
-              <div className="flex items-center justify-center space-x-1 sm:space-x-2">
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-                </svg>
-                <span>Table</span>
-              </div>
-            </button>
-            <button
-              onClick={() => setViewMode('spreadsheet')}
-              className={`flex-1 sm:flex-none px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors ${
-                viewMode === 'spreadsheet'
-                  ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm'
-                  : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
-              }`}
-            >
-              <div className="flex items-center justify-center space-x-1 sm:space-x-2">
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                </svg>
-                <span>Spreadsheet</span>
-              </div>
-            </button>
+          <div className="flex flex-col sm:flex-row gap-3">
+            {/* Form Selector Dropdown */}
+            {availableForms.length > 0 && (
+              <select
+                value={selectedFormId || ''}
+                onChange={(e) => handleFormChange(e.target.value)}
+                className="flex-1 sm:flex-none sm:min-w-[250px] px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                {availableForms.map((form) => (
+                  <option key={form.id} value={form.id}>
+                    {form.title} ({form.submissionCount || 0} submissions)
+                  </option>
+                ))}
+              </select>
+            )}
+
+            {/* View Toggle */}
+            <div className="flex items-center space-x-1 bg-gray-100 dark:bg-gray-700 rounded-lg p-1 w-full sm:w-auto">
+              <button
+                onClick={() => setViewMode('table')}
+                className={`flex-1 sm:flex-none px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors ${
+                  viewMode === 'table'
+                    ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                }`}
+              >
+                <div className="flex items-center justify-center space-x-1 sm:space-x-2">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                  </svg>
+                  <span>Table</span>
+                </div>
+              </button>
+              <button
+                onClick={() => setViewMode('spreadsheet')}
+                className={`flex-1 sm:flex-none px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium rounded-md transition-colors ${
+                  viewMode === 'spreadsheet'
+                    ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                }`}
+              >
+                <div className="flex items-center justify-center space-x-1 sm:space-x-2">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  </svg>
+                  <span>Spreadsheet</span>
+                </div>
+              </button>
+            </div>
           </div>
         </div>
       </div>

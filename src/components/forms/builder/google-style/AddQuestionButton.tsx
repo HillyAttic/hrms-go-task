@@ -47,7 +47,7 @@ export function AddQuestionButton({
 
           {/* Dropdown Menu */}
           {showAddMenu && (
-            <div className="absolute bottom-14 left-0 bg-white rounded-xl shadow-2xl border border-gray-200 p-2 z-[9999] w-80">
+            <div className="absolute bottom-full left-0 mb-2 bg-white rounded-xl shadow-2xl border border-gray-200 p-2 z-[10000] w-80">
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5 px-1">Question Type</p>
               <div className="grid grid-cols-3 gap-0.5">
                 {QUESTION_TYPES.map(({ type, label }) => (
@@ -81,7 +81,7 @@ export function AddQuestionButton({
       {/* Backdrop to close menu */}
       {showAddMenu && (
         <div
-          className="fixed inset-0 z-[9998]"
+          className="fixed inset-0 z-[9999]"
           onClick={onToggleAddMenu}
         />
       )}

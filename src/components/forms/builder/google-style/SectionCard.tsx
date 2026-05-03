@@ -169,37 +169,47 @@ export function SectionCard({
 
             {/* Add Question Button */}
             {isSelected && (
-              <div className="relative">
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setShowAddMenu(!showAddMenu);
-                  }}
-                  className="w-full py-2 px-3 rounded border-2 border-dashed border-gray-300 hover:border-[#673ab7] text-gray-600 hover:text-[#673ab7] transition-colors flex items-center justify-center gap-2 text-sm font-medium"
-                >
-                  <Plus size={18} />
-                  Add question to section
-                </button>
+              <>
+                <div className="relative">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setShowAddMenu(!showAddMenu);
+                    }}
+                    className="w-full py-2 px-3 rounded border-2 border-dashed border-gray-300 hover:border-[#673ab7] text-gray-600 hover:text-[#673ab7] transition-colors flex items-center justify-center gap-2 text-sm font-medium"
+                  >
+                    <Plus size={18} />
+                    Add question to section
+                  </button>
 
-                {/* Question Type Menu */}
+                  {/* Question Type Menu */}
+                  {showAddMenu && (
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-xl z-[10001] p-2">
+                      {(['text', 'textarea', 'email', 'phone', 'number', 'date', 'time', 'select', 'radio', 'checkbox', 'multiselect', 'file'] as FormFieldType[]).map((type) => (
+                        <button
+                          key={type}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onAddNestedField(field.id, type);
+                            setShowAddMenu(false);
+                          }}
+                          className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded text-sm text-gray-700 capitalize"
+                        >
+                          {type}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Backdrop to close menu */}
                 {showAddMenu && (
-                  <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 p-2">
-                    {(['text', 'textarea', 'email', 'phone', 'number', 'date', 'time', 'select', 'radio', 'checkbox', 'multiselect', 'file'] as FormFieldType[]).map((type) => (
-                      <button
-                        key={type}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onAddNestedField(field.id, type);
-                          setShowAddMenu(false);
-                        }}
-                        className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded text-sm text-gray-700 capitalize"
-                      >
-                        {type}
-                      </button>
-                    ))}
-                  </div>
+                  <div
+                    className="fixed inset-0 z-[10000]"
+                    onClick={() => setShowAddMenu(false)}
+                  />
                 )}
-              </div>
+              </>
             )}
           </div>
         )}

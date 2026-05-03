@@ -79,7 +79,7 @@ export function QuestionCard({
 
       <div className="px-6 pb-4">
         {/* Question Header */}
-        <div className="flex items-start gap-3">
+        <div className="flex flex-col sm:flex-row items-start gap-3">
           {field.type === 'section' ? (
             isSelected ? (
               <input
@@ -112,7 +112,7 @@ export function QuestionCard({
           )}
 
           {isSelected && field.type !== 'section' && (
-            <div className="flex-shrink-0">
+            <div className="w-full sm:w-auto sm:flex-shrink-0">
               <QuestionTypeSelector
                 type={field.type}
                 onChange={(type) => onUpdate({ type })}

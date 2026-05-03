@@ -37,9 +37,9 @@ export function QuestionTypeSelector({
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="
-          px-3 py-2 text-sm font-medium text-gray-700 bg-white
+          w-full sm:w-auto px-3 py-2 text-sm font-medium text-gray-700 bg-white
           border border-gray-300 rounded-md hover:border-purple-600
-          hover:bg-purple-50 transition-colors flex items-center space-x-2
+          hover:bg-purple-50 transition-colors flex items-center justify-between sm:justify-start space-x-2
           whitespace-nowrap
         "
       >
