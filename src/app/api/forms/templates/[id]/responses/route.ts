@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import { withAuth } from '@/lib/server-auth';
 import { formSubmissionService } from '@/services/form-submission.service';
 import { formTemplateService } from '@/services/form-template.service';
@@ -11,7 +11,7 @@ import type { FormSubmissionFilters } from '@/types/form.types';
  * Auth: Admin/Manager or form creator
  */
 export async function GET(
-  request: Request,
+  request: NextRequest,
   { params }: { params: Promise<{ id: string }> }
 ) {
   return withAuth(async (req) => {

@@ -39,13 +39,13 @@ export async function POST(request: NextRequest) {
       legacyDailyFormTemplateId: misConfig?.dailyFormTemplateId,
     });
 
-    if (misConfig) {
+    if (misConfig && authResult.user) {
       // NEW: Check formToUserMappings for required forms
       if (misConfig.formToUserMappings && misConfig.formToUserMappings.length > 0) {
         const requiredForms = misConfig.formToUserMappings.filter(
           mapping =>
             mapping.requiredForClockout &&
-            mapping.assignedUserIds.includes(authResult.user.uid)
+            mapping.assignedUserIds.includes(authResult.user!.uid)
         );
 
         console.log('[Clock-out API] Required forms for user:', requiredForms.length);

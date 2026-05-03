@@ -313,22 +313,26 @@ export default function MISTrackerPage() {
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 py-4 sm:py-6">
-        {viewMode === 'table' ? (
-          <SubmissionsTable
-            submissions={submissions}
-            template={template}
-            onRefresh={fetchData}
-            onDelete={handleDelete}
-            onModalOpen={openModal}
-            onModalClose={closeModal}
-          />
-        ) : (
-          <SubmissionsSpreadsheetView
-            submissions={submissions}
-            template={template}
-            onRefresh={fetchData}
-            onDelete={handleDelete}
-          />
+        {template && (
+          <>
+            {viewMode === 'table' ? (
+              <SubmissionsTable
+                submissions={submissions}
+                template={template}
+                onRefresh={fetchData}
+                onDelete={handleDelete}
+                onModalOpen={openModal}
+                onModalClose={closeModal}
+              />
+            ) : (
+              <SubmissionsSpreadsheetView
+                submissions={submissions}
+                template={template}
+                onRefresh={fetchData}
+                onDelete={handleDelete}
+              />
+            )}
+          </>
         )}
       </div>
     </div>
