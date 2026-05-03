@@ -6,8 +6,11 @@ import { toast } from 'react-toastify';
 import { useAuthEnhanced } from '@/hooks/use-auth-enhanced';
 import { authenticatedFetch } from '@/lib/api-client';
 import UserMultiSelect, { User } from '@/components/mis/UserMultiSelect';
+import { FormToUserMappingDialog } from '@/components/mis/FormToUserMappingDialog';
+import { FormToUserMapping } from '@/services/mis-config.service';
 
 interface MISConfig {
+  formToUserMappings?: FormToUserMapping[];
   dailyFormTemplateId?: string;
   formAssignedUsers: string[];
   sheetAssignedUsers: string[];
@@ -29,9 +32,13 @@ export default function MISAccessibilityPage() {
   const [users, setUsers] = useState<User[]>([]);
   const [formTemplates, setFormTemplates] = useState<FormTemplate[]>([]);
 
+  const [formToUserMappings, setFormToUserMappings] = useState<FormToUserMapping[]>([]);
+  const [showMappingDialog, setShowMappingDialog] = useState(false);
+  const [sheetAssignedUsers, setSheetAssignedUsers] = useState<string[]>([]);
+
+  // Legacy fields (for backward compatibility)
   const [dailyFormTemplateId, setDailyFormTemplateId] = useState('');
   const [formAssignedUsers, setFormAssignedUsers] = useState<string[]>([]);
-  const [sheetAssignedUsers, setSheetAssignedUsers] = useState<string[]>([]);
   const [formRequiredForClockout, setFormRequiredForClockout] = useState(false);
 
   useEffect(() => {
@@ -60,9 +67,11 @@ export default function MISAccessibilityPage() {
       if (configRes.ok) {
         const configData = await configRes.json();
         if (configData.success && configData.data) {
+          setFormToUserMappings(configData.data.formToUserMappings || []);
+          setSheetAssignedUsers(configData.data.sheetAssignedUsers || []);
+          // Legacy fields
           setDailyFormTemplateId(configData.data.dailyFormTemplateId || '');
           setFormAssignedUsers(configData.data.formAssignedUsers || []);
-          setSheetAssignedUsers(configData.data.sheetAssignedUsers || []);
           setFormRequiredForClockout(configData.data.formRequiredForClockout ?? false);
         }
       }
@@ -103,10 +112,8 @@ export default function MISAccessibilityPage() {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          dailyFormTemplateId,
-          formAssignedUsers,
+          formToUserMappings,
           sheetAssignedUsers,
-          formRequiredForClockout,
         }),
       });
 
@@ -114,6 +121,7 @@ export default function MISAccessibilityPage() {
 
       if (response.ok && data.success) {
         toast.success('MIS configuration saved successfully');
+        fetchData(); // Refresh data
       } else {
         toast.error(data.error || 'Failed to save configuration');
       }
@@ -124,6 +132,15 @@ export default function MISAccessibilityPage() {
       setSaving(false);
     }
   };
+
+  const handleSaveMappings = (mappings: FormToUserMapping[]) => {
+    setFormToUserMappings(mappings);
+  };
+
+  // Calculate summary stats
+  const totalForms = formToUserMappings.length;
+  const totalUsers = new Set(formToUserMappings.flatMap(m => m.assignedUserIds)).size;
+  const requiredForms = formToUserMappings.filter(m => m.requiredForClockout).length;
 
   if (authLoading || !isAdmin) {
     return (
@@ -151,84 +168,100 @@ export default function MISAccessibilityPage() {
         </div>
       ) : (
         <div className="space-y-6 sm:space-y-8">
-          {/* Daily Form Configuration */}
+          {/* Form Assignments */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6">
-            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white mb-4 sm:mb-6">
-              Daily Form Configuration
-            </h2>
-
-            <div className="space-y-4 sm:space-y-6">
-              {/* Form Template Selector */}
+            <div className="flex items-center justify-between mb-4 sm:mb-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Daily Form Template
-                </label>
-                <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
-                  <select
-                    value={dailyFormTemplateId}
-                    onChange={(e) => setDailyFormTemplateId(e.target.value)}
-                    className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    <option value="">Select a form template</option>
-                    {formTemplates
-                      .sort((a, b) => {
-                        // Selected form comes first
-                        if (a.id === dailyFormTemplateId) return -1;
-                        if (b.id === dailyFormTemplateId) return 1;
-                        // Otherwise sort alphabetically
-                        return a.title.localeCompare(b.title);
-                      })
-                      .map((template) => (
-                        <option key={template.id} value={template.id}>
-                          {template.title}
-                        </option>
-                      ))}
-                  </select>
-                  <button
-                    onClick={() => router.push('/forms/builder/new')}
-                    className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 whitespace-nowrap"
-                  >
-                    + Create New Form
-                  </button>
-                </div>
-                <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                  Select a published form template for daily MIS submissions
+                <h2 className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
+                  Form Assignments
+                </h2>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                  Assign different forms to different users
                 </p>
               </div>
+              <button
+                onClick={() => setShowMappingDialog(true)}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm font-medium whitespace-nowrap"
+              >
+                Manage Assignments
+              </button>
+            </div>
 
-              {/* Assigned Users */}
-              <UserMultiSelect
-                users={users}
-                selectedUserIds={formAssignedUsers}
-                onSelectionChange={setFormAssignedUsers}
-                label="Assign Users (Who must submit)"
-                placeholder="Search users by name or email..."
-              />
-
-              {/* Clock-out Requirement */}
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-4 sm:pt-6">
-                <div className="flex items-start gap-3">
-                  <input
-                    type="checkbox"
-                    id="formRequiredForClockout"
-                    checked={formRequiredForClockout}
-                    onChange={(e) => setFormRequiredForClockout(e.target.checked)}
-                    className="mt-0.5 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                  />
-                  <div className="flex-1">
-                    <label
-                      htmlFor="formRequiredForClockout"
-                      className="text-sm font-medium text-gray-700 dark:text-gray-300 cursor-pointer"
-                    >
-                      Require daily form submission before clock-out
-                    </label>
-                    <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
-                      When enabled, assigned users must submit the daily form before they can clock out
+            {/* Summary Card */}
+            {formToUserMappings.length > 0 ? (
+              <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+                <div className="flex items-start justify-between mb-3">
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-900 dark:text-white">
+                      Current Configuration
+                    </h3>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                      {totalForms} form{totalForms !== 1 ? 's' : ''} assigned to {totalUsers} user{totalUsers !== 1 ? 's' : ''}
+                      {requiredForms > 0 && ` • ${requiredForms} required for clock-out`}
                     </p>
                   </div>
                 </div>
+                <div className="space-y-2">
+                  {formToUserMappings.map((mapping) => (
+                    <div
+                      key={mapping.formId}
+                      className="flex items-center justify-between py-2 px-3 bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700"
+                    >
+                      <div className="flex items-center gap-2 flex-1 min-w-0">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          strokeWidth={1.5}
+                          stroke="currentColor"
+                          className="w-4 h-4 text-blue-600 flex-shrink-0"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
+                          />
+                        </svg>
+                        <span className="text-sm text-gray-900 dark:text-white font-medium truncate">
+                          {mapping.formTitle}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 flex-shrink-0">
+                        <span className="text-xs text-gray-600 dark:text-gray-400">
+                          {mapping.assignedUserIds.length} user{mapping.assignedUserIds.length !== 1 ? 's' : ''}
+                        </span>
+                        {mapping.requiredForClockout && (
+                          <span className="text-[10px] bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 px-2 py-0.5 rounded-full font-medium">
+                            Clock-out required
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            ) : (
+              <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-8 border border-dashed border-gray-300 dark:border-gray-700 text-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-12 h-12 text-gray-400 mx-auto mb-3"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
+                  />
+                </svg>
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">No form assignments configured</p>
+                <p className="text-xs text-gray-500 dark:text-gray-500">
+                  Click "Manage Assignments" to assign forms to users
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Submissions Access */}
@@ -263,6 +296,16 @@ export default function MISAccessibilityPage() {
           </div>
         </div>
       )}
+
+      {/* Form to User Mapping Dialog */}
+      <FormToUserMappingDialog
+        isOpen={showMappingDialog}
+        onClose={() => setShowMappingDialog(false)}
+        onSave={handleSaveMappings}
+        initialMappings={formToUserMappings}
+        availableForms={formTemplates}
+        availableUsers={users}
+      />
     </div>
   );
 }
