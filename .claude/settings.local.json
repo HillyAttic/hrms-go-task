@@ -27,7 +27,11 @@
       "Bash(npx tsx *)",
       "Bash(netstat -ano)",
       "Bash(curl *)",
-      "Bash(firebase --version)"
+      "Bash(firebase --version)",
+      "Bash(grep -E \"^src/app/layout.tsx$\")",
+      "Bash(Get-ChildItem -Path .next -Recurse -ErrorAction SilentlyContinue)",
+      "Bash(Remove-Item -Recurse -Force -ErrorAction SilentlyContinue)",
+      "Bash(Write-Host \"Cache cleared\")"
     ]
   },
   "disabledMcpjsonServers": [

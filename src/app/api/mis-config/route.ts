@@ -12,6 +12,8 @@ export const GET = withAuth(async (request: AuthenticatedRequest) => {
       return NextResponse.json({
         success: true,
         data: {
+          formToUserMappings: [],
+          assignedForms: [],
           dailyFormTemplateId: '',
           formAssignedUsers: [],
           sheetAssignedUsers: [],
@@ -25,31 +27,48 @@ export const GET = withAuth(async (request: AuthenticatedRequest) => {
     const isAdmin = user.claims.role === 'admin';
 
     if (isAdmin) {
+      // Admin gets full config including all mappings
       return NextResponse.json({
         success: true,
         data: {
-          dailyFormTemplateId: config.dailyFormTemplateId || '',
-          formAssignedUsers: config.formAssignedUsers,
+          formToUserMappings: config.formToUserMappings || [],
           sheetAssignedUsers: config.sheetAssignedUsers,
-          formRequiredForClockout: config.formRequiredForClockout || false,
           hasFormAccess: true,
           hasSheetAccess: true,
+          // Legacy fields for backward compatibility
+          dailyFormTemplateId: config.dailyFormTemplateId || '',
+          formAssignedUsers: config.formAssignedUsers || [],
+          formRequiredForClockout: config.formRequiredForClockout || false,
         },
       });
     }
 
-    const hasFormAccess = config.formAssignedUsers.includes(user.uid);
+    // Non-admin users: filter to only show forms assigned to them
+    const assignedForms = (config.formToUserMappings || [])
+      .filter(mapping => mapping.assignedUserIds.includes(user.uid))
+      .map(mapping => ({
+        formId: mapping.formId,
+        formTitle: mapping.formTitle,
+        requiredForClockout: mapping.requiredForClockout,
+      }));
+
+    const hasFormAccess = assignedForms.length > 0;
     const hasSheetAccess = config.sheetAssignedUsers.includes(user.uid);
+
+    // For backward compatibility, also check legacy fields
+    const legacyHasFormAccess = config.formAssignedUsers?.includes(user.uid) || false;
 
     return NextResponse.json({
       success: true,
       data: {
-        dailyFormTemplateId: hasFormAccess ? config.dailyFormTemplateId || '' : '',
+        assignedForms,
+        hasFormAccess: hasFormAccess || legacyHasFormAccess,
+        hasSheetAccess,
+        // Legacy fields for backward compatibility
+        dailyFormTemplateId: (hasFormAccess || legacyHasFormAccess) ? config.dailyFormTemplateId || '' : '',
         formAssignedUsers: [],
         sheetAssignedUsers: [],
         formRequiredForClockout: config.formRequiredForClockout || false,
-        hasFormAccess,
-        hasSheetAccess,
       },
     });
   } catch (error) {
@@ -63,13 +82,56 @@ export const PUT = withAdminAuth(async (request: AuthenticatedRequest) => {
     const body = await request.json();
 
     const {
+      formToUserMappings,
+      sheetAssignedUsers,
+      // Legacy fields
       dailyFormTemplateId,
       formAssignedUsers,
-      sheetAssignedUsers,
       formRequiredForClockout,
     } = body;
 
-    // Validate form template ID if provided
+    // Validate formToUserMappings if provided
+    if (formToUserMappings !== undefined) {
+      if (!Array.isArray(formToUserMappings)) {
+        return NextResponse.json(
+          { success: false, error: 'formToUserMappings must be an array' },
+          { status: 400 }
+        );
+      }
+
+      // Validate each mapping
+      const { formTemplateService } = await import('@/services/form-template.service');
+
+      for (const mapping of formToUserMappings) {
+        if (!mapping.formId || !mapping.assignedUserIds || !Array.isArray(mapping.assignedUserIds)) {
+          return NextResponse.json(
+            { success: false, error: 'Invalid mapping structure' },
+            { status: 400 }
+          );
+        }
+
+        // Validate form exists and is published
+        const template = await formTemplateService.getById(mapping.formId);
+        if (!template) {
+          return NextResponse.json(
+            { success: false, error: `Form template not found: ${mapping.formId}` },
+            { status: 400 }
+          );
+        }
+
+        if (template.status !== 'published') {
+          return NextResponse.json(
+            { success: false, error: `Form must be published: ${template.title}` },
+            { status: 400 }
+          );
+        }
+
+        // Denormalize formTitle for display
+        mapping.formTitle = template.title;
+      }
+    }
+
+    // Validate legacy form template ID if provided
     if (dailyFormTemplateId) {
       const { formTemplateService } = await import('@/services/form-template.service');
       const template = await formTemplateService.getById(dailyFormTemplateId);
@@ -105,9 +167,11 @@ export const PUT = withAdminAuth(async (request: AuthenticatedRequest) => {
     }
 
     const updatedConfig = await misConfigService.updateMISConfig({
+      formToUserMappings,
+      sheetAssignedUsers,
+      // Legacy fields
       dailyFormTemplateId,
       formAssignedUsers,
-      sheetAssignedUsers,
       formRequiredForClockout,
       updatedBy: user.uid,
     });

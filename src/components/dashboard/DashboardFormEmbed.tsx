@@ -9,14 +9,22 @@ import type { FormTemplate } from '@/types/form.types';
 import { toast } from 'react-toastify';
 import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 
+interface AssignedFormInfo {
+  formId: string;
+  formTitle: string;
+  requiredForClockout: boolean;
+  template: FormTemplate | null;
+  isSubmitted: boolean;
+  loading: boolean;
+}
+
 export default function DashboardFormEmbed() {
   const { user } = useAuthEnhanced();
-  const [template, setTemplate] = useState<FormTemplate | null>(null);
+  const [assignedForms, setAssignedForms] = useState<AssignedFormInfo[]>([]);
   const [hasAccess, setHasAccess] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [userIsClockedIn, setUserIsClockedIn] = useState(false);
-  const [dailyFormTemplateId, setDailyFormTemplateId] = useState<string | null>(null);
+  const [expandedFormId, setExpandedFormId] = useState<string | null>(null);
   const fieldIdCounter = React.useRef(0);
 
   useEffect(() => {
@@ -40,7 +48,7 @@ export default function DashboardFormEmbed() {
 
   const fetchFormData = async () => {
     try {
-      // Get MIS config to check access and get form template ID
+      // Get MIS config to check access and get assigned forms
       const configResponse = await authenticatedFetch('/api/mis-config');
       const configData = await configResponse.json();
 
@@ -51,26 +59,47 @@ export default function DashboardFormEmbed() {
       }
 
       const hasFormAccess = configData.data.hasFormAccess || false;
-      const dailyFormTemplateId = configData.data.dailyFormTemplateId;
+      const assignedFormsData = configData.data.assignedForms || [];
 
       setHasAccess(hasFormAccess);
-      setDailyFormTemplateId(dailyFormTemplateId);
 
-      // If user has access and there's a form configured, fetch the template
-      if (hasFormAccess && dailyFormTemplateId) {
-        const templateResponse = await authenticatedFetch(
-          `/api/forms/templates/${dailyFormTemplateId}`
-        );
+      // If user has access and there are assigned forms, fetch each template
+      if (hasFormAccess && assignedFormsData.length > 0) {
+        const formPromises = assignedFormsData.map(async (form: any) => {
+          try {
+            const templateResponse = await authenticatedFetch(
+              `/api/forms/templates/${form.formId}`
+            );
 
-        if (templateResponse.ok) {
-          const templateResult = await templateResponse.json();
-          if (templateResult.success && templateResult.template) {
-            // Fix duplicate field IDs if they exist
+            if (!templateResponse.ok) {
+              return {
+                formId: form.formId,
+                formTitle: form.formTitle,
+                requiredForClockout: form.requiredForClockout,
+                template: null,
+                isSubmitted: false,
+                loading: false,
+              };
+            }
+
+            const templateResult = await templateResponse.json();
+            if (!templateResult.success || !templateResult.template) {
+              return {
+                formId: form.formId,
+                formTitle: form.formTitle,
+                requiredForClockout: form.requiredForClockout,
+                template: null,
+                isSubmitted: false,
+                loading: false,
+              };
+            }
+
             const fetchedTemplate = templateResult.template;
+
+            // Fix duplicate field IDs if they exist
             const seenIds = new Set<string>();
             const fixedFields = fetchedTemplate.fields.map((field: any) => {
               if (seenIds.has(field.id)) {
-                // Generate new unique ID for duplicate
                 return { ...field, id: `field_${Date.now()}_${fieldIdCounter.current++}` };
               }
               seenIds.add(field.id);
@@ -78,33 +107,56 @@ export default function DashboardFormEmbed() {
             });
 
             const finalTemplate = { ...fetchedTemplate, fields: fixedFields };
-            setTemplate(finalTemplate);
 
-            // Check if user has already submitted this form TODAY (if multiple submissions not allowed)
+            // Check if user has already submitted this form TODAY
+            let isSubmitted = false;
             if (!finalTemplate.settings.allowMultipleSubmissions) {
-              // Use the check-today endpoint to see if submitted today
               const checkTodayResponse = await authenticatedFetch(
                 `/api/forms/submissions/check-today`,
                 {
                   method: 'POST',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify({
-                    formId: dailyFormTemplateId,
-                    userId: user?.uid
-                  })
+                    formId: form.formId,
+                    userId: user?.uid,
+                  }),
                 }
               );
 
               if (checkTodayResponse.ok) {
                 const checkResult = await checkTodayResponse.json();
-                console.log('[DashboardFormEmbed] Check today result:', checkResult);
-                if (checkResult.submitted) {
-                  // User has already submitted this form TODAY
-                  setIsSubmitted(true);
-                }
+                isSubmitted = checkResult.submitted || false;
               }
             }
+
+            return {
+              formId: form.formId,
+              formTitle: form.formTitle,
+              requiredForClockout: form.requiredForClockout,
+              template: finalTemplate,
+              isSubmitted,
+              loading: false,
+            };
+          } catch (error) {
+            console.error(`Error fetching form ${form.formId}:`, error);
+            return {
+              formId: form.formId,
+              formTitle: form.formTitle,
+              requiredForClockout: form.requiredForClockout,
+              template: null,
+              isSubmitted: false,
+              loading: false,
+            };
           }
+        });
+
+        const forms = await Promise.all(formPromises);
+        setAssignedForms(forms.filter(f => f.template !== null)); // Only show forms with valid templates
+
+        // Auto-expand first unsubmitted form
+        const firstUnsubmitted = forms.find(f => !f.isSubmitted && f.template !== null);
+        if (firstUnsubmitted) {
+          setExpandedFormId(firstUnsubmitted.formId);
         }
       }
     } catch (error) {
@@ -114,26 +166,36 @@ export default function DashboardFormEmbed() {
     }
   };
 
-  const handleSuccess = (submissionId: string) => {
-    // If multiple submissions are NOT allowed, hide the form and show success message
-    if (template && !template.settings.allowMultipleSubmissions) {
-      setIsSubmitted(true);
-    } else {
-      // If multiple submissions are allowed, just show toast
-      toast.success('Form submitted successfully!');
-    }
+  const handleSuccess = (submissionId: string, formId: string) => {
+    // Update the specific form's submission status
+    setAssignedForms(prev =>
+      prev.map(form =>
+        form.formId === formId
+          ? { ...form, isSubmitted: true }
+          : form
+      )
+    );
+
+    toast.success('Form submitted successfully!');
 
     // Broadcast form submission event for real-time sync with attendance tracker
-    if (dailyFormTemplateId) {
-      window.dispatchEvent(new CustomEvent('formSubmitted', {
-        detail: { formId: dailyFormTemplateId }
-      }));
-    }
+    window.dispatchEvent(new CustomEvent('formSubmitted', {
+      detail: { formId }
+    }));
   };
 
   const handleError = (error: string) => {
     toast.error(error);
   };
+
+  const toggleForm = (formId: string) => {
+    setExpandedFormId(prev => prev === formId ? null : formId);
+  };
+
+  // Calculate pending required forms
+  const pendingRequiredForms = assignedForms.filter(
+    f => f.requiredForClockout && !f.isSubmitted
+  );
 
   // Show loading animation while fetching form data
   if (loading) {
@@ -153,60 +215,108 @@ export default function DashboardFormEmbed() {
     );
   }
 
-  // Don't render anything if no access or no template
-  if (!hasAccess || !template) {
+  // Don't render anything if no access or no forms
+  if (!hasAccess || assignedForms.length === 0) {
     return null;
   }
 
-  // Don't render if form is not published
-  if (template.status !== 'published') {
-    return null;
-  }
+  // Single form: render as before (backward compatible)
+  if (assignedForms.length === 1) {
+    const form = assignedForms[0];
 
-  // If form has been submitted and multiple submissions are not allowed, show success message
-  if (isSubmitted && !template.settings.allowMultipleSubmissions) {
+    if (!form.template || form.template.status !== 'published') {
+      return null;
+    }
+
+    // If form has been submitted and multiple submissions are not allowed, show success message
+    if (form.isSubmitted && !form.template.settings.allowMultipleSubmissions) {
+      return (
+        <Card className="col-span-full">
+          <CardContent className="pt-6">
+            <div className="p-6 space-y-6">
+              <div className="space-y-3">
+                <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-md border border-green-200 dark:border-green-800">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="h-8 w-8 text-green-600 dark:text-green-400 mx-auto mb-2"
+                  >
+                    <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+                    <path d="m9 11 3 3L22 4"></path>
+                  </svg>
+                  <p className="font-medium text-green-800 dark:text-green-200">
+                    Form Submitted Successfully
+                  </p>
+                  <p className="text-sm text-green-700 dark:text-green-300">
+                    Thank you for your submission! You can now clock out when ready.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      );
+    }
+
     return (
       <Card className="col-span-full">
         <CardContent className="pt-6">
-          <div className="p-6 space-y-6">
-            <div className="space-y-3">
-              <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-md border border-green-200 dark:border-green-800">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-8 w-8 text-green-600 dark:text-green-400 mx-auto mb-2"
-                >
-                  <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
-                  <path d="m9 11 3 3L22 4"></path>
-                </svg>
-                <p className="font-medium text-green-800 dark:text-green-200">
-                  Form Submitted Successfully
-                </p>
-                <p className="text-sm text-green-700 dark:text-green-300">
-                  Thank you for your submission! You can now clock out when ready.
-                </p>
+          <div className="w-full">
+            {/* Warning banner if user is clocked in and hasn't submitted */}
+            {!form.isSubmitted && userIsClockedIn && form.requiredForClockout && (
+              <div className="mb-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 border-2 border-yellow-400 dark:border-yellow-600 rounded-lg">
+                <div className="flex items-start gap-3">
+                  <svg
+                    className="w-6 h-6 text-yellow-600 dark:text-yellow-400 flex-shrink-0"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                    />
+                  </svg>
+                  <div>
+                    <h3 className="font-semibold text-yellow-900 dark:text-yellow-200">
+                      Form Submission Required
+                    </h3>
+                    <p className="text-sm text-yellow-800 dark:text-yellow-300 mt-1">
+                      You must submit this form before you can clock out today. Please complete all required fields below.
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
+
+            <FormRenderer
+              template={form.template}
+              onSuccess={(submissionId) => handleSuccess(submissionId, form.formId)}
+              onError={handleError}
+            />
           </div>
         </CardContent>
       </Card>
     );
   }
 
+  // Multiple forms: render as accordion
   return (
     <Card className="col-span-full">
       <CardContent className="pt-6">
-        <div className="w-full">
-          {/* Warning banner if user is clocked in and hasn't submitted */}
-          {!isSubmitted && userIsClockedIn && (
-            <div className="mb-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 border-2 border-yellow-400 dark:border-yellow-600 rounded-lg">
+        <div className="w-full space-y-4">
+          {/* Warning banner if any required form is not submitted */}
+          {pendingRequiredForms.length > 0 && userIsClockedIn && (
+            <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 border-2 border-yellow-400 dark:border-yellow-600 rounded-lg">
               <div className="flex items-start gap-3">
                 <svg
                   className="w-6 h-6 text-yellow-600 dark:text-yellow-400 flex-shrink-0"
@@ -223,21 +333,117 @@ export default function DashboardFormEmbed() {
                 </svg>
                 <div>
                   <h3 className="font-semibold text-yellow-900 dark:text-yellow-200">
-                    ⚠️ Form Submission Required
+                    Form Submission Required
                   </h3>
                   <p className="text-sm text-yellow-800 dark:text-yellow-300 mt-1">
-                    You must submit this form before you can clock out today. Please complete all required fields below.
+                    You must submit the following form(s) before you can clock out today:
                   </p>
+                  <ul className="text-sm text-yellow-800 dark:text-yellow-300 mt-2 list-disc list-inside">
+                    {pendingRequiredForms.map(form => (
+                      <li key={form.formId}>{form.formTitle}</li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             </div>
           )}
 
-          <FormRenderer
-            template={template}
-            onSuccess={handleSuccess}
-            onError={handleError}
-          />
+          {/* Accordion for multiple forms */}
+          <div className="space-y-2">
+            {assignedForms.map((form) => {
+              const isExpanded = expandedFormId === form.formId;
+              const isPublished = form.template?.status === 'published';
+
+              if (!isPublished) return null;
+
+              return (
+                <div
+                  key={form.formId}
+                  className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden"
+                >
+                  {/* Accordion Header */}
+                  <button
+                    onClick={() => toggleForm(form.formId)}
+                    className="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-750 transition-colors"
+                  >
+                    <div className="flex items-center gap-3">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className={`w-5 h-5 transition-transform ${isExpanded ? 'rotate-90' : ''}`}
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                      </svg>
+                      <div className="text-left">
+                        <h3 className="font-medium text-gray-900 dark:text-white">
+                          {form.formTitle}
+                        </h3>
+                        <div className="flex items-center gap-2 mt-1">
+                          {form.isSubmitted ? (
+                            <span className="text-xs text-green-600 dark:text-green-400 flex items-center gap-1">
+                              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                              </svg>
+                              Submitted
+                            </span>
+                          ) : (
+                            <span className="text-xs text-gray-500 dark:text-gray-400">
+                              Pending
+                            </span>
+                          )}
+                          {form.requiredForClockout && (
+                            <span className="text-[10px] bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 px-2 py-0.5 rounded-full font-medium">
+                              Required for clock-out
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </button>
+
+                  {/* Accordion Content */}
+                  {isExpanded && form.template && (
+                    <div className="p-4 bg-white dark:bg-gray-dark">
+                      {form.isSubmitted && !form.template.settings.allowMultipleSubmissions ? (
+                        <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-md border border-green-200 dark:border-green-800">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className="h-8 w-8 text-green-600 dark:text-green-400 mx-auto mb-2"
+                          >
+                            <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
+                            <path d="m9 11 3 3L22 4"></path>
+                          </svg>
+                          <p className="font-medium text-green-800 dark:text-green-200">
+                            Form Submitted Successfully
+                          </p>
+                          <p className="text-sm text-green-700 dark:text-green-300">
+                            Thank you for your submission!
+                          </p>
+                        </div>
+                      ) : (
+                        <FormRenderer
+                          template={form.template}
+                          onSuccess={(submissionId) => handleSuccess(submissionId, form.formId)}
+                          onError={handleError}
+                        />
+                      )}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
         </div>
       </CardContent>
     </Card>

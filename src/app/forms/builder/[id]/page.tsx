@@ -19,6 +19,7 @@ import { FormBuilderCanvas } from '@/components/forms/builder/FormBuilderCanvas'
 import { FieldPalette } from '@/components/forms/builder/FieldPalette';
 import { FormSettingsPanel } from '@/components/forms/builder/FormSettingsPanel';
 import { FormPreview } from '@/components/forms/builder/FormPreview';
+import { GoogleFormsBuilder } from '@/components/forms/builder/google-style/GoogleFormsBuilder';
 import { toast } from 'react-toastify';
 
 export default function FormBuilderEditorPage({ params }: { params: Promise<{ id: string }> }) {
@@ -33,7 +34,22 @@ export default function FormBuilderEditorPage({ params }: { params: Promise<{ id
   const [activeTab, setActiveTab] = useState<'fields' | 'settings'>('fields');
   const [activeId, setActiveId] = useState<string | null>(null);
   const [selectedSectionId, setSelectedSectionId] = useState<string | null>(null);
+  const [useGoogleStyle, setUseGoogleStyle] = useState(false);
   const fieldIdCounter = React.useRef(0);
+
+  // Initialize Google Style preference from localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('formBuilderStyle');
+      setUseGoogleStyle(saved === 'google');
+    }
+  }, []);
+
+  const toggleBuilderStyle = () => {
+    const newStyle = !useGoogleStyle;
+    setUseGoogleStyle(newStyle);
+    localStorage.setItem('formBuilderStyle', newStyle ? 'google' : 'classic');
+  };
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -339,6 +355,96 @@ export default function FormBuilderEditorPage({ params }: { params: Promise<{ id
 
   if (!template) return null;
 
+  // Use Google Forms UI if enabled
+  if (useGoogleStyle) {
+    const handlePublish = async (updatedForm: FormTemplate) => {
+      if (!formId) return;
+
+      try {
+        const url = `/api/forms/templates/${formId}`;
+        const response = await authenticatedFetch(url, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            title: updatedForm.title,
+            description: updatedForm.description,
+            status: updatedForm.status,
+            fields: updatedForm.fields,
+            settings: updatedForm.settings,
+            accessControl: updatedForm.accessControl,
+            category: updatedForm.category,
+          }),
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+          setTemplate(result.template);
+        } else {
+          throw new Error(result.error || 'Failed to publish form');
+        }
+      } catch (error) {
+        console.error('Failed to publish form:', error);
+        throw error;
+      }
+    };
+
+    return (
+      <>
+        <GoogleFormsBuilder
+          form={template}
+          onSave={async (updatedForm) => {
+            if (!updatedForm.title.trim()) {
+              return;
+            }
+            if (updatedForm.fields.length === 0) {
+              return;
+            }
+
+            try {
+              const url = isNew ? '/api/forms/templates' : `/api/forms/templates/${formId}`;
+              const method = isNew ? 'POST' : 'PUT';
+
+              const response = await authenticatedFetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  title: updatedForm.title,
+                  description: updatedForm.description,
+                  status: updatedForm.status,
+                  fields: updatedForm.fields,
+                  settings: updatedForm.settings,
+                  accessControl: updatedForm.accessControl,
+                  category: updatedForm.category,
+                }),
+              });
+
+              const result = await response.json();
+
+              if (response.ok) {
+                if (isNew && result.template?.id) {
+                  setFormId(result.template.id);
+                  setIsNew(false);
+                  router.replace(`/forms/builder/${result.template.id}`);
+                }
+                setTemplate(result.template);
+              }
+            } catch (error) {
+              console.error('Failed to save form:', error);
+            }
+          }}
+          onPublish={handlePublish}
+          onClose={() => router.push('/forms/builder')}
+          onPreview={() => setShowPreview(true)}
+        />
+        {/* Preview Modal */}
+        {showPreview && (
+          <FormPreview template={template} onClose={() => setShowPreview(false)} />
+        )}
+      </>
+    );
+  }
+
   return (
     <DndContext
       sensors={sensors}
@@ -398,6 +504,15 @@ export default function FormBuilderEditorPage({ params }: { params: Promise<{ id
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
                 </svg>
                 <span>{saving ? 'Saving...' : 'Save'}</span>
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={toggleBuilderStyle}
+                className="flex-1 sm:flex-none px-4 py-2 text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 font-medium text-sm rounded-lg transition-all"
+                title="Switch to Google Forms style"
+              >
+                <span>{useGoogleStyle ? 'Classic' : 'Google Style'}</span>
               </motion.button>
               <motion.button
                 whileHover={{ scale: 1.02 }}

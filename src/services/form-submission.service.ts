@@ -45,16 +45,28 @@ export const formSubmissionService = {
     // Handle date range filters
     // Note: Using both >= and <= on same field requires composite index
     if (filters?.startDate && filters?.endDate) {
+      console.log('[FormSubmissionService] Applying date range filter:', {
+        startDate: filters.startDate.toISOString(),
+        endDate: filters.endDate.toISOString(),
+        startTimestamp: Timestamp.fromDate(filters.startDate).toDate().toISOString(),
+        endTimestamp: Timestamp.fromDate(filters.endDate).toDate().toISOString(),
+      });
       query = query
         .where('submittedAt', '>=', Timestamp.fromDate(filters.startDate))
         .where('submittedAt', '<=', Timestamp.fromDate(filters.endDate));
     } else if (filters?.startDate) {
+      console.log('[FormSubmissionService] Applying start date filter:', {
+        startDate: filters.startDate.toISOString(),
+      });
       query = query.where(
         'submittedAt',
         '>=',
         Timestamp.fromDate(filters.startDate)
       );
     } else if (filters?.endDate) {
+      console.log('[FormSubmissionService] Applying end date filter:', {
+        endDate: filters.endDate.toISOString(),
+      });
       query = query.where(
         'submittedAt',
         '<=',
