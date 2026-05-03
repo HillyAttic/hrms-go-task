@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { toast } from 'react-toastify';
 import { authenticatedFetch } from '@/lib/api-client';
 import type { FormSubmission, FormField } from '@/types/form.types';
+import { ExportModal, type ExportFilters } from './ExportModal';
 
 interface ResponsesViewProps {
   formId: string;
@@ -19,6 +20,8 @@ export function ResponsesView({ formId, formTitle, fields }: ResponsesViewProps)
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState<ViewMode>('summary');
   const [selectedResponse, setSelectedResponse] = useState<FormSubmission | null>(null);
+  const [exporting, setExporting] = useState(false);
+  const [showExportModal, setShowExportModal] = useState(false);
 
   useEffect(() => {
     fetchResponses();
@@ -141,6 +144,58 @@ export function ResponsesView({ formId, formTitle, fields }: ResponsesViewProps)
     });
   };
 
+  const handleExportToExcel = async (filters: ExportFilters) => {
+    try {
+      setExporting(true);
+
+      // Build query params
+      const params = new URLSearchParams();
+
+      if (filters.startDate) {
+        params.append('startDate', filters.startDate);
+      }
+      if (filters.endDate) {
+        params.append('endDate', filters.endDate);
+      }
+
+      // If no custom date range, use month/year
+      if (!filters.startDate && !filters.endDate && filters.month && filters.year) {
+        const startDate = new Date(filters.year, filters.month - 1, 1);
+        const endDate = new Date(filters.year, filters.month, 0, 23, 59, 59);
+        params.append('startDate', startDate.toISOString());
+        params.append('endDate', endDate.toISOString());
+      }
+
+      const response = await authenticatedFetch(
+        `/api/forms/templates/${formId}/export?${params.toString()}`
+      );
+
+      if (!response.ok) {
+        const result = await response.json();
+        toast.error(result.error || 'Failed to export responses');
+        return;
+      }
+
+      // Download the file
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `${formTitle.replace(/[^a-z0-9]/gi, '_')}_responses.xlsx`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+
+      toast.success('Responses exported successfully');
+      setShowExportModal(false);
+    } catch (error) {
+      toast.error('Failed to export responses');
+    } finally {
+      setExporting(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center py-20">
@@ -164,9 +219,9 @@ export function ResponsesView({ formId, formTitle, fields }: ResponsesViewProps)
 
   return (
     <div className="space-y-4">
-      {/* Header with view toggle */}
+      {/* Header with view toggle and export button */}
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-        <div className="flex items-center justify-between">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <h2 className="text-lg font-semibold text-gray-900">
               {responses.length} {responses.length === 1 ? 'response' : 'responses'}
@@ -175,7 +230,7 @@ export function ResponsesView({ formId, formTitle, fields }: ResponsesViewProps)
               Accepting responses
             </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <button
               onClick={() => setViewMode('summary')}
               className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
@@ -195,6 +250,16 @@ export function ResponsesView({ formId, formTitle, fields }: ResponsesViewProps)
               }`}
             >
               Individual
+            </button>
+            <button
+              onClick={() => setShowExportModal(true)}
+              disabled={exporting}
+              className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm flex items-center justify-center space-x-2"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              <span>Export to Excel</span>
             </button>
           </div>
         </div>
@@ -360,6 +425,14 @@ export function ResponsesView({ formId, formTitle, fields }: ResponsesViewProps)
           ))}
         </div>
       )}
+
+      {/* Export Modal */}
+      <ExportModal
+        isOpen={showExportModal}
+        onClose={() => setShowExportModal(false)}
+        onExport={handleExportToExcel}
+        isExporting={exporting}
+      />
     </div>
   );
 }

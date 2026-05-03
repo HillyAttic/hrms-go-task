@@ -298,7 +298,7 @@ export function GoogleFormsBuilder({
       />
 
       {/* Tab Bar */}
-      <div className="bg-white border-b border-gray-100 sticky top-16 z-30">
+      <div className="bg-white border-b border-gray-100 sticky top-16 z-20">
         <div className="max-w-3xl mx-auto px-4">
           <div className="flex gap-0">
             {(['questions', 'responses', 'settings'] as Tab[]).map((tab) => (
