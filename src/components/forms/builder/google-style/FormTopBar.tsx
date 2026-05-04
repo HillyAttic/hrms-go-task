@@ -12,6 +12,7 @@ interface FormTopBarProps {
   onPreviewClick: () => void;
   onPublishClick?: () => void;
   onClose: () => void;
+  onToggleStyle?: () => void;
 }
 
 export function FormTopBar({
@@ -23,6 +24,7 @@ export function FormTopBar({
   onPreviewClick,
   onPublishClick,
   onClose,
+  onToggleStyle,
 }: FormTopBarProps) {
   const formatLastSaved = (date: Date | null) => {
     if (!date) return 'Saving...';
@@ -87,6 +89,16 @@ export function FormTopBar({
           >
             <Settings size={18} />
           </button>
+
+          {onToggleStyle && (
+            <button
+              onClick={onToggleStyle}
+              className="px-2.5 sm:px-4 py-2 rounded-lg font-medium text-xs sm:text-sm transition-colors border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 whitespace-nowrap"
+              title="Switch to classic builder"
+            >
+              Classic Style
+            </button>
+          )}
 
           {onPublishClick && (
             <button

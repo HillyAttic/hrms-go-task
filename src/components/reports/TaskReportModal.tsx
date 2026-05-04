@@ -236,7 +236,7 @@ function ReportTable({
   completionData: Map<string, Map<string, boolean>>;
 }) {
   return (
-    <table className="w-max min-w-full divide-y divide-gray-200">
+    <table className="min-w-full divide-y divide-gray-200">
       <thead className="bg-gray-50 dark:bg-gray-800">
         <tr>
           <th className="px-3 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider sticky left-0 bg-gray-50 dark:bg-gray-800 z-10">
@@ -327,8 +327,12 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
 
   const teamMemberReports: TeamMemberReport[] = (task.teamMemberMappings || []).map(mapping => {
     const memberClients = clients.filter(c => c.id && mapping.clientIds.includes(c.id));
+    const visibleMonthKeys = new Set(months.map(m => m.key));
     const memberCompletions = completions.filter(
-      comp => comp.isCompleted && mapping.clientIds.includes(comp.clientId)
+      comp =>
+        comp.isCompleted &&
+        mapping.clientIds.includes(comp.clientId) &&
+        visibleMonthKeys.has(comp.monthKey)
     );
     const totalExpected =
       memberClients.length *
@@ -447,7 +451,7 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
                   {report.clients.length} client{report.clients.length !== 1 ? 's' : ''}
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <div className="flex-1 bg-gray-200 rounded-full h-1.5">
+                  <div className="flex-1 min-w-0 bg-gray-200 rounded-full h-1.5">
                     <div
                       className="bg-green-600 h-1.5 rounded-full transition-all"
                       style={{ width: `${report.completionRate}%` }}

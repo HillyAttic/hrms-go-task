@@ -21,6 +21,7 @@ interface GoogleFormsBuilderProps {
   onPublish?: (form: FormTemplate) => Promise<void>;
   onClose: () => void;
   onPreview: () => void;
+  onToggleStyle?: () => void;
 }
 
 type Tab = 'questions' | 'responses' | 'settings';
@@ -31,6 +32,7 @@ export function GoogleFormsBuilder({
   onPublish,
   onClose,
   onPreview,
+  onToggleStyle,
 }: GoogleFormsBuilderProps) {
   const [formData, setFormData] = useState<FormTemplate>(form);
   const [selectedFieldId, setSelectedFieldId] = useState<string | null>(null);
@@ -295,6 +297,7 @@ export function GoogleFormsBuilder({
         onPreviewClick={onPreview}
         onPublishClick={onPublish ? handlePublish : undefined}
         onClose={onClose}
+        onToggleStyle={onToggleStyle}
       />
 
       {/* Tab Bar */}

@@ -268,8 +268,8 @@ export function ReportsView() {
                       )}
                     </td>
                     <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
-                      <div className="flex items-center">
-                        <div className="w-full max-w-full bg-gray-200 rounded-full h-2 mr-2 min-w-[60px] sm:min-w-[80px]">
+                      <div className="flex items-center gap-2">
+                        <div className="flex-1 min-w-0 bg-gray-200 rounded-full h-2">
                           <div
                             className="bg-green-600 h-2 rounded-full"
                             style={{ width: `${completionRate}%` }}

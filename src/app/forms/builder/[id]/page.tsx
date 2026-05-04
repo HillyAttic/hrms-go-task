@@ -436,6 +436,7 @@ export default function FormBuilderEditorPage({ params }: { params: Promise<{ id
           onPublish={handlePublish}
           onClose={() => router.push('/forms/builder')}
           onPreview={() => setShowPreview(true)}
+          onToggleStyle={toggleBuilderStyle}
         />
         {/* Preview Modal */}
         {showPreview && (
