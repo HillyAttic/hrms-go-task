@@ -110,23 +110,22 @@ export default function DashboardFormEmbed() {
 
             // Check if user has already submitted this form TODAY
             let isSubmitted = false;
-            if (!finalTemplate.settings.allowMultipleSubmissions) {
-              const checkTodayResponse = await authenticatedFetch(
-                `/api/forms/submissions/check-today`,
-                {
-                  method: 'POST',
-                  headers: { 'Content-Type': 'application/json' },
-                  body: JSON.stringify({
-                    formId: form.formId,
-                    userId: user?.uid,
-                  }),
-                }
-              );
-
-              if (checkTodayResponse.ok) {
-                const checkResult = await checkTodayResponse.json();
-                isSubmitted = checkResult.submitted || false;
+            // Always check daily submission status (for both single and multiple submission modes)
+            const checkTodayResponse = await authenticatedFetch(
+              `/api/forms/submissions/check-today`,
+              {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  formId: form.formId,
+                  userId: user?.uid,
+                }),
               }
+            );
+
+            if (checkTodayResponse.ok) {
+              const checkResult = await checkTodayResponse.json();
+              isSubmitted = checkResult.submitted || false;
             }
 
             return {
@@ -228,8 +227,8 @@ export default function DashboardFormEmbed() {
       return null;
     }
 
-    // If form has been submitted and multiple submissions are not allowed, show success message
-    if (form.isSubmitted && !form.template.settings.allowMultipleSubmissions) {
+    // If form has been submitted today, show success message
+    if (form.isSubmitted) {
       return (
         <Card className="col-span-full">
           <CardContent className="pt-6">
@@ -256,6 +255,11 @@ export default function DashboardFormEmbed() {
                   </p>
                   <p className="text-sm text-green-700 dark:text-green-300">
                     Thank you for your submission! You can now clock out when ready.
+                    {form.template.settings.allowMultipleSubmissions && (
+                      <span className="block mt-1">
+                        You can submit this form again tomorrow.
+                      </span>
+                    )}
                   </p>
                 </div>
               </div>
@@ -407,7 +411,7 @@ export default function DashboardFormEmbed() {
                   {/* Accordion Content */}
                   {isExpanded && form.template && (
                     <div className="p-4 bg-white dark:bg-gray-dark">
-                      {form.isSubmitted && !form.template.settings.allowMultipleSubmissions ? (
+                      {form.isSubmitted ? (
                         <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-md border border-green-200 dark:border-green-800">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -429,6 +433,11 @@ export default function DashboardFormEmbed() {
                           </p>
                           <p className="text-sm text-green-700 dark:text-green-300">
                             Thank you for your submission!
+                            {form.template.settings.allowMultipleSubmissions && (
+                              <span className="block mt-1">
+                                You can submit this form again tomorrow.
+                              </span>
+                            )}
                           </p>
                         </div>
                       ) : (

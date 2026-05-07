@@ -76,7 +76,7 @@ function getDateRange(filter: DateFilter): { start: Date; end: Date } | null {
  * GET /api/mis-tracker/analytics
  * Calculate submission analytics for a form
  */
-export const GET = withAuth(async (request: NextRequest) => {
+export const GET = withAuth(async (request) => {
   try {
     const { searchParams } = new URL(request.url);
     const formId = searchParams.get('formId');

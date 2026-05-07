@@ -101,8 +101,9 @@ export const POST = withAuth(async (request) => {
       );
     }
 
-    // Check if multiple submissions are allowed
+    // Check submission limits based on settings
     if (!template.settings.allowMultipleSubmissions) {
+      // Single submission ever - check all time
       const existing = await formSubmissionService.getAll({
         formId: body.formId,
         submittedBy: user.uid,
@@ -112,6 +113,20 @@ export const POST = withAuth(async (request) => {
       if (existing.submissions.length > 0) {
         return NextResponse.json(
           { error: 'You have already submitted this form' },
+          { status: 400 }
+        );
+      }
+    } else {
+      // Multiple submissions allowed - check daily limit
+      const todayCheck = await formSubmissionService.checkUserSubmissionToday(
+        body.formId,
+        user.uid,
+        new Date()
+      );
+
+      if (todayCheck.submitted) {
+        return NextResponse.json(
+          { error: 'You have already submitted this form today. Please try again tomorrow.' },
           { status: 400 }
         );
       }
