@@ -22,7 +22,7 @@ export interface Notification {
   title: string;
   message: string;
   body?: string;
-  type: 'task' | 'attendance' | 'team' | 'employee' | 'system';
+  type: 'task' | 'attendance' | 'team' | 'employee' | 'system' | 'leave_request' | 'leave_approved' | 'leave_rejected';
   read: boolean;
   actionUrl?: string;
   data?: {

@@ -70,7 +70,7 @@ export async function sendNotification(
           title,
           body,
           message: body,
-          type: data?.type || 'system',
+          type: (data?.type as any) || 'system',
           actionUrl: data?.url,
           metadata: {
             taskId: data?.taskId,
@@ -161,7 +161,7 @@ export async function sendNotification(
           title,
           body,
           message: body,
-          type: data?.type || 'system',
+          type: (data?.type as any) || 'system',
           actionUrl: data?.url,
           metadata: {
             taskId: data?.taskId,

@@ -378,6 +378,17 @@ export async function POST(request: NextRequest) {
 
     // Notify the assigned manager if one exists, otherwise notify all admins
     try {
+      console.log(`[leave-requests] ========== NOTIFICATION DEBUG START ==========`);
+      console.log(`[leave-requests] Leave request created:`, {
+        id: docRef.id,
+        employeeId: authResult.user.uid,
+        employeeName: leaveRequestData.employeeName,
+        leaveType,
+        startDate: start.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+        endDate: end.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
+        totalDays,
+      });
+
       const { sendNotification } = await import('@/lib/notifications/send-notification');
       const startStr = start.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
       const endStr = end.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -386,6 +397,7 @@ export async function POST(request: NextRequest) {
       const notifBody = `${employeeName} requested ${leaveType} leave (${daysText}) from ${startStr} to ${endStr}`;
 
       // Check if this employee has an assigned manager
+      console.log(`[leave-requests] Querying manager hierarchy for employee:`, authResult.user.uid);
       const hierarchySnapshot = await adminDb
         .collection('manager-hierarchies')
         .where('employeeIds', 'array-contains', authResult.user.uid)
@@ -397,22 +409,59 @@ export async function POST(request: NextRequest) {
       if (!hierarchySnapshot.empty) {
         // Employee has an assigned manager — notify only that manager
         notifyIds = [hierarchySnapshot.docs[0].data().managerId];
+        console.log(`[leave-requests] ✅ Manager found:`, notifyIds[0]);
       } else {
         // No manager assigned — notify all admins only
+        console.log(`[leave-requests] ⚠️ No manager found, falling back to admins`);
         const adminsSnapshot = await adminDb.collection('users').where('role', '==', 'admin').get();
         notifyIds = adminsSnapshot.docs.map((d) => d.id);
+        console.log(`[leave-requests] Found ${notifyIds.length} admin(s):`, notifyIds);
       }
 
-      if (notifyIds.length > 0) {
-        await sendNotification({
+      if (notifyIds.length === 0) {
+        console.error(`[leave-requests] ❌ CRITICAL: No managers or admins found to notify!`);
+        console.error(`[leave-requests] This leave request will NOT be notified to anyone.`);
+      } else {
+        console.log(`[leave-requests] Sending notifications to ${notifyIds.length} user(s):`, notifyIds);
+
+        const result = await sendNotification({
           userIds: notifyIds,
           title: 'New Leave Request',
           body: notifBody,
           data: { url: '/admin/leave-approvals', type: 'leave_request' },
         });
+
+        console.log('[leave-requests] ✅ Notification result:', {
+          totalTime: `${result.totalTime}ms`,
+          sent: result.sent.length,
+          errors: result.errors.length,
+        });
+
+        // Log which users received notifications and which didn't
+        if (result.sent.length > 0) {
+          console.log('[leave-requests] ✅ Notifications sent to:', result.sent.map(s => s.userId));
+        }
+        if (result.errors.length > 0) {
+          console.log('[leave-requests] ⚠️ Notification errors:', result.errors);
+          result.errors.forEach(err => {
+            if (err.error === 'No FCM token') {
+              console.log(`[leave-requests] ⚠️ User ${err.userId} has not enabled notifications`);
+              console.log(`[leave-requests] 💡 User needs to visit the app and click "Enable Notifications"`);
+            } else {
+              console.log(`[leave-requests] ❌ User ${err.userId} error: ${err.error}`);
+            }
+          });
+        }
       }
+
+      console.log(`[leave-requests] ========== NOTIFICATION DEBUG END ==========`);
     } catch (notifError) {
-      console.error('[leave-requests] Failed to send notifications:', notifError);
+      console.error('[leave-requests] ❌ CRITICAL ERROR sending leave request notifications:', notifError);
+      console.error('[leave-requests] Error details:', {
+        message: notifError instanceof Error ? notifError.message : 'Unknown error',
+        stack: notifError instanceof Error ? notifError.stack : undefined,
+      });
+      // Don't fail the leave request creation if notification fails
     }
 
     return NextResponse.json(
