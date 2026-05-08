@@ -17,6 +17,8 @@ import {
   CheckCircleIcon,
   BellAlertIcon,
   TrashIcon,
+  CalendarIcon,
+  XCircleIcon,
 } from "@heroicons/react/24/outline";
 
 // Simple time ago function
@@ -52,6 +54,12 @@ const getNotificationIcon = (type: string) => {
       return <UserGroupIcon className="w-5 h-5 text-purple-600" />;
     case 'employee':
       return <UserGroupIcon className="w-5 h-5 text-orange-600" />;
+    case 'leave_request':
+      return <CalendarIcon className="w-5 h-5 text-blue-500" />;
+    case 'leave_approved':
+      return <CheckCircleIcon className="w-5 h-5 text-green-500" />;
+    case 'leave_rejected':
+      return <XCircleIcon className="w-5 h-5 text-red-500" />;
     default:
       return <BellAlertIcon className="w-5 h-5 text-gray-600 dark:text-gray-400" />;
   }

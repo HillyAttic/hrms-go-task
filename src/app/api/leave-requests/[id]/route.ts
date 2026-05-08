@@ -121,6 +121,13 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 
     // Notify the employee about the decision
     try {
+      console.log(`[leave-requests/[id]] ========== NOTIFICATION DEBUG START ==========`);
+      console.log(`[leave-requests/[id]] Leave request ${action}d:`, {
+        id,
+        action,
+        employeeId: data.employeeId,
+      });
+
       const { sendNotification } = await import('@/lib/notifications/send-notification');
       const employeeId: string = data.employeeId;
       if (employeeId) {
@@ -134,15 +141,47 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
         const notifBody = isApproved
           ? `Your ${leaveType} leave from ${startStr} to ${endStr} has been approved.${approvalReason ? ` Note: ${approvalReason}` : ''}`
           : `Your ${leaveType} leave from ${startStr} to ${endStr} has been rejected.${reason ? ` Reason: ${reason}` : ''}`;
-        await sendNotification({
+
+        console.log(`[leave-requests/[id]] Sending notification to employee:`, employeeId);
+        console.log(`[leave-requests/[id]] Notification type:`, isApproved ? 'leave_approved' : 'leave_rejected');
+
+        const result = await sendNotification({
           userIds: [employeeId],
           title: notifTitle,
           body: notifBody,
           data: { url: '/attendance', type: isApproved ? 'leave_approved' : 'leave_rejected' },
         });
+
+        console.log('[leave-requests/[id]] ✅ Notification result:', {
+          totalTime: `${result.totalTime}ms`,
+          sent: result.sent.length,
+          errors: result.errors.length,
+        });
+
+        if (result.sent.length > 0) {
+          console.log('[leave-requests/[id]] ✅ Notification sent to:', result.sent.map(s => s.userId));
+        }
+        if (result.errors.length > 0) {
+          console.log('[leave-requests/[id]] ⚠️ Notification errors:', result.errors);
+          result.errors.forEach(err => {
+            if (err.error === 'No FCM token') {
+              console.log(`[leave-requests/[id]] ⚠️ User ${err.userId} has not enabled notifications`);
+            } else {
+              console.log(`[leave-requests/[id]] ❌ User ${err.userId} error: ${err.error}`);
+            }
+          });
+        }
+      } else {
+        console.warn(`[leave-requests/[id]] ⚠️ No employeeId found in leave request data`);
       }
+
+      console.log(`[leave-requests/[id]] ========== NOTIFICATION DEBUG END ==========`);
     } catch (notifError) {
-      console.error('[leave-requests/[id]] Failed to send employee notification:', notifError);
+      console.error('[leave-requests/[id]] ❌ CRITICAL ERROR sending employee notification:', notifError);
+      console.error('[leave-requests/[id]] Error details:', {
+        message: notifError instanceof Error ? notifError.message : 'Unknown error',
+        stack: notifError instanceof Error ? notifError.stack : undefined,
+      });
     }
 
     const updated = {
