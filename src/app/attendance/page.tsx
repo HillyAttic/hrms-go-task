@@ -147,7 +147,20 @@ export default function AttendancePage() {
 
     try {
       setProcessingId(id);
-      await leaveService.rejectLeaveRequest(id, user.uid, reason);
+      const { authenticatedFetch } = await import('@/lib/api-client');
+      const response = await authenticatedFetch(`/api/leave-requests/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'reject',
+          reason: reason
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to reject leave');
+      }
+
       toast.success('Leave rejected');
       fetchData();
     } catch (error) {
