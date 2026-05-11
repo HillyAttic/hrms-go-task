@@ -5,7 +5,62 @@ import { ErrorResponses } from '@/lib/api-error-handler';
 /**
  * GET /api/notifications/debug
  * Debug endpoint to check notification setup
+ *
+ * POST /api/notifications/debug
+ * Test: write a leave notification to verify Firestore write works
  */
+export async function POST(request: NextRequest) {
+  try {
+    const { verifyAuthToken } = await import('@/lib/server-auth');
+    const authResult = await verifyAuthToken(request);
+
+    if (!authResult.success || !authResult.user) {
+      return ErrorResponses.unauthorized();
+    }
+
+    if (authResult.user.claims.role !== 'admin') {
+      return ErrorResponses.forbidden('Admin only');
+    }
+
+    const userId = authResult.user.uid;
+
+    // Write a test leave notification directly using sendNotification
+    const { sendNotification } = await import('@/lib/notifications/send-notification');
+
+    console.log(`[debug] ========== TEST LEAVE NOTIFICATION START ==========`);
+    console.log(`[debug] Writing test leave notification for user: ${userId}`);
+
+    const result = await sendNotification({
+      userIds: [userId],
+      title: 'Test Leave Request',
+      body: 'This is a test leave notification to verify Firestore write works.',
+      data: { url: '/attendance', type: 'leave_request' },
+    });
+
+    console.log(`[debug] Result:`, {
+      sent: result.sent.length,
+      errors: result.errors.length,
+      totalTime: result.totalTime,
+    });
+    console.log(`[debug] ========== TEST LEAVE NOTIFICATION END ==========`);
+
+    return NextResponse.json({
+      message: 'Test leave notification sent',
+      result: {
+        sent: result.sent,
+        errors: result.errors,
+        totalTime: `${result.totalTime}ms`,
+      },
+    });
+  } catch (error: any) {
+    console.error('[debug] Test notification error:', error);
+    return NextResponse.json(
+      { error: 'Test failed', details: error.message },
+      { status: 500 }
+    );
+  }
+}
+
 export async function GET(request: NextRequest) {
   try {
     // Verify authentication

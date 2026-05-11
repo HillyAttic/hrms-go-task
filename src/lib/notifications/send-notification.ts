@@ -73,9 +73,7 @@ export async function sendNotification(
             message: body,
             type: (data?.type as any) || 'system',
             actionUrl: data?.url,
-            metadata: {
-              taskId: data?.taskId,
-            },
+            ...(data?.taskId && { metadata: { taskId: data.taskId } }),
             data: data || {},
             read: false,
             sent: false,
@@ -168,9 +166,7 @@ export async function sendNotification(
           message: body,
           type: (data?.type as any) || 'system',
           actionUrl: data?.url,
-          metadata: {
-            taskId: data?.taskId,
-          },
+          ...(data?.taskId && { metadata: { taskId: data.taskId } }),
           data: data || {},
           read: false,
           sent: true,

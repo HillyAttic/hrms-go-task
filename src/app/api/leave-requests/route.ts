@@ -418,11 +418,29 @@ export async function POST(request: NextRequest) {
         console.log(`[leave-requests] Found ${notifyIds.length} admin(s):`, notifyIds);
       }
 
+      // 1. Send confirmation notification to the employee who submitted
+      const employeeNotifBody = `Your ${leaveType} leave (${daysText}) from ${startStr} to ${endStr} has been submitted and is pending approval.`;
+      console.log(`[leave-requests] Sending confirmation to employee:`, authResult.user.uid);
+
+      const employeeResult = await sendNotification({
+        userIds: [authResult.user.uid],
+        title: 'Leave Request Submitted',
+        body: employeeNotifBody,
+        data: { url: '/attendance', type: 'leave_request' },
+      });
+
+      console.log('[leave-requests] ✅ Employee confirmation result:', {
+        totalTime: `${employeeResult.totalTime}ms`,
+        sent: employeeResult.sent.length,
+        errors: employeeResult.errors.length,
+      });
+
+      // 2. Send notification to manager/admins
       if (notifyIds.length === 0) {
         console.error(`[leave-requests] ❌ CRITICAL: No managers or admins found to notify!`);
         console.error(`[leave-requests] This leave request will NOT be notified to anyone.`);
       } else {
-        console.log(`[leave-requests] Sending notifications to ${notifyIds.length} user(s):`, notifyIds);
+        console.log(`[leave-requests] Sending notifications to ${notifyIds.length} manager/admin(s):`, notifyIds);
 
         const result = await sendNotification({
           userIds: notifyIds,
@@ -431,13 +449,12 @@ export async function POST(request: NextRequest) {
           data: { url: '/admin/leave-approvals', type: 'leave_request' },
         });
 
-        console.log('[leave-requests] ✅ Notification result:', {
+        console.log('[leave-requests] ✅ Manager/admin notification result:', {
           totalTime: `${result.totalTime}ms`,
           sent: result.sent.length,
           errors: result.errors.length,
         });
 
-        // Log which users received notifications and which didn't
         if (result.sent.length > 0) {
           console.log('[leave-requests] ✅ Notifications sent to:', result.sent.map(s => s.userId));
         }
