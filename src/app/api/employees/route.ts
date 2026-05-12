@@ -82,7 +82,7 @@ export async function GET(request: NextRequest) {
             email: data.email || '',
             phone: data.phoneNumber || data.phone || '',
             role: employeeAdminService.mapUserRoleToEmployeeRole(data.role),
-            status: (data.isActive === false ? 'on-leave' : 'active') as 'active' | 'on-leave',
+            status: (data.status as 'active' | 'on-leave' | 'resigned') || 'active',
             createdAt: data.createdAt?.toDate?.() || new Date(),
             updatedAt: data.updatedAt?.toDate?.() || new Date(),
           };

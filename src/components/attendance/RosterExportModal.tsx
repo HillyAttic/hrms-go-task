@@ -300,19 +300,9 @@ export function RosterExportModal({
               stats.halfDay++;
             }
           } else {
-            // Clocked in but not out - check if it's today
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            const recordDate = new Date(currentDate);
-            recordDate.setHours(0, 0, 0, 0);
-
-            if (recordDate.getTime() === today.getTime()) {
-              status = 'present';
-              stats.present++;
-            } else {
-              status = 'absent';
-              stats.absent++;
-            }
+            // Clocked in but not out - mark as present
+            status = 'present';
+            stats.present++;
           }
         } else {
           // No attendance record and not a holiday/leave
