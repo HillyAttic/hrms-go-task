@@ -56,6 +56,12 @@ export function MobileBottomNav() {
   const ticking = useRef(false);
 
   useEffect(() => {
+    // Always show bottom nav on calendar page
+    if (pathname === "/calendar") {
+      setVisible(true);
+      return;
+    }
+
     const handleScroll = () => {
       if (!ticking.current) {
         window.requestAnimationFrame(() => {
@@ -76,7 +82,7 @@ export function MobileBottomNav() {
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [pathname]);
 
   return (
     <nav

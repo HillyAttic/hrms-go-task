@@ -11,6 +11,37 @@ const createLeaveSchema = z.object({
 });
 
 /**
+ * Helper function to filter leave requests by date range.
+ * A leave request overlaps with the date range if:
+ * - leave.startDate <= rangeEnd AND leave.endDate >= rangeStart
+ */
+function filterLeavesByDateRange(
+  docs: FirebaseFirestore.QueryDocumentSnapshot[],
+  startDate: Date | undefined,
+  endDate: Date | undefined
+): FirebaseFirestore.QueryDocumentSnapshot[] {
+  if (!startDate && !endDate) {
+    return docs;
+  }
+
+  return docs.filter((doc) => {
+    const data = doc.data();
+    const leaveStart = data.startDate?.toDate ? data.startDate.toDate() : new Date(data.startDate);
+    const leaveEnd = data.endDate?.toDate ? data.endDate.toDate() : new Date(data.endDate);
+
+    // Check if leave overlaps with the requested date range
+    if (startDate && endDate) {
+      return leaveStart <= endDate && leaveEnd >= startDate;
+    } else if (startDate) {
+      return leaveEnd >= startDate;
+    } else if (endDate) {
+      return leaveStart <= endDate;
+    }
+    return true;
+  });
+}
+
+/**
  * GET /api/leave-requests
  * Get all leave requests.
  * Uses Admin SDK to bypass Firestore security rules on the server side.
@@ -35,6 +66,18 @@ export async function GET(request: NextRequest) {
     const employeeId = searchParams.get('employeeId') || undefined;
     const leaveType = searchParams.get('leaveType') || undefined;
     const includeAll = searchParams.get('includeAll') === 'true'; // For roster views that need all employees
+    const startDateParam = searchParams.get('startDate');
+    const endDateParam = searchParams.get('endDate');
+
+    // Parse date range for filtering (if provided)
+    let startDateFilter: Date | undefined;
+    let endDateFilter: Date | undefined;
+    if (startDateParam) {
+      startDateFilter = new Date(startDateParam);
+    }
+    if (endDateParam) {
+      endDateFilter = new Date(endDateParam);
+    }
 
     // Use Admin SDK to bypass Firestore security rules on the server
     const { adminDb } = await import('@/lib/firebase-admin');
@@ -73,9 +116,12 @@ export async function GET(request: NextRequest) {
 
         const snapshot = await query.get();
 
+        // Apply date range filter
+        let filteredDocs = filterLeavesByDateRange(snapshot.docs, startDateFilter, endDateFilter);
+
         // Collect unique approver UIDs missing approverName for backfill
         const missingApproverIds = new Set<string>();
-        snapshot.docs.forEach((doc) => {
+        filteredDocs.forEach((doc) => {
           const data = doc.data();
           if (!data.approverName && data.approvedBy) missingApproverIds.add(data.approvedBy);
         });
@@ -90,7 +136,7 @@ export async function GET(request: NextRequest) {
           });
         }
 
-        const requests = snapshot.docs.map((doc) => {
+        const requests = filteredDocs.map((doc) => {
           const data = doc.data();
           return {
             id: doc.id,
@@ -115,6 +161,9 @@ export async function GET(request: NextRequest) {
         let filteredDocs = allSnapshot.docs.filter((doc) => employeeIdSet.has(doc.data().employeeId));
         if (status) filteredDocs = filteredDocs.filter((doc) => doc.data().status === status);
         if (leaveType) filteredDocs = filteredDocs.filter((doc) => doc.data().leaveType === leaveType);
+
+        // Apply date range filter
+        filteredDocs = filterLeavesByDateRange(filteredDocs, startDateFilter, endDateFilter);
 
         // Backfill approverName for old records
         const missingApproverIds30 = new Set<string>();
@@ -182,7 +231,7 @@ export async function GET(request: NextRequest) {
       // Filter out requests from employees assigned to any manager ONLY if not viewing specific employee
       // and not using includeAll flag
       let filteredDocs = snapshot.docs;
-      
+
       if (!employeeId && !includeAll) {
         // For general list, collect assigned employees and filter them out
         const allHierarchiesSnapshot = await adminDb.collection('manager-hierarchies').get();
@@ -191,11 +240,14 @@ export async function GET(request: NextRequest) {
           const ids: string[] = doc.data().employeeIds || [];
           ids.forEach((id) => assignedEmployeeIds.add(id));
         });
-        
+
         if (assignedEmployeeIds.size > 0) {
           filteredDocs = snapshot.docs.filter((doc) => !assignedEmployeeIds.has(doc.data().employeeId));
         }
       }
+
+      // Apply date range filter
+      filteredDocs = filterLeavesByDateRange(filteredDocs, startDateFilter, endDateFilter);
 
       // Backfill approverName for old records
       const missingApproverIds = new Set<string>();
@@ -244,9 +296,12 @@ export async function GET(request: NextRequest) {
 
     const snapshot = await query.get();
 
+    // Apply date range filter
+    let filteredDocs = filterLeavesByDateRange(snapshot.docs, startDateFilter, endDateFilter);
+
     // Collect unique approver UIDs that are missing approverName so we can batch-resolve them
     const missingApproverIds = new Set<string>();
-    snapshot.docs.forEach((doc) => {
+    filteredDocs.forEach((doc) => {
       const data = doc.data();
       if (!data.approverName && data.approvedBy) {
         missingApproverIds.add(data.approvedBy);
@@ -265,7 +320,7 @@ export async function GET(request: NextRequest) {
       });
     }
 
-    const requests = snapshot.docs.map((doc) => {
+    const requests = filteredDocs.map((doc) => {
       const data = doc.data();
       return {
         id: doc.id,

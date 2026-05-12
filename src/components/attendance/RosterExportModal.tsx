@@ -162,39 +162,221 @@ export function RosterExportModal({
   }, [selectedMonth, selectedYear]);
 
   // ═══════════════════════════════════════════════════════════════════════
+  // Build employee attendance data for the selected date range
+  // ═══════════════════════════════════════════════════════════════════════
+  const buildEmployeeAttendanceData = async (): Promise<EmployeeAttendance[]> => {
+    const { authenticatedFetch } = await import('@/lib/api-client');
+
+    setProgressMsg('Fetching employee data...');
+
+    // Parse dates in local timezone
+    const [startYear, startMonth, startDay] = startDate.split('-').map(Number);
+    const startD = new Date(startYear, startMonth - 1, startDay);
+    startD.setHours(0, 0, 0, 0);
+
+    const [endYear, endMonth, endDay] = endDate.split('-').map(Number);
+    const endD = new Date(endYear, endMonth - 1, endDay);
+    endD.setHours(23, 59, 59, 999);
+
+    // Fetch all required data in parallel
+    const [employeesRes, attRes, leaveRes, holidaysRes] = await Promise.all([
+      authenticatedFetch('/api/employees'),
+      authenticatedFetch(`/api/attendance/records?startDate=${startD.toISOString()}&endDate=${endD.toISOString()}`),
+      authenticatedFetch(`/api/leave-requests?startDate=${startD.toISOString()}&endDate=${endD.toISOString()}&includeAll=true`),
+      authenticatedFetch('/api/holidays'),
+    ]);
+
+    const employeesRaw = employeesRes.ok ? await employeesRes.json() : [];
+    const attRaw = attRes.ok ? await attRes.json() : [];
+    const leaveRaw = leaveRes.ok ? await leaveRes.json() : [];
+    const holidaysRaw = holidaysRes.ok ? await holidaysRes.json() : [];
+
+    const allEmployees: any[] = Array.isArray(employeesRaw) ? employeesRaw : employeesRaw?.data ?? [];
+    const attRecords: any[] = Array.isArray(attRaw) ? attRaw : attRaw?.data ?? [];
+    const leaveRecords: any[] = Array.isArray(leaveRaw) ? leaveRaw : leaveRaw?.data ?? [];
+    const holidays: any[] = Array.isArray(holidaysRaw) ? holidaysRaw : holidaysRaw?.data ?? [];
+
+    console.log(`[buildEmployeeAttendanceData] Fetched ${allEmployees.length} employees, ${attRecords.length} attendance records, ${leaveRecords.length} leave records`);
+
+    // Filter employees based on role exclusions
+    const filteredEmployees = allEmployees.filter(emp => {
+      if (excludeAdmins && emp.role?.toLowerCase() === 'admin') return false;
+      if (excludeManagers && emp.role?.toLowerCase() === 'manager') return false;
+      return true;
+    });
+
+    console.log(`[buildEmployeeAttendanceData] After role filtering: ${filteredEmployees.length} employees`);
+
+    setProgressMsg('Building attendance data...');
+
+    // Build lookups
+    const attMap = new Map<string, Map<string, any>>();
+    attRecords.forEach((rec) => {
+      const dateStr = new Date(rec.clockIn).toISOString().split('T')[0];
+      if (!attMap.has(rec.employeeId)) attMap.set(rec.employeeId, new Map());
+      attMap.get(rec.employeeId)!.set(dateStr, rec);
+    });
+
+    const leaveMap = new Map<string, any[]>();
+    leaveRecords.forEach((lr) => {
+      if (!leaveMap.has(lr.employeeId)) leaveMap.set(lr.employeeId, []);
+      leaveMap.get(lr.employeeId)!.push(lr);
+    });
+
+    // Build holiday set (YYYY-MM-DD format)
+    const holidaySet = new Set<string>();
+    holidays.forEach((h) => {
+      const hDate = new Date(h.date);
+      const dateStr = `${hDate.getFullYear()}-${String(hDate.getMonth() + 1).padStart(2, '0')}-${String(hDate.getDate()).padStart(2, '0')}`;
+      holidaySet.add(dateStr);
+    });
+
+    // Build employee attendance data
+    const employeeAttendanceData: EmployeeAttendance[] = filteredEmployees.map((emp) => {
+      const days: AttendanceDay[] = [];
+      const stats = {
+        present: 0,
+        absent: 0,
+        approvedLeave: 0,
+        unapprovedLeave: 0,
+        halfDay: 0,
+        holiday: 0,
+        totalHours: 0,
+      };
+
+      // Iterate through each day in the date range
+      const currentDate = new Date(startD);
+      while (currentDate <= endD) {
+        const dateYear = currentDate.getFullYear();
+        const dateMon = String(currentDate.getMonth() + 1).padStart(2, '0');
+        const dateDay = String(currentDate.getDate()).padStart(2, '0');
+        const dateStr = `${dateYear}-${dateMon}-${dateDay}`;
+
+        const dayOfWeek = currentDate.getDay();
+        const isSunday = dayOfWeek === 0;
+        const isHoliday = holidaySet.has(dateStr);
+
+        const attRecord = attMap.get(emp.id)?.get(dateStr);
+        const leaves = leaveMap.get(emp.id) ?? [];
+        const matchedLeave = leaves.find((l) => {
+          const ls = l.startDate.split('T')[0];
+          const le = l.endDate.split('T')[0];
+          return ls <= dateStr && le >= dateStr;
+        });
+
+        let status: AttendanceDay['status'] = 'pending';
+        let hours = 0;
+        let leaveType: string | undefined;
+        let leaveStatus: 'approved' | 'pending' | 'rejected' | undefined;
+
+        if (isSunday || isHoliday) {
+          status = 'holiday';
+          stats.holiday++;
+        } else if (matchedLeave) {
+          if (matchedLeave.status === 'approved') {
+            status = 'approved-leave';
+            stats.approvedLeave++;
+          } else if (matchedLeave.status === 'rejected') {
+            status = 'absent';
+            stats.absent++;
+          } else {
+            status = 'unapproved-leave';
+            stats.unapprovedLeave++;
+          }
+          leaveType = matchedLeave.leaveType;
+          leaveStatus = matchedLeave.status;
+        } else if (attRecord) {
+          if (attRecord.clockOut) {
+            const clockInTime = new Date(attRecord.clockIn).getTime();
+            const clockOutTime = new Date(attRecord.clockOut).getTime();
+            hours = (clockOutTime - clockInTime) / (1000 * 60 * 60);
+            stats.totalHours += hours;
+
+            if (hours >= 4) {
+              status = 'present';
+              stats.present++;
+            } else {
+              status = 'half-day';
+              stats.halfDay++;
+            }
+          } else {
+            // Clocked in but not out - check if it's today
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const recordDate = new Date(currentDate);
+            recordDate.setHours(0, 0, 0, 0);
+
+            if (recordDate.getTime() === today.getTime()) {
+              status = 'present';
+              stats.present++;
+            } else {
+              status = 'absent';
+              stats.absent++;
+            }
+          }
+        } else {
+          // No attendance record and not a holiday/leave
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          const recordDate = new Date(currentDate);
+          recordDate.setHours(0, 0, 0, 0);
+
+          if (recordDate < today) {
+            status = 'absent';
+            stats.absent++;
+          } else {
+            status = 'pending';
+          }
+        }
+
+        days.push({
+          date: new Date(currentDate),
+          status,
+          hours,
+          leaveType,
+          leaveStatus,
+        });
+
+        // Move to next day
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+
+      return {
+        employeeId: emp.id,
+        employeeName: emp.name || emp.displayName || emp.email,
+        employeeEmail: emp.email,
+        role: emp.role,
+        days,
+        stats,
+      };
+    });
+
+    console.log(`[buildEmployeeAttendanceData] Built attendance data for ${employeeAttendanceData.length} employees`);
+    return employeeAttendanceData;
+  };
+
+  // ═══════════════════════════════════════════════════════════════════════
   // Shared data builder — used by both Excel and PDF exports
   // ═══════════════════════════════════════════════════════════════════════
   const buildExportData = async (): Promise<{ detailRows: DetailRow[]; geocodeErrors: number }> => {
     const { authenticatedFetch } = await import('@/lib/api-client');
 
     console.log('[Export Debug] Starting buildExportData');
-    console.log('[Export Debug] Total employees before filter:', employees.length);
-    console.log('[Export Debug] excludeAdmins:', excludeAdmins, 'excludeManagers:', excludeManagers);
 
-    // Filter employees based on exclusion settings
-    const filteredEmployees = employees.filter(emp => {
-      console.log(`[Export Debug] Employee: ${emp.employeeName}, role: ${emp.role}`);
-      if (excludeAdmins && emp.role?.toLowerCase() === 'admin') {
-        console.log(`[Export Debug] Excluding admin: ${emp.employeeName}`);
-        return false;
-      }
-      if (excludeManagers && emp.role?.toLowerCase() === 'manager') {
-        console.log(`[Export Debug] Excluding manager: ${emp.employeeName}`);
-        return false;
-      }
-      return true;
-    });
+    // Build fresh employee attendance data for the selected date range
+    const employeeAttendanceData = await buildEmployeeAttendanceData();
 
-    console.log('[Export Debug] Filtered employees count:', filteredEmployees.length);
+    console.log('[Export Debug] Built employee attendance data:', employeeAttendanceData.length, 'employees');
 
     const start = new Date(startDate);
     start.setHours(0, 0, 0, 0);
     const end = new Date(endDate);
     end.setHours(23, 59, 59, 999);
 
+    // Fetch attendance and leave records for geocoding and detail lookup
     const [attRes, leaveRes] = await Promise.all([
       authenticatedFetch(`/api/attendance/records?startDate=${start.toISOString()}&endDate=${end.toISOString()}`),
-      authenticatedFetch(`/api/leave-requests?startDate=${start.toISOString()}&endDate=${end.toISOString()}`),
+      authenticatedFetch(`/api/leave-requests?startDate=${start.toISOString()}&endDate=${end.toISOString()}&includeAll=true`),
     ]);
 
     const attRaw = attRes.ok ? await attRes.json() : [];
@@ -272,28 +454,11 @@ export function RosterExportModal({
       return geocodeCache.get(key) || `${loc.latitude}, ${loc.longitude}`;
     };
 
-    // Parse dates in local timezone to match how day.date is created in page.tsx
-    const [startYear, startMonth, startDay] = startDate.split('-').map(Number);
-    const startD = new Date(startYear, startMonth - 1, startDay);
-    startD.setHours(0, 0, 0, 0);
-
-    const [endYear, endMonth, endDay] = endDate.split('-').map(Number);
-    const endD = new Date(endYear, endMonth - 1, endDay);
-    endD.setHours(23, 59, 59, 999);
-
-    console.log('[Export Debug] Date range:', { startDate, endDate });
-    console.log('[Export Debug] Parsed dates:', { startD, endD });
-    console.log('[Export Debug] Filtered employees count:', filteredEmployees.length);
-
-    // Build rows
+    // Build rows from the employee attendance data
     const detailRows: DetailRow[] = [];
-    for (const emp of filteredEmployees) {
-      console.log(`[Export Debug] Employee: ${emp.employeeName}, days count: ${emp.days.length}`);
+    for (const emp of employeeAttendanceData) {
       for (const day of emp.days) {
         const d = day.date;
-        console.log(`[Export Debug] Checking day: ${d}, status: ${day.status}, compare: d < startD = ${d < startD}, d > endD = ${d > endD}`);
-        if (d < startD || d > endD) continue;
-
         const dateYear = d.getFullYear();
         const dateMon = String(d.getMonth() + 1).padStart(2, '0');
         const dateDay = String(d.getDate()).padStart(2, '0');
@@ -338,14 +503,7 @@ export function RosterExportModal({
   // ═══════════════════════════════════════════════════════════════════════
   // Excel export
   // ═══════════════════════════════════════════════════════════════════════
-  const exportExcel = (detailRows: DetailRow[]) => {
-    // Filter employees based on exclusion settings
-    const filteredEmployees = employees.filter(emp => {
-      if (excludeAdmins && emp.role?.toLowerCase() === 'admin') return false;
-      if (excludeManagers && emp.role?.toLowerCase() === 'manager') return false;
-      return true;
-    });
-
+  const exportExcel = (detailRows: DetailRow[], employeeData: EmployeeAttendance[]) => {
     const sheetRows = detailRows.map((r) => {
       const row: any = {
         'Employee Name': r.employeeName,
@@ -382,36 +540,19 @@ export function RosterExportModal({
     XLSX.utils.book_append_sheet(wb, wsDetail, 'Daily Attendance');
 
     if (includeStats) {
-      const startD = new Date(startDate);
-      const endD = new Date(endDate);
-      const summaryRows = filteredEmployees
-        .filter((emp) => emp.days.some((d) => d.date >= startD && d.date <= endD))
-        .map((emp) => {
-          const rangeDays = emp.days.filter((d) => d.date >= startD && d.date <= endD);
-          const stats = rangeDays.reduce(
-            (acc, d) => {
-              if (d.status === 'present') { acc.present++; acc.hours += d.hours ?? 0; }
-              else if (d.status === 'absent') acc.absent++;
-              else if (d.status === 'approved-leave') acc.approvedLeave++;
-              else if (d.status === 'unapproved-leave') acc.unapprovedLeave++;
-              else if (d.status === 'half-day') acc.halfDay++;
-              else if (d.status === 'holiday') acc.holiday++;
-              return acc;
-            },
-            { present: 0, absent: 0, approvedLeave: 0, unapprovedLeave: 0, halfDay: 0, holiday: 0, hours: 0 }
-          );
-          return {
-            'Employee Name': emp.employeeName,
-            'Employee Email': emp.employeeEmail,
-            'Present': stats.present,
-            'Absent': stats.absent,
-            'Approved Leave': stats.approvedLeave,
-            'Unapproved Leave': stats.unapprovedLeave,
-            'Half Day': stats.halfDay,
-            'Holiday/Sunday': stats.holiday,
-            'Total Hours': Number(stats.hours.toFixed(2)),
-          };
-        });
+      const summaryRows = employeeData.map((emp) => {
+        return {
+          'Employee Name': emp.employeeName,
+          'Employee Email': emp.employeeEmail,
+          'Present': emp.stats.present,
+          'Absent': emp.stats.absent,
+          'Approved Leave': emp.stats.approvedLeave,
+          'Unapproved Leave': emp.stats.unapprovedLeave,
+          'Half Day': emp.stats.halfDay,
+          'Holiday/Sunday': emp.stats.holiday,
+          'Total Hours': Number(emp.stats.totalHours.toFixed(2)),
+        };
+      });
 
       const wsSummary = XLSX.utils.json_to_sheet(summaryRows);
       wsSummary['!cols'] = [
@@ -428,16 +569,9 @@ export function RosterExportModal({
   // ═══════════════════════════════════════════════════════════════════════
   // PDF export
   // ═══════════════════════════════════════════════════════════════════════
-  const exportPdf = async (detailRows: DetailRow[]) => {
+  const exportPdf = async (detailRows: DetailRow[], employeeData: EmployeeAttendance[]) => {
     const jsPDF = (await import('jspdf')).default;
     const autoTable = (await import('jspdf-autotable')).default;
-
-    // Filter employees based on exclusion settings
-    const filteredEmployees = employees.filter(emp => {
-      if (excludeAdmins && emp.role?.toLowerCase() === 'admin') return false;
-      if (excludeManagers && emp.role?.toLowerCase() === 'manager') return false;
-      return true;
-    });
 
     const doc = new jsPDF('landscape', 'mm', 'a4');
 
@@ -451,7 +585,7 @@ export function RosterExportModal({
     const formattedEnd = new Date(endDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
     doc.text(`Period: ${formattedStart} — ${formattedEnd}`, 14, 22);
     doc.text(`Generated: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}`, 14, 27);
-    doc.text(`Employees: ${filteredEmployees.length}`, 14, 32);
+    doc.text(`Employees: ${employeeData.length}`, 14, 32);
     doc.setTextColor(0);
 
     // Detail table
@@ -518,36 +652,18 @@ export function RosterExportModal({
       doc.text('Attendance Summary', 14, 15);
       doc.setFontSize(10);
       doc.setTextColor(100);
-      doc.text(`${MONTH_NAMES[month]} ${year}`, 14, 22);
+      doc.text(`${formattedStart} — ${formattedEnd}`, 14, 22);
       doc.setTextColor(0);
 
-      const startD = new Date(startDate);
-      const endD = new Date(endDate);
-
       const summaryHeaders = ['Employee', 'Email', 'Present', 'Absent', 'Approved Leave', 'Unapproved Leave', 'Half Day', 'Holiday', 'Total Hours'];
-      const summaryBody = filteredEmployees
-        .filter((emp) => emp.days.some((d) => d.date >= startD && d.date <= endD))
-        .map((emp) => {
-          const rangeDays = emp.days.filter((d) => d.date >= startD && d.date <= endD);
-          const s = rangeDays.reduce(
-            (acc, d) => {
-              if (d.status === 'present') { acc.present++; acc.hours += d.hours ?? 0; }
-              else if (d.status === 'absent') acc.absent++;
-              else if (d.status === 'approved-leave') acc.approvedLeave++;
-              else if (d.status === 'unapproved-leave') acc.unapprovedLeave++;
-              else if (d.status === 'half-day') acc.halfDay++;
-              else if (d.status === 'holiday') acc.holiday++;
-              return acc;
-            },
-            { present: 0, absent: 0, approvedLeave: 0, unapprovedLeave: 0, halfDay: 0, holiday: 0, hours: 0 }
-          );
-          return [
-            emp.employeeName, emp.employeeEmail,
-            String(s.present), String(s.absent), String(s.approvedLeave),
-            String(s.unapprovedLeave), String(s.halfDay), String(s.holiday),
-            s.hours.toFixed(2),
-          ];
-        });
+      const summaryBody = employeeData.map((emp) => {
+        return [
+          emp.employeeName, emp.employeeEmail,
+          String(emp.stats.present), String(emp.stats.absent), String(emp.stats.approvedLeave),
+          String(emp.stats.unapprovedLeave), String(emp.stats.halfDay), String(emp.stats.holiday),
+          emp.stats.totalHours.toFixed(2),
+        ];
+      });
 
       autoTable(doc, {
         startY: 27,
@@ -586,10 +702,6 @@ export function RosterExportModal({
       alert('Start date must be before end date');
       return;
     }
-    if (employees.length === 0) {
-      alert('No employee data to export');
-      return;
-    }
 
     setExporting(true);
     setProgressMsg('Fetching attendance records...');
@@ -597,12 +709,15 @@ export function RosterExportModal({
     try {
       const { detailRows, geocodeErrors } = await buildExportData();
 
+      // Get the employee data that was built during buildExportData
+      const employeeData = await buildEmployeeAttendanceData();
+
       setProgressMsg(`Building ${exportFormat === 'excel' ? 'Excel' : 'PDF'} file...`);
 
       if (exportFormat === 'excel') {
-        exportExcel(detailRows);
+        exportExcel(detailRows, employeeData);
       } else {
-        await exportPdf(detailRows);
+        await exportPdf(detailRows, employeeData);
       }
 
       if (geocodeErrors > 0) {
@@ -826,7 +941,7 @@ export function RosterExportModal({
           </Button>
           <Button
             onClick={handleExport}
-            disabled={exporting || employees.length === 0}
+            disabled={exporting}
             className={`w-full sm:w-auto order-1 sm:order-2 text-white ${
               exportFormat === 'excel'
                 ? 'bg-green-600 hover:bg-green-700'
