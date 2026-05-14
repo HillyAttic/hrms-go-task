@@ -3,6 +3,7 @@
 import React from 'react';
 import type { FormField as FormFieldType } from '@/types/form.types';
 import { UseFormRegister, FieldError, UseFormSetValue, UseFormWatch } from 'react-hook-form';
+import { SearchableSelect } from './SearchableSelect';
 
 interface FormFieldProps {
   field: FormFieldType;
@@ -89,14 +90,14 @@ export function FormField({ field, register, error, setValue, watch }: FormField
 
       case 'select':
         return (
-          <select {...register(field.id)} className={`${baseClasses} ${errorClasses}`}>
-            <option value="">Select an option</option>
-            {field.options?.map((option) => (
-              <option key={typeof option === 'string' ? option : option.value} value={typeof option === 'string' ? option : option.value}>
-                {typeof option === 'string' ? option : option.label}
-              </option>
-            ))}
-          </select>
+          <SearchableSelect
+            options={field.options || []}
+            value={watch(field.id) || ''}
+            onChange={(value) => setValue(field.id, value)}
+            placeholder="Select an option"
+            className={`${baseClasses} ${errorClasses}`}
+            error={!!error}
+          />
         );
 
       case 'multiselect':
