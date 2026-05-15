@@ -19,6 +19,7 @@ import { PhotoIcon } from '@heroicons/react/24/outline';
 // Form-specific schema with required status
 const clientFormSchema = z.object({
   clientName: z.string().min(1, 'Client name is required').max(100, 'Name must be less than 100 characters'),
+  serialNumber: z.string().optional(),
   businessName: z.string().optional(),
   pan: z.string().optional(),
   tan: z.string().optional(),
@@ -80,6 +81,7 @@ export function ClientModal({
     resolver: zodResolver(clientFormSchema),
     defaultValues: {
       clientName: '',
+      serialNumber: '',
       businessName: '',
       pan: '',
       tan: '',
@@ -122,6 +124,7 @@ export function ClientModal({
     if (client) {
       reset({
         clientName: client.clientName,
+        serialNumber: client.serialNumber || '',
         businessName: client.businessName,
         pan: client.taxIdentifiers?.pan || '',
         tan: client.taxIdentifiers?.tan || '',
@@ -151,6 +154,7 @@ export function ClientModal({
     } else {
       reset({
         clientName: '',
+        serialNumber: '',
         businessName: '',
         pan: '',
         tan: '',
@@ -221,7 +225,7 @@ export function ClientModal({
 
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
           {/* Avatar Upload - Removed for now */}
-          
+
           {/* Client Name */}
           <div>
             <Input
@@ -231,6 +235,18 @@ export function ClientModal({
               placeholder="Enter client name"
               error={errors.clientName?.message}
               required
+              disabled={isLoading}
+            />
+          </div>
+
+          {/* Serial Number */}
+          <div>
+            <Input
+              id="serialNumber"
+              label="S.No"
+              {...register('serialNumber')}
+              placeholder="Enter serial number (e.g., 001, 002)"
+              error={errors.serialNumber?.message}
               disabled={isLoading}
             />
           </div>

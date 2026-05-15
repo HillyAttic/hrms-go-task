@@ -8,6 +8,7 @@ import { createFirebaseService, QueryOptions } from './firebase.service';
 export interface Client {
   id?: string;
   clientNumber?: string; // CLN001, CLN002, etc.
+  serialNumber?: string; // Manual S.No field
   clientName: string;
   businessName?: string;
   taxIdentifiers?: {
@@ -47,6 +48,7 @@ export interface Client {
 
 export interface ClientFormData {
   clientName: string;
+  serialNumber?: string;
   businessName?: string;
   pan?: string;
   tan?: string;
@@ -73,6 +75,7 @@ export interface ClientFormData {
 }
 
 export interface ClientImportRow {
+  'S.No'?: string;
   'Client Name': string;
   'Business Name'?: string;
   'P.A.N.'?: string;
@@ -181,11 +184,7 @@ export const clientService = {
    * Create a new client
    */
   async create(data: Omit<Client, 'id' | 'createdAt' | 'updatedAt'>): Promise<Client> {
-    // Generate client number if not provided
-    if (!data.clientNumber) {
-      const clientNumber = await this.generateClientNumber();
-      data = { ...data, clientNumber };
-    }
+    // No longer auto-generate client number
     return clientFirebaseService.create(data);
   },
 
@@ -252,17 +251,10 @@ export const clientService = {
       errors: [] as Array<{ row: number; error: string; data: any }>,
     };
 
-    // Get the starting client number
-    let nextNumber = await this.getNextClientNumber();
-
     for (let i = 0; i < clients.length; i++) {
       try {
-        // Add client number if not provided
-        const clientData = clients[i].clientNumber 
-          ? clients[i] 
-          : { ...clients[i], clientNumber: `CLN${String(nextNumber++).padStart(3, '0')}` };
-        
-        await clientFirebaseService.create(clientData);
+        // No longer auto-generate client number
+        await clientFirebaseService.create(clients[i]);
         results.success++;
       } catch (error) {
         results.failed++;

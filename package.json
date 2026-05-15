@@ -11,6 +11,7 @@
     "test:watch": "jest --watch",
     "test:firebase": "tsx scripts/test-firebase-connection.ts",
     "migrate:client-numbers": "tsx scripts/add-client-numbers.ts",
+    "migrate:serial-numbers": "tsx scripts/migrate-add-serial-numbers.ts",
     "optimize:images": "node scripts/optimize-images.js",
     "analyze": "cross-env ANALYZE=true next build",
     "perf:audit": "node scripts/performance-audit.js",

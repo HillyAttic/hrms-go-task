@@ -68,10 +68,10 @@ export default function ClientsPage() {
       });
     }
 
-    // Sort by client number (S.No) in ascending order
+    // Sort by serial number (S.No) in ascending order
     result.sort((a, b) => {
-      const aNum = a.clientNumber || '';
-      const bNum = b.clientNumber || '';
+      const aNum = a.serialNumber || '';
+      const bNum = b.serialNumber || '';
       return aNum.localeCompare(bNum);
     });
 
@@ -211,6 +211,7 @@ export default function ClientsPage() {
     try {
       const clientData = {
         clientName: data.clientName,
+        serialNumber: data.serialNumber || undefined,
         businessName: data.businessName || undefined,
         taxIdentifiers: (data.pan || data.tan || data.gstin) ? {
           pan: data.pan || undefined,

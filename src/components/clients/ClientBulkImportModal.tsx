@@ -85,6 +85,7 @@ export function ClientBulkImportModal({
       // Convert to Client objects
       const clients: Omit<Client, 'id' | 'createdAt' | 'updatedAt'>[] = data.map(row => ({
         clientName: row['Client Name'],
+        serialNumber: row['S.No'] || undefined,
         businessName: row['Business Name'] || undefined,
         taxIdentifiers: (row['P.A.N.'] || row['T.A.N.'] || row.GSTIN) ? {
           pan: row['P.A.N.'] || undefined,
@@ -158,6 +159,7 @@ export function ClientBulkImportModal({
 
   const downloadTemplate = () => {
     const headers = [
+      'S.No',
       'Client Name',
       'Business Name',
       'P.A.N.',
@@ -184,6 +186,7 @@ export function ClientBulkImportModal({
       'Statutory Audit',
     ];
     const exampleRow = [
+      '001',
       'ABC Pvt Ltd',
       'ABC Corporation',
       'ABCDE1234F',

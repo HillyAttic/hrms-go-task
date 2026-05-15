@@ -53,6 +53,7 @@ export function ClientList({
       const query = searchQuery.toLowerCase().trim();
       filtered = filtered.filter(client =>
         client.clientName.toLowerCase().includes(query) ||
+        (client.serialNumber && client.serialNumber.toLowerCase().includes(query)) ||
         (client.contact?.email && client.contact.email.toLowerCase().includes(query)) ||
         (client.businessName && client.businessName.toLowerCase().includes(query)) ||
         (client.contact?.phone && client.contact.phone.toLowerCase().includes(query)) ||
@@ -92,7 +93,7 @@ export function ClientList({
           <div className="flex-1">
             <Input
               type="text"
-              placeholder="Search by name, email, business, phone, GSTIN, or PAN..."
+              placeholder="Search by S.No, name, email, business, phone, GSTIN, or PAN..."
               disabled
               className="pl-10"
             />
@@ -123,7 +124,7 @@ export function ClientList({
           <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
           <Input
             type="text"
-            placeholder="Search by name, email, business, phone, GSTIN, or PAN..."
+            placeholder="Search by S.No, name, email, business, phone, GSTIN, or PAN..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10"

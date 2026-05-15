@@ -74,7 +74,7 @@ export function ClientListView({
                 )}
               </td>
               <td className="px-4 py-3 text-xs text-gray-700 dark:text-gray-300 font-medium">
-                {client.clientNumber || '-'}
+                {client.serialNumber || '-'}
               </td>
               <td className="px-4 py-3 text-xs font-medium text-gray-900 dark:text-white">
                 <div className="truncate max-w-xs" title={client.clientName}>

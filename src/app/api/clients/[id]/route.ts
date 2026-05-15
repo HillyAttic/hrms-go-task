@@ -6,6 +6,7 @@ import { handleApiError, ErrorResponses } from '@/lib/api-error-handler';
 // Validation schema for client update
 const updateClientSchema = z.object({
   clientName: z.string().min(1).max(100).optional(),
+  serialNumber: z.string().optional(),
   businessName: z.string().optional(),
   taxIdentifiers: z.object({
     pan: z.string().optional(),

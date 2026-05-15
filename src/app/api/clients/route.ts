@@ -6,6 +6,7 @@ import { handleApiError, ErrorResponses } from '@/lib/api-error-handler';
 // Validation schema for client creation
 const createClientSchema = z.object({
   clientName: z.string().min(1, 'Client name is required').max(100),
+  serialNumber: z.string().optional(),
   businessName: z.string().optional(),
   taxIdentifiers: z.object({
     pan: z.string().optional(),
