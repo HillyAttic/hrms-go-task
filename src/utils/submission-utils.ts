@@ -92,6 +92,36 @@ export function groupSubmissionsByDay(
 /**
  * Format field value for display in spreadsheet cell
  */
+const DAILY_SUMMARY_LABELS = [
+  { key: 'groupVisits', shortLabel: 'GV', label: 'How many group visits were conducted today?' },
+  { key: 'borrowersCalled', shortLabel: 'Calls', label: 'How many borrowers were called today?' },
+  { key: 'borrowersVisited', shortLabel: 'Visits', label: 'How many borrowers were visited in person today?' },
+] as const;
+
+function normalizeSummaryLabel(label: string): string {
+  return label.trim().toLowerCase().replace(/\*+$/g, '').trim();
+}
+
+function toSummaryNumber(raw: any): number {
+  if (typeof raw === 'number') return Number.isFinite(raw) ? raw : 0;
+  if (typeof raw === 'string') {
+    const parsed = Number.parseFloat(raw.replace(/,/g, '').trim());
+    return Number.isFinite(parsed) ? parsed : 0;
+  }
+  return 0;
+}
+
+export function getDailySubmissionSummary(fields: FormField[], submissions: FormSubmission[]) {
+  return DAILY_SUMMARY_LABELS.map((item) => {
+    const field = fields.find((field) => normalizeSummaryLabel(field.label) === normalizeSummaryLabel(item.label));
+    const total = field
+      ? submissions.reduce((sum, submission) => sum + toSummaryNumber(submission.data?.[field.id]), 0)
+      : 0;
+
+    return { ...item, total };
+  });
+}
+
 export function formatCellValue(value: any, fieldType: FormFieldType): string {
   if (value === null || value === undefined || value === '') {
     return '-';

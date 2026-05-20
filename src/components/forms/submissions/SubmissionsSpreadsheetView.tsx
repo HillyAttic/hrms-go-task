@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import type { FormSubmission, FormTemplate, FormField } from '@/types/form.types';
-import { flattenFormFields, groupSubmissionsByDay, formatCellValue } from '@/utils/submission-utils';
+import { flattenFormFields, getDailySubmissionSummary, groupSubmissionsByDay, formatCellValue } from '@/utils/submission-utils';
 import { format } from 'date-fns';
 import { Timestamp } from 'firebase/firestore';
 import { SpreadsheetExportModal } from './SpreadsheetExportModal';
@@ -35,6 +35,7 @@ export function SubmissionsSpreadsheetView({
   const [showExportModal, setShowExportModal] = useState(false);
   const [numericFilters, setNumericFilters] = useState<NumericFilter[]>([]);
   const [showNumericFilters, setShowNumericFilters] = useState(false);
+  const [expandedDays, setExpandedDays] = useState<Set<string>>(new Set());
 
   // Flatten form fields (extract nested fields from sections)
   const flattenedFields = useMemo(() => {
@@ -198,6 +199,15 @@ export function SubmissionsSpreadsheetView({
     setStartDate('');
     setEndDate('');
     setNumericFilters([]);
+  };
+
+  const toggleDay = (dayLabel: string) => {
+    setExpandedDays((current) => {
+      const next = new Set(current);
+      if (next.has(dayLabel)) next.delete(dayLabel);
+      else next.add(dayLabel);
+      return next;
+    });
   };
 
   const handleDelete = async (id: string) => {
@@ -500,14 +510,42 @@ export function SubmissionsSpreadsheetView({
           </div>
         ) : (
           <div className="space-y-6 sm:space-y-8">
-            {Array.from(groupedSubmissions.entries()).map(([dayLabel, daySubs]) => (
+            {Array.from(groupedSubmissions.entries()).map(([dayLabel, daySubs]) => {
+              const isExpanded = expandedDays.has(dayLabel);
+              const summary = getDailySubmissionSummary(flattenedFields, daySubs);
+
+              return (
               <div key={dayLabel} className="space-y-3">
                 {/* Day Header */}
                 <div className="bg-blue-100 border border-blue-200 rounded-lg px-3 sm:px-4 py-2 sm:py-3">
-                  <h3 className="text-base sm:text-lg font-semibold text-blue-900">{dayLabel}</h3>
-                  <p className="text-xs sm:text-sm text-blue-700">{daySubs.length} submission(s)</p>
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h3 className="text-base sm:text-lg font-semibold text-blue-900">{dayLabel}</h3>
+                      <p className="text-xs sm:text-sm text-blue-700">{daySubs.length} submission(s)</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="flex flex-wrap justify-end gap-2 text-xs sm:text-sm font-semibold text-blue-900">
+                        {summary.map((item) => (
+                          <span key={item.key} className="rounded bg-white/70 px-2 py-1">
+                            {item.shortLabel}: {item.total}
+                          </span>
+                        ))}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => toggleDay(dayLabel)}
+                        className="rounded p-1 text-blue-900 hover:bg-blue-200"
+                        aria-label={isExpanded ? `Hide submissions for ${dayLabel}` : `Show submissions for ${dayLabel}`}
+                        aria-expanded={isExpanded}
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`lucide lucide-chevron-up size-4 transition-transform duration-200 ${isExpanded ? '' : 'rotate-180'}`} aria-hidden="true"><path d="m18 15-6-6-6 6"></path></svg>
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
+                {isExpanded && (
+                  <>
                 {/* Desktop Spreadsheet Table */}
                 <div className="hidden lg:block border border-gray-200 rounded-lg overflow-hidden">
                   <div className="overflow-x-auto">
@@ -736,8 +774,11 @@ export function SubmissionsSpreadsheetView({
                     </div>
                   ))}
                 </div>
+                  </>
+                )}
               </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
@@ -755,8 +796,7 @@ export function SubmissionsSpreadsheetView({
       {/* Export Modal */}
       {showExportModal && (
         <SpreadsheetExportModal
-          submissions={submissions}
-          template={template}
+          formId={template.id}
           onClose={() => setShowExportModal(false)}
         />
       )}

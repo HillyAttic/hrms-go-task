@@ -1,20 +1,18 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { formExportService } from '@/services/form-export.service';
 import { toast } from 'react-toastify';
-import type { FormSubmission, FormTemplate } from '@/types/form.types';
+import type { FormTemplate } from '@/types/form.types';
 import { useModal } from '@/contexts/modal-context';
+import { authenticatedFetch } from '@/lib/api-client';
 
 interface SpreadsheetExportModalProps {
-  submissions: FormSubmission[];
-  template: FormTemplate;
+  formId: string;
   onClose: () => void;
 }
 
 export function SpreadsheetExportModal({
-  submissions,
-  template,
+  formId,
   onClose,
 }: SpreadsheetExportModalProps) {
   const { openModal, closeModal } = useModal();
@@ -26,6 +24,7 @@ export function SpreadsheetExportModal({
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [exporting, setExporting] = useState(false);
+  const [template, setTemplate] = useState<FormTemplate | null>(null);
 
   // Notify modal context when modal opens/closes
   useEffect(() => {
@@ -34,6 +33,23 @@ export function SpreadsheetExportModal({
       closeModal();
     };
   }, [openModal, closeModal]);
+
+  // Fetch form template
+  useEffect(() => {
+    const fetchTemplate = async () => {
+      try {
+        const response = await authenticatedFetch(`/api/forms/templates/${formId}`);
+        const result = await response.json();
+        if (result.success) {
+          setTemplate(result.template);
+        }
+      } catch (error) {
+        console.error('Error fetching template:', error);
+        toast.error('Failed to load form template');
+      }
+    };
+    fetchTemplate();
+  }, [formId]);
 
   // Generate year options (current year and 5 years back)
   const yearOptions = Array.from({ length: 6 }, (_, i) => currentYear - i);
@@ -56,86 +72,88 @@ export function SpreadsheetExportModal({
 
   const handleExport = async () => {
     try {
-      setExporting(true);
-      toast.info('Preparing Excel export...');
-
-      // Filter submissions based on selected criteria
-      let filteredSubmissions = [...submissions];
-
-      // Apply date range filter if provided
-      if (startDate || endDate) {
-        filteredSubmissions = filteredSubmissions.filter((submission) => {
-          const submittedDate =
-            submission.submittedAt && typeof submission.submittedAt === 'object' && 'toDate' in submission.submittedAt
-              ? submission.submittedAt.toDate()
-              : new Date(submission.submittedAt);
-
-          if (startDate) {
-            const start = new Date(startDate);
-            if (submittedDate < start) return false;
-          }
-
-          if (endDate) {
-            const end = new Date(endDate);
-            end.setHours(23, 59, 59, 999);
-            if (submittedDate > end) return false;
-          }
-
-          return true;
-        });
-      } else {
-        // Apply year/month filter
-        filteredSubmissions = filteredSubmissions.filter((submission) => {
-          const submittedDate =
-            submission.submittedAt && typeof submission.submittedAt === 'object' && 'toDate' in submission.submittedAt
-              ? submission.submittedAt.toDate()
-              : new Date(submission.submittedAt);
-
-          const year = submittedDate.getFullYear();
-          const month = submittedDate.getMonth() + 1;
-
-          return year === selectedYear && month === selectedMonth;
-        });
-      }
-
-      if (filteredSubmissions.length === 0) {
-        toast.warning('No submissions found for the selected period');
-        setExporting(false);
+      if (!template) {
+        toast.error('Form template not loaded');
         return;
       }
 
-      // Export the filtered submissions
-      const excelBuffer = await formExportService.exportToExcel(
-        filteredSubmissions,
-        template
+      setExporting(true);
+      toast.info('Preparing Excel export...');
+
+      // Build date range - use custom dates or month/year selection
+      let exportStartDate: string | undefined;
+      let exportEndDate: string | undefined;
+
+      if (startDate || endDate) {
+        // Use custom date range
+        exportStartDate = startDate || undefined;
+        exportEndDate = endDate || undefined;
+      } else {
+        // Use selected month/year - build first and last day of month
+        const firstDay = new Date(selectedYear, selectedMonth - 1, 1);
+        const lastDay = new Date(selectedYear, selectedMonth, 0);
+        exportStartDate = firstDay.toISOString().split('T')[0];
+        exportEndDate = lastDay.toISOString().split('T')[0];
+      }
+
+      // Build query params for export - use the template export endpoint
+      // which fetches ALL records directly from Firestore (no 50-record limit)
+      const params = new URLSearchParams();
+      if (exportStartDate) {
+        const startDateISO = new Date(exportStartDate);
+        startDateISO.setHours(0, 0, 0, 0);
+        params.append('startDate', startDateISO.toISOString());
+      }
+      if (exportEndDate) {
+        const endDateISO = new Date(exportEndDate);
+        endDateISO.setHours(23, 59, 59, 999);
+        params.append('endDate', endDateISO.toISOString());
+      }
+
+      // Use the template export endpoint which fetches ALL records
+      // This is the same endpoint used by Form Builder's ResponsesView
+      const response = await authenticatedFetch(
+        `/api/forms/templates/${formId}/export?${params.toString()}`
       );
 
-      // Create blob and download
-      const blob = formExportService.createDownloadBlob(excelBuffer, 'excel');
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Export failed');
+      }
 
-      // Generate filename with date range if custom dates are provided
-      let filename: string;
+      // Get the Excel file as blob
+      const blob = await response.blob();
+
+      // Generate filename with date range
       const sanitizedTitle = template.title.replace(/[^a-zA-Z0-9]/g, '_');
+      let filename: string;
 
-      if (startDate && endDate) {
-        filename = `${sanitizedTitle}_${startDate}_to_${endDate}.xlsx`;
-      } else if (startDate) {
-        filename = `${sanitizedTitle}_from_${startDate}.xlsx`;
-      } else if (endDate) {
-        filename = `${sanitizedTitle}_until_${endDate}.xlsx`;
+      if (exportStartDate && exportEndDate) {
+        filename = `${sanitizedTitle}_${exportStartDate}_to_${exportEndDate}.xlsx`;
+      } else if (exportStartDate) {
+        filename = `${sanitizedTitle}_from_${exportStartDate}.xlsx`;
+      } else if (exportEndDate) {
+        filename = `${sanitizedTitle}_until_${exportEndDate}.xlsx`;
       } else {
-        // Use month/year in filename
         const monthName = monthOptions.find(m => m.value === selectedMonth)?.label || selectedMonth;
         filename = `${sanitizedTitle}_${monthName}_${selectedYear}.xlsx`;
       }
 
-      formExportService.downloadFile(blob, filename);
+      // Trigger download
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
 
-      toast.success(`Excel file downloaded successfully (${filteredSubmissions.length} submissions)`);
+      toast.success('Excel file downloaded successfully');
       onClose();
     } catch (error) {
       console.error('Export error:', error);
-      toast.error('Failed to export to Excel');
+      toast.error(error instanceof Error ? error.message : 'Failed to export to Excel');
     } finally {
       setExporting(false);
     }

@@ -4,7 +4,7 @@ import React, { useState, useMemo } from 'react';
 import type { FormSubmission, FormTemplate } from '@/types/form.types';
 import { SubmissionDetailModal } from './SubmissionDetailModal';
 import { SpreadsheetExportModal } from './SpreadsheetExportModal';
-import { groupSubmissionsByDay } from '@/utils/submission-utils';
+import { flattenFormFields, getDailySubmissionSummary, groupSubmissionsByDay } from '@/utils/submission-utils';
 
 interface SubmissionsTableProps {
   submissions: FormSubmission[];
@@ -28,6 +28,7 @@ export function SubmissionsTable({
   const [searchTerm, setSearchTerm] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [expandedDays, setExpandedDays] = useState<Set<string>>(new Set());
 
   // Notify parent when modal state changes
   React.useEffect(() => {
@@ -68,10 +69,21 @@ export function SubmissionsTable({
     return true;
   });
 
+  const flattenedFields = useMemo(() => flattenFormFields(template.fields), [template.fields]);
+
   // Group submissions by day
   const groupedSubmissions = useMemo(() => {
     return groupSubmissionsByDay(filteredSubmissions);
   }, [filteredSubmissions]);
+
+  const toggleDay = (dayLabel: string) => {
+    setExpandedDays((current) => {
+      const next = new Set(current);
+      if (next.has(dayLabel)) next.delete(dayLabel);
+      else next.add(dayLabel);
+      return next;
+    });
+  };
 
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this submission?')) return;
@@ -142,14 +154,42 @@ export function SubmissionsTable({
           </div>
         ) : (
           <div className="space-y-6 sm:space-y-8">
-            {Array.from(groupedSubmissions.entries()).map(([dayLabel, daySubs]) => (
+            {Array.from(groupedSubmissions.entries()).map(([dayLabel, daySubs]) => {
+              const isExpanded = expandedDays.has(dayLabel);
+              const summary = getDailySubmissionSummary(flattenedFields, daySubs);
+
+              return (
               <div key={dayLabel}>
                 {/* Day Header */}
                 <div className="bg-blue-100 border border-blue-200 rounded-lg px-3 sm:px-4 py-2 sm:py-3 mb-3">
-                  <h3 className="text-base sm:text-lg font-semibold text-blue-900">{dayLabel}</h3>
-                  <p className="text-xs sm:text-sm text-blue-700">{daySubs.length} submission(s)</p>
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h3 className="text-base sm:text-lg font-semibold text-blue-900">{dayLabel}</h3>
+                      <p className="text-xs sm:text-sm text-blue-700">{daySubs.length} submission(s)</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="flex flex-wrap justify-end gap-2 text-xs sm:text-sm font-semibold text-blue-900">
+                        {summary.map((item) => (
+                          <span key={item.key} className="rounded bg-white/70 px-2 py-1">
+                            {item.shortLabel}: {item.total}
+                          </span>
+                        ))}
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => toggleDay(dayLabel)}
+                        className="rounded p-1 text-blue-900 hover:bg-blue-200"
+                        aria-label={isExpanded ? `Hide submissions for ${dayLabel}` : `Show submissions for ${dayLabel}`}
+                        aria-expanded={isExpanded}
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`lucide lucide-chevron-up size-4 transition-transform duration-200 ${isExpanded ? '' : 'rotate-180'}`} aria-hidden="true"><path d="m18 15-6-6-6 6"></path></svg>
+                      </button>
+                    </div>
+                  </div>
                 </div>
 
+                {isExpanded && (
+                  <>
                 {/* Desktop Table View */}
                 <div className="hidden md:block border border-gray-200 rounded-lg overflow-hidden">
                   <table className="w-full">
@@ -294,8 +334,11 @@ export function SubmissionsTable({
                     </div>
                   ))}
                 </div>
+                  </>
+                )}
               </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </div>
@@ -312,8 +355,7 @@ export function SubmissionsTable({
 
       {showExportModal && (
         <SpreadsheetExportModal
-          submissions={submissions}
-          template={template}
+          formId={template.id}
           onClose={() => setShowExportModal(false)}
         />
       )}

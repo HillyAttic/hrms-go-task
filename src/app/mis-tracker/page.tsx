@@ -135,9 +135,9 @@ export default function MISTrackerPage() {
       if (templateResponse.ok && templateResult.success) {
         setTemplate(templateResult.template);
 
-        // Fetch submissions
+        // Fetch submissions (request high limit to get all submissions)
         const submissionsResponse = await authenticatedFetch(
-          `/api/forms/submissions?formId=${formToDisplay}`
+          `/api/forms/submissions?formId=${formToDisplay}&limit=10000`
         );
         const submissionsResult = await submissionsResponse.json();
 
