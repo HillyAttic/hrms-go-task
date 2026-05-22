@@ -498,8 +498,7 @@ export function SubmissionAnalyticsStats({
             {branchReportData && branchReportData.rows.length > 0 && !branchReportLoading && (
               <tfoot className="bg-gray-100 dark:bg-gray-900 font-semibold text-gray-900 dark:text-white">
                 <tr>
-                  <td className="px-3 py-2">Total</td>
-                  <td className="px-3 py-2"></td>
+                  <td colSpan={3} className="px-3 py-2">Total</td>
                   <td className="px-3 py-2 text-right">{branchReportData.totals.groupVisitsTotal}</td>
                   <td className="px-3 py-2 text-right">{branchReportData.totals.borrowersCalledTotal}</td>
                   <td className="px-3 py-2 text-right">{branchReportData.totals.borrowersVisitedInPersonTotal}</td>
