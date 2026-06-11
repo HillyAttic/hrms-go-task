@@ -37,7 +37,7 @@ export function ClientList({
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive'>('all');
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 20;
+  const [itemsPerPage, setItemsPerPage] = useState(50); // Increased from 20 to 50
 
   // Filter and search clients
   const filteredClients = useMemo(() => {
@@ -149,9 +149,29 @@ export function ClientList({
       </div>
 
       {/* Results Count */}
-      <div className="text-sm text-gray-600 dark:text-gray-400">
-        Showing {paginatedClients.length} of {filteredClients.length} client{filteredClients.length !== 1 ? 's' : ''}
-        {searchQuery && ` matching "${searchQuery}"`}
+      <div className="flex items-center justify-between">
+        <div className="text-sm text-gray-600 dark:text-gray-400">
+          Showing {startIndex + 1}-{Math.min(endIndex, filteredClients.length)} of {filteredClients.length} client{filteredClients.length !== 1 ? 's' : ''}
+          {searchQuery && ` matching "${searchQuery}"`}
+        </div>
+        <div className="flex items-center gap-2">
+          <label className="text-sm text-gray-600 dark:text-gray-400">Show:</label>
+          <select
+            value={itemsPerPage}
+            onChange={(e) => {
+              setItemsPerPage(Number(e.target.value));
+              setCurrentPage(1);
+            }}
+            className="px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-dark"
+          >
+            <option value={25}>25</option>
+            <option value={50}>50</option>
+            <option value={100}>100</option>
+            <option value={200}>200</option>
+            <option value={500}>All</option>
+          </select>
+          <span className="text-sm text-gray-600 dark:text-gray-400">per page</span>
+        </div>
       </div>
 
       {/* Client Grid/List */}

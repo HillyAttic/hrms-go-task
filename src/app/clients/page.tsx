@@ -8,7 +8,9 @@ import { ClientModal } from '@/components/clients/ClientModal';
 import { ClientBulkImportModal } from '@/components/clients/ClientBulkImportModal';
 import { ClientFilter, ClientFilterState } from '@/components/clients/ClientFilter';
 import { Button } from '@/components/ui/button';
-import { PlusIcon, CloudArrowUpIcon } from '@heroicons/react/24/outline';
+import { PlusIcon, CloudArrowUpIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline';
+import { exportClientsToExcel } from '@/utils/client-export.utils';
+import { toast } from 'react-toastify';
 
 /**
  * Client Master Page
@@ -116,6 +118,29 @@ export default function ClientsPage() {
   const handleImportComplete = () => {
     // Refresh the client list
     window.location.reload();
+  };
+
+  /**
+   * Handle export to Excel
+   */
+  const handleExport = () => {
+    console.log('Export clicked, filtered clients:', filteredClients.length);
+    
+    if (filteredClients.length === 0) {
+      toast.error('No clients to export');
+      return;
+    }
+    
+    try {
+      toast.info('Preparing export...');
+      console.log('Calling exportClientsToExcel...');
+      exportClientsToExcel(filteredClients);
+      console.log('Export function completed');
+      toast.success(`Successfully exported ${filteredClients.length} clients to Excel`);
+    } catch (error) {
+      console.error('Error exporting clients:', error);
+      toast.error('Failed to export clients. Please try again.');
+    }
   };
 
   /**
@@ -295,6 +320,16 @@ export default function ClientsPage() {
               Delete Selected ({selectedIds.size})
             </Button>
           )}
+          <Button
+            onClick={handleExport}
+            variant="outline"
+            className="flex items-center gap-2"
+            size="lg"
+            disabled={filteredClients.length === 0}
+          >
+            <ArrowDownTrayIcon className="w-5 h-5" />
+            Export to Excel
+          </Button>
           <Button
             onClick={handleImport}
             variant="outline"
