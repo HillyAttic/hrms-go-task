@@ -45,7 +45,7 @@ interface Comment {
 }
 
 export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailModalProps) {
-  const { user } = useEnhancedAuth();
+  const { user, isAdmin } = useEnhancedAuth();
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [comments, setComments] = useState<Comment[]>([]);
   const [newComment, setNewComment] = useState('');
@@ -61,8 +61,10 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
 
   // Check if current user is the task creator
   const isTaskCreator = task?.createdBy === user?.uid;
-  // Check if current user is assigned to the task
-  const isTaskAssigned = task?.assignedTo?.includes(user?.uid || '') || false;
+  // Check if current user is assigned to the task (admins can update any task)
+  const isTaskAssigned = isAdmin || task?.assignedTo?.includes(user?.uid || '') || false;
+  // Admins and creators can edit all fields; assigned users can edit status only
+  const canEditAll = isAdmin || isTaskCreator;
 
   // Fetch user names
   useEffect(() => {
@@ -326,7 +328,7 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Title
               </label>
-              {isTaskCreator ? (
+              {canEditAll ? (
                 <Input
                   value={editingTask.title}
                   onChange={(e) => setEditingTask({ ...editingTask, title: e.target.value })}
@@ -344,7 +346,7 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Description
               </label>
-              {isTaskCreator ? (
+              {canEditAll ? (
                 <Textarea
                   value={editingTask.description || ''}
                   onChange={(e) => setEditingTask({ ...editingTask, description: e.target.value })}
@@ -360,9 +362,9 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
 
             <div className="grid grid-cols-2 gap-4">
               {/* Status - Editable for everyone */}
-              <div className={!isTaskCreator ? 'ring-2 ring-blue-500 ring-offset-2 rounded-lg p-2 -m-2' : ''}>
+              <div className={!canEditAll ? 'ring-2 ring-blue-500 ring-offset-2 rounded-lg p-2 -m-2' : ''}>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                  Status {!isTaskCreator && <span className="text-blue-600 text-xs">(You can edit this)</span>}
+                  Status {!canEditAll && <span className="text-blue-600 text-xs">(You can edit this)</span>}
                 </label>
                 <Select
                   value={editingTask.status}
@@ -380,7 +382,7 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Priority
                 </label>
-                {isTaskCreator ? (
+                {canEditAll ? (
                   <Select
                     value={editingTask.priority}
                     onChange={(e) => setEditingTask({ ...editingTask, priority: e.target.value as TaskPriority })}
@@ -405,7 +407,7 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Due Date
               </label>
-              {isTaskCreator ? (
+              {canEditAll ? (
                 <Input
                   type="date"
                   value={editingTask.dueDate ? (editingTask.dueDate instanceof Date ? editingTask.dueDate.toISOString().split('T')[0] : new Date(editingTask.dueDate).toISOString().split('T')[0]) : ''}
@@ -429,7 +431,7 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 Assigned Users
               </label>
-              {isTaskCreator ? (
+              {canEditAll ? (
                 <>
                   <Input
                     value={displayValue}
@@ -642,7 +644,7 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
               onClick={handleSave}
               disabled={loading}
             >
-              {loading ? 'Saving...' : (isTaskCreator ? 'Save Changes' : 'Update Status')}
+              {loading ? 'Saving...' : (canEditAll ? 'Save Changes' : 'Update Status')}
             </Button>
           </div>
         </div>

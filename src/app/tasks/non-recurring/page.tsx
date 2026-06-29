@@ -350,23 +350,21 @@ export default function NonRecurringTasksPage() {
           )}
         </div>
 
-        {/* Search Bar - Hidden on mobile */}
-        <div className="relative hidden md:block">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
-          </div>
-          <Input
+        {/* Search Bar */}
+        <div className="relative">
+          <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 z-10" />
+          <input
             type="text"
             placeholder="Search tasks by title, description, or assignee..."
             value={searchQuery}
             onChange={handleSearchChange}
-            className="pl-10"
+            className="w-full h-10 pl-10 pr-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
             aria-label="Search tasks"
           />
         </div>
 
-        {/* Task Filter - Requirements 2.7, 2.8 - Hidden on mobile */}
-        <div className="hidden md:block">
+        {/* Task Filter - Requirements 2.7, 2.8 */}
+        <div>
           <TaskFilter
             filters={filters}
             onFilterChange={handleFilterChange}

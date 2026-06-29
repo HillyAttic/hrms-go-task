@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Label } from '@/components/ui/label';
 import { FunnelIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Button } from '@/components/ui/button';
@@ -26,6 +26,32 @@ interface TaskFilterProps {
  * Validates Requirements: 2.7, 2.8
  */
 export function TaskFilter({ filters, onFilterChange, onClearFilters, employees = [], clients = [] }: TaskFilterProps) {
+  const [memberSearchQuery, setMemberSearchQuery] = useState('');
+  const [isMemberDropdownOpen, setIsMemberDropdownOpen] = useState(false);
+  const memberDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (memberDropdownRef.current && !memberDropdownRef.current.contains(event.target as Node)) {
+        setIsMemberDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const filteredEmployees = employees.filter((e) =>
+    e.name.toLowerCase().includes(memberSearchQuery.toLowerCase())
+  );
+
+  const selectedEmployee = employees.find((e) => e.id === filters.assignedTo);
+
+  const handleMemberSelect = (employeeId: string | undefined, employeeName?: string) => {
+    onFilterChange({ ...filters, assignedTo: employeeId });
+    setMemberSearchQuery(employeeName || '');
+    setIsMemberDropdownOpen(false);
+  };
   const handleStatusChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     onFilterChange({
       ...filters,
@@ -37,13 +63,6 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
     onFilterChange({
       ...filters,
       priority: e.target.value,
-    });
-  };
-
-  const handleAssignedToChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    onFilterChange({
-      ...filters,
-      assignedTo: e.target.value || undefined,
     });
   };
 
@@ -117,25 +136,52 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
           </select>
         </div>
 
-        {/* Team Member Filter */}
-        <div>
+        {/* Team Member Filter - Searchable */}
+        <div ref={memberDropdownRef} className="relative">
           <Label htmlFor="assignedTo-filter" className="text-sm font-medium text-gray-700 dark:text-gray-300">
             Team Member
           </Label>
-          <select
+          <input
             id="assignedTo-filter"
-            value={filters.assignedTo || ''}
-            onChange={handleAssignedToChange}
+            type="text"
+            value={isMemberDropdownOpen ? memberSearchQuery : selectedEmployee?.name || ''}
+            onChange={(e) => {
+              setMemberSearchQuery(e.target.value);
+              setIsMemberDropdownOpen(true);
+            }}
+            onFocus={() => setIsMemberDropdownOpen(true)}
+            placeholder="Search team member..."
+            autoComplete="off"
             className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
-            aria-label="Filter by team member"
-          >
-            <option value="">All Team Members</option>
-            {employees.map((employee) => (
-              <option key={employee.id} value={employee.id}>
-                {employee.name}
-              </option>
-            ))}
-          </select>
+            aria-label="Search team member"
+          />
+          {isMemberDropdownOpen && (
+            <ul className="absolute z-50 mt-1 w-full max-h-48 overflow-auto bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg">
+              <li
+                onClick={() => handleMemberSelect(undefined)}
+                className={`px-3 py-2 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                  !filters.assignedTo ? 'bg-blue-100 dark:bg-blue-900/50 font-medium' : ''
+                }`}
+              >
+                All Team Members
+              </li>
+              {filteredEmployees.length === 0 ? (
+                <li className="px-3 py-2 text-sm text-gray-500 dark:text-gray-400">No results</li>
+              ) : (
+                filteredEmployees.map((emp) => (
+                  <li
+                    key={emp.id}
+                    onClick={() => handleMemberSelect(emp.id, emp.name)}
+                    className={`px-3 py-2 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                      filters.assignedTo === emp.id ? 'bg-blue-100 dark:bg-blue-900/50 font-medium' : ''
+                    }`}
+                  >
+                    {emp.name}
+                  </li>
+                ))
+              )}
+            </ul>
+          )}
         </div>
 
         {/* Client Filter */}
