@@ -138,11 +138,11 @@ export function FormRenderer({
     <div className="max-w-3xl mx-auto">
       {/* Form Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
           {template.title}
         </h1>
         {template.description && (
-          <p className="text-gray-600">{template.description}</p>
+          <p className="text-gray-600 dark:text-gray-400">{template.description}</p>
         )}
       </div>
 

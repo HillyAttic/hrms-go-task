@@ -62,7 +62,7 @@ export default function FormPage({ params }: { params: Promise<{ formId: string 
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading form...</p>
+          <p className="mt-4 text-gray-600 dark:text-gray-400">Loading form...</p>
         </div>
       </div>
     );
@@ -73,10 +73,10 @@ export default function FormPage({ params }: { params: Promise<{ formId: string 
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center max-w-md">
           <div className="text-red-600 text-5xl mb-4">⚠️</div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
             Form Not Available
           </h1>
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-600 dark:text-gray-400 mb-6">
             {error || 'This form could not be found or you do not have access to it.'}
           </p>
           <button
@@ -95,10 +95,10 @@ export default function FormPage({ params }: { params: Promise<{ formId: string 
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center max-w-md">
           <div className="text-yellow-600 text-5xl mb-4">📝</div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">
+          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
             Form Not Published
           </h1>
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-600 dark:text-gray-400 mb-6">
             This form is currently in draft mode and not accepting submissions.
           </p>
           <button
