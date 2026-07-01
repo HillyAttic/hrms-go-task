@@ -48,8 +48,8 @@ function getCurrentFinancialYear(): string {
 }
 
 /** Generate months for a financial year, optionally filtered to a single month */
-function generateDisplayMonths(fy: string, recurrencePattern: string, selectedMonth?: string): MonthData[] {
-  const months = generateFYMonths(fy, recurrencePattern);
+function generateDisplayMonths(fy: string, recurrencePattern: string, selectedMonth?: string, dueMonth?: number): MonthData[] {
+  const months = generateFYMonths(fy, recurrencePattern, dueMonth);
   if (selectedMonth && selectedMonth !== 'all') {
     return months.filter(m => m.monthName === selectedMonth);
   }
@@ -66,17 +66,31 @@ function buildMonthData(month: number, year: number): MonthData {
   };
 }
 
-function applyRecurrenceFilter(months: MonthData[], recurrencePattern: string): MonthData[] {
+function applyRecurrenceFilter(months: MonthData[], recurrencePattern: string, dueMonth?: number): MonthData[] {
   switch (recurrencePattern) {
-    case 'quarterly':   return months.filter((_, i) => i % 3 === 0);
-    case 'half-yearly': return months.filter((_, i) => i % 6 === 0);
-    case 'yearly':      return months.filter((_, i) => i % 12 === 0);
+    case 'quarterly':
+      if (dueMonth !== undefined) {
+        const offset = dueMonth % 3;
+        return months.filter(m => m.fullDate.getMonth() % 3 === offset);
+      }
+      return months.filter((_, i) => i % 3 === 0);
+    case 'half-yearly':
+      if (dueMonth !== undefined) {
+        const offset = dueMonth % 6;
+        return months.filter(m => m.fullDate.getMonth() % 6 === offset);
+      }
+      return months.filter((_, i) => i % 6 === 0);
+    case 'yearly':
+      if (dueMonth !== undefined) {
+        return months.filter(m => m.fullDate.getMonth() === dueMonth);
+      }
+      return months.filter((_, i) => i % 12 === 0);
     default:            return months;
   }
 }
 
 /** All months from Apr 2025 (FY 2025-26 start) to 2 years ahead — covers full history + near future */
-function generateAllExportMonths(recurrencePattern: string): MonthData[] {
+function generateAllExportMonths(recurrencePattern: string, dueMonth?: number): MonthData[] {
   const endYear = new Date().getFullYear() + 2;
   const all: MonthData[] = [];
   for (let year = 2025; year <= endYear; year++) {
@@ -85,17 +99,17 @@ function generateAllExportMonths(recurrencePattern: string): MonthData[] {
       all.push(buildMonthData(month, year));
     }
   }
-  return applyRecurrenceFilter(all, recurrencePattern);
+  return applyRecurrenceFilter(all, recurrencePattern, dueMonth);
 }
 
 /** All months for a specific Indian financial year (Apr → Mar) */
-function generateFYMonths(fy: string, recurrencePattern: string): MonthData[] {
+function generateFYMonths(fy: string, recurrencePattern: string, dueMonth?: number): MonthData[] {
   const startYear = parseInt(fy.split('-')[0]);
   const fyMonths: MonthData[] = [
     ...Array.from({ length: 9 }, (_, i) => buildMonthData(3 + i, startYear)),
     ...Array.from({ length: 3 }, (_, i) => buildMonthData(i, startYear + 1)),
   ];
-  return applyRecurrenceFilter(fyMonths, recurrencePattern);
+  return applyRecurrenceFilter(fyMonths, recurrencePattern, dueMonth);
 }
 
 // ---------- Export Dialog ----------
@@ -106,10 +120,11 @@ interface ExportDialogProps {
   completions: ClientTaskCompletion[];
   isTeamMemberView?: boolean;
   teamMemberName?: string;
+  dueMonth?: number;
   onClose: () => void;
 }
 
-function ExportDialog({ task, clients, completions, isTeamMemberView, teamMemberName, onClose }: ExportDialogProps) {
+function ExportDialog({ task, clients, completions, isTeamMemberView, teamMemberName, dueMonth, onClose }: ExportDialogProps) {
   const [exportYear, setExportYear] = useState('all');
   const [exportMonth, setExportMonth] = useState('all');
   const financialYears = generateFinancialYears();
@@ -117,8 +132,8 @@ function ExportDialog({ task, clients, completions, isTeamMemberView, teamMember
   const getExportMonths = (): MonthData[] => {
     const baseMonths =
       exportYear === 'all'
-        ? generateAllExportMonths(task.recurrencePattern)
-        : generateFYMonths(exportYear, task.recurrencePattern);
+        ? generateAllExportMonths(task.recurrencePattern, dueMonth)
+        : generateFYMonths(exportYear, task.recurrencePattern, dueMonth);
     if (exportMonth === 'all') return baseMonths;
     return baseMonths.filter(m => m.monthName === exportMonth);
   };
@@ -320,9 +335,12 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
   const [selectedMonth, setSelectedMonth] = useState('all');
   const financialYears = generateFinancialYears();
 
+  // Extract due month from task for recurrence-aware filtering
+  const dueMonth = task.dueDate ? new Date(task.dueDate).getMonth() : undefined;
+
   const months = useMemo(
-    () => generateDisplayMonths(selectedFY, task.recurrencePattern, selectedMonth),
-    [selectedFY, task.recurrencePattern, selectedMonth]
+    () => generateDisplayMonths(selectedFY, task.recurrencePattern, selectedMonth, dueMonth),
+    [selectedFY, task.recurrencePattern, selectedMonth, dueMonth]
   );
 
   const teamMemberReports: TeamMemberReport[] = (task.teamMemberMappings || []).map(mapping => {
@@ -420,7 +438,7 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
               className="border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-1 text-xs bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="all">All Months</option>
-              {MONTH_NAMES.map(m => (
+              {months.length > 1 && MONTH_NAMES.map(m => (
                 <option key={m} value={m}>{m}</option>
               ))}
             </select>
@@ -502,6 +520,7 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
           completions={completions}
           isTeamMemberView={!!selectedMember}
           teamMemberName={selectedMember?.userName}
+          dueMonth={dueMonth}
           onClose={() => setShowExportDialog(false)}
         />
       )}
@@ -535,9 +554,12 @@ function RegularTaskReportModal({ task, clients, completions, onClose }: TaskRep
   const [selectedMonth, setSelectedMonth] = useState('all');
   const financialYears = generateFinancialYears();
 
+  // Extract due month from task for recurrence-aware filtering
+  const dueMonth = task.dueDate ? new Date(task.dueDate).getMonth() : undefined;
+
   const months = useMemo(
-    () => generateDisplayMonths(selectedFY, task.recurrencePattern, selectedMonth),
-    [selectedFY, task.recurrencePattern, selectedMonth]
+    () => generateDisplayMonths(selectedFY, task.recurrencePattern, selectedMonth, dueMonth),
+    [selectedFY, task.recurrencePattern, selectedMonth, dueMonth]
   );
 
   const completionData = useMemo(
@@ -606,7 +628,7 @@ function RegularTaskReportModal({ task, clients, completions, onClose }: TaskRep
               className="border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-1 text-xs bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="all">All Months</option>
-              {MONTH_NAMES.map(m => (
+              {months.length > 1 && MONTH_NAMES.map(m => (
                 <option key={m} value={m}>{m}</option>
               ))}
             </select>
@@ -642,6 +664,7 @@ function RegularTaskReportModal({ task, clients, completions, onClose }: TaskRep
           task={task}
           clients={clients}
           completions={completions}
+          dueMonth={dueMonth}
           onClose={() => setShowExportDialog(false)}
         />
       )}

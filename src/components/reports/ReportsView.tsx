@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { RecurringTask, recurringTaskService, TeamMemberMapping } from '@/services/recurring-task.service';
 import { clientService, Client } from '@/services/client.service';
 import { taskCompletionService, ClientTaskCompletion } from '@/services/task-completion.service';
@@ -11,6 +11,56 @@ import { auth } from '@/lib/firebase';
 import { generateMonths, buildCompletionData, getCompletionStatus, calculateCompletionRate } from '@/utils/report-utils';
 import { TaskReportModal } from '@/components/reports/TaskReportModal';
 
+const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+function generateFinancialYears(): string[] {
+  const years: string[] = [];
+  for (let startYear = 2025; startYear <= 2035; startYear++) {
+    years.push(`${startYear}-${String(startYear + 1).slice(-2)}`);
+  }
+  return years;
+}
+
+function getCurrentFinancialYear(): string {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const fyStart = month >= 3 ? year : year - 1;
+  return `${fyStart}-${String(fyStart + 1).slice(-2)}`;
+}
+
+/** Get the due month (0-11) from a task's dueDate */
+function getTaskDueMonth(task: RecurringTask): number | undefined {
+  if (!task.dueDate) return undefined;
+  return new Date(task.dueDate).getMonth();
+}
+
+/** Build month key for a given FY, month name, and optional due month */
+function getMonthKeyForPeriod(fy: string, selectedMonth: string, recurrencePattern: string, dueMonth?: number): string | undefined {
+  const startYear = parseInt(fy.split('-')[0]);
+  if (selectedMonth === 'all') {
+    // Use current month if within this FY, otherwise use the due month for yearly tasks
+    const now = new Date();
+    const nowYear = now.getFullYear();
+    const nowMonth = now.getMonth();
+    const fyEndYear = startYear + 1;
+    // Check if current date falls within this FY
+    if ((nowYear === startYear && nowMonth >= 3) || (nowYear === fyEndYear && nowMonth < 3)) {
+      return `${nowYear}-${String(nowMonth + 1).padStart(2, '0')}`;
+    }
+    // For yearly tasks, use the due month
+    if (recurrencePattern === 'yearly' && dueMonth !== undefined) {
+      const year = dueMonth >= 3 ? startYear : fyEndYear;
+      return `${year}-${String(dueMonth + 1).padStart(2, '0')}`;
+    }
+    return undefined;
+  }
+  const monthIndex = MONTH_NAMES.indexOf(selectedMonth);
+  if (monthIndex < 0) return undefined;
+  const year = monthIndex >= 3 ? startYear : startYear + 1;
+  return `${year}-${String(monthIndex + 1).padStart(2, '0')}`;
+}
+
 
 export function ReportsView() {
   const [tasks, setTasks] = useState<RecurringTask[]>([]);
@@ -20,6 +70,11 @@ export function ReportsView() {
   const [selectedTask, setSelectedTask] = useState<RecurringTask | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { openModal: openGlobalModal, closeModal: closeGlobalModal } = useModal();
+
+  // FY and month filter state
+  const financialYears = generateFinancialYears();
+  const [selectedFY, setSelectedFY] = useState(getCurrentFinancialYear());
+  const [selectedMonth, setSelectedMonth] = useState('all');
 
   useEffect(() => {
     loadData();
@@ -181,7 +236,37 @@ export function ReportsView() {
           </div>
         </div>
       ) : (
-        <div className="bg-white dark:bg-gray-dark rounded-lg shadow overflow-hidden">
+        <>
+          {/* Period Filter */}
+          <div className="bg-white dark:bg-gray-dark rounded-lg shadow px-4 sm:px-6 py-3 flex flex-wrap items-center gap-3">
+            <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">Filter:</span>
+            <select
+              value={selectedFY}
+              onChange={e => { setSelectedFY(e.target.value); setSelectedMonth('all'); }}
+              className="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1.5 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              {financialYears.map(fy => (
+                <option key={fy} value={fy}>FY {fy}</option>
+              ))}
+            </select>
+            <select
+              value={selectedMonth}
+              onChange={e => setSelectedMonth(e.target.value)}
+              className="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1.5 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="all">All Months</option>
+              {MONTH_NAMES.map(m => (
+                <option key={m} value={m}>{m}</option>
+              ))}
+            </select>
+            {selectedMonth !== 'all' && (
+              <span className="text-xs text-gray-500 dark:text-gray-400">
+                {selectedMonth} {selectedFY.split('-')[0]}
+              </span>
+            )}
+          </div>
+
+          <div className="bg-white dark:bg-gray-dark rounded-lg shadow overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50 dark:bg-gray-800">
@@ -222,7 +307,10 @@ export function ReportsView() {
                 }
 
                 const taskCompletions = completions.get(task.id || '') || [];
-                const completionRate = calculateCompletionRate(task, taskClients.length, taskCompletions);
+                // Calculate completion rate for the selected period
+                const dueMonth = getTaskDueMonth(task);
+                const monthKey = getMonthKeyForPeriod(selectedFY, selectedMonth, task.recurrencePattern, dueMonth);
+                const completionRate = calculateCompletionRate(task, taskClients.length, taskCompletions, monthKey);
 
                 return (
                   <tr key={task.id} className="hover:bg-gray-50 dark:bg-gray-800">
@@ -294,6 +382,7 @@ export function ReportsView() {
             </table>
           </div>
         </div>
+        </>
       )}
 
       {isModalOpen && selectedTask && (

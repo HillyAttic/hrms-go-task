@@ -10,7 +10,7 @@ export interface MonthData {
   fullDate: Date;
 }
 
-export function generateMonths(recurrencePattern: string): MonthData[] {
+export function generateMonths(recurrencePattern: string, dueMonth?: number): MonthData[] {
   const currentDate = new Date();
   const currentYear = currentDate.getFullYear();
   const currentMonth = currentDate.getMonth();
@@ -43,12 +43,21 @@ export function generateMonths(recurrencePattern: string): MonthData[] {
   // Filter based on recurrence pattern
   switch (recurrencePattern) {
     case 'monthly':
-      return allMonths; // Show all months
+      return allMonths;
     case 'quarterly':
+      if (dueMonth !== undefined) {
+        return allMonths.filter(m => (m.fullDate.getMonth() - dueMonth + 12) % 3 === 0);
+      }
       return allMonths.filter((_, index) => index % 3 === 0);
     case 'half-yearly':
+      if (dueMonth !== undefined) {
+        return allMonths.filter(m => (m.fullDate.getMonth() - dueMonth + 12) % 6 === 0);
+      }
       return allMonths.filter((_, index) => index % 6 === 0);
     case 'yearly':
+      if (dueMonth !== undefined) {
+        return allMonths.filter(m => m.fullDate.getMonth() === dueMonth);
+      }
       return allMonths.filter((_, index) => index % 12 === 0);
     default:
       return allMonths;
@@ -105,24 +114,19 @@ export function getCompletionStatus(
 export function calculateCompletionRate(
   task: RecurringTask,
   clientCount: number,
-  taskCompletions: ClientTaskCompletion[]
+  taskCompletions: ClientTaskCompletion[],
+  monthKey?: string
 ): number {
   if (clientCount === 0) return 0;
 
-  // Get current month key (YYYY-MM format)
   const currentDate = new Date();
-  const currentMonthKey = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}`;
+  const key = monthKey || `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}`;
 
-  // Filter completions for current month only
-  const currentMonthCompletions = taskCompletions.filter(
-    c => c.isCompleted && c.monthKey === currentMonthKey
+  const monthCompletions = taskCompletions.filter(
+    c => c.isCompleted && c.monthKey === key
   );
 
-  // Total expected is the number of clients (each client should complete once per month)
-  const totalExpected = clientCount;
+  if (clientCount === 0) return 0;
 
-  if (totalExpected === 0) return 0;
-
-  const completed = currentMonthCompletions.length;
-  return Math.round((completed / totalExpected) * 100);
+  return Math.round((monthCompletions.length / clientCount) * 100);
 }
