@@ -106,11 +106,14 @@ export function TeamMemberMappingDialog({
     return mappings.find(m => m.userId === selectedUserId)?.clientIds || [];
   };
 
-  // Get filtered clients (exclude already assigned, apply search & compliance filter)
+  // Find which user a client is assigned to (across ALL mappings)
+  const getClientMapping = (clientId: string) => {
+    return mappings.find(m => m.clientIds.includes(clientId));
+  };
+
+  // Get filtered clients (show ALL clients, mark assigned ones)
   const getFilteredClients = () => {
-    const assignedIds = getAssignedClientIds();
     return clients.filter(client => {
-      if (assignedIds.includes(client.id!)) return false;
       if (clientSearch && !client.clientName.toLowerCase().includes(clientSearch.toLowerCase())) return false;
       if (complianceFilter !== 'all') {
         const key = complianceFilter as ComplianceKey;
@@ -124,6 +127,10 @@ export function TeamMemberMappingDialog({
 
   // Handle checkbox click with Ctrl+click range select support
   const handleClientCheckbox = (clientId: string, index: number, ctrlKey: boolean) => {
+    // Skip if already assigned to the selected user
+    const assignedIds = getAssignedClientIds();
+    if (assignedIds.includes(clientId)) return;
+
     if (ctrlKey && lastSelectedIndexRef.current !== null) {
       // Range select between last selected and current
       const start = Math.min(lastSelectedIndexRef.current, index);
@@ -141,9 +148,10 @@ export function TeamMemberMappingDialog({
     }
   };
 
-  // Select all currently filtered clients
+  // Select all currently filtered clients (skip already-assigned to selected user)
   const handleSelectAllFiltered = () => {
-    const ids = filteredClients.map(c => c.id!);
+    const assignedIds = getAssignedClientIds();
+    const ids = filteredClients.filter(c => !assignedIds.includes(c.id!)).map(c => c.id!);
     setPendingClientIds(prev => Array.from(new Set([...prev, ...ids])));
   };
 
@@ -159,17 +167,22 @@ export function TeamMemberMappingDialog({
     const user = users.find(u => u.uid === selectedUserId);
     if (!user) return;
 
+    // Filter out any clients already assigned to this user (safety)
+    const assignedIds = getAssignedClientIds();
+    const newClientIds = pendingClientIds.filter(id => !assignedIds.includes(id));
+    if (newClientIds.length === 0) return;
+
     const existingMapping = mappings.find(m => m.userId === selectedUserId);
     if (existingMapping) {
       setMappings(mappings.map(m =>
         m.userId === selectedUserId
-          ? { ...m, clientIds: Array.from(new Set([...m.clientIds, ...pendingClientIds])) }
+          ? { ...m, clientIds: Array.from(new Set([...m.clientIds, ...newClientIds])) }
           : m
       ));
     } else {
       setMappings([
         ...mappings,
-        { userId: selectedUserId, userName: user.displayName || user.email, clientIds: pendingClientIds },
+        { userId: selectedUserId, userName: user.displayName || user.email, clientIds: newClientIds },
       ]);
     }
     setPendingClientIds([]);
@@ -281,6 +294,10 @@ export function TeamMemberMappingDialog({
                 <div className="flex items-center justify-between mb-1 px-0.5">
                   <span className="text-xs text-gray-500 dark:text-gray-400">
                     {filteredClients.length} client{filteredClients.length !== 1 ? 's' : ''} shown
+                    {(() => {
+                      const assignedCount = filteredClients.filter(c => getClientMapping(c.id!)).length;
+                      return assignedCount > 0 ? ` (${assignedCount} already assigned)` : '';
+                    })()}
                     {(clientSearch || complianceFilter !== 'all') && ' (filtered)'}
                   </span>
                   <div className="flex gap-2">
@@ -313,25 +330,68 @@ export function TeamMemberMappingDialog({
                   ) : (
                     filteredClients.map((client, index) => {
                       const isChecked = pendingClientIds.includes(client.id!);
+                      const assignedMapping = getClientMapping(client.id!);
+                      const isAssignedToSelectedUser = assignedMapping?.userId === selectedUserId;
+                      const isAssignedToOther = assignedMapping && assignedMapping.userId !== selectedUserId;
+
                       return (
                         <label
                           key={client.id}
-                          className={`flex items-center gap-2.5 px-3 py-2 cursor-pointer select-none border-b border-gray-100 dark:border-gray-700 last:border-b-0 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors ${isChecked ? 'bg-blue-50 dark:bg-blue-900/20' : ''}`}
-                          title="Hold Ctrl and click to range-select"
+                          className={`flex items-center gap-2.5 px-3 py-2 cursor-pointer select-none border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors ${
+                            isAssignedToSelectedUser
+                              ? 'bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30'
+                              : isAssignedToOther
+                              ? 'bg-orange-50 dark:bg-orange-900/20 hover:bg-orange-100 dark:hover:bg-orange-900/30'
+                              : isChecked
+                              ? 'bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-50 dark:hover:bg-gray-700'
+                              : 'hover:bg-blue-50 dark:hover:bg-gray-700'
+                          }`}
+                          title={
+                            isAssignedToSelectedUser
+                              ? 'Already assigned to this member'
+                              : isAssignedToOther
+                              ? `Already assigned to ${assignedMapping.userName}`
+                              : 'Hold Ctrl and click to range-select'
+                          }
                         >
                           <input
                             type="checkbox"
-                            checked={isChecked}
+                            checked={isChecked || isAssignedToSelectedUser}
+                            disabled={isAssignedToSelectedUser}
                             onChange={() => {}}
                             onClick={(e) => {
                               e.stopPropagation();
-                              handleClientCheckbox(client.id!, index, e.ctrlKey || e.metaKey);
+                              if (!isAssignedToSelectedUser) {
+                                handleClientCheckbox(client.id!, index, e.ctrlKey || e.metaKey);
+                              }
                             }}
-                            className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                            className={`w-4 h-4 rounded border-gray-300 focus:ring-blue-500 ${
+                              isAssignedToSelectedUser
+                                ? 'text-red-600 border-red-400 cursor-not-allowed opacity-60'
+                                : 'text-blue-600 cursor-pointer'
+                            }`}
                           />
-                          <span className="text-sm text-gray-800 dark:text-gray-200 flex-1 truncate">
+                          <span className={`text-sm flex-1 truncate ${
+                            isAssignedToSelectedUser
+                              ? 'text-red-700 dark:text-red-400 font-medium'
+                              : isAssignedToOther
+                              ? 'text-orange-700 dark:text-orange-400'
+                              : 'text-gray-800 dark:text-gray-200'
+                          }`}>
                             {client.clientName}
                           </span>
+                          <div className="flex items-center gap-1 flex-shrink-0">
+                            {isAssignedToSelectedUser && (
+                              <span className="text-[10px] bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300 rounded px-1.5 py-0.5 font-medium">
+                                Assigned
+                              </span>
+                            )}
+                            {isAssignedToOther && (
+                              <span className="text-[10px] bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-300 rounded px-1.5 py-0.5 font-medium" title={`Assigned to ${assignedMapping.userName}`}>
+                                Assigned: {assignedMapping.userName.split(' ')[0]}
+                              </span>
+                            )}
+                          </div>
                           <div className="flex gap-1 flex-shrink-0">
                             {client.compliance?.gstr1 && <span className="text-[10px] bg-green-100 text-green-700 rounded px-1">G1</span>}
                             {client.compliance?.itr && <span className="text-[10px] bg-purple-100 text-purple-700 rounded px-1">ITR</span>}
