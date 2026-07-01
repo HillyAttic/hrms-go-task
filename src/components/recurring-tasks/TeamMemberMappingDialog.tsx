@@ -296,7 +296,11 @@ export function TeamMemberMappingDialog({
                     {filteredClients.length} client{filteredClients.length !== 1 ? 's' : ''} shown
                     {(() => {
                       const assignedCount = filteredClients.filter(c => getClientMapping(c.id!)).length;
-                      return assignedCount > 0 ? ` (${assignedCount} already assigned)` : '';
+                      const unassignedCount = filteredClients.length - assignedCount;
+                      if (assignedCount > 0) {
+                        return ` (${assignedCount} assigned, ${unassignedCount} unassigned)`;
+                      }
+                      return ` (all unassigned)`;
                     })()}
                     {(clientSearch || complianceFilter !== 'all') && ' (filtered)'}
                   </span>
