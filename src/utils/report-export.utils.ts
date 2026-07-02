@@ -133,9 +133,9 @@ export function exportToExcel(data: ExportData): void {
   const wb = XLSX.utils.book_new();
   
   // Prepare data for the main sheet
-  const headers = ['Client Name', ...months.map(m => `${m.monthName} ${m.year}`)];
+  const headers = ['Client Name', 'PAN', ...months.map(m => `${m.monthName} ${m.year}`)];
   const rows = clients.map(client => {
-    const row: any = { 'Client Name': client.clientName };
+    const row: any = { 'Client Name': client.clientName, 'PAN': client.taxIdentifiers?.pan || '-' };
     months.forEach(month => {
       const status = getCompletionStatus(completions, client.id || '', month.key, month.fullDate);
       row[`${month.monthName} ${month.year}`] = 
@@ -150,7 +150,7 @@ export function exportToExcel(data: ExportData): void {
   const ws = XLSX.utils.json_to_sheet(rows, { header: headers });
   
   // Set column widths
-  const colWidths = [{ wch: 30 }, ...months.map(() => ({ wch: 12 }))];
+  const colWidths = [{ wch: 30 }, { wch: 18 }, ...months.map(() => ({ wch: 12 }))];
   ws['!cols'] = colWidths;
   
   // Add metadata sheet
