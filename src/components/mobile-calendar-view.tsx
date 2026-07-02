@@ -37,6 +37,7 @@ export function MobileCalendarView({ tasks, onTaskClick }: MobileCalendarViewPro
   const [isClientModalOpen, setIsClientModalOpen] = useState(false);
   const [clients, setClients] = useState<any[]>([]);
   const [fullRecurringTask, setFullRecurringTask] = useState<RecurringTask | null>(null);
+  const [loadingTaskId, setLoadingTaskId] = useState<string | null>(null);
   const { openModal, closeModal } = useModal();
   const calendarGridRef = React.useRef<HTMLDivElement>(null);
 
@@ -142,6 +143,10 @@ export function MobileCalendarView({ tasks, onTaskClick }: MobileCalendarViewPro
 
     // If it's a recurring task, open the client modal
     if (task.isRecurring && task.recurringTaskId) {
+      // Prevent double-click while loading
+      if (loadingTaskId === task.id) return;
+
+      setLoadingTaskId(task.id);
       setSelectedTask(task);
 
       try {
@@ -181,6 +186,8 @@ export function MobileCalendarView({ tasks, onTaskClick }: MobileCalendarViewPro
         console.error('Error fetching task clients:', error);
         setClients([]);
         setFullRecurringTask(null);
+      } finally {
+        setLoadingTaskId(null);
       }
 
       setIsClientModalOpen(true);
@@ -350,42 +357,81 @@ export function MobileCalendarView({ tasks, onTaskClick }: MobileCalendarViewPro
 
                   {/* Task Labels - Google Calendar Style */}
                   <div className="space-y-0.5 overflow-hidden">
-                    {dayTasks.length === 1 && (
-                      <div
-                        onClick={(e) => handleTaskClick(dayTasks[0], e)}
-                        className={`text-[10px] leading-tight px-1 py-0.5 rounded-sm cursor-pointer hover:opacity-90 transition-opacity truncate ${getTaskLabelColorLight(dayTasks[0])}`}
-                        title={dayTasks[0].title}
-                      >
-                        {dayTasks[0].title}
-                      </div>
-                    )}
+                    {dayTasks.length === 1 && (() => {
+                      const task = dayTasks[0];
+                      const isLoading = loadingTaskId === task.id;
+                      return (
+                        <div
+                          onClick={(e) => handleTaskClick(task, e)}
+                          className={`text-[10px] leading-tight px-1 py-0.5 rounded-sm transition-opacity truncate ${
+                            isLoading ? 'opacity-70 cursor-wait' : 'cursor-pointer hover:opacity-90'
+                          } ${getTaskLabelColorLight(task)}`}
+                          title={task.title}
+                        >
+                          {isLoading ? (
+                            <span className="inline-flex items-center gap-0.5">
+                              <svg className="animate-spin h-2.5 w-2.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                              </svg>
+                              {task.title}
+                            </span>
+                          ) : task.title}
+                        </div>
+                      );
+                    })()}
                     {dayTasks.length === 2 && (
                       <>
-                        <div
-                          onClick={(e) => handleTaskClick(dayTasks[0], e)}
-                          className={`text-[10px] leading-tight px-1 py-0.5 rounded-sm cursor-pointer hover:opacity-90 transition-opacity truncate ${getTaskLabelColorLight(dayTasks[0])}`}
-                          title={dayTasks[0].title}
-                        >
-                          {dayTasks[0].title}
-                        </div>
-                        <div
-                          onClick={(e) => handleTaskClick(dayTasks[1], e)}
-                          className={`text-[10px] leading-tight px-1 py-0.5 rounded-sm cursor-pointer hover:opacity-90 transition-opacity truncate ${getTaskLabelColorLight(dayTasks[1])}`}
-                          title={dayTasks[1].title}
-                        >
-                          {dayTasks[1].title}
-                        </div>
+                        {dayTasks.slice(0, 2).map((task) => {
+                          const isLoading = loadingTaskId === task.id;
+                          return (
+                            <div
+                              key={task.id}
+                              onClick={(e) => handleTaskClick(task, e)}
+                              className={`text-[10px] leading-tight px-1 py-0.5 rounded-sm transition-opacity truncate ${
+                                isLoading ? 'opacity-70 cursor-wait' : 'cursor-pointer hover:opacity-90'
+                              } ${getTaskLabelColorLight(task)}`}
+                              title={task.title}
+                            >
+                              {isLoading ? (
+                                <span className="inline-flex items-center gap-0.5">
+                                  <svg className="animate-spin h-2.5 w-2.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                  </svg>
+                                  {task.title}
+                                </span>
+                              ) : task.title}
+                            </div>
+                          );
+                        })}
                       </>
                     )}
                     {dayTasks.length >= 3 && (
                       <>
-                        <div
-                          onClick={(e) => handleTaskClick(dayTasks[0], e)}
-                          className={`text-[10px] leading-tight px-1 py-0.5 rounded-sm cursor-pointer hover:opacity-90 transition-opacity truncate ${getTaskLabelColorLight(dayTasks[0])}`}
-                          title={dayTasks[0].title}
-                        >
-                          {dayTasks[0].title}
-                        </div>
+                        {(() => {
+                          const task = dayTasks[0];
+                          const isLoading = loadingTaskId === task.id;
+                          return (
+                            <div
+                              onClick={(e) => handleTaskClick(task, e)}
+                              className={`text-[10px] leading-tight px-1 py-0.5 rounded-sm transition-opacity truncate ${
+                                isLoading ? 'opacity-70 cursor-wait' : 'cursor-pointer hover:opacity-90'
+                              } ${getTaskLabelColorLight(task)}`}
+                              title={task.title}
+                            >
+                              {isLoading ? (
+                                <span className="inline-flex items-center gap-0.5">
+                                  <svg className="animate-spin h-2.5 w-2.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                  </svg>
+                                  {task.title}
+                                </span>
+                              ) : task.title}
+                            </div>
+                          );
+                        })()}
                         <div className="text-[10px] leading-tight px-1 text-blue-600 dark:text-blue-400 font-medium">
                           ● {dayTasks.length} pending
                         </div>
@@ -436,31 +482,45 @@ export function MobileCalendarView({ tasks, onTaskClick }: MobileCalendarViewPro
             <div className="overflow-y-auto max-h-[45vh] px-4 py-3">
               {getTasksForDate(selectedDate).length > 0 ? (
                 <div className="space-y-2">
-                  {getTasksForDate(selectedDate).map(task => (
-                    <div
-                      key={task.id}
-                      className="flex items-start gap-3 p-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-gray-700/50 cursor-pointer hover:bg-gray-100 dark:hover:bg-white/10 transition-all active:scale-[0.98]"
-                      onClick={(e) => {
-                        setShowBottomSheet(false);
-                        handleTaskClick(task, e);
-                      }}
-                    >
-                      {/* Color indicator */}
-                      <div className={`w-1 self-stretch rounded-full flex-shrink-0 ${
-                        task.status === 'completed' ? 'bg-emerald-500' :
-                        task.priority === 'urgent' ? 'bg-red-500' :
-                        task.priority === 'high' ? 'bg-orange-500' :
-                        task.priority === 'medium' ? 'bg-amber-500' :
-                        'bg-teal-500'
-                      }`} />
+                  {getTasksForDate(selectedDate).map(task => {
+                    const isLoading = loadingTaskId === task.id;
+                    return (
+                      <div
+                        key={task.id}
+                        className={`flex items-start gap-3 p-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-gray-700/50 transition-all active:scale-[0.98] ${
+                          isLoading
+                            ? 'cursor-wait opacity-70'
+                            : 'cursor-pointer hover:bg-gray-100 dark:hover:bg-white/10'
+                        }`}
+                        onClick={(e) => {
+                          if (!isLoading) {
+                            setShowBottomSheet(false);
+                            handleTaskClick(task, e);
+                          }
+                        }}
+                      >
+                        {/* Color indicator */}
+                        <div className={`w-1 self-stretch rounded-full flex-shrink-0 ${
+                          task.status === 'completed' ? 'bg-emerald-500' :
+                          task.priority === 'urgent' ? 'bg-red-500' :
+                          task.priority === 'high' ? 'bg-orange-500' :
+                          task.priority === 'medium' ? 'bg-amber-500' :
+                          'bg-teal-500'
+                        }`} />
 
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2">
-                          <h4 className="font-medium text-sm text-gray-900 dark:text-white truncate">{task.title}</h4>
-                          {task.isRecurring && (
-                            <ArrowPathIcon className="w-3.5 h-3.5 text-purple-500 dark:text-purple-400 flex-shrink-0" />
-                          )}
-                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2">
+                            {isLoading && (
+                              <svg className="animate-spin h-4 w-4 shrink-0 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                              </svg>
+                            )}
+                            <h4 className="font-medium text-sm text-gray-900 dark:text-white truncate">{task.title}</h4>
+                            {task.isRecurring && !isLoading && (
+                              <ArrowPathIcon className="w-3.5 h-3.5 text-purple-500 dark:text-purple-400 flex-shrink-0" />
+                            )}
+                          </div>
                         {task.description && (
                           <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">{task.description}</p>
                         )}
@@ -490,7 +550,8 @@ export function MobileCalendarView({ tasks, onTaskClick }: MobileCalendarViewPro
 
                       <ChevronRightIcon className="w-4 h-4 text-gray-400 dark:text-gray-500 flex-shrink-0 mt-1" />
                     </div>
-                  ))}
+                    );
+                  })}
                 </div>
               ) : (
                 <div className="text-center py-10">

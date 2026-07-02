@@ -23,7 +23,7 @@ export function useServiceWorker() {
   const [state, setState] = useState<ServiceWorkerState>({
     isSupported: false,
     isRegistered: false,
-    isOnline: navigator.onLine,
+    isOnline: true, // Safe default for SSR
     updateAvailable: false,
     registration: null,
     error: null
@@ -36,6 +36,11 @@ export function useServiceWorker() {
   useEffect(() => {
     offlineQueueRef.current = offlineQueue;
   }, [offlineQueue]);
+
+  // Initialize online status on client-side only
+  useEffect(() => {
+    setState(prev => ({ ...prev, isOnline: navigator.onLine }));
+  }, []);
 
   // Check for existing service worker and register if needed
   const checkServiceWorker = useCallback(async () => {

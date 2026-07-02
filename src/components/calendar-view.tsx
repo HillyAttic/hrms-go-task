@@ -40,6 +40,7 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
   const [isClientModalOpen, setIsClientModalOpen] = useState(false);
   const [clients, setClients] = useState<any[]>([]);
   const [fullRecurringTask, setFullRecurringTask] = useState<RecurringTask | null>(null);
+  const [loadingTaskId, setLoadingTaskId] = useState<string | null>(null);
   const { openModal, closeModal } = useModal();
   const { isAdmin, isManager } = useEnhancedAuth();
   const [rosterStats, setRosterStats] = useState<Record<number, DailyStats>>({});
@@ -161,6 +162,10 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
 
     // If it's a recurring task, open the client modal
     if (task.isRecurring && task.recurringTaskId) {
+      // Prevent double-click while loading
+      if (loadingTaskId === task.id) return;
+
+      setLoadingTaskId(task.id);
       setSelectedTask(task);
 
       // Fetch the full recurring task to get contactIds and team member mappings
@@ -222,6 +227,8 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
         console.error('Error fetching task clients:', error);
         setClients([]);
         setFullRecurringTask(null);
+      } finally {
+        setLoadingTaskId(null);
       }
 
       setIsClientModalOpen(true);
@@ -403,26 +410,40 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
 
                 {/* Tasks */}
                 <div className="mt-1 space-y-1 md:max-h-20 overflow-y-auto flex-1">
-                  {dayTasks.slice(0, 3).map(task => (
-                    <div
-                      key={task.id}
-                      onClick={(e) => handleTaskClick(task, e, day)}
-                      className={`text-xs md:text-[11px] p-2 md:p-1 rounded flex items-center gap-1 cursor-pointer hover:opacity-80 transition-opacity ${
-                        task.priority === 'urgent' ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300' :
-                        task.priority === 'high' ? 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300' :
-                        task.priority === 'medium' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300' :
-                        'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
-                      }`}
-                      title={`${task.title}${task.isRecurring ? ` (${task.recurrencePattern})` : ''}`}
-                    >
-                      {task.isRecurring && (
-                        <span className="font-bold text-[10px]">
-                          {getRecurrenceLabel(task.recurrencePattern)}
-                        </span>
-                      )}
-                      <span className="truncate md:truncate">{task.title}</span>
-                    </div>
-                  ))}
+                  {dayTasks.slice(0, 3).map(task => {
+                    const isLoading = loadingTaskId === task.id;
+                    return (
+                      <div
+                        key={task.id}
+                        onClick={(e) => handleTaskClick(task, e, day)}
+                        className={`text-xs md:text-[11px] p-2 md:p-1 rounded flex items-center gap-1 transition-opacity ${
+                          isLoading
+                            ? 'opacity-70 cursor-wait'
+                            : 'cursor-pointer hover:opacity-80'
+                        } ${
+                          task.priority === 'urgent' ? 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300' :
+                          task.priority === 'high' ? 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300' :
+                          task.priority === 'medium' ? 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300' :
+                          'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
+                        }`}
+                        title={`${task.title}${task.isRecurring ? ` (${task.recurrencePattern})` : ''}`}
+                      >
+                        {isLoading ? (
+                          <svg className="animate-spin h-3 w-3 shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          </svg>
+                        ) : (
+                          task.isRecurring && (
+                            <span className="font-bold text-[10px]">
+                              {getRecurrenceLabel(task.recurrencePattern)}
+                            </span>
+                          )
+                        )}
+                        <span className="truncate md:truncate">{task.title}</span>
+                      </div>
+                    );
+                  })}
                   {dayTasks.length > 3 && (
                     <div className="text-xs text-gray-500 dark:text-gray-400 px-2 md:px-0">
                       +{dayTasks.length - 3} more
@@ -443,36 +464,49 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
             </h3>
             {getTasksForDate(selectedDate).length > 0 ? (
               <div className="space-y-2">
-                {getTasksForDate(selectedDate).map(task => (
-                  <div
-                    key={task.id}
-                    className="p-3 bg-white dark:bg-gray-dark rounded border cursor-pointer hover:bg-gray-50 dark:bg-gray-800 transition-colors"
-                    onClick={(e) => handleTaskClick(task, e, selectedDate)}
-                  >
-                    <div className="flex justify-between items-start">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <h4 className="font-medium">{task.title}</h4>
-                          {task.isRecurring && (
-                            <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-800">
-                              <ArrowPathIcon className="w-3 h-3" />
-                              {task.recurrencePattern?.replace('-', ' ')}
-                            </span>
+                {getTasksForDate(selectedDate).map(task => {
+                  const isLoading = loadingTaskId === task.id;
+                  return (
+                    <div
+                      key={task.id}
+                      className={`p-3 bg-white dark:bg-gray-dark rounded border transition-colors ${
+                        isLoading
+                          ? 'cursor-wait opacity-70'
+                          : 'cursor-pointer hover:bg-gray-50 dark:bg-gray-800'
+                      }`}
+                      onClick={(e) => handleTaskClick(task, e, selectedDate)}
+                    >
+                      <div className="flex justify-between items-start">
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2">
+                            {isLoading && (
+                              <svg className="animate-spin h-4 w-4 shrink-0 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                              </svg>
+                            )}
+                            <h4 className="font-medium">{task.title}</h4>
+                            {task.isRecurring && !isLoading && (
+                              <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-800">
+                                <ArrowPathIcon className="w-3 h-3" />
+                                {task.recurrencePattern?.replace('-', ' ')}
+                              </span>
+                            )}
+                          </div>
+                          {task.description && (
+                            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{task.description}</p>
                           )}
                         </div>
-                        {task.description && (
-                          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{task.description}</p>
-                        )}
+                        <span className={`text-xs px-2 py-1 rounded-full whitespace-nowrap ml-2 ${task.status === 'completed' ? 'bg-green-100 text-green-800' :
+                            task.status === 'in-progress' ? 'bg-orange-100 text-orange-800' :
+                              'bg-yellow-100 text-yellow-800'
+                          }`}>
+                          {task.status.replace('-', ' ')}
+                        </span>
                       </div>
-                      <span className={`text-xs px-2 py-1 rounded-full whitespace-nowrap ml-2 ${task.status === 'completed' ? 'bg-green-100 text-green-800' :
-                          task.status === 'in-progress' ? 'bg-orange-100 text-orange-800' :
-                            'bg-yellow-100 text-yellow-800'
-                        }`}>
-                        {task.status.replace('-', ' ')}
-                      </span>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             ) : (
               <p className="text-gray-500 dark:text-gray-400">No tasks scheduled for this day.</p>
