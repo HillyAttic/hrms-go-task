@@ -294,23 +294,45 @@ export function ReportsView() {
 
                 // Get clients based on task type
                 let taskClients: Client[];
+                let allClientIds: Set<string>;
                 if (hasTeamMemberMapping) {
-                  // For team member mapped tasks, get all clients from mappings
-                  const allMappedClientIds = new Set<string>();
+                  // Collect from both team member mappings AND contactIds
+                  allClientIds = new Set<string>();
                   task.teamMemberMappings!.forEach(mapping => {
-                    mapping.clientIds.forEach(clientId => allMappedClientIds.add(clientId));
+                    mapping.clientIds.forEach(clientId => allClientIds.add(clientId));
                   });
-                  taskClients = clients.filter(c => c.id && allMappedClientIds.has(c.id));
+                  if (task.contactIds && task.contactIds.length > 0) {
+                    task.contactIds.forEach(clientId => allClientIds.add(clientId));
+                  }
+                  taskClients = clients.filter(c => c.id && allClientIds.has(c.id));
                 } else {
-                  // For regular tasks, use contactIds
+                  allClientIds = new Set<string>();
+                  if (task.contactIds) {
+                    task.contactIds.forEach(clientId => allClientIds.add(clientId));
+                  }
                   taskClients = clients.filter(c => c.id && task.contactIds?.includes(c.id));
                 }
+
+                // Calculate unassigned count for team-mapped tasks
+                const mappedClientIds = new Set<string>();
+                if (hasTeamMemberMapping) {
+                  task.teamMemberMappings!.forEach(mapping => {
+                    mapping.clientIds.forEach(clientId => mappedClientIds.add(clientId));
+                  });
+                }
+                const unassignedCount = hasTeamMemberMapping
+                  ? taskClients.filter(c => c.id && !mappedClientIds.has(c.id)).length
+                  : 0;
 
                 const taskCompletions = completions.get(task.id || '') || [];
                 // Calculate completion rate for the selected period
                 const dueMonth = getTaskDueMonth(task);
                 const monthKey = getMonthKeyForPeriod(selectedFY, selectedMonth, task.recurrencePattern, dueMonth);
                 const completionRate = calculateCompletionRate(task, taskClients.length, taskCompletions, monthKey);
+
+                const mappedCount = hasTeamMemberMapping
+                  ? task.teamMemberMappings!.reduce((sum, m) => sum + m.clientIds.length, 0)
+                  : 0;
 
                 return (
                   <tr key={task.id} className="hover:bg-gray-50 dark:bg-gray-800">
@@ -325,6 +347,12 @@ export function ReportsView() {
                               <span className="sm:hidden">Mapped</span>
                             </span>
                           )}
+                          {unassignedCount > 0 && (
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800 whitespace-nowrap" title={`${unassignedCount} clients not assigned to any team member`}>
+                              <span className="hidden sm:inline">{unassignedCount} unassigned</span>
+                              <span className="sm:hidden">{unassignedCount} unasgn.</span>
+                            </span>
+                          )}
                         </div>
                         {/* Mobile: Show recurrence and client count */}
                         <div className="flex items-center gap-3 text-xs md:hidden">
@@ -333,7 +361,7 @@ export function ReportsView() {
                           </span>
                           <span className="text-gray-500 dark:text-gray-400">
                             {hasTeamMemberMapping ? (
-                              <span>{task.teamMemberMappings!.reduce((sum, m) => sum + m.clientIds.length, 0)} clients</span>
+                              <span>{mappedCount} mapped{unassignedCount > 0 ? ` + ${unassignedCount} unasn.` : ''}</span>
                             ) : (
                               <span>{taskClients.length} clients</span>
                             )}
@@ -348,8 +376,8 @@ export function ReportsView() {
                     </td>
                     <td className="hidden lg:table-cell px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                       {hasTeamMemberMapping ? (
-                        <span title={`${task.teamMemberMappings!.length} team member(s) assigned`}>
-                          {task.teamMemberMappings!.reduce((sum, m) => sum + m.clientIds.length, 0)} (mapped)
+                        <span title={`${task.teamMemberMappings!.length} team member(s) assigned${unassignedCount > 0 ? `, ${unassignedCount} unassigned` : ''}`}>
+                          {mappedCount} (mapped){unassignedCount > 0 ? ` + ${unassignedCount} (unassigned)` : ''}
                         </span>
                       ) : (
                         taskClients.length
@@ -389,16 +417,22 @@ export function ReportsView() {
         <TaskReportModal
           task={selectedTask}
           clients={(() => {
-            // For team member mapped tasks, get all clients from mappings
+            // Collect client IDs from all sources
+            const allClientIds = new Set<string>();
+
             if (selectedTask.teamMemberMappings && selectedTask.teamMemberMappings.length > 0) {
-              const allMappedClientIds = new Set<string>();
+              // Add clients from team member mappings
               selectedTask.teamMemberMappings.forEach(mapping => {
-                mapping.clientIds.forEach(clientId => allMappedClientIds.add(clientId));
+                mapping.clientIds.forEach(clientId => allClientIds.add(clientId));
               });
-              return clients.filter(c => c.id && allMappedClientIds.has(c.id));
             }
-            // For regular tasks, use contactIds
-            return clients.filter(c => c.id && selectedTask.contactIds?.includes(c.id));
+
+            // Also include clients from contactIds (these may be unassigned to any team member)
+            if (selectedTask.contactIds && selectedTask.contactIds.length > 0) {
+              selectedTask.contactIds.forEach(clientId => allClientIds.add(clientId));
+            }
+
+            return clients.filter(c => c.id && allClientIds.has(c.id));
           })()}
           completions={completions.get(selectedTask.id || '') || []}
           onClose={closeModal}

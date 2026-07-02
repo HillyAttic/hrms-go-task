@@ -296,15 +296,15 @@ export default function RecurringTasksPage() {
 
       const completions: ClientTaskCompletion[] = completionsRes.ok ? await completionsRes.json() : [];
 
-      // Filter clients relevant to this task
-      let taskClients: Client[];
+      // Filter clients relevant to this task — from both team member mappings AND contactIds
+      const allClientIds = new Set<string>();
       if (task.teamMemberMappings && task.teamMemberMappings.length > 0) {
-        const mappedIds = new Set<string>();
-        task.teamMemberMappings.forEach(m => m.clientIds.forEach(id => mappedIds.add(id)));
-        taskClients = allClients.filter(c => c.id && mappedIds.has(c.id));
-      } else {
-        taskClients = allClients.filter(c => c.id && task.contactIds?.includes(c.id));
+        task.teamMemberMappings.forEach(m => m.clientIds.forEach(id => allClientIds.add(id)));
       }
+      if (task.contactIds && task.contactIds.length > 0) {
+        task.contactIds.forEach(id => allClientIds.add(id));
+      }
+      const taskClients = allClients.filter(c => c.id && allClientIds.has(c.id));
 
       setReportClients(taskClients);
       setReportCompletions(completions);

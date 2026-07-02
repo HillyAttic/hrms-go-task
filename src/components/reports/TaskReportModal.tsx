@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import { RecurringTask } from '@/services/recurring-task.service';
 import { Client } from '@/services/client.service';
 import { ClientTaskCompletion } from '@/services/task-completion.service';
-import { XMarkIcon, CheckIcon, XCircleIcon, UserGroupIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon, CheckIcon, XCircleIcon, UserGroupIcon, ArrowDownTrayIcon, UserMinusIcon } from '@heroicons/react/24/outline';
 import { isFuture, isToday, startOfMonth } from 'date-fns';
 import { exportToPDF, exportToExcel } from '@/utils/report-export.utils';
 import { buildCompletionData, getCompletionStatus, type MonthData } from '@/utils/report-utils';
@@ -120,11 +120,12 @@ interface ExportDialogProps {
   completions: ClientTaskCompletion[];
   isTeamMemberView?: boolean;
   teamMemberName?: string;
+  isUnassignedView?: boolean;
   dueMonth?: number;
   onClose: () => void;
 }
 
-function ExportDialog({ task, clients, completions, isTeamMemberView, teamMemberName, dueMonth, onClose }: ExportDialogProps) {
+function ExportDialog({ task, clients, completions, isTeamMemberView, teamMemberName, isUnassignedView, dueMonth, onClose }: ExportDialogProps) {
   const [exportYear, setExportYear] = useState('all');
   const [exportMonth, setExportMonth] = useState('all');
   const financialYears = generateFinancialYears();
@@ -140,7 +141,7 @@ function ExportDialog({ task, clients, completions, isTeamMemberView, teamMember
 
   const handleExport = (format: 'pdf' | 'excel') => {
     const months = getExportMonths();
-    const exportData = { task, clients, completions, months, isTeamMemberView, teamMemberName };
+    const exportData = { task, clients, completions, months, isTeamMemberView, teamMemberName, isUnassignedView };
     if (format === 'pdf') exportToPDF(exportData);
     else exportToExcel(exportData);
     onClose();
@@ -327,6 +328,8 @@ function LegendFooter() {
 
 // ---------- Team Member Report Modal ----------
 
+const UNASSIGNED_KEY = '__unassigned__';
+
 function TeamMemberReportModal({ task, clients, completions, onClose }: TaskReportModalProps) {
   const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all');
@@ -342,6 +345,21 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
     () => generateDisplayMonths(selectedFY, task.recurrencePattern, selectedMonth, dueMonth),
     [selectedFY, task.recurrencePattern, selectedMonth, dueMonth]
   );
+
+  // Compute which client IDs are assigned to any team member
+  const allMappedClientIds = useMemo(() => {
+    const ids = new Set<string>();
+    (task.teamMemberMappings || []).forEach(mapping => {
+      mapping.clientIds.forEach(clientId => ids.add(clientId));
+    });
+    return ids;
+  }, [task.teamMemberMappings]);
+
+  // Unassigned clients: clients in the prop that are NOT in any team member mapping
+  // These come from task.contactIds (e.g., all 266 ITR clients) minus mapped clients
+  const unassignedClients = useMemo(() => {
+    return clients.filter(c => c.id && !allMappedClientIds.has(c.id));
+  }, [clients, allMappedClientIds]);
 
   const teamMemberReports: TeamMemberReport[] = (task.teamMemberMappings || []).map(mapping => {
     const memberClients = clients.filter(c => c.id && mapping.clientIds.includes(c.id));
@@ -368,11 +386,35 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
     };
   });
 
-  const selectedMember = selectedMemberId
+  // Compute unassigned clients' completion stats
+  const unassignedReport = useMemo(() => {
+    const visibleMonthKeys = new Set(months.map(m => m.key));
+    const unassignedClientIds = new Set(unassignedClients.map(c => c.id || ''));
+    const memberCompletions = completions.filter(
+      comp =>
+        comp.isCompleted &&
+        unassignedClientIds.has(comp.clientId) &&
+        visibleMonthKeys.has(comp.monthKey)
+    );
+    const totalExpected =
+      unassignedClients.length *
+      months.filter(m => !isFuture(m.fullDate) || isToday(startOfMonth(m.fullDate))).length;
+    const completedCount = memberCompletions.length;
+    const completionRate = totalExpected > 0 ? Math.round((completedCount / totalExpected) * 100) : 0;
+    return { completionRate, completedCount, totalExpected };
+  }, [unassignedClients, completions, months]);
+
+  const selectedMember = selectedMemberId && selectedMemberId !== UNASSIGNED_KEY
     ? teamMemberReports.find(r => r.userId === selectedMemberId)
     : null;
 
-  const baseClients = selectedMember ? selectedMember.clients : clients;
+  const isUnassignedSelected = selectedMemberId === UNASSIGNED_KEY;
+  const baseClients = isUnassignedSelected
+    ? unassignedClients
+    : selectedMember
+    ? selectedMember.clients
+    : clients;
+
   const completionData = buildCompletionData(completions, baseClients, months);
 
   const filteredClients = useMemo(() => {
@@ -386,7 +428,11 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
     });
   }, [baseClients, completions, statusFilter, months]);
 
-  const exportClients = selectedMember ? selectedMember.clients : clients;
+  const exportClients = isUnassignedSelected
+    ? unassignedClients
+    : selectedMember
+    ? selectedMember.clients
+    : clients;
 
   return (
     <>
@@ -399,6 +445,9 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
               <h2 className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white break-words">{task.title}</h2>
               <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1">
                 Team Member Reports • {task.recurrencePattern} recurrence
+                {unassignedClients.length > 0 && (
+                  <span className="text-orange-600 dark:text-orange-400"> • {unassignedClients.length} unassigned</span>
+                )}
               </p>
             </div>
             <div className="flex items-center gap-2 flex-shrink-0">
@@ -444,7 +493,7 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
             </select>
           </div>
 
-          {/* Team Member Summary Cards */}
+          {/* Team Member Summary Cards + Unassigned Card */}
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-2 sm:gap-3">
             {teamMemberReports.map(report => (
               <button
@@ -479,12 +528,54 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
                 </div>
               </button>
             ))}
+
+            {/* Unassigned Clients Card - only show if there are unassigned clients */}
+            {unassignedClients.length > 0 && (
+              <button
+                onClick={() => setSelectedMemberId(selectedMemberId === UNASSIGNED_KEY ? null : UNASSIGNED_KEY)}
+                className={`p-2.5 sm:p-4 rounded-lg border-2 transition-all text-left ${
+                  selectedMemberId === UNASSIGNED_KEY
+                    ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20'
+                    : 'border-orange-200 dark:border-orange-800 bg-white dark:bg-gray-dark hover:border-orange-300'
+                }`}
+              >
+                <div className="flex items-center justify-between mb-1.5">
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <UserMinusIcon className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-orange-600 dark:text-orange-400 flex-shrink-0" />
+                    <span className="font-semibold text-xs sm:text-base text-orange-700 dark:text-orange-300 truncate">Unassigned</span>
+                  </div>
+                  {selectedMemberId === UNASSIGNED_KEY && (
+                    <span className="text-[10px] sm:text-xs font-medium text-orange-600 whitespace-nowrap ml-1">✓</span>
+                  )}
+                </div>
+                <div className="text-[10px] sm:text-sm text-orange-600 dark:text-orange-400 mb-1">
+                  {unassignedClients.length} client{unassignedClients.length !== 1 ? 's' : ''}
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <div className="flex-1 min-w-0 bg-gray-200 rounded-full h-1.5">
+                    <div
+                      className="bg-orange-500 h-1.5 rounded-full transition-all"
+                      style={{ width: `${unassignedReport.completionRate}%` }}
+                    />
+                  </div>
+                  <span className="text-[10px] sm:text-sm font-medium text-orange-700 dark:text-orange-300 whitespace-nowrap">{unassignedReport.completionRate}%</span>
+                </div>
+              </button>
+            )}
           </div>
 
           {selectedMember && (
             <div className="mt-2 sm:mt-3 p-2.5 sm:p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
               <p className="text-xs sm:text-sm font-medium text-blue-900 dark:text-blue-300">
                 Showing {selectedMember.clients.length} client{selectedMember.clients.length !== 1 ? 's' : ''} for {selectedMember.userName} • {selectedMember.completedCount}/{selectedMember.totalExpected} ({selectedMember.completionRate}%)
+              </p>
+            </div>
+          )}
+
+          {isUnassignedSelected && (
+            <div className="mt-2 sm:mt-3 p-2.5 sm:p-3 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
+              <p className="text-xs sm:text-sm font-medium text-orange-900 dark:text-orange-300">
+                Showing {unassignedClients.length} unassigned client{unassignedClients.length !== 1 ? 's' : ''} • {unassignedReport.completedCount}/{unassignedReport.totalExpected} ({unassignedReport.completionRate}%) — not assigned to any team member
               </p>
             </div>
           )}
@@ -502,6 +593,8 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
                   ? `No clients with "${statusFilter === 'filed' ? 'Filed' : 'Not Filed'}" status`
                   : selectedMember
                   ? `No clients assigned to ${selectedMember.userName}`
+                  : isUnassignedSelected
+                  ? 'No unassigned clients'
                   : 'No clients assigned to this task'}
               </p>
             </div>
@@ -520,6 +613,7 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
           completions={completions}
           isTeamMemberView={!!selectedMember}
           teamMemberName={selectedMember?.userName}
+          isUnassignedView={isUnassignedSelected}
           dueMonth={dueMonth}
           onClose={() => setShowExportDialog(false)}
         />
