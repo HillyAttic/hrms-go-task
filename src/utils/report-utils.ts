@@ -108,7 +108,7 @@ export function buildRemarkData(
   });
 
   completions.forEach((completion) => {
-    if (completion.remark && completion.isCompleted) {
+    if (completion.remark) {
       const clientMap = data.get(completion.clientId);
       if (clientMap) {
         clientMap.set(completion.monthKey, {

@@ -175,11 +175,22 @@ export function RecurringTaskClientModal({
       const taskCompletions = await response.json();
       
       taskCompletions.forEach((completion: any) => {
+        // Always process remark data (regardless of completion status)
+        if (completion.remark && completion.remarkBy) {
+          const clientRemarkData = remarkDataMap.get(completion.clientId) || new Map();
+          clientRemarkData.set(completion.monthKey, {
+            remark: completion.remark,
+            remarkBy: completion.remarkBy,
+          });
+          remarkDataMap.set(completion.clientId, clientRemarkData);
+        }
+
+        // Only mark as completed if isCompleted is true
         if (completion.isCompleted) {
           const clientMonths = completions.get(completion.clientId) || new Set<string>();
           clientMonths.add(completion.monthKey);
           completions.set(completion.clientId, clientMonths);
-          
+
           // Store ARN data if available
           if (completion.arnNumber && completion.arnName) {
             const clientArnData = arnDataMap.get(completion.clientId) || new Map();
@@ -188,16 +199,6 @@ export function RecurringTaskClientModal({
               arnName: completion.arnName,
             });
             arnDataMap.set(completion.clientId, clientArnData);
-          }
-
-          // Store remark data if available
-          if (completion.remark && completion.remarkBy) {
-            const clientRemarkData = remarkDataMap.get(completion.clientId) || new Map();
-            clientRemarkData.set(completion.monthKey, {
-              remark: completion.remark,
-              remarkBy: completion.remarkBy,
-            });
-            remarkDataMap.set(completion.clientId, clientRemarkData);
           }
         }
       });
@@ -212,9 +213,9 @@ export function RecurringTaskClientModal({
     }
   };
 
-  const toggleCompletion = (clientId: string, monthKey: string) => {
+  const toggleCompletion = async (clientId: string, monthKey: string) => {
     const isCurrentlyCompleted = clientCompletions.get(clientId)?.has(monthKey) || false;
-    
+
     console.log('[ARN Debug] Toggle completion:', {
       clientId,
       monthKey,
@@ -222,7 +223,7 @@ export function RecurringTaskClientModal({
       taskRequiresArn: task?.requiresArn,
       shouldShowDialog: task?.requiresArn && !isCurrentlyCompleted
     });
-    
+
     // If task requires ARN and we're checking (not unchecking), show ARN dialog
     if (task?.requiresArn && !isCurrentlyCompleted) {
       console.log('[ARN Debug] Showing ARN dialog');
@@ -252,15 +253,18 @@ export function RecurringTaskClientModal({
       setShowRemarkDialog(true);
       return;
     }
-    
+
     console.log('[ARN Debug] Toggling without ARN dialog');
-    
+
     // Otherwise, toggle normally
+    const newCompleted = !isCurrentlyCompleted;
     setClientCompletions(prev => {
       const newMap = new Map(prev);
       const clientMonths = new Set<string>(newMap.get(clientId) || new Set<string>());
-      
-      if (clientMonths.has(monthKey)) {
+
+      if (newCompleted) {
+        clientMonths.add(monthKey);
+      } else {
         clientMonths.delete(monthKey);
         // Remove ARN data
         setArnData(prevArn => {
@@ -270,31 +274,53 @@ export function RecurringTaskClientModal({
           newArnMap.set(clientId, clientArnData);
           return newArnMap;
         });
-      } else {
-        clientMonths.add(monthKey);
       }
-      
+
       newMap.set(clientId, clientMonths);
       return newMap;
     });
+
+    // Auto-save to Firestore immediately
+    if (task?.id && user) {
+      try {
+        const token = await auth.currentUser?.getIdToken();
+        if (token) {
+          await fetch('/api/task-completions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              recurringTaskId: task.id,
+              clientId,
+              monthKey,
+              isCompleted: newCompleted,
+            }),
+          });
+        }
+      } catch (error) {
+        console.error('Error auto-saving toggle:', error);
+      }
+    }
   };
 
-  const handleArnSubmit = () => {
+  const handleArnSubmit = async () => {
     // Validate ARN number (15 digits)
     if (!arnNumber || arnNumber.length !== 15 || !/^\d{15}$/.test(arnNumber)) {
       setArnError('ARN must be exactly 15 digits');
       return;
     }
-    
+
     if (!arnName || arnName.trim().length === 0) {
       setArnError('Name is required');
       return;
     }
-    
+
     if (!currentArnRequest) return;
-    
+
     const { clientId, monthKey } = currentArnRequest;
-    
+
     // Add completion
     setClientCompletions(prev => {
       const newMap = new Map(prev);
@@ -303,7 +329,7 @@ export function RecurringTaskClientModal({
       newMap.set(clientId, clientMonths);
       return newMap;
     });
-    
+
     // Store ARN data
     setArnData(prev => {
       const newMap = new Map(prev);
@@ -312,7 +338,33 @@ export function RecurringTaskClientModal({
       newMap.set(clientId, clientArnData);
       return newMap;
     });
-    
+
+    // Auto-save to Firestore immediately
+    if (task?.id && user) {
+      try {
+        const token = await auth.currentUser?.getIdToken();
+        if (token) {
+          await fetch('/api/task-completions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              recurringTaskId: task.id,
+              clientId,
+              monthKey,
+              isCompleted: true,
+              arnNumber,
+              arnName: arnName.trim(),
+            }),
+          });
+        }
+      } catch (error) {
+        console.error('Error auto-saving ARN:', error);
+      }
+    }
+
     // Close dialog
     setShowArnDialog(false);
     setCurrentArnRequest(null);
@@ -329,7 +381,7 @@ export function RecurringTaskClientModal({
     setArnError('');
   };
 
-  const handleRemarkSubmit = () => {
+  const handleRemarkSubmit = async () => {
     if (!currentRemarkRequest) return;
 
     if (!remarkText || remarkText.trim().length === 0) {
@@ -362,6 +414,32 @@ export function RecurringTaskClientModal({
       return newMap;
     });
 
+    // Auto-save to Firestore immediately
+    if (task?.id && user) {
+      try {
+        const token = await auth.currentUser?.getIdToken();
+        if (token) {
+          await fetch('/api/task-completions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              recurringTaskId: task.id,
+              clientId,
+              monthKey,
+              isCompleted: true,
+              remark: remarkText.trim(),
+              remarkBy: remarkBy.trim(),
+            }),
+          });
+        }
+      } catch (error) {
+        console.error('Error auto-saving remark with completion:', error);
+      }
+    }
+
     setShowRemarkDialog(false);
     setCurrentRemarkRequest(null);
     setRemarkText('');
@@ -371,6 +449,64 @@ export function RecurringTaskClientModal({
 
   const handleRemarkSkip = () => {
     // User opts out — checkbox stays unchecked, no data stored
+    setShowRemarkDialog(false);
+    setCurrentRemarkRequest(null);
+    setRemarkText('');
+    setRemarkBy('');
+    setRemarkError('');
+  };
+
+  const handleRemarkOnly = async () => {
+    // Save remark WITHOUT ticking the checkbox
+    if (!currentRemarkRequest) return;
+
+    if (!remarkText || remarkText.trim().length === 0) {
+      setRemarkError('Remark is required');
+      return;
+    }
+
+    if (!remarkBy || remarkBy.trim().length === 0) {
+      setRemarkError('Name is required');
+      return;
+    }
+
+    const { clientId, monthKey } = currentRemarkRequest;
+
+    // Store remark data only (do NOT mark as completed)
+    setRemarkData(prev => {
+      const newMap = new Map(prev);
+      const clientRemarkData = new Map(newMap.get(clientId) || new Map());
+      clientRemarkData.set(monthKey, { remark: remarkText.trim(), remarkBy: remarkBy.trim() });
+      newMap.set(clientId, clientRemarkData);
+      return newMap;
+    });
+
+    // Auto-save to Firestore immediately
+    if (task?.id && user) {
+      try {
+        const token = await auth.currentUser?.getIdToken();
+        if (token) {
+          await fetch('/api/task-completions', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              recurringTaskId: task.id,
+              clientId,
+              monthKey,
+              isCompleted: false,
+              remark: remarkText.trim(),
+              remarkBy: remarkBy.trim(),
+            }),
+          });
+        }
+      } catch (error) {
+        console.error('Error auto-saving remark:', error);
+      }
+    }
+
     setShowRemarkDialog(false);
     setCurrentRemarkRequest(null);
     setRemarkText('');
@@ -426,6 +562,8 @@ export function RecurringTaskClientModal({
         totalUpdates: updates.length,
         completedCount: updates.filter(u => u.isCompleted).length,
         withArnCount: updates.filter(u => u.arnNumber).length,
+        withRemarkCount: updates.filter(u => u.remark).length,
+        remarks: updates.filter(u => u.remark).map(u => ({ clientId: u.clientId, monthKey: u.monthKey, remark: u.remark })),
         userId: user.uid
       });
 
@@ -553,22 +691,35 @@ export function RecurringTaskClientModal({
                                 )}
                               </div>
                             </td>
-                            {visibleMonths.map(month => (
+                            {visibleMonths.map(month => {
+                              const monthRemark = remarkData.get(client.id)?.get(month.key);
+                              return (
                               <td
                                 key={month.key}
                                 className="px-2 sm:px-3 py-2 sm:py-3 text-center"
                               >
-                                <div className="flex justify-center">
-                                  <input
-                                    type="checkbox"
-                                    checked={isCompleted(client.id, month.key)}
-                                    onChange={() => toggleCompletion(client.id, month.key)}
-                                    className="w-4 h-4 sm:w-5 sm:h-5 rounded border-gray-300 dark:border-gray-600 text-green-600 focus:ring-green-500 cursor-pointer"
-                                    aria-label={`Mark ${client.clientName} as completed for ${month.label}`}
-                                  />
+                                <div className="flex flex-col items-center gap-0.5">
+                                  <div className="flex justify-center">
+                                    <input
+                                      type="checkbox"
+                                      checked={isCompleted(client.id, month.key)}
+                                      onChange={() => toggleCompletion(client.id, month.key)}
+                                      className="w-4 h-4 sm:w-5 sm:h-5 rounded border-gray-300 dark:border-gray-600 text-green-600 focus:ring-green-500 cursor-pointer"
+                                      aria-label={`Mark ${client.clientName} as completed for ${month.label}`}
+                                    />
+                                  </div>
+                                  {monthRemark && (
+                                    <span
+                                      className="text-[9px] text-amber-700 dark:text-amber-400 whitespace-normal break-words"
+                                      title={`${monthRemark.remark} — ${monthRemark.remarkBy}`}
+                                    >
+                                      💬 {monthRemark.remark}
+                                    </span>
+                                  )}
                                 </div>
                               </td>
-                            ))}
+                              );
+                            })}
                           </tr>
                         );
                       })}
@@ -708,7 +859,7 @@ export function RecurringTaskClientModal({
               </h3>
 
               <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-                This task requires a remark to mark as complete. You may skip if no remark is needed.
+                Add a remark for this task. Submit to mark complete with remark, or Save Remark to add remark without marking complete.
               </p>
 
               <div className="space-y-4">
@@ -755,10 +906,10 @@ export function RecurringTaskClientModal({
 
               <div className="flex gap-3 mt-6">
                 <button
-                  onClick={handleRemarkSkip}
+                  onClick={handleRemarkOnly}
                   className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-dark border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:bg-gray-800 transition-colors"
                 >
-                  Skip
+                  Save Remark
                 </button>
                 <button
                   onClick={handleRemarkSubmit}

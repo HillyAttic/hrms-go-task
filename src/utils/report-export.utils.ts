@@ -128,31 +128,58 @@ export function exportToPDF(data: ExportData): void {
  */
 export function exportToExcel(data: ExportData): void {
   const { task, clients, completions, months, isTeamMemberView, teamMemberName, isUnassignedView } = data;
-  
+
   // Create workbook
   const wb = XLSX.utils.book_new();
-  
+
+  // Build remark lookup: clientId -> monthKey -> remark
+  const remarkMap = new Map<string, Map<string, { remark: string; remarkBy: string }>>();
+  completions.forEach(comp => {
+    if (comp.remark) {
+      let clientMap = remarkMap.get(comp.clientId);
+      if (!clientMap) {
+        clientMap = new Map();
+        remarkMap.set(comp.clientId, clientMap);
+      }
+      clientMap.set(comp.monthKey, { remark: comp.remark, remarkBy: comp.remarkBy || '' });
+    }
+  });
+
   // Prepare data for the main sheet
-  const headers = ['Client Name', 'PAN', ...months.map(m => `${m.monthName} ${m.year}`)];
+  const headers = ['Client Name', 'PAN'];
+  months.forEach(m => {
+    headers.push(`${m.monthName} ${m.year}`);
+    headers.push(`${m.monthName} ${m.year} Remark`);
+  });
+
   const rows = clients.map(client => {
     const row: any = { 'Client Name': client.clientName, 'PAN': client.taxIdentifiers?.pan || '-' };
     months.forEach(month => {
       const status = getCompletionStatus(completions, client.id || '', month.key, month.fullDate);
-      row[`${month.monthName} ${month.year}`] = 
-        status === 'completed' ? 'Completed' : 
-        status === 'incomplete' ? 'Incomplete' : 
+      row[`${month.monthName} ${month.year}`] =
+        status === 'completed' ? 'Completed' :
+        status === 'incomplete' ? 'Incomplete' :
         'Future';
+
+      // Add remark for this month
+      const clientRemarks = remarkMap.get(client.id || '');
+      const remark = clientRemarks?.get(month.key);
+      row[`${month.monthName} ${month.year} Remark`] = remark ? `${remark.remark}${remark.remarkBy ? ` — ${remark.remarkBy}` : ''}` : '';
     });
     return row;
   });
-  
+
   // Create worksheet
   const ws = XLSX.utils.json_to_sheet(rows, { header: headers });
-  
+
   // Set column widths
-  const colWidths = [{ wch: 30 }, { wch: 18 }, ...months.map(() => ({ wch: 12 }))];
+  const colWidths = [{ wch: 30 }, { wch: 18 }];
+  months.forEach(() => {
+    colWidths.push({ wch: 12 }); // status column
+    colWidths.push({ wch: 35 }); // remark column
+  });
   ws['!cols'] = colWidths;
-  
+
   // Add metadata sheet
   const metadata = [
     ['Task Name', task.title],
@@ -160,20 +187,20 @@ export function exportToExcel(data: ExportData): void {
     ['Total Clients', clients.length],
     ['Generated Date', format(new Date(), 'MMM dd, yyyy HH:mm')],
   ];
-  
+
   if (isUnassignedView) {
     metadata.push(['View', 'Unassigned Clients']);
   } else if (isTeamMemberView && teamMemberName) {
     metadata.push(['Team Member', teamMemberName]);
   }
-  
+
   const metaWs = XLSX.utils.aoa_to_sheet(metadata);
   metaWs['!cols'] = [{ wch: 20 }, { wch: 40 }];
-  
+
   // Add sheets to workbook
   XLSX.utils.book_append_sheet(wb, metaWs, 'Info');
   XLSX.utils.book_append_sheet(wb, ws, 'Report');
-  
+
   // Save the file
   const fileName = isUnassignedView
     ? `${sanitizeFileName(task.title)}_Unassigned_${format(new Date(), 'yyyyMMdd')}.xlsx`
