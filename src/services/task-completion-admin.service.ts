@@ -83,6 +83,8 @@ export const taskCompletionAdminService = {
         completedBy: data.completedBy || null,
         arnNumber: data.arnNumber || null,
         arnName: data.arnName || null,
+        remark: data.remark || null,
+        remarkBy: data.remarkBy || null,
       };
 
       if (!existingSnapshot.empty) {
@@ -149,6 +151,8 @@ export const taskCompletionAdminService = {
       isCompleted: boolean;
       arnNumber?: string;
       arnName?: string;
+      remark?: string;
+      remarkBy?: string;
     }>,
     completedBy: string
   ): Promise<{ total: number; written: number; deleted: number; skipped: number }> {
@@ -190,16 +194,19 @@ export const taskCompletionAdminService = {
         const key = `${comp.clientId}_${comp.monthKey}`;
         const existingRef = existingMap.get(key);
 
-        if (comp.isCompleted) {
+        if (comp.isCompleted || comp.remark) {
+          // Write if completed OR if there's a remark to save
           const data = {
             recurringTaskId,
             clientId: comp.clientId,
             monthKey: comp.monthKey,
-            isCompleted: true,
-            completedAt: now,
-            completedBy,
+            isCompleted: comp.isCompleted,
+            completedAt: comp.isCompleted ? now : null,
+            completedBy: comp.isCompleted ? completedBy : null,
             arnNumber: comp.arnNumber || null,
             arnName: comp.arnName || null,
+            remark: comp.remark || null,
+            remarkBy: comp.remarkBy || null,
             updatedAt: now,
           };
 
@@ -213,6 +220,7 @@ export const taskCompletionAdminService = {
           opsInBatch++;
           written++;
         } else {
+          // No completion and no remark — delete if exists
           if (existingRef) {
             flushIfNeeded();
             currentBatch.delete(existingRef);
@@ -228,6 +236,9 @@ export const taskCompletionAdminService = {
       for (const batch of batches) {
         await batch.commit();
       }
+
+      console.log('[Task Completion Admin] bulkUpsert summary:', { written, deleted, skipped, total: completions.length });
+      console.log('[Task Completion Admin] remark-only records:', completions.filter(c => !c.isCompleted && c.remark).map(c => `${c.clientId}_${c.monthKey}`));
 
       return { total: completions.length, written, deleted, skipped };
     } catch (error) {

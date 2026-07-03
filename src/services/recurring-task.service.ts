@@ -11,6 +11,8 @@ export interface CompletionRecord {
   completedBy: string;
   arnNumber?: string; // ARN number if ARN is enabled
   arnName?: string; // Name of person who provided ARN
+  remark?: string; // Remark text if remarks are enabled
+  remarkBy?: string; // Name of person who provided remark
 }
 
 export interface TeamMemberMapping {
@@ -35,6 +37,7 @@ export interface RecurringTask {
   teamId?: string; // Team ID
   teamMemberMappings?: TeamMemberMapping[]; // Team member to client mappings
   requiresArn?: boolean; // Whether ARN is required for completion
+  requiresRemark?: boolean; // Whether remark is required for completion
   createdBy?: string; // User ID of the creator
   createdAt?: Date;
   updatedAt?: Date;

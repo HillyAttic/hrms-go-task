@@ -177,6 +177,7 @@ export default function RecurringTasksPage() {
         teamId: data.teamId || undefined,
         teamMemberMappings: data.teamMemberMappings || undefined, // Include team member mappings
         requiresArn: data.requiresArn || false, // Include ARN requirement
+        requiresRemark: data.requiresRemark || false, // Include Remark requirement
       };
 
       console.log('📤 [Recurring Tasks Page] Sending task data to API:', taskData);

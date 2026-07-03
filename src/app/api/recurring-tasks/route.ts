@@ -31,6 +31,7 @@ const createRecurringTaskSchema = z.object({
     clientIds: z.array(z.string()),
   })).optional(),
   requiresArn: z.boolean().optional(),
+  requiresRemark: z.boolean().optional(),
 });
 
 /**

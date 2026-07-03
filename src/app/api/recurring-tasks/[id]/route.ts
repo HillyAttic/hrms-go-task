@@ -34,6 +34,7 @@ const updateRecurringTaskSchema = z.object({
   })).optional(),
   isPaused: z.boolean().optional(),
   requiresArn: z.boolean().optional(),
+  requiresRemark: z.boolean().optional(),
 });
 
 /**

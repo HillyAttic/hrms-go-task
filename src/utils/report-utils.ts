@@ -89,6 +89,39 @@ export function buildCompletionData(
   return data;
 }
 
+export interface RemarkInfo {
+  remark: string;
+  remarkBy: string;
+}
+
+export function buildRemarkData(
+  completions: ClientTaskCompletion[],
+  clients: Client[],
+  months: MonthData[]
+): Map<string, Map<string, RemarkInfo>> {
+  const data = new Map<string, Map<string, RemarkInfo>>();
+
+  clients.forEach((client) => {
+    if (client.id) {
+      data.set(client.id, new Map<string, RemarkInfo>());
+    }
+  });
+
+  completions.forEach((completion) => {
+    if (completion.remark) {
+      const clientMap = data.get(completion.clientId);
+      if (clientMap) {
+        clientMap.set(completion.monthKey, {
+          remark: completion.remark,
+          remarkBy: completion.remarkBy || '',
+        });
+      }
+    }
+  });
+
+  return data;
+}
+
 export function getCompletionStatus(
   completionData: Map<string, Map<string, boolean>>,
   clientId: string,

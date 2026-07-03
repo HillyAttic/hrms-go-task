@@ -39,6 +39,7 @@ const recurringTaskFormSchema = z.object({
   dueDate: z.string().optional(),
   teamId: z.string().optional(),
   requiresArn: z.boolean().optional(),
+  requiresRemark: z.boolean().optional(),
 });
 
 type RecurringTaskFormData = z.infer<typeof recurringTaskFormSchema>;
@@ -98,6 +99,7 @@ export function RecurringTaskModal({
       dueDate: '',
       teamId: '',
       requiresArn: false,
+      requiresRemark: false,
     },
   });
 
@@ -298,6 +300,7 @@ export function RecurringTaskModal({
         dueDate: formattedDueDate,
         teamId: task.teamId || '',
         requiresArn: task.requiresArn || false,
+        requiresRemark: task.requiresRemark || false,
       });
 
       // Set selected clients for display
@@ -335,6 +338,7 @@ export function RecurringTaskModal({
         dueDate: '',
         teamId: '',
         requiresArn: false,
+        requiresRemark: false,
       });
       setSelectedClients([]);
       setTeamMemberMappings([]);
@@ -745,23 +749,28 @@ export function RecurringTaskModal({
             )}
           </div>
 
-          {/* Enable ARN Checkbox */}
-          <div className="flex items-start space-x-3 p-4 bg-blue-600 border border-blue-700 rounded-lg">
-            <input
-              type="checkbox"
-              id="requiresArn"
-              {...register('requiresArn')}
-              className="mt-1 w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500"
-              disabled={isLoading}
-            />
-            <div className="flex-1">
-              <Label htmlFor="requiresArn" className="font-medium text-white cursor-pointer">
-                Enable ARN (Application Reference Number)
-              </Label>
-              <p className="text-sm text-white/90 mt-1">
-                When enabled, users must provide a 15-digit ARN number and their name before marking tasks as complete.
-              </p>
-            </div>
+          {/* Enable ARN / Remark Checkboxes */}
+          <div className="flex flex-wrap items-center gap-4 p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                id="requiresArn"
+                {...register('requiresArn')}
+                className="w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500"
+                disabled={isLoading}
+              />
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Require ARN on completion</span>
+            </label>
+            <label className="flex items-center gap-2 cursor-pointer">
+              <input
+                type="checkbox"
+                id="requiresRemark"
+                {...register('requiresRemark')}
+                className="w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500"
+                disabled={isLoading}
+              />
+              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Require Remark on completion</span>
+            </label>
           </div>
 
           <DialogFooter>

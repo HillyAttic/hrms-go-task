@@ -15,6 +15,8 @@ export interface ClientTaskCompletion {
   completedBy?: string;
   arnNumber?: string; // 15-digit ARN number
   arnName?: string; // Name of person who provided ARN
+  remark?: string; // Remark text
+  remarkBy?: string; // Name of person who provided remark
   createdAt?: Date;
   updatedAt?: Date;
 }
