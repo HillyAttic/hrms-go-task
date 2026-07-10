@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { XMarkIcon, UserGroupIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon, UserGroupIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { RecurringTask } from '@/services/recurring-task.service';
 import { taskCompletionService } from '@/services/task-completion.service';
 import { useEnhancedAuth } from '@/contexts/enhanced-auth.context';
@@ -54,6 +54,7 @@ export function RecurringTaskClientModal({
   const [currentRemarkRequest, setCurrentRemarkRequest] = useState<{ clientId: string; monthKey: string } | null>(null);
   const [remarkText, setRemarkText] = useState('');
   const [remarkBy, setRemarkBy] = useState('');
+  const [remarkDate, setRemarkDate] = useState('');
   const [remarkError, setRemarkError] = useState('');
   const { user, userProfile } = useEnhancedAuth();
   // Generate only the viewing month (or current month if not specified)
@@ -249,6 +250,7 @@ export function RecurringTaskClientModal({
       setRemarkText('');
       const userName = userProfile?.displayName || user?.displayName || user?.email || '';
       setRemarkBy(userName);
+      setRemarkDate(new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }));
       setRemarkError('');
       setShowRemarkDialog(true);
       return;
@@ -444,6 +446,7 @@ export function RecurringTaskClientModal({
     setCurrentRemarkRequest(null);
     setRemarkText('');
     setRemarkBy('');
+    setRemarkDate('');
     setRemarkError('');
   };
 
@@ -453,6 +456,7 @@ export function RecurringTaskClientModal({
     setCurrentRemarkRequest(null);
     setRemarkText('');
     setRemarkBy('');
+    setRemarkDate('');
     setRemarkError('');
   };
 
@@ -511,6 +515,7 @@ export function RecurringTaskClientModal({
     setCurrentRemarkRequest(null);
     setRemarkText('');
     setRemarkBy('');
+    setRemarkDate('');
     setRemarkError('');
   };
 
@@ -854,7 +859,16 @@ export function RecurringTaskClientModal({
             />
 
             <div className="relative bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-md w-full p-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+              {/* Close button */}
+              <button
+                onClick={handleRemarkSkip}
+                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300 transition-colors"
+                aria-label="Close dialog"
+              >
+                <XMarkIcon className="w-5 h-5" />
+              </button>
+
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 pr-8">
                 Add Remark
               </h3>
 
@@ -897,6 +911,23 @@ export function RecurringTaskClientModal({
                   </p>
                 </div>
 
+                <div>
+                  <label htmlFor="remark-date" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    Date
+                  </label>
+                  <input
+                    id="remark-date"
+                    type="text"
+                    value={remarkDate}
+                    readOnly
+                    disabled
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 cursor-not-allowed"
+                  />
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    Current date is automatically recorded
+                  </p>
+                </div>
+
                 {remarkError && (
                   <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-md p-2">
                     {remarkError}
@@ -907,15 +938,16 @@ export function RecurringTaskClientModal({
               <div className="flex gap-3 mt-6">
                 <button
                   onClick={handleRemarkOnly}
-                  className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-dark border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:bg-gray-800 transition-colors"
+                  className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-dark border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:bg-gray-800 transition-colors flex items-center justify-center"
                 >
-                  Save Remark
+                  Save remark but mark as incomplete
                 </button>
                 <button
                   onClick={handleRemarkSubmit}
-                  className="flex-1 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
+                  className="flex-1 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
                 >
-                  Submit
+                  Submit and mark completed
+                  <CheckIcon className="w-4 h-4" />
                 </button>
               </div>
             </div>
