@@ -2,6 +2,7 @@ export { ClockInOutWidget } from './ClockInOutWidget';
 export { AttendanceRecordCard } from './AttendanceRecordCard';
 export { AttendanceStatsCard } from './AttendanceStatsCard';
 export { LeaveRequestModal } from './LeaveRequestModal';
+export { WfhRequestModal } from './WfhRequestModal';
 export { AttendanceCalendar } from './AttendanceCalendar';
 export { TeamAttendanceOverview } from './TeamAttendanceOverview';
 export { ShiftManagementModal } from './ShiftManagementModal';

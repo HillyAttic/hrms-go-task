@@ -19,9 +19,9 @@ const RosterExportModal = dynamic(() => import('@/components/attendance/RosterEx
 
 interface AttendanceDay {
   date: Date;
-  status: 'present' | 'absent' | 'approved-leave' | 'unapproved-leave' | 'half-day' | 'holiday' | 'pending';
+  status: 'present' | 'absent' | 'approved-leave' | 'unapproved-leave' | 'half-day' | 'holiday' | 'pending' | 'wfh';
   hours?: number;
-  leaveType?: string; // e.g., 'sick', 'casual'
+  leaveType?: string; // e.g., 'sick', 'casual', 'wfh'
   leaveStatus?: 'approved' | 'pending' | 'rejected';
 }
 
@@ -37,6 +37,7 @@ interface EmployeeAttendance {
     approvedLeave: number;
     unapprovedLeave: number;
     halfDay: number;
+    wfh: number;
     holiday: number;
     totalHours: number;
   };
@@ -131,6 +132,7 @@ export default function AttendanceRosterPage() {
         let approvedLeaveCount = 0;
         let unapprovedLeaveCount = 0;
         let halfDayCount = 0;
+        let wfhCount = 0;
         let holidayCount = 0;
         let totalHours = 0;
 
@@ -183,13 +185,16 @@ export default function AttendanceRosterPage() {
           const approvedLeave = leaveRequests.find((l: any) => l.status === 'approved');
           const pendingLeave = leaveRequests.find((l: any) => l.status === 'pending');
 
-          let status: 'present' | 'absent' | 'approved-leave' | 'unapproved-leave' | 'half-day' | 'holiday' | 'pending' = 'pending';
+          let status: 'present' | 'absent' | 'approved-leave' | 'unapproved-leave' | 'half-day' | 'holiday' | 'pending' | 'wfh' = 'pending';
           let hours = 0;
           let leaveType: string = 'full';
           let leaveStatus: 'approved' | 'pending' | 'rejected' = 'pending';
 
           if (approvedLeave) {
-            if (approvedLeave.leaveType === 'half-day') {
+            if (approvedLeave.leaveType === 'wfh') {
+              status = 'wfh';
+              wfhCount++;
+            } else if (approvedLeave.leaveType === 'half-day') {
               status = 'half-day';
               halfDayCount++;
             } else {
@@ -230,6 +235,7 @@ export default function AttendanceRosterPage() {
             approvedLeave: approvedLeaveCount,
             unapprovedLeave: unapprovedLeaveCount,
             halfDay: halfDayCount,
+            wfh: wfhCount,
             holiday: holidayCount,
             totalHours,
           },
@@ -254,6 +260,7 @@ export default function AttendanceRosterPage() {
       case 'half-day': return 'bg-orange-500';
       case 'holiday': return 'bg-blue-500';
       case 'pending': return 'bg-gray-300';
+      case 'wfh': return 'bg-black';
       default: return 'bg-gray-300';
     }
   };
@@ -263,6 +270,7 @@ export default function AttendanceRosterPage() {
       case 'approved-leave': return 'Leave';
       case 'unapproved-leave': return 'Unapproved';
       case 'half-day': return 'Half Day';
+      case 'wfh': return 'WFH';
       default: return status;
     }
   };
@@ -360,6 +368,10 @@ export default function AttendanceRosterPage() {
           <span className="text-sm text-gray-700 dark:text-gray-300">Sunday/Holiday</span>
         </div>
         <div className="flex items-center gap-2">
+          <div className="w-4 h-4 bg-black rounded"></div>
+          <span className="text-sm text-gray-700 dark:text-gray-300">WFH</span>
+        </div>
+        <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-gray-300 rounded"></div>
           <span className="text-sm text-gray-700 dark:text-gray-300">Pending/Future</span>
         </div>
@@ -415,6 +427,7 @@ export default function AttendanceRosterPage() {
                         <span className="text-red-600">A: {employee.stats.absent}</span>
                         <span className="text-green-600">AL: {employee.stats.approvedLeave}</span>
                         <span className="text-green-600">HD: {employee.stats.halfDay}</span>
+                        <span className="text-gray-900 dark:text-gray-100">WFH: {employee.stats.wfh}</span>
                         <span className="text-red-600">UL: {employee.stats.unapprovedLeave}</span>
                         <span className="text-blue-600">H: {employee.stats.holiday}</span>
                         <span className="text-gray-600 dark:text-gray-400">Hrs: {employee.stats.totalHours.toFixed(1)}</span>
@@ -470,6 +483,10 @@ export default function AttendanceRosterPage() {
               <div className="bg-green-50 dark:bg-green-900/20 p-2 sm:p-4 rounded-lg">
                 <div className="text-lg sm:text-2xl font-bold text-green-600">{selectedEmployee.stats.halfDay}</div>
                 <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Half Day</div>
+              </div>
+              <div className="bg-gray-100 dark:bg-gray-800 p-2 sm:p-4 rounded-lg">
+                <div className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">{selectedEmployee.stats.wfh}</div>
+                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">WFH</div>
               </div>
               <div className="bg-red-50 dark:bg-red-900/20 p-2 sm:p-4 rounded-lg">
                 <div className="text-lg sm:text-2xl font-bold text-red-600">{selectedEmployee.stats.unapprovedLeave}</div>

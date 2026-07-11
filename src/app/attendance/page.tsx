@@ -4,12 +4,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { GeolocationAttendanceTracker, LeaveRequestModal } from '@/components/attendance';
+import { GeolocationAttendanceTracker, LeaveRequestModal, WfhRequestModal } from '@/components/attendance';
 import { History, ArrowRight, Calendar as CalendarIcon, CheckCircle, XCircle, Clock as ClockIconBox } from 'lucide-react';
 import { useEnhancedAuth } from '@/contexts/enhanced-auth.context';
-import { ClockIcon, PlayIcon, MapPinIcon } from '@heroicons/react/24/outline';
+import { ClockIcon, PlayIcon, MapPinIcon, HomeIcon } from '@heroicons/react/24/outline';
 import { leaveService } from '@/services/leave.service';
-import { LeaveRequest, LeaveType, LeaveBalance, LeaveRequestFormData } from '@/types/attendance.types';
+import { LeaveRequest, LeaveType, LeaveBalance, LeaveRequestFormData, WfhRequestFormData } from '@/types/attendance.types';
 import { toast } from 'react-toastify';
 
 export default function AttendancePage() {
@@ -29,11 +29,20 @@ export default function AttendancePage() {
   const [approvalReason, setApprovalReason] = useState('');
   const [selectedLeaveRequest, setSelectedLeaveRequest] = useState<LeaveRequest | null>(null);
 
+  // WFH State
+  const [showWfhModal, setShowWfhModal] = useState(false);
+  const [myWfhRequests, setMyWfhRequests] = useState<LeaveRequest[]>([]);
+  const [pendingWfhRequests, setPendingWfhRequests] = useState<LeaveRequest[]>([]);
+
   // Auto-open leave modal if query parameter is present
   useEffect(() => {
     if (searchParams?.get('openLeaveModal') === 'true') {
       setShowLeaveModal(true);
       // Clean up URL
+      window.history.replaceState({}, '', '/attendance');
+    }
+    if (searchParams?.get('openWfhModal') === 'true') {
+      setShowWfhModal(true);
       window.history.replaceState({}, '', '/attendance');
     }
   }, [searchParams]);
@@ -56,12 +65,16 @@ export default function AttendancePage() {
 
       // Fetch my leaves
       const requests = await leaveService.getLeaveRequests({ employeeId: user.uid });
-      setMyLeaves(requests);
+      // Split: non-WFH → myLeaves, WFH → myWfhRequests
+      setMyLeaves(requests.filter(r => r.leaveTypeId !== 'wfh'));
+      setMyWfhRequests(requests.filter(r => r.leaveTypeId === 'wfh'));
 
       // Fetch pending leaves for managers/admins
       if (isManager || isAdmin) {
         const pending = await leaveService.getPendingLeaveRequests(user.uid);
-        setPendingLeaves(pending);
+        // Split: non-WFH → pendingLeaves, WFH → pendingWfhRequests
+        setPendingLeaves(pending.filter(r => r.leaveTypeId !== 'wfh'));
+        setPendingWfhRequests(pending.filter(r => r.leaveTypeId === 'wfh'));
       }
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -92,6 +105,31 @@ export default function AttendancePage() {
       console.error('Error submitting leave:', error);
       toast.error('Failed to submit leave request');
       // Keep modal open on error so user can retry
+    } finally {
+      setLoadingLeaves(false);
+    }
+  };
+
+  const handleApplyWfh = async (data: WfhRequestFormData) => {
+    if (!user || !userProfile) return;
+
+    try {
+      setLoadingLeaves(true);
+      await leaveService.createLeaveRequest({
+        leaveTypeId: 'wfh',
+        startDate: data.startDate,
+        endDate: data.endDate,
+        reason: data.reason,
+        halfDay: false,
+        employeeId: user.uid,
+        employeeName: userProfile.displayName || user.email || 'Unknown',
+      });
+      toast.success('WFH request submitted successfully');
+      setShowWfhModal(false);
+      fetchData(); // Refresh data
+    } catch (error) {
+      console.error('Error submitting WFH:', error);
+      toast.error('Failed to submit WFH request');
     } finally {
       setLoadingLeaves(false);
     }
@@ -240,6 +278,15 @@ export default function AttendancePage() {
           </Button>
 
           <Button
+            onClick={() => setShowWfhModal(true)}
+            variant="outline"
+            className="flex items-center gap-2"
+          >
+            <HomeIcon className="h-4 w-4" />
+            Apply WFH
+          </Button>
+
+          <Button
             onClick={() => window.location.href = '/attendance/history'}
             variant="outline"
             className="flex items-center gap-2"
@@ -275,6 +322,68 @@ export default function AttendancePage() {
                         {request.halfDay && (
                           <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-100">Half Day</Badge>
                         )}
+                      </div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                        <span className="font-medium">{request.duration} days</span> • {request.startDate instanceof Date ? request.startDate.toLocaleDateString() : new Date(request.startDate).toLocaleDateString()} to {request.endDate instanceof Date ? request.endDate.toLocaleDateString() : new Date(request.endDate).toLocaleDateString()}
+                      </p>
+                      <p className="text-sm mt-2 italic text-gray-700 dark:text-gray-300">"{request.reason}"</p>
+                    </div>
+                    <div className="flex gap-2 w-full sm:w-auto">
+                      <Button
+                        size="sm"
+                        variant="default"
+                        className="bg-green-600 hover:bg-green-700 flex-1 sm:flex-none"
+                        onClick={() => handleApproveLeave(request.id)}
+                        disabled={processingId === request.id}
+                      >
+                        <CheckCircle className="h-4 w-4 mr-1" />
+                        Approve
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="default"
+                        className="bg-blue-600 hover:bg-blue-700 flex-1 sm:flex-none"
+                        onClick={() => openApproveModal(request)}
+                        disabled={processingId === request.id}
+                      >
+                        <CheckCircle className="h-4 w-4 mr-1" />
+                        Approve with Note
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="destructive"
+                        className="flex-1 sm:flex-none"
+                        onClick={() => handleRejectLeave(request.id)}
+                        disabled={processingId === request.id}
+                      >
+                        <XCircle className="h-4 w-4 mr-1" />
+                        Reject
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Pending WFH Approval Section (Managers Only) */}
+        {(isManager || isAdmin) && pendingWfhRequests.length > 0 && (
+          <Card className="border-gray-400 dark:border-gray-600">
+            <CardHeader className="bg-gray-100 dark:bg-gray-800">
+              <CardTitle className="flex items-center gap-2 text-gray-800 dark:text-gray-200">
+                <HomeIcon className="h-5 w-5" />
+                Pending WFH Approvals ({pendingWfhRequests.length})
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <div className="space-y-4">
+                {pendingWfhRequests.map((request) => (
+                  <div key={request.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border rounded-lg bg-white dark:bg-gray-800 shadow-sm">
+                    <div className="mb-4 sm:mb-0">
+                      <div className="flex items-center gap-2">
+                        <p className="font-semibold text-lg">{request.employeeName}</p>
+                        <Badge variant="outline">WFH</Badge>
                       </div>
                       <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                         <span className="font-medium">{request.duration} days</span> • {request.startDate instanceof Date ? request.startDate.toLocaleDateString() : new Date(request.startDate).toLocaleDateString()} to {request.endDate instanceof Date ? request.endDate.toLocaleDateString() : new Date(request.endDate).toLocaleDateString()}
@@ -399,6 +508,86 @@ export default function AttendancePage() {
             )}
           </CardContent>
         </Card>
+
+        {/* My WFH History Section */}
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <HomeIcon className="h-5 w-5" />
+              My WFH History
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {myWfhRequests.length === 0 ? (
+              <div className="text-center py-8 text-gray-500">
+                <HomeIcon className="h-10 w-10 mx-auto mb-3 opacity-20" />
+                <p>No WFH requests found.</p>
+                <Button variant="link" onClick={() => setShowWfhModal(true)}>Apply for WFH</Button>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {myWfhRequests.map((request) => (
+                  <div key={request.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-medium text-lg">WFH</span>
+                        {getStatusBadge(request.status)}
+                      </div>
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <CalendarIcon className="h-3 w-3" />
+                        {request.startDate instanceof Date ? request.startDate.toLocaleDateString() : new Date(request.startDate).toLocaleDateString()} - {request.endDate instanceof Date ? request.endDate.toLocaleDateString() : new Date(request.endDate).toLocaleDateString()}
+                      </div>
+                      <p className="text-xs text-muted-foreground mt-1">Duration: {request.duration} days</p>
+
+                      {/* Show rejection reason if rejected */}
+                      {request.status === 'rejected' && request.rejectionReason && (
+                        <div className="mt-3 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
+                          <div className="flex items-start gap-2">
+                            <XCircle className="h-4 w-4 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
+                            <div>
+                              <p className="text-xs font-semibold text-red-800 dark:text-red-300 mb-1">Admin Remarks:</p>
+                              <p className="text-sm text-red-700 dark:text-red-400">{request.rejectionReason}</p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Show approval reason if approved */}
+                      {request.status === 'approved' && request.approvalReason && (
+                        <div className="mt-3 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md">
+                          <div className="flex items-start gap-2">
+                            <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+                            <div>
+                              <p className="text-xs font-semibold text-green-800 dark:text-green-300 mb-1">Admin Note:</p>
+                              <p className="text-sm text-green-700 dark:text-green-400">{request.approvalReason}</p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    {request.status === 'pending' && (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="text-red-500 hover:text-red-700 hover:bg-red-50 mt-2 sm:mt-0"
+                        onClick={() => {
+                          if (confirm('Are you sure you want to cancel this WFH request?')) {
+                            leaveService.cancelLeaveRequest(request.id).then(() => {
+                              toast.success('WFH request cancelled');
+                              fetchData();
+                            });
+                          }
+                        }}
+                      >
+                        Cancel Request
+                      </Button>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </div>
 
       {/* About Section */}
@@ -453,6 +642,13 @@ export default function AttendancePage() {
         onSubmit={handleApplyLeave}
         leaveTypes={leaveTypes}
         leaveBalances={leaveBalances}
+        loading={loadingLeaves}
+      />
+
+      <WfhRequestModal
+        open={showWfhModal}
+        onOpenChange={setShowWfhModal}
+        onSubmit={handleApplyWfh}
         loading={loadingLeaves}
       />
 

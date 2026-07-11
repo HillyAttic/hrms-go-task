@@ -8,6 +8,7 @@ import { authenticatedFetch } from '@/lib/api-client';
 import { SubmissionsTable } from '@/components/forms/submissions/SubmissionsTable';
 import { SubmissionsSpreadsheetView } from '@/components/forms/submissions/SubmissionsSpreadsheetView';
 import { SubmissionAnalyticsStats } from '@/components/forms/submissions/SubmissionAnalyticsStats';
+import { FileVerificationReport, isFileVerificationForm } from '@/components/forms/submissions/FileVerificationReport';
 import type { FormSubmission, FormTemplate } from '@/types/form.types';
 import { useModal } from '@/contexts/modal-context';
 
@@ -322,11 +323,19 @@ export default function MISTrackerPage() {
                 formId={selectedFormId!}
                 template={template}
                 onRefresh={fetchData}
+                showBranchReport={!isFileVerificationForm(template)}
               />
             </div>
 
-            {/* Existing Table/Spreadsheet Views */}
-            {viewMode === 'table' ? (
+            {/* Report Views */}
+            {isFileVerificationForm(template) ? (
+              <FileVerificationReport
+                submissions={submissions}
+                template={template}
+                onRefresh={fetchData}
+                onDelete={handleDelete}
+              />
+            ) : viewMode === 'table' ? (
               <SubmissionsTable
                 submissions={submissions}
                 template={template}

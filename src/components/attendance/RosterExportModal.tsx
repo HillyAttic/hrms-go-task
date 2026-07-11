@@ -10,9 +10,9 @@ import { useEnhancedAuth } from '@/contexts/enhanced-auth.context';
 
 interface AttendanceDay {
   date: Date;
-  status: 'present' | 'absent' | 'approved-leave' | 'unapproved-leave' | 'half-day' | 'holiday' | 'pending';
+  status: 'present' | 'absent' | 'approved-leave' | 'unapproved-leave' | 'half-day' | 'holiday' | 'pending' | 'wfh';
   hours?: number;
-  leaveType?: string; // e.g., 'sick', 'casual', 'vacation', 'emergency'
+  leaveType?: string; // e.g., 'sick', 'casual', 'wfh'
   leaveStatus?: 'approved' | 'pending' | 'rejected';
 }
 
@@ -28,6 +28,7 @@ interface EmployeeAttendance {
     approvedLeave: number;
     unapprovedLeave: number;
     halfDay: number;
+    wfh: number;
     holiday: number;
     totalHours: number;
   };
@@ -72,6 +73,7 @@ function statusLabel(status: string): string {
     case 'half-day': return 'Half Day';
     case 'holiday': return 'Holiday/Sunday';
     case 'pending': return 'Pending';
+    case 'wfh': return 'WFH';
     default: return status;
   }
 }
@@ -240,6 +242,7 @@ export function RosterExportModal({
         approvedLeave: 0,
         unapprovedLeave: 0,
         halfDay: 0,
+        wfh: 0,
         holiday: 0,
         totalHours: 0,
       };
@@ -274,8 +277,13 @@ export function RosterExportModal({
           stats.holiday++;
         } else if (matchedLeave) {
           if (matchedLeave.status === 'approved') {
-            status = 'approved-leave';
-            stats.approvedLeave++;
+            if (matchedLeave.leaveType === 'wfh') {
+              status = 'wfh';
+              stats.wfh++;
+            } else {
+              status = 'approved-leave';
+              stats.approvedLeave++;
+            }
           } else if (matchedLeave.status === 'rejected') {
             status = 'absent';
             stats.absent++;
@@ -539,6 +547,7 @@ export function RosterExportModal({
           'Approved Leave': emp.stats.approvedLeave,
           'Unapproved Leave': emp.stats.unapprovedLeave,
           'Half Day': emp.stats.halfDay,
+          'WFH': emp.stats.wfh,
           'Holiday/Sunday': emp.stats.holiday,
           'Total Hours': Number(emp.stats.totalHours.toFixed(2)),
         };
@@ -631,6 +640,7 @@ export function RosterExportModal({
           else if (val === 'Approved Leave') data.cell.styles.textColor = [147, 51, 234];
           else if (val === 'Holiday/Sunday') data.cell.styles.textColor = [37, 99, 235];
           else if (val === 'Half Day') data.cell.styles.textColor = [234, 88, 12];
+          else if (val === 'WFH') data.cell.styles.textColor = [0, 0, 0];
         }
       },
     });
@@ -645,12 +655,12 @@ export function RosterExportModal({
       doc.text(`${formattedStart} — ${formattedEnd}`, 14, 22);
       doc.setTextColor(0);
 
-      const summaryHeaders = ['Employee', 'Email', 'Present', 'Absent', 'Approved Leave', 'Unapproved Leave', 'Half Day', 'Holiday', 'Total Hours'];
+      const summaryHeaders = ['Employee', 'Email', 'Present', 'Absent', 'Approved Leave', 'Unapproved Leave', 'Half Day', 'WFH', 'Holiday', 'Total Hours'];
       const summaryBody = employeeData.map((emp) => {
         return [
           emp.employeeName, emp.employeeEmail,
           String(emp.stats.present), String(emp.stats.absent), String(emp.stats.approvedLeave),
-          String(emp.stats.unapprovedLeave), String(emp.stats.halfDay), String(emp.stats.holiday),
+          String(emp.stats.unapprovedLeave), String(emp.stats.halfDay), String(emp.stats.wfh), String(emp.stats.holiday),
           emp.stats.totalHours.toFixed(2),
         ];
       });
@@ -670,8 +680,9 @@ export function RosterExportModal({
           4: { cellWidth: 28 },
           5: { cellWidth: 30 },
           6: { cellWidth: 18 },
-          7: { cellWidth: 18 },
-          8: { cellWidth: 22 },
+          7: { cellWidth: 14 },
+          8: { cellWidth: 18 },
+          9: { cellWidth: 22 },
         },
       });
     }

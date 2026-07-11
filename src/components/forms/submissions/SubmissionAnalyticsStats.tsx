@@ -13,6 +13,7 @@ interface SubmissionAnalyticsStatsProps {
   formId: string;
   template: FormTemplate;
   onRefresh?: () => void;
+  showBranchReport?: boolean;
 }
 
 interface AnalyticsData {
@@ -90,6 +91,7 @@ export function SubmissionAnalyticsStats({
   formId,
   template,
   onRefresh,
+  showBranchReport = true,
 }: SubmissionAnalyticsStatsProps) {
   const [dateFilter, setDateFilter] = useState<DateFilterValue>('today');
   const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null);
@@ -382,6 +384,7 @@ export function SubmissionAnalyticsStats({
         )}
       </div>
 
+      {showBranchReport && (
       <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-3 sm:p-4 space-y-4">
         <div className="flex flex-col xl:flex-row xl:items-end gap-3">
           <div>
@@ -510,6 +513,7 @@ export function SubmissionAnalyticsStats({
           </table>
         </div>
       </div>
+      )}
 
       {modalState && (
         <SubmissionUsersModal
@@ -524,6 +528,7 @@ export function SubmissionAnalyticsStats({
         />
       )}
 
+      {showBranchReport && (
       <BranchReportFullscreenModal
         isOpen={isBranchReportFullscreenOpen}
         onClose={() => setIsBranchReportFullscreenOpen(false)}
@@ -533,6 +538,7 @@ export function SubmissionAnalyticsStats({
         preset={reportChartPreset}
         onPresetChange={applyReportChartPreset}
       />
+      )}
     </div>
   );
 }

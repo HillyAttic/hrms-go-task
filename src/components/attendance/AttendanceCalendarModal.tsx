@@ -17,7 +17,7 @@ interface AttendanceCalendarModalProps {
 
 interface DayStatus {
   date: Date;
-  status: 'present' | 'absent' | 'approved-leave' | 'unapproved-leave' | 'half-day' | 'upcoming' | 'holiday';
+  status: 'present' | 'absent' | 'approved-leave' | 'unapproved-leave' | 'half-day' | 'upcoming' | 'holiday' | 'wfh';
   duration?: string;
   hours?: number;
   leaveType?: 'full' | 'half';
@@ -143,10 +143,11 @@ export function AttendanceCalendarModal({
 
                 // Present takes precedence over leave
                 if (!dataMap.has(dateKey)) {
+                  const isWfh = leave.leaveType === 'wfh';
                   const isHalfDay = leave.leaveType === 'half-day';
                   dataMap.set(dateKey, {
                     date: new Date(cur),
-                    status: isHalfDay ? 'half-day' : 'approved-leave',
+                    status: isWfh ? 'wfh' : isHalfDay ? 'half-day' : 'approved-leave',
                     leaveType: isHalfDay ? 'half' : 'full',
                     leaveStatus: 'approved',
                   });
@@ -207,6 +208,7 @@ export function AttendanceCalendarModal({
       case 'half-day': return 'bg-orange-500';
       case 'holiday': return 'bg-blue-500';
       case 'upcoming': return 'bg-gray-200';
+      case 'wfh': return 'bg-black';
       default: return 'bg-gray-300';
     }
   };
@@ -217,6 +219,7 @@ export function AttendanceCalendarModal({
       case 'unapproved-leave': return 'Unapproved';
       case 'half-day': return 'Half Day';
       case 'upcoming': return 'upcoming';
+      case 'wfh': return 'WFH';
       default: return status;
     }
   };
@@ -224,7 +227,7 @@ export function AttendanceCalendarModal({
   const calculateStats = () => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    let present = 0, absent = 0, approvedLeave = 0, halfDay = 0, unapprovedLeave = 0, holidayCount = 0, totalHours = 0;
+    let present = 0, absent = 0, approvedLeave = 0, halfDay = 0, unapprovedLeave = 0, wfh = 0, holidayCount = 0, totalHours = 0;
 
     const daysInMonth = new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1, 0).getDate();
     for (let day = 1; day <= daysInMonth; day++) {
@@ -241,10 +244,11 @@ export function AttendanceCalendarModal({
         case 'approved-leave': approvedLeave++; break;
         case 'half-day': halfDay++; break;
         case 'unapproved-leave': unapprovedLeave++; break;
+        case 'wfh': wfh++; break;
         case 'holiday': holidayCount++; break;
       }
     }
-    return { present, absent, approvedLeave, halfDay, unapprovedLeave, holidays: holidayCount, totalHours };
+    return { present, absent, approvedLeave, halfDay, unapprovedLeave, wfh, holidays: holidayCount, totalHours };
   };
 
   const previousMonth = () => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1));
@@ -321,6 +325,10 @@ export function AttendanceCalendarModal({
                 <div className="text-lg sm:text-2xl font-bold text-orange-600">{stats.halfDay}</div>
                 <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Half Day</div>
               </div>
+              <div className="bg-gray-100 dark:bg-gray-800 p-2 sm:p-4 rounded-lg">
+                <div className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">{stats.wfh}</div>
+                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">WFH</div>
+              </div>
               <div className="bg-red-50 dark:bg-red-900/20 p-2 sm:p-4 rounded-lg">
                 <div className="text-lg sm:text-2xl font-bold text-red-600">{stats.unapprovedLeave}</div>
                 <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Unapproved</div>
@@ -380,6 +388,7 @@ export function AttendanceCalendarModal({
                 { color: 'bg-red-500', label: 'Absent' },
                 { color: 'bg-purple-500', label: 'Approved Leave' },
                 { color: 'bg-orange-500', label: 'Half Day' },
+                { color: 'bg-black', label: 'WFH' },
                 { color: 'bg-red-500', label: 'Unapproved' },
                 { color: 'bg-blue-500', label: 'Holiday' },
                 { color: 'bg-gray-200', label: 'Upcoming' },

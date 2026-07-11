@@ -3,12 +3,24 @@ import { z } from 'zod';
 import { handleApiError, ErrorResponses } from '@/lib/api-error-handler';
 
 const createLeaveSchema = z.object({
-  leaveType: z.enum(['sick', 'casual']),
+  leaveType: z.enum(['sick', 'casual', 'wfh']),
   startDate: z.string().refine((date) => !isNaN(Date.parse(date))),
   endDate: z.string().refine((date) => !isNaN(Date.parse(date))),
   reason: z.string().min(1).max(500),
   halfDay: z.boolean().optional(),
-});
+}).refine(
+  (data) => {
+    // WFH requests cannot be half-day
+    if (data.leaveType === 'wfh' && data.halfDay) {
+      return false;
+    }
+    return true;
+  },
+  {
+    message: 'WFH requests cannot be half-day',
+    path: ['halfDay'],
+  }
+);
 
 /**
  * Helper function to filter leave requests by date range.
@@ -448,8 +460,10 @@ export async function POST(request: NextRequest) {
       const startStr = start.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
       const endStr = end.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
       const employeeName = leaveRequestData.employeeName;
+      const isWfh = leaveType === 'wfh';
       const daysText = halfDay ? '0.5 day (Half Day)' : `${totalDays} day${totalDays > 1 ? 's' : ''}`;
-      const notifBody = `${employeeName} requested ${leaveType} leave (${daysText}) from ${startStr} to ${endStr}`;
+      const leaveTypeLabel = isWfh ? 'WFH' : leaveType;
+      const notifBody = `${employeeName} requested ${leaveTypeLabel} (${daysText}) from ${startStr} to ${endStr}`;
 
       // Check if this employee has an assigned manager
       console.log(`[leave-requests] Querying manager hierarchy for employee:`, authResult.user.uid);
@@ -474,14 +488,14 @@ export async function POST(request: NextRequest) {
       }
 
       // 1. Send confirmation notification to the employee who submitted
-      const employeeNotifBody = `Your ${leaveType} leave (${daysText}) from ${startStr} to ${endStr} has been submitted and is pending approval.`;
+      const employeeNotifBody = `Your ${leaveTypeLabel} request (${daysText}) from ${startStr} to ${endStr} has been submitted and is pending approval.`;
       console.log(`[leave-requests] Sending confirmation to employee:`, authResult.user.uid);
 
       const employeeResult = await sendNotification({
         userIds: [authResult.user.uid],
-        title: 'Leave Request Submitted',
+        title: isWfh ? 'WFH Request Submitted' : 'Leave Request Submitted',
         body: employeeNotifBody,
-        data: { url: '/attendance', type: 'leave_request' },
+        data: { url: '/attendance', type: isWfh ? 'wfh_request' : 'leave_request' },
       });
 
       console.log('[leave-requests] ✅ Employee confirmation result:', {
@@ -499,9 +513,9 @@ export async function POST(request: NextRequest) {
 
         const result = await sendNotification({
           userIds: notifyIds,
-          title: 'New Leave Request',
+          title: isWfh ? 'New WFH Request' : 'New Leave Request',
           body: notifBody,
-          data: { url: '/admin/leave-approvals', type: 'leave_request' },
+          data: { url: isWfh ? '/admin/leave-approvals?tab=wfh' : '/admin/leave-approvals', type: isWfh ? 'wfh_request' : 'leave_request' },
         });
 
         console.log('[leave-requests] ✅ Manager/admin notification result:', {

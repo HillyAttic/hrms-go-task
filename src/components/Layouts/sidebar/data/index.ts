@@ -149,6 +149,13 @@ export const NAV_DATA = [
         requiresRole: ['admin', 'manager'], // Managers see their assigned employees' requests
       },
       {
+        title: "WFH Approvals",
+        url: "/admin/leave-approvals?tab=wfh",
+        icon: Icons.CheckCircleIcon,
+        items: [],
+        requiresRole: ['admin', 'manager'], // Managers see their assigned employees' requests
+      },
+      {
         title: "Attendance Sheet",
         url: "/admin/attendance-roster",
         icon: Icons.AttendanceSheetIcon,
