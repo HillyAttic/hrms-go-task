@@ -261,7 +261,7 @@ async function checkFirestoreToken(userId) {
   }
 
   console.log('🔍 Checking Firestore for FCM token...');
-  console.log('   Go to: https://console.firebase.google.com/project/jpcopanel/firestore/data/fcmTokens/' + userId);
+  console.log('   Go to: https://console.firebase.google.com/project/hrms-82eb5/firestore/data/fcmTokens/' + userId);
   console.log('   Check if a token document exists for this user');
 }
 

@@ -22,8 +22,8 @@ function initAdmin() {
             const serviceAccount = JSON.parse(serviceAccountKey);
             return admin.initializeApp({
                 credential: admin.credential.cert(serviceAccount),
-                projectId: 'jpcopanel',
-                storageBucket: 'jpcopanel.firebasestorage.app',
+                projectId: 'hrms-82eb5',
+                storageBucket: 'hrms-82eb5.firebasestorage.app',
             });
         } catch (error) {
             console.error('Error parsing FIREBASE_SERVICE_ACCOUNT_KEY:', error);
@@ -31,7 +31,7 @@ function initAdmin() {
     }
 
     // Fallback: try individual environment variables
-    const projectId = process.env.FIREBASE_PROJECT_ID || 'jpcopanel';
+    const projectId = process.env.FIREBASE_PROJECT_ID || 'hrms-82eb5';
     const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
     const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n');
 
@@ -43,7 +43,7 @@ function initAdmin() {
                 privateKey,
             }),
             projectId,
-            storageBucket: 'jpcopanel.firebasestorage.app',
+            storageBucket: 'hrms-82eb5.firebasestorage.app',
         });
     }
 
@@ -51,7 +51,7 @@ function initAdmin() {
     console.warn('No Firebase Admin credentials found. Using default credentials.');
     return admin.initializeApp({
         projectId,
-        storageBucket: 'jpcopanel.firebasestorage.app',
+        storageBucket: 'hrms-82eb5.firebasestorage.app',
     });
 }
 

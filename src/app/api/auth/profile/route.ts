@@ -117,7 +117,7 @@ export const POST = withAuth(async (request: AuthenticatedRequest) => {
     const uniqueName = `profile-${userId}-${Date.now()}.${fileExtension}`;
 
     // Get bucket - explicitly specify bucket name
-    const bucket = adminStorage.bucket('jpcopanel.firebasestorage.app');
+    const bucket = adminStorage.bucket('hrms-82eb5.firebasestorage.app');
 
     // Create file reference
     const fileRef = bucket.file(`profile-photos/${uniqueName}`);

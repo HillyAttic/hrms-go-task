@@ -28,13 +28,13 @@ if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBkxT1xMRCj2iAoig87tBkFXSGcoZyuQDw",
-  authDomain: "jpcopanel.firebaseapp.com",
-  projectId: "jpcopanel",
-  storageBucket: "jpcopanel.firebasestorage.app",
-  messagingSenderId: "492450530050",
-  appId: "1:492450530050:web:174cf5cec2a9bdaeb8381b",
-  measurementId: "G-GNT1N7174R"
+  apiKey: "AIzaSyDhXudvlYIi7nugjPGI-WduR8fQPcaoIeo",
+  authDomain: "hrms-82eb5.firebaseapp.com",
+  projectId: "hrms-82eb5",
+  storageBucket: "hrms-82eb5.firebasestorage.app",
+  messagingSenderId: "268490657476",
+  appId: "1:268490657476:web:0a58aaf00618366b4b8391",
+  measurementId: "G-DBXEKF1V8G"
 };
 
 // Initialize Firebase

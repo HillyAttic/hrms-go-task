@@ -19,7 +19,7 @@ config({ path: '.env.local' });
 // Initialize Firebase Admin
 if (!getApps().length) {
   const serviceAccountKey = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
-  const projectId = process.env.FIREBASE_PROJECT_ID || 'jpcopanel';
+  const projectId = process.env.FIREBASE_PROJECT_ID || 'hrms-82eb5';
   const clientEmail = process.env.FIREBASE_CLIENT_EMAIL;
   const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n');
 

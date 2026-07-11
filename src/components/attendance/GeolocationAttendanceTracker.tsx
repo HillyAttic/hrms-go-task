@@ -634,7 +634,7 @@ export function GeolocationAttendanceTracker() {
                     <>
                       <p className="text-xs font-semibold text-red-800">To enable location access:</p>
                       <ol className="text-xs text-red-700 space-y-1 list-decimal pl-4">
-                        <li>Open your browser and navigate to https://jpcopanel.vercel.app/. Then, click the tune (settings) icon in the address bar.</li>
+                        <li>Open your browser and navigate to the app. Then, click the tune (settings) icon in the address bar.</li>
                         <li>Find "Location" in the permissions list</li>
                         <li>Change it from "Block" to "Allow"</li>
                         <li>Click the "Retry" button below</li>
