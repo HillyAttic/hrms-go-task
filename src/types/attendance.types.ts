@@ -3,7 +3,7 @@
 export type AttendanceStatus = 'active' | 'completed' | 'incomplete' | 'edited';
 export type LeaveStatus = 'pending' | 'approved' | 'rejected' | 'cancelled';
 export type TeamAttendanceStatus = 'clocked-in' | 'clocked-out' | 'on-break' | 'on-leave' | 'absent';
-export type CalendarDayStatus = 'present' | 'absent' | 'leave' | 'holiday' | 'weekend';
+export type CalendarDayStatus = 'present' | 'absent' | 'leave' | 'holiday' | 'weekend' | 'wfh';
 export type ReportType = 'daily' | 'weekly' | 'monthly' | 'custom' | 'leave-summary';
 export type ReportFormat = 'pdf' | 'csv' | 'excel';
 export type AlertType = 'late' | 'early-departure' | 'missing-clockout' | 'excessive-break' | 'overtime';
@@ -278,6 +278,12 @@ export interface LeaveRequestFormData {
   endDate: Date;
   reason: string;
   halfDay?: boolean;
+}
+
+export interface WfhRequestFormData {
+  startDate: Date;
+  endDate: Date;
+  reason: string;
 }
 
 export interface ShiftFormData {

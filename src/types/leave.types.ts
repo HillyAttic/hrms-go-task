@@ -3,7 +3,7 @@
  */
 
 export type LeaveStatus = 'pending' | 'approved' | 'rejected' | 'cancelled';
-export type LeaveType = 'sick' | 'casual';
+export type LeaveType = 'sick' | 'casual' | 'wfh';
 
 export interface LeaveRequest {
   id?: string;

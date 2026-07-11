@@ -64,9 +64,24 @@ export const leaveRequestSchema = z.object({
   halfDay: z.boolean().optional(),
 }).refine(
   (data) => data.endDate >= data.startDate,
-  { 
-    message: 'End date must be on or after start date', 
-    path: ['endDate'] 
+  {
+    message: 'End date must be on or after start date',
+    path: ['endDate']
+  }
+);
+
+// WFH Request Schema (no half-day, no leave type selector)
+export const wfhRequestSchema = z.object({
+  startDate: z.date(),
+  endDate: z.date(),
+  reason: z.string()
+    .min(10, 'Reason must be at least 10 characters')
+    .max(1000, 'Reason must be 1000 characters or less'),
+}).refine(
+  (data) => data.endDate >= data.startDate,
+  {
+    message: 'End date must be on or after start date',
+    path: ['endDate']
   }
 );
 
@@ -171,6 +186,7 @@ export type ClockInDataInput = z.infer<typeof clockInDataSchema>;
 export type ClockOutDataInput = z.infer<typeof clockOutDataSchema>;
 export type AttendanceRecordInput = z.infer<typeof attendanceRecordSchema>;
 export type LeaveRequestInput = z.infer<typeof leaveRequestSchema>;
+export type WfhRequestInput = z.infer<typeof wfhRequestSchema>;
 export type ShiftInput = z.infer<typeof shiftSchema>;
 export type LeaveTypeInput = z.infer<typeof leaveTypeSchema>;
 export type AttendancePolicyInput = z.infer<typeof attendancePolicySchema>;

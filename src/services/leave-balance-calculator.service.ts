@@ -172,15 +172,17 @@ export class LeaveBalanceCalculator {
         const monthData = monthlyData.get(key);
 
         if (monthData) {
-          if (req.leaveType === 'sick') {
+          const leaveType = req.leaveType as string;
+          if (leaveType === 'sick') {
             monthData.sickLeave += req.totalDays;
-          } else if (req.leaveType === 'casual') {
+          } else if (leaveType === 'casual') {
             monthData.casualLeave += req.totalDays;
-          } else if (req.leaveType === 'vacation') {
+          } else if (leaveType === 'vacation') {
             monthData.vacationLeave += req.totalDays;
-          } else if (req.leaveType === 'emergency') {
+          } else if (leaveType === 'emergency') {
             monthData.emergencyLeave += req.totalDays;
           }
+          // 'wfh' leave type is not tracked in leave balances, so it's intentionally ignored here
         }
       });
 
