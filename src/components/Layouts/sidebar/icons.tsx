@@ -32,6 +32,8 @@ import {
   LogIn,
   FileSpreadsheet,
   Settings,
+  Lock as LucideLock,
+  LockOpen as LucideLockOpen,
 } from "lucide-react";
 
 export type PropsType = SVGProps<SVGSVGElement>;
@@ -75,6 +77,8 @@ export const Authentication = wrap(LogIn);
 export const User = wrap(Users);
 export const MISTrackerIcon = wrap(FileSpreadsheet);
 export const SettingsIcon = wrap(Settings);
+export const LockIcon = wrap(LucideLock);
+export const LockOpenIcon = wrap(LucideLockOpen);
 
 export function ChevronUp(props: PropsType) {
   const { className } = props;

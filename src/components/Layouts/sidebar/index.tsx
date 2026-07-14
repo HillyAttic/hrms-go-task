@@ -24,6 +24,7 @@ export function Sidebar() {
   );
   const [misConfig, setMisConfig] = useState<any>(null);
   const [misConfigLoaded, setMisConfigLoaded] = useState(false);
+  const [isExclusivityLocked, setIsExclusivityLocked] = useState(true);
 
   const toggleSection = (label: string) => {
     setCollapsedSections((prev) =>
@@ -227,114 +228,109 @@ export function Sidebar() {
               return (
               <div key={section.label} className="mb-6">
                 {/* Section header */}
-                <button
-                  onClick={() => toggleSection(section.label)}
-                  className={cn(
-                    "mb-4 flex w-full items-center justify-between",
-                    "text-sm font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500",
-                    "hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200",
-                    variant === 'tablet' && !isOpen && "hidden"
-                  )}
-                  aria-expanded={!isSectionCollapsed}
-                >
-                  <span>{section.label}</span>
-                  <ChevronUp
+                <div className={cn(
+                  "mb-4 flex w-full items-center",
+                  variant === 'tablet' && !isOpen && "hidden"
+                )}>
+                  <button
+                    onClick={() => toggleSection(section.label)}
                     className={cn(
-                      "size-4 transition-transform duration-200",
-                      isSectionCollapsed && "rotate-180"
+                      "flex flex-1 items-center justify-between",
+                      "text-sm font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500",
+                      "hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200"
                     )}
-                    aria-hidden="true"
-                  />
-                </button>
+                    aria-expanded={!isSectionCollapsed}
+                  >
+                    <span>{section.label}</span>
+                    <ChevronUp
+                      className={cn(
+                        "size-4 transition-transform duration-200",
+                        isSectionCollapsed && "rotate-180"
+                      )}
+                      aria-hidden="true"
+                    />
+                  </button>
+
+                  {section.label === "EXCLUSIVITY" && (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsExclusivityLocked((prev) => !prev);
+                      }}
+                      className={cn(
+                        "ml-2 flex items-center gap-1 rounded-md px-2 py-1 text-xs font-medium transition-colors duration-200",
+                        isExclusivityLocked
+                          ? "text-amber-500 hover:text-amber-600 dark:text-amber-400 dark:hover:text-amber-300"
+                          : "text-emerald-500 hover:text-emerald-600 dark:text-emerald-400 dark:hover:text-emerald-300"
+                      )}
+                      title={isExclusivityLocked ? "Unlock exclusivity section" : "Lock exclusivity section"}
+                    >
+                      {isExclusivityLocked ? (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                        </svg>
+                      ) : (
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                          <path d="M7 11V7a5 5 0 0 1 9.9-1" />
+                        </svg>
+                      )}
+                    </button>
+                  )}
+                </div>
 
                 {!isSectionCollapsed && (
-                <nav role="navigation" aria-label={section.label}>
-                  <ul className="space-y-0.5">
-                    {visibleItems.map((item: any) => {
-                        // Filter subitems based on role requirements
-                        const filteredSubItems = item.items.filter((subItem: any) => {
-                          if (subItem.requiresRole) {
-                            return hasRole(subItem.requiresRole);
-                          }
-                          return true;
-                        });
+                <div className={cn(
+                  "relative",
+                  section.label === "EXCLUSIVITY" && isExclusivityLocked && "select-none"
+                )}>
+                  {/* Frozen overlay for locked EXCLUSIVITY section */}
+                  {section.label === "EXCLUSIVITY" && isExclusivityLocked && (
+                    <div
+                      className="absolute inset-0 z-10 flex items-center justify-center rounded-lg backdrop-blur-[1px]"
+                      style={{ pointerEvents: 'auto' }}
+                    >
+                      <div className="flex flex-col items-center gap-1 py-8">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-amber-500 dark:text-amber-400">
+                          <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                        </svg>
+                        <span className="text-[10px] font-medium uppercase tracking-wider text-amber-500 dark:text-amber-400">
+                          Locked
+                        </span>
+                      </div>
+                    </div>
+                  )}
 
-                        const menuItemContent = (
-                          <li key={item.title}>
-                            {filteredSubItems.length ? (
-                              <div>
-                                <MenuItem
-                                  isActive={filteredSubItems.some(
-                                    ({ url }: any) => url === pathname,
-                                  )}
-                                  onClick={() => toggleExpanded(item.title)}
-                                  className={cn(
-                                  // Touch-optimized sizing
-                                  isTouchDevice && "min-h-[44px]",
-                                  // Tablet condensed state
-                                  variant === 'tablet' && !isOpen && "justify-center px-2"
-                                )}
-                              >
-                                <item.icon
-                                  className={cn(
-                                    "size-5 shrink-0",
-                                    variant === 'tablet' && !isOpen && "size-5"
-                                  )}
-                                  aria-hidden="true"
-                                />
+                  <nav role="navigation" aria-label={section.label} className={cn(
+                    section.label === "EXCLUSIVITY" && isExclusivityLocked && "pointer-events-none opacity-40 blur-[1px]"
+                  )}>
+                    <ul className="space-y-0.5">
+                      {visibleItems.map((item: any) => {
+                          // Filter subitems based on role requirements
+                          const filteredSubItems = item.items.filter((subItem: any) => {
+                            if (subItem.requiresRole) {
+                              return hasRole(subItem.requiresRole);
+                            }
+                            return true;
+                          });
 
-                                <span className={cn(
-                                  variant === 'tablet' && !isOpen && "hidden"
-                                )}>{item.title}</span>
-                                {(variant !== 'tablet' || isOpen) && filteredSubItems.length > 0 && (
-                                  <ChevronUp
-                                    className={cn(
-                                      "ml-auto rotate-180 transition-transform duration-200",
-                                      expandedItems.includes(item.title) && "rotate-0",
-                                      variant === 'tablet' && !isOpen && "hidden"
+                          const menuItemContent = (
+                            <li key={item.title}>
+                              {filteredSubItems.length ? (
+                                <div>
+                                  <MenuItem
+                                    isActive={filteredSubItems.some(
+                                      ({ url }: any) => url === pathname,
                                     )}
-                                    aria-hidden="true"
-                                  />
-                                )}
-                              </MenuItem>
-
-                              {/* Submenu */}
-                              {expandedItems.includes(item.title) && (variant !== 'tablet' || isOpen) && (
-                                <ul className="ml-9 mr-0 space-y-1.5 pb-[15px] pr-0 pt-2" role="menu">
-                                  {filteredSubItems.map((subItem: any) => (
-                                    <li key={subItem.title} role="none">
-                                      <MenuItem
-                                        as="link"
-                                        href={subItem.url}
-                                        isActive={pathname === subItem.url}
-                                        className={cn(
-                                          // Touch-optimized sizing
-                                          isTouchDevice && "min-h-[44px]"
-                                        )}
-                                      >
-                                        <span>{subItem.title}</span>
-                                      </MenuItem>
-                                    </li>
-                                  ))}
-                                </ul>
-                              )}
-                            </div>
-                          ) : (
-                            (() => {
-                              const href = "url" in item ? item.url + "" : "/" + item.title.toLowerCase().split(" ").join("-");
-
-                              return (
-                                <MenuItem
-                                  className={cn(
-                                    "flex items-center gap-3 py-2.5",
+                                    onClick={() => toggleExpanded(item.title)}
+                                    className={cn(
                                     // Touch-optimized sizing
                                     isTouchDevice && "min-h-[44px]",
                                     // Tablet condensed state
                                     variant === 'tablet' && !isOpen && "justify-center px-2"
                                   )}
-                                  as="link"
-                                  href={href}
-                                  isActive={pathname === href}
                                 >
                                   <item.icon
                                     className={cn(
@@ -347,17 +343,79 @@ export function Sidebar() {
                                   <span className={cn(
                                     variant === 'tablet' && !isOpen && "hidden"
                                   )}>{item.title}</span>
+                                  {(variant !== 'tablet' || isOpen) && filteredSubItems.length > 0 && (
+                                    <ChevronUp
+                                      className={cn(
+                                        "ml-auto rotate-180 transition-transform duration-200",
+                                        expandedItems.includes(item.title) && "rotate-0",
+                                        variant === 'tablet' && !isOpen && "hidden"
+                                      )}
+                                      aria-hidden="true"
+                                    />
+                                  )}
                                 </MenuItem>
-                              );
-                            })()
-                          )}
-                        </li>
-                      );
 
-                      return menuItemContent;
-                    })}
-                  </ul>
-                </nav>
+                                {/* Submenu */}
+                                {expandedItems.includes(item.title) && (variant !== 'tablet' || isOpen) && (
+                                  <ul className="ml-9 mr-0 space-y-1.5 pb-[15px] pr-0 pt-2" role="menu">
+                                    {filteredSubItems.map((subItem: any) => (
+                                      <li key={subItem.title} role="none">
+                                        <MenuItem
+                                          as="link"
+                                          href={subItem.url}
+                                          isActive={pathname === subItem.url}
+                                          className={cn(
+                                            // Touch-optimized sizing
+                                            isTouchDevice && "min-h-[44px]"
+                                          )}
+                                        >
+                                          <span>{subItem.title}</span>
+                                        </MenuItem>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                )}
+                              </div>
+                            ) : (
+                              (() => {
+                                const href = "url" in item ? item.url + "" : "/" + item.title.toLowerCase().split(" ").join("-");
+
+                                return (
+                                  <MenuItem
+                                    className={cn(
+                                      "flex items-center gap-3 py-2.5",
+                                      // Touch-optimized sizing
+                                      isTouchDevice && "min-h-[44px]",
+                                      // Tablet condensed state
+                                      variant === 'tablet' && !isOpen && "justify-center px-2"
+                                    )}
+                                    as="link"
+                                    href={href}
+                                    isActive={pathname === href}
+                                  >
+                                    <item.icon
+                                      className={cn(
+                                        "size-5 shrink-0",
+                                        variant === 'tablet' && !isOpen && "size-5"
+                                      )}
+                                      aria-hidden="true"
+                                    />
+
+                                    <span className={cn(
+                                      variant === 'tablet' && !isOpen && "hidden"
+                                    )}>{item.title}</span>
+                                  </MenuItem>
+                                );
+                              })()
+                            )}
+                          </li>
+                        );
+
+                        return menuItemContent;
+                      })}
+                    </ul>
+                  </nav>
+                </div>
                 )}
               </div>
             );
