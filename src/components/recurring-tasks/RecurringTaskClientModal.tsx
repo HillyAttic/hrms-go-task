@@ -5,6 +5,7 @@ import { XMarkIcon, UserGroupIcon, CheckIcon } from '@heroicons/react/24/outline
 import { RecurringTask } from '@/services/recurring-task.service';
 import { taskCompletionService } from '@/services/task-completion.service';
 import { useEnhancedAuth } from '@/contexts/enhanced-auth.context';
+import { useModal } from '@/contexts/modal-context';
 import { auth } from '@/lib/firebase';
 
 interface Client {
@@ -56,6 +57,23 @@ export function RecurringTaskClientModal({
   const [remarkBy, setRemarkBy] = useState('');
   const [remarkDate, setRemarkDate] = useState('');
   const [remarkError, setRemarkError] = useState('');
+  const { openModal, closeModal } = useModal();
+
+  // Sync modal visibility with context
+  useEffect(() => {
+    if (isOpen) { openModal(); return () => closeModal(); }
+  }, [isOpen, openModal, closeModal]);
+
+  // Sync ARN dialog visibility with context
+  useEffect(() => {
+    if (showArnDialog) { openModal(); return () => closeModal(); }
+  }, [showArnDialog, openModal, closeModal]);
+
+  // Sync Remark dialog visibility with context
+  useEffect(() => {
+    if (showRemarkDialog) { openModal(); return () => closeModal(); }
+  }, [showRemarkDialog, openModal, closeModal]);
+
   const { user, userProfile } = useEnhancedAuth();
   // Generate only the viewing month (or current month if not specified)
   const generateMonths = () => {

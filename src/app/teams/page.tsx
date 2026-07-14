@@ -20,9 +20,17 @@ import {
   ExclamationTriangleIcon,
   ShieldExclamationIcon,
 } from '@heroicons/react/24/outline';
+import { useModal } from '@/contexts/modal-context';
 
 // Wrapper component to manage body class for detail panel
 function DetailPanelWrapper({ children, onClose }: { children: React.ReactNode; onClose: () => void }) {
+  const { openModal, closeModal } = useModal();
+  useEffect(() => {
+    // This component only renders when the detail panel is visible
+    openModal();
+    return () => closeModal();
+  }, [openModal, closeModal]);
+
   useEffect(() => {
     document.body.classList.add('modal-open');
     return () => {

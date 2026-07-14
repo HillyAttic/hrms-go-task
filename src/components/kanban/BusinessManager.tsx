@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Business } from '@/types/kanban.types';
 import { Button } from '@/components/ui/button';
 import { PlusIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { useModal } from '@/contexts/modal-context';
 
 interface BusinessManagerProps {
   businesses: Business[];
@@ -28,6 +29,11 @@ export function BusinessManager({
   onDeleteBusiness,
 }: BusinessManagerProps) {
   const [showAddModal, setShowAddModal] = useState(false);
+  const { openModal, closeModal } = useModal();
+  useEffect(() => {
+    if (showAddModal) openModal();
+    else closeModal();
+  }, [showAddModal, openModal, closeModal]);
   const [editingBusiness, setEditingBusiness] = useState<Business | null>(null);
   const [formData, setFormData] = useState({
     name: '',

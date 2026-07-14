@@ -5,6 +5,7 @@ import { createPortal } from 'react-dom';
 import { motion } from 'framer-motion';
 import { FormRenderer } from '@/components/forms/renderer/FormRenderer';
 import type { FormTemplate } from '@/types/form.types';
+import { useModal } from '@/contexts/modal-context';
 
 interface FormPreviewProps {
   template: FormTemplate;
@@ -12,6 +13,12 @@ interface FormPreviewProps {
 }
 
 export function FormPreview({ template, onClose }: FormPreviewProps) {
+  const { openModal, closeModal } = useModal();
+  useEffect(() => {
+    openModal();
+    return () => closeModal();
+  }, [openModal, closeModal]);
+
   useEffect(() => {
     // Prevent body scroll when modal is open
     document.body.style.overflow = 'hidden';

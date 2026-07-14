@@ -1,10 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import dynamic from 'next/dynamic';
 import type { ApexOptions } from 'apexcharts';
 import type { BranchReportData } from './SubmissionAnalyticsStats';
+import { useModal } from '@/contexts/modal-context';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
@@ -145,6 +146,12 @@ export function BranchReportFullscreenModal({
   preset,
   onPresetChange,
 }: BranchReportFullscreenModalProps) {
+  const { openModal, closeModal } = useModal();
+  useEffect(() => {
+    if (isOpen) openModal();
+    else closeModal();
+  }, [isOpen, openModal, closeModal]);
+
   const chartData = data?.daywiseGroupVisits || [];
   const options = getDaywiseGroupVisitsOptions(chartData);
   const series = [{ name: 'Group Visits', data: chartData.map((item) => item.total) }];
@@ -224,6 +231,12 @@ export function FormAnalyticsFullscreenModal({
   questionCharts,
   loading = false,
 }: FormAnalyticsFullscreenModalProps) {
+  const { openModal: openModal2, closeModal: closeModal2 } = useModal();
+  useEffect(() => {
+    if (isOpen) openModal2();
+    else closeModal2();
+  }, [isOpen, openModal2, closeModal2]);
+
   return (
     <Dialog.Root open={isOpen} onOpenChange={onClose}>
       <Dialog.Portal>

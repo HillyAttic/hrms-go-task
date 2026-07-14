@@ -1,6 +1,7 @@
   'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { useModal } from '@/contexts/modal-context';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -28,6 +29,12 @@ export default function AttendancePage() {
   const [showApproveModal, setShowApproveModal] = useState(false);
   const [approvalReason, setApprovalReason] = useState('');
   const [selectedLeaveRequest, setSelectedLeaveRequest] = useState<LeaveRequest | null>(null);
+
+  const { openModal, closeModal } = useModal();
+  useEffect(() => {
+    if (showApproveModal) openModal();
+    else closeModal();
+  }, [showApproveModal, openModal, closeModal]);
 
   // WFH State
   const [showWfhModal, setShowWfhModal] = useState(false);

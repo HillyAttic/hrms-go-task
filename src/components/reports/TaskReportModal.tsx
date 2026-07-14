@@ -1,9 +1,10 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { RecurringTask } from '@/services/recurring-task.service';
 import { Client } from '@/services/client.service';
 import { ClientTaskCompletion } from '@/services/task-completion.service';
+import { useModal } from '@/contexts/modal-context';
 import { XMarkIcon, CheckIcon, XCircleIcon, UserGroupIcon, ArrowDownTrayIcon, UserMinusIcon, ChatBubbleLeftIcon, ArrowsPointingOutIcon, ArrowsPointingInIcon } from '@heroicons/react/24/outline';
 import { isFuture, isToday, startOfMonth } from 'date-fns';
 import { exportToPDF, exportToExcel } from '@/utils/report-export.utils';
@@ -126,6 +127,8 @@ interface ExportDialogProps {
 }
 
 function ExportDialog({ task, clients, completions, isTeamMemberView, teamMemberName, isUnassignedView, dueMonth, onClose }: ExportDialogProps) {
+  const { openModal, closeModal } = useModal();
+  useEffect(() => { openModal(); return () => closeModal(); }, [openModal, closeModal]);
   const [exportYear, setExportYear] = useState('all');
   const [exportMonth, setExportMonth] = useState('all');
   const financialYears = generateFinancialYears();
@@ -254,6 +257,10 @@ function ReportTable({
   remarkData: Map<string, Map<string, RemarkInfo>>;
 }) {
   const [viewingRemark, setViewingRemark] = useState<{ remark: string; remarkBy: string; clientName: string; monthName: string } | null>(null);
+  const { openModal, closeModal } = useModal();
+  useEffect(() => {
+    if (viewingRemark) { openModal(); return () => closeModal(); }
+  }, [viewingRemark, openModal, closeModal]);
 
   return (
     <>
@@ -343,6 +350,8 @@ function ReportTable({
 // ---------- Shared Modal Shell ----------
 
 function ModalShell({ onClose, onFullscreenToggle, isFullscreen, children }: { onClose: () => void; onFullscreenToggle: () => void; isFullscreen: boolean; children: React.ReactNode }) {
+  const { openModal, closeModal } = useModal();
+  useEffect(() => { openModal(); return () => closeModal(); }, [openModal, closeModal]);
   return (
     <div className={`fixed inset-0 z-50 flex flex-col ${isFullscreen ? 'items-stretch justify-stretch p-0' : 'sm:items-center sm:justify-center sm:p-4'}`}>
       <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" onClick={onClose} />

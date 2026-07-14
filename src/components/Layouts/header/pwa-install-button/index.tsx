@@ -3,6 +3,7 @@
 import { useServiceWorker } from "@/hooks/use-service-worker";
 import { useResponsive } from "@/hooks/use-responsive";
 import { useEffect, useState, useCallback } from "react";
+import { useModal } from "@/contexts/modal-context";
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
@@ -21,6 +22,11 @@ export function PWAInstallButton() {
   const [isInstalled, setIsInstalled] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
+  const { openModal, closeModal } = useModal();
+  useEffect(() => {
+    if (showInstructions) openModal();
+    else closeModal();
+  }, [showInstructions, openModal, closeModal]);
 
   useEffect(() => {
     // Detect iOS and Android

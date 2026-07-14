@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import type { FormSettings, AccessControl } from '@/types/form.types';
+import { useModal } from '@/contexts/modal-context';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -19,6 +20,12 @@ export function SettingsModal({
   accessControl,
   onUpdate,
 }: SettingsModalProps) {
+  const { openModal, closeModal } = useModal();
+  useEffect(() => {
+    if (isOpen) openModal();
+    else closeModal();
+  }, [isOpen, openModal, closeModal]);
+
   const [localSettings, setLocalSettings] = useState(settings);
   const [localAccessControl, setLocalAccessControl] = useState(accessControl);
 

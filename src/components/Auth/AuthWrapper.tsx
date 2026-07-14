@@ -112,7 +112,7 @@ export const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
   if (isPublicRoute) {
     return (
       <div className="min-h-screen bg-gray-2 dark:bg-[#020d1a]">
-        <main className="flex-1 isolate mx-auto w-full max-w-screen-2xl overflow-hidden p-4 md:p-6 2xl:p-10">
+        <main className="flex-1 mx-auto w-full max-w-screen-2xl overflow-hidden p-4 md:p-6 2xl:p-10">
           {children}
         </main>
       </div>
@@ -133,7 +133,7 @@ export const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
         </div>
         <main
           id="main-content"
-          className={`flex-1 isolate mx-auto w-full max-w-screen-2xl overflow-x-hidden pb-20 md:pb-10 ${
+          className={`flex-1 mx-auto w-full max-w-screen-2xl overflow-x-hidden pb-20 md:pb-10 ${
             shouldHideHeaderOnDesktop ? '' : 'p-4 md:p-6 2xl:p-10'
           }`}
           role="main"

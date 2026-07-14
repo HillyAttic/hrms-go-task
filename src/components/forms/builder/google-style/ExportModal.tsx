@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useModal } from '@/contexts/modal-context';
 
 interface ExportModalProps {
   isOpen: boolean;
@@ -18,6 +19,12 @@ export interface ExportFilters {
 }
 
 export function ExportModal({ isOpen, onClose, onExport, isExporting }: ExportModalProps) {
+  const { openModal, closeModal } = useModal();
+  useEffect(() => {
+    if (isOpen) openModal();
+    else closeModal();
+  }, [isOpen, openModal, closeModal]);
+
   const currentDate = new Date();
   const [month, setMonth] = useState<number>(currentDate.getMonth() + 1);
   const [year, setYear] = useState<number>(currentDate.getFullYear());

@@ -3,6 +3,7 @@ import { Task, Comment, TaskStatus, TaskPriority } from '@/types/task.types';
 import { UserAvatar } from './UserAvatar';
 import { taskApi } from '@/services/task.api';
 import { useNotification } from '@/contexts/notification.context';
+import { useModal } from '@/contexts/modal-context';
 
 interface TaskDetailsModalProps {
   task: Task;
@@ -23,6 +24,11 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
   const [comments, setComments] = useState<Comment[]>([]);
   const [isLoadingComments, setIsLoadingComments] = useState(true);
   const { addNotification } = useNotification();
+  const { openModal, closeModal } = useModal();
+  useEffect(() => {
+    openModal();
+    return () => closeModal();
+  }, [openModal, closeModal]);
 
   // Load comments when modal opens
   useEffect(() => {

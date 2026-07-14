@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { useModal } from '@/contexts/modal-context';
 import {
   collection,
   query,
@@ -62,6 +63,12 @@ export default function AttendanceHistoryPage() {
   // State for location map modal
   const [showMapModal, setShowMapModal] = useState(false);
   const [selectedLocation, setSelectedLocation] = useState<{ latitude: number; longitude: number; title: string } | null>(null);
+
+  const { openModal, closeModal } = useModal();
+  useEffect(() => {
+    if (showDeleteModal || showMapModal) openModal();
+    else closeModal();
+  }, [showDeleteModal, showMapModal, openModal, closeModal]);
 
   // Delete functions
   const confirmDelete = (record: AttendanceRecord) => {

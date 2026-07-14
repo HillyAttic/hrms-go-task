@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Task, TaskStatus, TaskPriority } from '@/types/task.types';
 import { useNotification } from '@/contexts/notification.context';
+import { useModal } from '@/contexts/modal-context';
 
 interface TaskCreationModalProps {
   isOpen: boolean;
@@ -21,6 +22,11 @@ export const TaskCreationModal: React.FC<TaskCreationModalProps> = ({
   const [category, setCategory] = useState('');
   const [assignedUsers, setAssignedUsers] = useState(['']);
   const { addNotification } = useNotification();
+  const { openModal, closeModal } = useModal();
+  useEffect(() => {
+    if (isOpen) openModal();
+    else closeModal();
+  }, [isOpen, openModal, closeModal]);
 
   if (!isOpen) return null;
 

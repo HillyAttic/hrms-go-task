@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { useEnhancedAuth } from '@/contexts/enhanced-auth.context';
 import { attendanceService } from '@/services/attendance.service';
 import { apiPost, authenticatedFetch } from '@/lib/api-client';
+import { useModal } from '@/contexts/modal-context';
 import { 
   Clock, 
   MapPin, 
@@ -52,6 +53,12 @@ export function GeolocationAttendanceTracker() {
   const [error, setError] = useState('');
   const [permissionStatus, setPermissionStatus] = useState<'granted' | 'denied' | 'prompt' | 'unknown'>('unknown');
   const [showLocationDeniedModal, setShowLocationDeniedModal] = useState(false);
+
+  const { openModal, closeModal } = useModal();
+  useEffect(() => {
+    if (showLocationDeniedModal) openModal();
+    else closeModal();
+  }, [showLocationDeniedModal, openModal, closeModal]);
 
   // Form submission tracking
   const [formSubmissionRequired, setFormSubmissionRequired] = useState(false);

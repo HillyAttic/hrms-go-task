@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useModal } from '@/contexts/modal-context';
 import { LeaveRequest, LeaveStatus } from '@/types/leave.types';
 import { toast } from 'react-toastify';
 
@@ -14,6 +15,12 @@ export default function LeaveApprovalsPage() {
   const [approvalReason, setApprovalReason] = useState('');
   const [showApproveModal, setShowApproveModal] = useState(false);
   const [activeTab, setActiveTab] = useState<'leave' | 'wfh'>('leave');
+
+  const { openModal, closeModal } = useModal();
+  useEffect(() => {
+    if (showRejectModal || showApproveModal) openModal();
+    else closeModal();
+  }, [showRejectModal, showApproveModal, openModal, closeModal]);
 
   // Read tab from URL query param
   useEffect(() => {

@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useModal } from '@/contexts/modal-context';
 
 interface LocationMapModalProps {
   isOpen: boolean;
@@ -22,47 +23,22 @@ export function LocationMapModal({
   longitude,
   title = 'Location',
 }: LocationMapModalProps) {
-  // Prevent body scroll and hide header when modal is open
+  const { openModal, closeModal } = useModal();
+
+  // Prevent body scroll when modal is open; sync modal state with context
   useEffect(() => {
     if (isOpen) {
-      // Prevent body scroll
       document.body.style.overflow = 'hidden';
-      
-      // Hide header by adding a class to body
-      document.body.classList.add('modal-open');
-      
-      // Add style to hide header
-      const style = document.createElement('style');
-      style.id = 'modal-header-hide';
-      style.innerHTML = `
-        body.modal-open header {
-          display: none !important;
-        }
-      `;
-      document.head.appendChild(style);
+      openModal();
     } else {
-      // Restore body scroll
       document.body.style.overflow = 'unset';
-      
-      // Remove class from body
-      document.body.classList.remove('modal-open');
-      
-      // Remove style
-      const style = document.getElementById('modal-header-hide');
-      if (style) {
-        style.remove();
-      }
     }
 
     return () => {
       document.body.style.overflow = 'unset';
-      document.body.classList.remove('modal-open');
-      const style = document.getElementById('modal-header-hide');
-      if (style) {
-        style.remove();
-      }
+      closeModal();
     };
-  }, [isOpen]);
+  }, [isOpen, openModal, closeModal]);
 
   if (!isOpen) return null;
 

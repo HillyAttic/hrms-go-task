@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import { authenticatedFetch } from '@/lib/api-client';
 import { format } from 'date-fns';
+import { useModal } from '@/contexts/modal-context';
 
 interface SubmissionUsersModalProps {
   isOpen: boolean;
@@ -34,6 +35,11 @@ export function SubmissionUsersModal({
 }: SubmissionUsersModalProps) {
   const [users, setUsers] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(true);
+  const { openModal, closeModal } = useModal();
+  useEffect(() => {
+    if (isOpen) openModal();
+    else closeModal();
+  }, [isOpen, openModal, closeModal]);
 
   useEffect(() => {
     if (isOpen && userIds.length > 0) {

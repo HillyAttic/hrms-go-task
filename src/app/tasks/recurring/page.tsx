@@ -91,12 +91,12 @@ export default function RecurringTasksPage() {
 
   // Control modal context for report loading and display
   useEffect(() => {
-    if (isReportLoading || reportTask) {
+    if (isReportLoading || reportTask || deleteConfirmId) {
       openModal();
     } else {
       closeModal();
     }
-  }, [isReportLoading, reportTask, openModal, closeModal]);
+  }, [isReportLoading, reportTask, deleteConfirmId, openModal, closeModal]);
 
   // Load team names for display
   useEffect(() => {
