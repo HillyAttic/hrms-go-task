@@ -132,11 +132,58 @@ export const EnhancedAuthProvider: React.FC<EnhancedAuthProviderProps> = ({ chil
   }, [user]);
 
   /**
+   * Validate that the user's token matches our Firebase project
+   * This catches stale auth state from old project deployments
+   */
+  const validateTokenProject = async (user: User): Promise<boolean> => {
+    try {
+      const token = await user.getIdToken(false);
+      // Decode JWT without verification (just parsing)
+      const parts = token.split('.');
+      if (parts.length !== 3) return false;
+
+      const payload = JSON.parse(atob(parts[1]));
+      const expectedProject = process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID || 'hrms-82eb5';
+
+      if (payload.aud !== expectedProject) {
+        console.warn(`[Auth] Token audience mismatch: expected "${expectedProject}", got "${payload.aud}". Signing out.`);
+        await user.getIdToken(true); // Try refresh first
+        const refreshedToken = await user.getIdToken(false);
+        const refreshedParts = refreshedToken.split('.');
+        const refreshedPayload = JSON.parse(atob(refreshedParts[1]));
+
+        if (refreshedPayload.aud !== expectedProject) {
+          console.error(`[Auth] Token refresh failed to fix audience. Forcing sign out.`);
+          await firebaseSignOut(auth);
+          return false;
+        }
+      }
+      return true;
+    } catch (error) {
+      console.error('[Auth] Token validation error:', error);
+      return false;
+    }
+  };
+
+  /**
    * Set up authentication state listener
    */
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setLoading(true);
+
+      if (currentUser) {
+        // Validate token project before proceeding
+        const isValid = await validateTokenProject(currentUser);
+        if (!isValid) {
+          setUser(null);
+          setUserProfile(null);
+          setClaims(null);
+          setLoading(false);
+          return;
+        }
+      }
+
       setUser(currentUser);
       await loadUserData(currentUser);
       setLoading(false);

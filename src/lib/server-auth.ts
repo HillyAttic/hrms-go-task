@@ -82,20 +82,44 @@ export async function verifyAuthToken(request: NextRequest): Promise<{
 
     // Try to get user profile from cache first (avoids Firestore read on every API call)
     let userData = getCachedProfile(decodedToken.uid);
+    let userDocExists = true;
 
     if (!userData) {
       // Cache miss — fetch from Firestore and cache for 5 minutes
       const userDoc = await adminDb.collection('users').doc(decodedToken.uid).get();
 
       if (!userDoc.exists) {
-        return {
-          success: false,
-          error: 'User profile not found',
-        };
-      }
+        console.warn(`[Auth] User profile not found at users/${decodedToken.uid}. Auto-creating minimal profile.`);
+        userDocExists = false;
 
-      userData = userDoc.data();
-      setCachedProfile(decodedToken.uid, userData);
+        // Auto-create a minimal user profile so API calls don't fail
+        // This handles cases where Firebase Auth user exists but Firestore doc wasn't created
+        const minimalProfile = {
+          email: decodedToken.email || '',
+          displayName: decodedToken.name || decodedToken.email?.split('@')[0] || 'User',
+          role: (decodedToken.role as UserRole) || 'employee',
+          permissions: [],
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(),
+          lastRoleUpdate: new Date().toISOString(),
+        };
+
+        try {
+          await adminDb.collection('users').doc(decodedToken.uid).set(minimalProfile);
+          userData = minimalProfile;
+          setCachedProfile(decodedToken.uid, userData);
+          console.log(`[Auth] Auto-created user profile for ${decodedToken.uid}`);
+        } catch (createError) {
+          console.error('[Auth] Failed to auto-create user profile:', createError);
+          return {
+            success: false,
+            error: 'User profile not found and could not be created',
+          };
+        }
+      } else {
+        userData = userDoc.data();
+        setCachedProfile(decodedToken.uid, userData);
+      }
     }
 
     const role = (decodedToken.role as UserRole) || userData?.role || 'employee';
@@ -118,7 +142,11 @@ export async function verifyAuthToken(request: NextRequest): Promise<{
       },
     };
   } catch (error: any) {
-    console.error('Token verification error:', error);
+    console.error('[Auth] Token verification error:', {
+      code: error.code,
+      message: error.message,
+      details: error.details,
+    });
 
     // Provide specific error messages for common issues
     if (error.code === 'auth/id-token-expired') {
