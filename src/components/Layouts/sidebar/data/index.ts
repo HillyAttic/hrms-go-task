@@ -52,22 +52,9 @@ export const NAV_DATA = [
     label: "MANAGEMENT",
     items: [
       {
-        title: "Clients",
-        url: "/clients",
-        icon: Icons.ClientsIcon,
-        items: [],
-        hideOnMobile: true, // Hide on mobile view
-      },
-      {
         title: "Non-Recurring",
         url: "/tasks/non-recurring",
         icon: Icons.NonRecurringIcon,
-        items: [],
-      },
-      {
-        title: "Recurring",
-        url: "/tasks/recurring",
-        icon: Icons.RecurringIcon,
         items: [],
       },
       {
@@ -83,12 +70,6 @@ export const NAV_DATA = [
         icon: Icons.User,
         items: [],
         requiresRole: ['admin', 'manager'], // Only managers and admins can see this
-      },
-      {
-        title: "Access Vault",
-        url: "/access-vault",
-        icon: Icons.KeyIcon,
-        items: [],
       },
       {
         title: "Attendance",
@@ -163,32 +144,11 @@ export const NAV_DATA = [
         requiresRole: ['admin', 'manager'], // Managers see their assigned employees' attendance
       },
       {
-        title: "Client Visits",
-        url: "/admin/client-visits",
-        icon: Icons.MapPinIcon,
-        items: [],
-        requiresRole: ['admin'], // Only admins can view client visits
-      },
-      {
         title: "Manager Hierarchy",
         url: "/admin/manager-hierarchy",
         icon: Icons.UsersIcon,
         items: [],
         requiresRole: ['admin'], // Only admins can manage hierarchies
-      },
-      {
-        title: "Password Manager",
-        url: "/admin/password-manager",
-        icon: Icons.ShieldLockIcon,
-        items: [],
-        requiresRole: ['admin'], // Only admins can manage credentials
-      },
-      {
-        title: "Client Access",
-        url: "/admin/client-access",
-        icon: Icons.ClientsIcon,
-        items: [],
-        requiresRole: ['admin'], // Only admins can manage client access
       },
       {
         title: "Pending Invoices",
@@ -197,21 +157,6 @@ export const NAV_DATA = [
         items: [],
         requiresRole: ['admin'],
       },
-      {
-        title: "Form Builder",
-        url: "/forms/builder",
-        icon: Icons.TaskTrayIcon,
-        items: [],
-        requiresRole: ['admin', 'manager'], // Admins and managers can create forms
-      },
-      {
-        title: "MIS Accessibility",
-        url: "/admin/mis-accessibility",
-        icon: Icons.SettingsIcon,
-        items: [],
-        requiresRole: ['admin'], // Only admins can configure MIS
-      },
-
       // Authentication menu item hidden - users can access auth pages directly via URL if needed
       // {
       //   title: "Authentication",
@@ -231,6 +176,59 @@ export const NAV_DATA = [
       //     },
       //   ],
       // },
+    ],
+  },
+  {
+    label: "EXCLUSIVITY",
+    items: [
+      {
+        title: "Access Vault",
+        url: "/access-vault",
+        icon: Icons.KeyIcon,
+        items: [],
+      },
+      {
+        title: "Password Manager",
+        url: "/admin/password-manager",
+        icon: Icons.ShieldLockIcon,
+        items: [],
+      },
+      {
+        title: "Clients",
+        url: "/clients",
+        icon: Icons.ClientsIcon,
+        items: [],
+      },
+      {
+        title: "Recurring",
+        url: "/tasks/recurring",
+        icon: Icons.RecurringIcon,
+        items: [],
+      },
+      {
+        title: "Client Visits",
+        url: "/admin/client-visits",
+        icon: Icons.MapPinIcon,
+        items: [],
+      },
+      {
+        title: "Client Access",
+        url: "/admin/client-access",
+        icon: Icons.ClientsIcon,
+        items: [],
+      },
+      {
+        title: "Form Builder",
+        url: "/forms/builder",
+        icon: Icons.TaskTrayIcon,
+        items: [],
+      },
+      {
+        title: "MIS Accessibility",
+        url: "/admin/mis-accessibility",
+        icon: Icons.SettingsIcon,
+        items: [],
+      },
     ],
   },
 ];

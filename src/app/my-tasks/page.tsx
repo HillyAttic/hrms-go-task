@@ -7,6 +7,7 @@ import { myTasksService } from '@/services/my-tasks.service';
 import { MyTask, TaskList, TASK_LIST_COLORS } from '@/types/my-tasks.types';
 import { Plus, Trash2, Check, X, ChevronDown, ChevronUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useModal } from '@/contexts/modal-context';
 
 /**
  * FIRESTORE COMPOSITE INDEXES REQUIRED:
@@ -37,6 +38,12 @@ export default function MyTasksPage() {
     useEffect(() => {
         if (!authLoading && !user) router.push('/login');
     }, [user, authLoading, router]);
+
+    const { openModal, closeModal } = useModal();
+    useEffect(() => {
+        if (showCreateListModal) openModal();
+        else closeModal();
+    }, [showCreateListModal, openModal, closeModal]);
 
     useEffect(() => {
         if (!user) return;
@@ -396,7 +403,7 @@ function CreateListModal({ onClose, onCreate }: CreateListModalProps) {
             onClick={onClose}
         >
             {/* Backdrop */}
-            <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" />
+            <div className="fixed inset-0 bg-black/40 backdrop-blur-sm" />
 
             {/* Sheet */}
             <div
