@@ -18,7 +18,15 @@ const config: Config = {
         current: "currentColor",
         transparent: "transparent",
         white: "#FFFFFF",
-        primary: "#5750F1",
+        black: "#000000",
+        // Brand palette
+        primary: "#0447FD",
+        "primary-dark": "#0335C4",
+        "royal-blue": "#0D1DF2",
+        "brand-purple": "#7F1BFF",
+        "dark-navy": "#002176",
+        "deep-indigo": "#1A0E62",
+        "brand-bg": "#F8FAFC",
         stroke: "#E6EBF1",
         "stroke-dark": "#27303E",
         dark: {
@@ -69,14 +77,14 @@ const config: Config = {
           },
         },
         blue: {
-          DEFAULT: "#3C50E0",
-          dark: "#1C3FB7",
+          DEFAULT: "#0447FD",
+          dark: "#0335C4",
           light: {
-            DEFAULT: "#5475E5",
-            2: "#8099EC",
-            3: "#ADBCF2",
-            4: "#C3CEF6",
-            5: "#E1E8FF",
+            DEFAULT: "#3670FF",
+            2: "#6B96FF",
+            3: "#A0BBFF",
+            4: "#C5D6FF",
+            5: "#E1EBFF",
           },
         },
         orange: {
@@ -94,6 +102,20 @@ const config: Config = {
             4: "#FFFBEB",
           },
         },
+      },
+      backgroundImage: {
+        video: "url('../images/video/video.png')",
+        // Brand gradients
+        "brand-gradient-1":
+          "linear-gradient(135deg, #0447FD 0%, #0D1DF2 40%, #7F1BFF 100%)",
+        "brand-gradient-2":
+          "linear-gradient(135deg, #0D1DF2 0%, #0447FD 50%, #3670FF 100%)",
+        "brand-gradient-primary":
+          "linear-gradient(135deg, #0447FD 0%, #7F1BFF 100%)",
+        "brand-gradient-navy":
+          "linear-gradient(135deg, #002176 0%, #1A0E62 100%)",
+        "brand-gradient-sidebar":
+          "linear-gradient(180deg, #002176 0%, #001A5C 50%, #1A0E62 100%)",
       },
       fontSize: {
         "heading-1": ["60px", "72px"],
@@ -265,9 +287,6 @@ const config: Config = {
       aspectRatio: {
         "4/3": "4 / 3",
         "21/9": "21 / 9",
-      },
-      backgroundImage: {
-        video: "url('../images/video/video.png')",
       },
       content: {
         "icon-copy": 'url("../images/icon/icon-copy-alt.svg")',

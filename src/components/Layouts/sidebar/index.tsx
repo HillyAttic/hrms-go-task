@@ -112,7 +112,7 @@ export function Sidebar() {
   };
 
   const getSidebarClasses = () => {
-    const baseClasses = "overflow-hidden border-r border-gray-100 bg-white transition-all duration-200 ease-in-out dark:border-white/[0.06] dark:bg-[#1c1c1e]";
+    const baseClasses = "overflow-hidden border-r-0 bg-gradient-to-b from-dark-navy via-[#001A5C] to-deep-indigo text-white transition-all duration-200 ease-in-out dark:border-white/[0.06] dark:bg-[#1c1c1e]";
     
     if (variant === 'mobile') {
       return cn(
@@ -177,18 +177,12 @@ export function Sidebar() {
             )}
           </div>
 
-          {/* Logo */}
+          {/* Logo - edVenture branding */}
           <div className="px-3.5" style={{ marginBottom: '-1rem' }}>
-            <img 
-              src="/images/go.png" 
-              alt="Logo" 
-              className="h-auto w-full dark:hidden"
-              style={{ maxWidth: '167px' }}
-            />
-            <img 
-              src="/images/go dark.png" 
-              alt="Logo" 
-              className="h-auto w-full hidden dark:block"
+            <img
+              src="/images/branding_edVenture-1.svg"
+              alt="edVenture Logo"
+              className="h-auto w-full"
               style={{ maxWidth: '167px' }}
             />
           </div>
@@ -236,8 +230,8 @@ export function Sidebar() {
                     onClick={() => toggleSection(section.label)}
                     className={cn(
                       "flex flex-1 items-center justify-between",
-                      "text-sm font-semibold uppercase tracking-widest text-gray-400 dark:text-gray-500",
-                      "hover:text-gray-600 dark:hover:text-gray-300 transition-colors duration-200"
+                      "text-sm font-semibold uppercase tracking-widest text-white/50 dark:text-gray-500",
+                      "hover:text-white/80 dark:hover:text-gray-300 transition-colors duration-200"
                     )}
                     aria-expanded={!isSectionCollapsed}
                   >

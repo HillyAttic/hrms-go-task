@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    @apply bg-gray-2 text-dark-5 dark:bg-[#020D1A] dark:text-dark-6;
+    @apply bg-[#F8FAFC] text-dark-5 dark:bg-[#020D1A] dark:text-dark-6;
     margin: 0;
     font-family: system-ui, -apple-system, sans-serif;
   }
@@ -27,7 +27,7 @@
 
   /* Accessibility: Focus Indicators - Requirement 7.3 */
   *:focus-visible {
-    @apply outline-none ring-2 ring-blue-500 ring-offset-2 ring-offset-white dark:ring-offset-gray-900;
+    @apply outline-none ring-2 ring-primary/60 ring-offset-2 ring-offset-white dark:ring-offset-gray-900;
   }
 
   /* Ensure keyboard focus is always visible */
@@ -38,7 +38,7 @@
   textarea:focus-visible,
   [role="button"]:focus-visible,
   [tabindex]:not([tabindex="-1"]):focus-visible {
-    @apply outline-none ring-2 ring-blue-500 ring-offset-2;
+    @apply outline-none ring-2 ring-primary/60 ring-offset-2;
   }
 
   /* Screen reader only content */
@@ -56,7 +56,7 @@
 
   /* Skip to main content link */
   .skip-to-main {
-    @apply absolute left-0 top-0 z-[9999] -translate-y-full bg-blue-600 px-4 py-2 text-white transition-transform focus:translate-y-0;
+    @apply absolute left-0 top-0 z-[9999] -translate-y-full bg-primary px-4 py-2 text-white transition-transform focus:translate-y-0;
   }
 }
 
@@ -374,14 +374,14 @@ span.flatpickr-weekday,
 .flatpickr-day.selected.nextMonthDay,
 .flatpickr-day.startRange.nextMonthDay,
 .flatpickr-day.endRange.nextMonthDay {
-  background: #3c50e0;
+  background: #0447FD;
   @apply !border-primary !bg-primary hover:!border-primary hover:!bg-primary;
 }
 
 .flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n + 1)),
 .flatpickr-day.startRange.startRange + .endRange:not(:nth-child(7n + 1)),
 .flatpickr-day.endRange.startRange + .endRange:not(:nth-child(7n + 1)) {
-  box-shadow: -10px 0 0 #3c50e0;
+  box-shadow: -10px 0 0 #0447FD;
 }
 
 .map-btn .jvm-zoom-btn {

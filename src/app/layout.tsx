@@ -40,8 +40,8 @@ export const metadata: Metadata = {
 
 export const viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#5750F1" },
-    { media: "(prefers-color-scheme: dark)", color: "#020d1a" },
+    { media: "(prefers-color-scheme: light)", color: "#0447FD" },
+    { media: "(prefers-color-scheme: dark)", color: "#002176" },
   ],
   width: "device-width",
   initialScale: 1,
@@ -85,7 +85,7 @@ export default function RootLayout({ children }: PropsWithChildren) {
               Skip to main content
             </a>
 
-            <NextTopLoader color="#5750F1" showSpinner={false} />
+            <NextTopLoader color="#0447FD" showSpinner={false} />
 
             <AuthWrapper>
               {children}

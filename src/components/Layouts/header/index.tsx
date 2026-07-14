@@ -22,7 +22,7 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-30 flex items-center justify-between border-b border-stroke bg-white px-4 py-4 shadow-1 dark:border-stroke-dark dark:bg-gray-dark md:px-5 md:py-5 2xl:px-10">
+    <header className="sticky top-0 z-30 flex items-center justify-between border-b border-gray-100 bg-white px-4 py-4 shadow-[0_1px_3px_0_rgba(0,0,0,0.08)] dark:border-stroke-dark dark:bg-gray-dark md:px-5 md:py-5 2xl:px-10">
       {/* Mobile/Tablet Menu Button */}
       <button
         onClick={toggleSidebar}
@@ -66,7 +66,7 @@ export function Header() {
           Dashboard
         </h1>
         <p className="font-medium text-sm text-dark-4 dark:text-dark-6">
-          JPCO Admin Dashboard Solution
+          edVenture Admin Dashboard
         </p>
       </div>
 

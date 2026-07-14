@@ -88,7 +88,7 @@ export function UserInfo() {
               height={48}
             />
           ) : (
-            <div className="size-12 rounded-full bg-primary flex items-center justify-center text-white font-semibold">
+            <div className="size-12 rounded-full bg-primary flex items-center justify-center text-white font-semibold shadow-sm">
               {userInitials}
             </div>
           )}
