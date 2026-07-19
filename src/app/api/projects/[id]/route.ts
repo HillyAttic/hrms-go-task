@@ -21,10 +21,6 @@ const milestoneSchema = z.object({
 
 const updateProjectSchema = z.object({
   projectName: z.string().min(1).max(200).optional(),
-  client: z.object({
-    id: z.string().min(1),
-    name: z.string().min(1),
-  }).optional(),
   teamMembers: z.array(teamMemberSchema).min(1).optional(),
   clientSpoc: z.object({
     name: z.string().min(1),

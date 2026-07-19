@@ -53,7 +53,6 @@ export function ProjectList({
         (p) =>
           p.projectName.toLowerCase().includes(q) ||
           p.projectNumber?.toLowerCase().includes(q) ||
-          p.client?.name?.toLowerCase().includes(q) ||
           p.clientSpoc?.name?.toLowerCase().includes(q) ||
           p.teamMembers?.some((m) => m.name.toLowerCase().includes(q))
       );

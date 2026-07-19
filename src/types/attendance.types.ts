@@ -14,6 +14,7 @@ export interface GeolocationCoordinates {
   latitude: number;
   longitude: number;
   accuracy?: number;
+  placeholder?: boolean;
 }
 
 // Break Record

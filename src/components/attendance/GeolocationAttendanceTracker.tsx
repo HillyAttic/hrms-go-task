@@ -53,6 +53,8 @@ export function GeolocationAttendanceTracker() {
   const [error, setError] = useState('');
   const [permissionStatus, setPermissionStatus] = useState<'granted' | 'denied' | 'prompt' | 'unknown'>('unknown');
   const [showLocationDeniedModal, setShowLocationDeniedModal] = useState(false);
+  const [requireLocation, setRequireLocation] = useState<boolean>(true);
+  const [locationSettingLoaded, setLocationSettingLoaded] = useState(false);
 
   const { openModal, closeModal } = useModal();
   useEffect(() => {
@@ -74,16 +76,44 @@ export function GeolocationAttendanceTracker() {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
   };
 
+  // Fetch employee's requireLocationTracking setting from Firestore FIRST
   useEffect(() => {
-    if (auth.user) {
-      console.log('User authenticated, triggering cleanup and status load');
-      // Clean up any duplicate records first (only on initial mount)
-      cleanupDuplicateRecordsForUser(auth.user.uid);
-      loadStatus();
-      // Check location permission status
-      checkLocationPermission();
+    const user = auth.user;
+    if (user) {
+      const fetchLocationSetting = async () => {
+        try {
+          const { doc, getDoc } = await import('firebase/firestore');
+          const { db } = await import('@/lib/firebase');
+          const userDoc = await getDoc(doc(db, 'users', user.uid));
+          if (userDoc.exists()) {
+            const data = userDoc.data();
+            setRequireLocation(data.requireLocationTracking ?? true);
+          }
+        } catch (err) {
+          console.error('Error fetching location tracking setting:', err);
+          setRequireLocation(true);
+        } finally {
+          setLocationSettingLoaded(true);
+        }
+      };
+      fetchLocationSetting();
     }
   }, [auth.user]);
+
+  // Then run cleanup, status load, and permission check (only after setting is loaded)
+  useEffect(() => {
+    if (auth.user && locationSettingLoaded) {
+      console.log('User authenticated, triggering cleanup and status load');
+      cleanupDuplicateRecordsForUser(auth.user.uid);
+      loadStatus();
+      if (requireLocation) {
+        checkLocationPermission();
+      } else {
+        setPermissionStatus('unknown');
+        setShowLocationDeniedModal(false);
+      }
+    }
+  }, [auth.user, requireLocation, locationSettingLoaded]);
 
   // Reload status when page becomes visible (user navigates back)
   useEffect(() => {
@@ -226,7 +256,10 @@ export function GeolocationAttendanceTracker() {
           setError('');
           setShowLocationDeniedModal(false); // Hide modal when permission granted
         } else if (result.state === 'denied') {
-          setShowLocationDeniedModal(true); // Show modal when permission denied
+          // Only show modal when location tracking is required
+          if (requireLocation) {
+            setShowLocationDeniedModal(true);
+          }
         }
       });
     } catch (err) {
@@ -320,37 +353,45 @@ export function GeolocationAttendanceTracker() {
 
     setLoading(true);
     setError('');
-    
+
     try {
       console.log('Starting clock in process...');
-      const loc = await getCurrentLocation();
-      console.log('Location obtained - Raw:', loc);
-      console.log('Location lat:', loc.lat, 'lng:', loc.lng);
-      console.log('Location accuracy:', loc.accuracy, 'meters');
-      setLocation(loc);
-      
-      // Validate location before sending
-      if (!loc.lat || !loc.lng || isNaN(loc.lat) || isNaN(loc.lng)) {
-        throw new Error('Invalid location data captured. Please try again.');
+
+      let locationData;
+      if (requireLocation) {
+        const loc = await getCurrentLocation();
+        console.log('Location obtained - Raw:', loc);
+        console.log('Location lat:', loc.lat, 'lng:', loc.lng);
+        console.log('Location accuracy:', loc.accuracy, 'meters');
+        setLocation(loc);
+
+        // Validate location before sending
+        if (!loc.lat || !loc.lng || isNaN(loc.lat) || isNaN(loc.lng)) {
+          throw new Error('Invalid location data captured. Please try again.');
+        }
+
+        // Warn if accuracy is poor but still allow clock in
+        if (loc.accuracy && loc.accuracy > 100) {
+          console.warn('⚠️ Poor GPS accuracy detected:', loc.accuracy, 'meters');
+          setError(`Warning: GPS accuracy is ${Math.round(loc.accuracy)}m. For better accuracy, move to an open area with clear sky view.`);
+          // Don't throw error, just warn
+        }
+
+        locationData = {
+          latitude: loc.lat,
+          longitude: loc.lng,
+          accuracy: loc.accuracy
+        };
+
+        console.log('Sending location data to service:', locationData);
+        console.log('Expected location: Lat 28.637959, Lng 77.285334');
+        console.log('Captured location: Lat', loc.lat, ', Lng', loc.lng);
+        console.log('Difference: Lat', Math.abs(28.637959 - loc.lat).toFixed(6), ', Lng', Math.abs(77.285334 - loc.lng).toFixed(6));
+      } else {
+        // Location tracking disabled — use placeholder
+        console.log('Location tracking disabled, using placeholder coordinates');
+        locationData = { latitude: 0, longitude: 0, accuracy: 0, placeholder: true };
       }
-      
-      // Warn if accuracy is poor but still allow clock in
-      if (loc.accuracy && loc.accuracy > 100) {
-        console.warn('⚠️ Poor GPS accuracy detected:', loc.accuracy, 'meters');
-        setError(`Warning: GPS accuracy is ${Math.round(loc.accuracy)}m. For better accuracy, move to an open area with clear sky view.`);
-        // Don't throw error, just warn
-      }
-      
-      const locationData = {
-        latitude: loc.lat,
-        longitude: loc.lng,
-        accuracy: loc.accuracy
-      };
-      
-      console.log('Sending location data to service:', locationData);
-      console.log('Expected location: Lat 28.637959, Lng 77.285334');
-      console.log('Captured location: Lat', loc.lat, ', Lng', loc.lng);
-      console.log('Difference: Lat', Math.abs(28.637959 - loc.lat).toFixed(6), ', Lng', Math.abs(77.285334 - loc.lng).toFixed(6));
       
       const record = await attendanceService.clockIn({
         employeeId: auth.user.uid,
@@ -429,23 +470,29 @@ export function GeolocationAttendanceTracker() {
 
     setLoading(true);
     setError('');
-    
+
     try {
-      const loc = await getCurrentLocation();
-      console.log('Clock out - Location obtained - Raw:', loc);
-      console.log('Clock out - Location lat:', loc.lat, 'lng:', loc.lng);
-      setLocation(loc);
-      
-      // Validate location before sending
-      if (!loc.lat || !loc.lng || isNaN(loc.lat) || isNaN(loc.lng)) {
-        throw new Error('Invalid location data captured. Please try again.');
+      let locationData;
+      if (requireLocation) {
+        const loc = await getCurrentLocation();
+        console.log('Clock out - Location obtained - Raw:', loc);
+        console.log('Clock out - Location lat:', loc.lat, 'lng:', loc.lng);
+        setLocation(loc);
+
+        // Validate location before sending
+        if (!loc.lat || !loc.lng || isNaN(loc.lat) || isNaN(loc.lng)) {
+          throw new Error('Invalid location data captured. Please try again.');
+        }
+
+        locationData = {
+          latitude: loc.lat,
+          longitude: loc.lng,
+          accuracy: loc.accuracy
+        };
+      } else {
+        console.log('Clock out - Location tracking disabled, using placeholder');
+        locationData = { latitude: 0, longitude: 0, accuracy: 0, placeholder: true };
       }
-      
-      const locationData = {
-        latitude: loc.lat,
-        longitude: loc.lng,
-        accuracy: loc.accuracy
-      };
       
       console.log('Sending clock out location data to service:', locationData);
       
@@ -700,7 +747,13 @@ export function GeolocationAttendanceTracker() {
           )}
         </div>
 
-        {/* Location Info - Hidden as per user request */}
+        {/* Location Tracking Disabled Indicator */}
+        {locationSettingLoaded && !requireLocation && (
+          <div className="flex items-center gap-2 text-xs text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 rounded-md px-3 py-2">
+            <MapPin className="h-4 w-4 flex-shrink-0" />
+            <span>Location tracking is disabled for your account</span>
+          </div>
+        )}
 
         {/* Action Buttons */}
         <div className="space-y-3">

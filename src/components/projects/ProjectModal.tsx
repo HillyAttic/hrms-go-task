@@ -18,7 +18,6 @@ import {
   PlusIcon,
   XMarkIcon,
   MagnifyingGlassIcon,
-  CheckCircleIcon,
 } from '@heroicons/react/24/outline';
 import { CheckCircleIcon as CheckCircleSolid } from '@heroicons/react/24/solid';
 
@@ -26,7 +25,6 @@ import { CheckCircleIcon as CheckCircleSolid } from '@heroicons/react/24/solid';
 
 const projectFormSchema = z.object({
   projectName: z.string().min(1, 'Project name is required').max(200),
-  clientId: z.string().min(1, 'Client is required'),
   teamMembers: z.array(z.object({
     uid: z.string().min(1),
     name: z.string().min(1),
@@ -56,16 +54,12 @@ type ProjectFormData = z.infer<typeof projectFormSchema>;
 
 // ── Types for external data ────────────────────────────────────────────────
 
-interface ClientOption {
-  id: string;
-  clientName: string;
-}
-
 interface UserOption {
   uid: string;
   displayName: string;
   email?: string;
 }
+
 
 // ── Component ──────────────────────────────────────────────────────────────
 
@@ -85,7 +79,6 @@ export function ProjectModal({
   isLoading = false,
 }: ProjectModalProps) {
   // ── External data ──────────────────────────────────────────────────────
-  const [clients, setClients] = useState<ClientOption[]>([]);
   const [users, setUsers] = useState<UserOption[]>([]);
   const [memberSearch, setMemberSearch] = useState('');
   const [loadingExternal, setLoadingExternal] = useState(false);
@@ -102,7 +95,6 @@ export function ProjectModal({
     resolver: zodResolver(projectFormSchema),
     defaultValues: {
       projectName: '',
-      clientId: '',
       teamMembers: [],
       clientSpocName: '',
       clientSpocEmail: '',
@@ -135,46 +127,32 @@ export function ProjectModal({
   const watchedMilestones = watch('milestones');
   const watchedProgress = watch('progressPercentage');
 
-  // ── Load clients and users on modal open ───────────────────────────────
+  // ── Load users on modal open ───────────────────────────────────────────
   useEffect(() => {
     if (!isOpen) return;
 
     const loadData = async () => {
       setLoadingExternal(true);
       try {
-        const [clientsRes, usersRes] = await Promise.all([
-          authenticatedFetch('/api/clients?limit=1000'),
-          authenticatedFetch('/api/users/names'),
-        ]);
-
-        if (clientsRes.ok) {
-          const clientsData = await clientsRes.json();
-          setClients(
-            (clientsData.data || []).map((c: any) => ({
-              id: c.id,
-              clientName: c.clientName,
-            }))
-          );
-        }
+        const usersRes = await authenticatedFetch('/api/users/names');
 
         if (usersRes.ok) {
           const usersData = await usersRes.json();
-          // Determine response shape and normalise to array
           let normalised: UserOption[] = [];
 
           if (Array.isArray(usersData)) {
-            // Bare array — [{ uid, displayName, email }]
             normalised = usersData;
           } else if (usersData && typeof usersData === 'object') {
             if (Array.isArray(usersData.data)) {
-              // Wrapped { data: [{ uid, displayName, email }] }
               normalised = usersData.data;
             } else {
-              // Plain object map { uid: displayName, ... }
-              normalised = Object.entries(usersData).map(([uid, name]) => ({
-                uid,
-                displayName: String(name),
-              }));
+              const seen = new Set<string>();
+              normalised = Object.entries(usersData).flatMap(([uid, name]) => {
+                const displayName = String(name);
+                if (seen.has(displayName)) return [];
+                seen.add(displayName);
+                return [{ uid, displayName }];
+              });
             }
           }
 
@@ -208,7 +186,6 @@ export function ProjectModal({
 
       reset({
         projectName: project.projectName || '',
-        clientId: project.client?.id || '',
         teamMembers: project.teamMembers || [],
         clientSpocName: project.clientSpoc?.name || '',
         clientSpocEmail: project.clientSpoc?.email || '',
@@ -227,7 +204,6 @@ export function ProjectModal({
     } else {
       reset({
         projectName: '',
-        clientId: '',
         teamMembers: [],
         clientSpocName: '',
         clientSpocEmail: '',
@@ -295,6 +271,7 @@ export function ProjectModal({
       onClose();
     } catch (error) {
       console.error('Error submitting project:', error);
+      throw error; // Re-throw so parent can update loading state
     }
   };
 
@@ -302,10 +279,6 @@ export function ProjectModal({
     reset();
     onClose();
   };
-
-  // Get selected client name for display
-  const selectedClientName =
-    clients.find((c) => c.id === watch('clientId'))?.clientName || '';
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
@@ -332,26 +305,6 @@ export function ProjectModal({
                 required
                 disabled={isLoading}
               />
-
-              <div>
-                <Label htmlFor="clientId">Client</Label>
-                <select
-                  id="clientId"
-                  {...register('clientId')}
-                  className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-dark disabled:opacity-50"
-                  disabled={isLoading || loadingExternal}
-                >
-                  <option value="">Select a client</option>
-                  {clients.map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {c.clientName}
-                    </option>
-                  ))}
-                </select>
-                {errors.clientId && (
-                  <p className="text-sm text-red-600 mt-1">{errors.clientId.message}</p>
-                )}
-              </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>

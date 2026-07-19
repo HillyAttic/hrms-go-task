@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { Task, TaskAttachment } from '@/types/task.types';
 import { Employee, employeeService } from '@/services/employee.service';
 import { Category, categoryService } from '@/services/category.service';
-import { Client } from '@/services/client.service';
+import { Project } from '@/services/project.service';
 import { authenticatedFetch } from '@/lib/api-client';
 import { validateFiles, ALLOWED_EXTENSIONS, MAX_FILES_PER_TASK } from '@/lib/task-attachment.service';
 import {
@@ -59,15 +59,14 @@ export function TaskModal({
 }: TaskModalProps) {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [clients, setClients] = useState<Client[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
   const [selectedEmployees, setSelectedEmployees] = useState<Employee[]>([]);
-  const [selectedClients, setSelectedClients] = useState<Client[]>([]);
-  const [clientFilter, setClientFilter] = useState<'all' | 'roc' | 'gstr1' | 'gst3b' | 'iff' | 'itr' | 'itrAudit' | 'taxAudit' | 'accounting' | 'clientVisit' | 'bank' | 'tcs' | 'tds' | 'statutoryAudit'>('all');
-  const [clientSearch, setClientSearch] = useState('');
+  const [selectedProjects, setSelectedProjects] = useState<Project[]>([]);
+  const [projectSearch, setProjectSearch] = useState('');
   const [employeeSearch, setEmployeeSearch] = useState('');
   const [loadingEmployees, setLoadingEmployees] = useState(false);
   const [loadingCategories, setLoadingCategories] = useState(false);
-  const [loadingClients, setLoadingClients] = useState(false);
+  const [loadingProjects, setLoadingProjects] = useState(false);
 
   // File attachment state
   const [pendingFiles, setPendingFiles] = useState<File[]>([]);
@@ -152,80 +151,27 @@ export function TaskModal({
     }
   }, [isOpen]);
 
-  // Load clients for contact selection
+  // Load projects for contact selection
   useEffect(() => {
-    const loadClients = async () => {
-      setLoadingClients(true);
+    const loadProjects = async () => {
+      setLoadingProjects(true);
       try {
-        const response = await authenticatedFetch('/api/clients?status=active&limit=1000');
-        if (!response.ok) throw new Error('Failed to fetch clients');
+        const response = await authenticatedFetch('/api/projects?limit=1000');
+        if (!response.ok) throw new Error('Failed to fetch projects');
         const result = await response.json();
-        setClients(result.data || []);
+        setProjects(result.data || []);
       } catch (error) {
-        console.error('Error loading clients:', error);
-        setClients([]);
+        console.error('Error loading projects:', error);
+        setProjects([]);
       } finally {
-        setLoadingClients(false);
+        setLoadingProjects(false);
       }
     };
 
     if (isOpen) {
-      loadClients();
+      loadProjects();
     }
   }, [isOpen]);
-
-  // Get filtered clients based on selected filter and search
-  const getFilteredClients = () => {
-    let filtered = clients;
-
-    if (clientFilter !== 'all') {
-      filtered = filtered.filter(client => {
-        switch (clientFilter) {
-          case 'roc':
-            return !!client.compliance?.roc;
-          case 'gstr1':
-            return !!client.compliance?.gstr1;
-          case 'gst3b':
-            return !!client.compliance?.gst3b;
-          case 'iff':
-            return !!client.compliance?.iff;
-          case 'itr':
-            return !!client.compliance?.itr;
-          case 'itrAudit':
-            return !!client.compliance?.itrAudit;
-          case 'taxAudit':
-            return !!client.compliance?.taxAudit;
-          case 'accounting':
-            return !!client.compliance?.accounting;
-          case 'clientVisit':
-            return !!client.compliance?.clientVisit;
-          case 'bank':
-            return !!client.compliance?.bank;
-          case 'tcs':
-            return !!client.compliance?.tcs;
-          case 'tds':
-            return !!client.compliance?.tds;
-          case 'statutoryAudit':
-            return !!client.compliance?.statutoryAudit;
-          default:
-            return true;
-        }
-      });
-    }
-
-    if (clientSearch.trim()) {
-      const q = clientSearch.toLowerCase();
-      filtered = filtered.filter(client =>
-        client.clientName?.toLowerCase().includes(q) ||
-        client.businessName?.toLowerCase().includes(q) ||
-        client.taxIdentifiers?.gstin?.toLowerCase().includes(q) ||
-        client.taxIdentifiers?.tan?.toLowerCase().includes(q) ||
-        client.taxIdentifiers?.pan?.toLowerCase().includes(q)
-      );
-    }
-
-    return filtered;
-  };
 
   // Handle employee selection
   const handleEmployeeSelect = (employeeId: string) => {
@@ -244,21 +190,21 @@ export function TaskModal({
     setValue('assignedTo', newSelectedEmployees.map(e => e.id!).join(', '));
   };
 
-  // Handle client selection
-  const handleClientSelect = (clientId: string) => {
-    const client = clients.find(c => c.id === clientId);
-    if (!client || selectedClients.some(c => c.id === clientId)) return;
+  // Handle project selection
+  const handleProjectSelect = (projectId: string) => {
+    const project = projects.find(p => p.id === projectId);
+    if (!project || selectedProjects.some(p => p.id === projectId)) return;
 
-    const newSelectedClients = [...selectedClients, client];
-    setSelectedClients(newSelectedClients);
-    setValue('contactId', newSelectedClients.map(c => c.id!).join(', '));
+    const newSelectedProjects = [...selectedProjects, project];
+    setSelectedProjects(newSelectedProjects);
+    setValue('contactId', newSelectedProjects.map(p => p.id!).join(', '));
   };
 
-  // Handle client removal
-  const handleClientRemove = (clientId: string) => {
-    const newSelectedClients = selectedClients.filter(c => c.id !== clientId);
-    setSelectedClients(newSelectedClients);
-    setValue('contactId', newSelectedClients.map(c => c.id!).join(', '));
+  // Handle project removal
+  const handleProjectRemove = (projectId: string) => {
+    const newSelectedProjects = selectedProjects.filter(p => p.id !== projectId);
+    setSelectedProjects(newSelectedProjects);
+    setValue('contactId', newSelectedProjects.map(p => p.id!).join(', '));
   };
 
   // Update form when task prop changes (edit mode)
@@ -310,7 +256,7 @@ export function TaskModal({
         contactId: '',
       });
       setSelectedEmployees([]);
-      setSelectedClients([]);
+      setSelectedProjects([]);
     }
   }, [task, reset, employees]);
 
@@ -336,9 +282,9 @@ export function TaskModal({
   const handleClose = () => {
     reset();
     setSelectedEmployees([]);
-    setSelectedClients([]);
+    setSelectedProjects([]);
     setEmployeeSearch('');
-    setClientFilter('all');
+    setProjectSearch('');
     setPendingFiles([]);
     setExistingAttachments([]);
     setRemovedAttachments([]);
@@ -713,95 +659,80 @@ export function TaskModal({
             )}
           </div>
 
-          {/* Contact ID */}
+          {/* Contact / Project */}
           <div className="mb-3 mt-2">
-            <Label className="text-xs mb-2 block">Contact ID (Click to select)</Label>
-
-            {/* Compliance filter */}
-            <select
-              value={clientFilter}
-              onChange={(e) => setClientFilter(e.target.value as any)}
-              disabled={isLoading || loadingClients}
-              className="w-full px-3 py-2 mb-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              <option value="all">All Clients</option>
-              <option value="roc">Only with ROC</option>
-              <option value="gstr1">Only with GSTR1</option>
-              <option value="gst3b">Only with GST3B</option>
-              <option value="iff">Only with IFF</option>
-              <option value="itr">Only with ITR</option>
-              <option value="itrAudit">Only with ITR Audit</option>
-              <option value="taxAudit">Only with Tax Audit</option>
-              <option value="accounting">Only with Accounting</option>
-              <option value="clientVisit">Only with Client Visit</option>
-              <option value="bank">Only with Bank</option>
-              <option value="tcs">Only with TCS</option>
-              <option value="tds">Only with TDS</option>
-              <option value="statutoryAudit">Only with Statutory Audit</option>
-            </select>
+            <Label className="text-xs mb-2 block">Project (Click to select)</Label>
 
             {/* Search input */}
             <input
               type="text"
-              placeholder="Search clients..."
-              value={clientSearch}
-              onChange={(e) => setClientSearch(e.target.value)}
-              disabled={isLoading || loadingClients}
+              placeholder="Search projects..."
+              value={projectSearch}
+              onChange={(e) => setProjectSearch(e.target.value)}
+              disabled={isLoading || loadingProjects}
               className="w-full px-3 py-2 mb-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white disabled:cursor-not-allowed disabled:opacity-50"
             />
 
-            {/* Client list */}
+            {/* Project list */}
             <div className="border border-gray-300 dark:border-gray-600 rounded-md max-h-48 overflow-y-auto">
-              {loadingClients ? (
-                <div className="p-4 text-center text-gray-500 dark:text-gray-400">Loading clients...</div>
-              ) : getFilteredClients().filter(c => !selectedClients.some(sel => sel.id === c.id)).length === 0 ? (
+              {loadingProjects ? (
+                <div className="p-4 text-center text-gray-500 dark:text-gray-400">Loading projects...</div>
+              ) : projects.filter(
+                  p =>
+                    !selectedProjects.some(sel => sel.id === p.id) &&
+                    (!projectSearch.trim() ||
+                      p.projectName.toLowerCase().includes(projectSearch.toLowerCase()) ||
+                      p.projectNumber?.toLowerCase().includes(projectSearch.toLowerCase()))
+                ).length === 0 ? (
                 <div className="p-4 text-center text-gray-500 dark:text-gray-400">
-                  {clientSearch ? 'No clients match your search' : clientFilter !== 'all' ? `No clients with ${clientFilter.toUpperCase()}` : selectedClients.length > 0 ? 'All clients have been selected' : 'No clients available'}
+                  {projectSearch
+                    ? 'No projects match your search'
+                    : selectedProjects.length > 0
+                    ? 'All projects have been selected'
+                    : 'No projects available'}
                 </div>
               ) : (
                 <div className="divide-y divide-gray-200">
-                  {getFilteredClients().filter(c => !selectedClients.some(sel => sel.id === c.id)).map((client) => {
-                    const taxId = client.taxIdentifiers?.gstin
-                      ? `GSTIN: ${client.taxIdentifiers.gstin}`
-                      : client.taxIdentifiers?.tan
-                      ? `TAN: ${client.taxIdentifiers.tan}`
-                      : client.taxIdentifiers?.pan
-                      ? `PAN: ${client.taxIdentifiers.pan}`
-                      : null;
-                    return (
-                      <button
-                        key={client.id}
-                        type="button"
-                        onClick={() => handleClientSelect(client.id!)}
-                        className="w-full text-left px-3 py-2 hover:bg-blue-50 transition-colors focus:bg-blue-100 focus:outline-none"
-                        disabled={isLoading}
-                      >
-                        <div className="flex flex-col">
-                          <span className="text-sm font-medium text-gray-900 dark:text-white">
-                            {client.clientName}{client.businessName ? ` - ${client.businessName}` : ''}
-                          </span>
-                          {taxId && (
-                            <span className="text-xs text-gray-600 dark:text-gray-400">{taxId}</span>
-                          )}
-                        </div>
-                      </button>
-                    );
-                  })}
+                  {projects.filter(
+                    p =>
+                      !selectedProjects.some(sel => sel.id === p.id) &&
+                      (!projectSearch.trim() ||
+                        p.projectName.toLowerCase().includes(projectSearch.toLowerCase()) ||
+                        p.projectNumber?.toLowerCase().includes(projectSearch.toLowerCase()))
+                  ).map((project) => (
+                    <button
+                      key={project.id}
+                      type="button"
+                      onClick={() => handleProjectSelect(project.id!)}
+                      className="w-full text-left px-3 py-2 hover:bg-blue-50 transition-colors focus:bg-blue-100 focus:outline-none"
+                      disabled={isLoading}
+                    >
+                      <div className="flex flex-col">
+                        <span className="text-sm font-medium text-gray-900 dark:text-white">
+                          {project.projectName}
+                        </span>
+                        <span className="text-xs text-gray-600 dark:text-gray-400">
+                          {project.projectNumber}
+                          {project.status ? ` • ${project.status.replace('_', ' ')}` : ''}
+                        </span>
+                      </div>
+                    </button>
+                  ))}
                 </div>
               )}
             </div>
 
-            {/* Selected Clients Display */}
-            {selectedClients.length > 0 && (
+            {/* Selected Projects Display */}
+            {selectedProjects.length > 0 && (
               <div className="mt-2 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-xs font-medium text-gray-600 dark:text-gray-400">Selected Clients ({selectedClients.length})</p>
+                  <p className="text-xs font-medium text-gray-600 dark:text-gray-400">Selected Projects ({selectedProjects.length})</p>
                   <Button
                     type="button"
                     variant="ghost"
                     size="sm"
                     onClick={() => {
-                      setSelectedClients([]);
+                      setSelectedProjects([]);
                       setValue('contactId', '');
                     }}
                     disabled={isLoading}
@@ -811,35 +742,26 @@ export function TaskModal({
                   </Button>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  {selectedClients.map((client) => {
-                    const taxId = client.taxIdentifiers?.gstin
-                      ? `GSTIN: ${client.taxIdentifiers.gstin}`
-                      : client.taxIdentifiers?.tan
-                      ? `TAN: ${client.taxIdentifiers.tan}`
-                      : client.taxIdentifiers?.pan
-                      ? `PAN: ${client.taxIdentifiers.pan}`
-                      : null;
-                    return (
-                      <div
-                        key={client.id}
-                        className="flex items-center gap-2 bg-white dark:bg-gray-dark border border-gray-300 dark:border-gray-600 rounded-md px-2.5 py-1.5 shadow-sm"
-                      >
-                        <div className="flex flex-col">
-                          <span className="text-sm font-medium text-gray-900 dark:text-white">{client.clientName}</span>
-                          {taxId && <span className="text-xs text-gray-500 dark:text-gray-400">{taxId}</span>}
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => handleClientRemove(client.id!)}
-                          className="text-red-500 hover:text-red-700 hover:bg-red-50 rounded p-1 ml-1 transition-colors"
-                          disabled={isLoading}
-                          aria-label={`Remove ${client.clientName}`}
-                        >
-                          <XMarkIcon className="w-4 h-4" />
-                        </button>
+                  {selectedProjects.map((project) => (
+                    <div
+                      key={project.id}
+                      className="flex items-center gap-2 bg-white dark:bg-gray-dark border border-gray-300 dark:border-gray-600 rounded-md px-2.5 py-1.5 shadow-sm"
+                    >
+                      <div className="flex flex-col">
+                        <span className="text-sm font-medium text-gray-900 dark:text-white">{project.projectName}</span>
+                        <span className="text-xs text-gray-500 dark:text-gray-400">{project.projectNumber}</span>
                       </div>
-                    );
-                  })}
+                      <button
+                        type="button"
+                        onClick={() => handleProjectRemove(project.id!)}
+                        className="text-red-500 hover:text-red-700 hover:bg-red-50 rounded p-1 ml-1 transition-colors"
+                        disabled={isLoading}
+                        aria-label={`Remove ${project.projectName}`}
+                      >
+                        <XMarkIcon className="w-4 h-4" />
+                      </button>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}

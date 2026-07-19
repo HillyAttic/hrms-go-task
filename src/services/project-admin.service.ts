@@ -46,10 +46,6 @@ export interface Project {
 
   // Core
   projectName: string;
-  client: {
-    id: string;
-    name: string;
-  };
   teamMembers: ProjectTeamMember[];
   clientSpoc: ProjectClientSpoc;
 
@@ -87,7 +83,6 @@ export const projectAdminService = {
     status?: string;
     search?: string;
     teamMember?: string;
-    clientId?: string;
     limit?: number;
   }): Promise<Project[]> {
     const options: any = {};
@@ -114,7 +109,6 @@ export const projectAdminService = {
         (p) =>
           p.projectName.toLowerCase().includes(s) ||
           p.projectNumber?.toLowerCase().includes(s) ||
-          p.client?.name?.toLowerCase().includes(s) ||
           p.clientSpoc?.name?.toLowerCase().includes(s) ||
           p.teamMembers?.some((m) => m.name.toLowerCase().includes(s))
       );
@@ -125,11 +119,6 @@ export const projectAdminService = {
       projects = projects.filter((p) =>
         p.teamMembers?.some((m) => m.uid === filters.teamMember)
       );
-    }
-
-    // Client filter
-    if (filters?.clientId && filters.clientId !== 'all') {
-      projects = projects.filter((p) => p.client?.id === filters.clientId);
     }
 
     return projects;

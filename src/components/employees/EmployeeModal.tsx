@@ -49,6 +49,9 @@ const employeeFormSchema = z.object({
   managerId: z.string().optional(),
   managerName: z.string().optional(),
 
+  // Attendance
+  requireLocationTracking: z.coerce.boolean().default(true),
+
   // Probation
   probationDuration: z.coerce.number().optional(),
   probationEndDate: z.string().optional(),
@@ -168,6 +171,7 @@ export function EmployeeModal({
       status: 'active',
       managerId: '',
       managerName: '',
+      requireLocationTracking: true,
       probationDuration: undefined,
       probationEndDate: '',
       workAnniversary: '',
@@ -208,6 +212,7 @@ export function EmployeeModal({
         status: employee.status,
         managerId: employee.managerId || '',
         managerName: employee.managerName || '',
+        requireLocationTracking: employee.requireLocationTracking ?? true,
         probationDuration: employee.probationDuration || undefined,
         probationEndDate: employee.probationEndDate || '',
         workAnniversary: employee.workAnniversary || '',
@@ -870,6 +875,37 @@ export function EmployeeModal({
                           </option>
                         ))}
                     </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Attendance Settings — Location Tracking Toggle */}
+              <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
+                <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Attendance Settings</h4>
+                <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                  <div className="flex-1">
+                    <Label htmlFor="requireLocationTracking" className="text-sm font-medium cursor-pointer">
+                      Require GPS Location for Clock In/Out
+                    </Label>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      When enabled, the employee must allow GPS access to clock in/out.
+                      When disabled, clock in/out works without requiring location permission.
+                    </p>
+                  </div>
+                  <div className="ml-4 flex items-center">
+                    <input
+                      type="checkbox"
+                      id="requireLocationTracking"
+                      {...register('requireLocationTracking')}
+                      className="peer sr-only"
+                      disabled={isLoading}
+                    />
+                    <label
+                      htmlFor="requireLocationTracking"
+                      className="relative block h-6 w-11 cursor-pointer rounded-full bg-gray-300 dark:bg-[#5A616B] transition-colors peer-checked:bg-blue-600 peer-focus:ring-2 peer-focus:ring-blue-500 peer-checked:[&>span]:translate-x-5"
+                    >
+                      <span className="absolute left-0.5 top-0.5 size-5 rounded-full bg-white transition-transform" />
+                    </label>
                   </div>
                 </div>
               </div>

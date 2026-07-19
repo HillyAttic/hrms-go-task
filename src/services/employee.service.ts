@@ -42,6 +42,8 @@ export interface Employee {
   }>;
   promotionDate?: string;
   promotionDetails?: string;
+  // Attendance settings
+  requireLocationTracking?: boolean;
   // Documents
   documents?: {
     addressProof?: string | { url: string; path?: string; name?: string; size?: number; mimeType?: string };

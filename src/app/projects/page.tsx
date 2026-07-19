@@ -127,29 +127,9 @@ export default function ProjectsPage() {
     setIsSubmitting(true);
 
     try {
-      // Find selected client name
-      let clientName = data.clientName;
-      if (!clientName) {
-        try {
-          const { authenticatedFetch } = await import('@/lib/api-client');
-          const res = await authenticatedFetch(`/api/clients/${data.clientId}`);
-          if (res.ok) {
-            const client = await res.json();
-            clientName = client.clientName;
-          }
-        } catch {
-          // Fall back to using the clientId as name
-          clientName = data.clientId;
-        }
-      }
-
       // Transform flat form data to nested API structure
       const projectData: any = {
         projectName: data.projectName,
-        client: {
-          id: data.clientId,
-          name: clientName || data.clientId,
-        },
         teamMembers: data.teamMembers || [],
         clientSpoc: {
           name: data.clientSpocName,

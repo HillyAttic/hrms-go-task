@@ -94,12 +94,17 @@ function validateLocationData(location: any) {
     if (location.accuracy !== undefined && typeof location.accuracy === 'number' && !isNaN(location.accuracy)) {
       result.accuracy = location.accuracy;
     }
-    
+
+    // Pass through placeholder flag
+    if (location.placeholder === true) {
+      result.placeholder = true;
+    }
+
     return result;
   }
-  
+
   // Additional check for location object with lat/lng properties
-  if (location.lat !== undefined && 
+  if (location.lat !== undefined &&
       location.lng !== undefined && 
       typeof location.lat === 'number' && 
       typeof location.lng === 'number' &&
@@ -116,10 +121,15 @@ function validateLocationData(location: any) {
     if (location.accuracy !== undefined && typeof location.accuracy === 'number' && !isNaN(location.accuracy)) {
       result.accuracy = location.accuracy;
     }
-    
+
+    // Pass through placeholder flag
+    if (location.placeholder === true) {
+      result.placeholder = true;
+    }
+
     return result;
   }
-  
+
   console.log('validateLocationData: Invalid location format, returning undefined');
   return undefined;
 }

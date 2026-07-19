@@ -36,6 +36,7 @@ const updateEmployeeSchema = z.object({
   })).optional(),
   promotionDate: z.string().optional(),
   promotionDetails: z.string().optional(),
+  requireLocationTracking: z.boolean().optional(),
   documents: z.object({
     addressProof: z.union([z.string(), z.object({
       url: z.string(),

@@ -39,6 +39,8 @@ export interface Employee {
   }>;
   promotionDate?: string;
   promotionDetails?: string;
+  // Attendance settings
+  requireLocationTracking?: boolean;
   // Documents
   documents?: {
     addressProof?: string | { url: string; path?: string; name?: string; size?: number; mimeType?: string };
@@ -109,6 +111,7 @@ export const employeeAdminService = {
           salaryChanges: data.salaryChanges || [],
           promotionDate: data.promotionDate || '',
           promotionDetails: data.promotionDetails || '',
+          requireLocationTracking: data.requireLocationTracking ?? true,
           documents: data.documents || {},
           createdAt: data.createdAt?.toDate?.() || new Date(),
           updatedAt: data.updatedAt?.toDate?.() || new Date(),
@@ -193,6 +196,7 @@ export const employeeAdminService = {
         salaryChanges: data.salaryChanges || [],
         promotionDate: data.promotionDate || '',
         promotionDetails: data.promotionDetails || '',
+        requireLocationTracking: data.requireLocationTracking ?? true,
         documents: data.documents || {},
         createdAt: data.createdAt?.toDate?.() || new Date(),
         updatedAt: data.updatedAt?.toDate?.() || new Date(),
@@ -244,6 +248,7 @@ export const employeeAdminService = {
         salaryChanges: data.salaryChanges || [],
         promotionDate: data.promotionDate || '',
         promotionDetails: data.promotionDetails || '',
+        requireLocationTracking: data.requireLocationTracking ?? true,
         documents: data.documents || {},
         createdAt: data.createdAt?.toDate?.() || new Date(),
         updatedAt: data.updatedAt?.toDate?.() || new Date(),
@@ -358,6 +363,9 @@ export const employeeAdminService = {
       if (data.documents !== undefined) {
         updatePayload.documents = data.documents;
       }
+      if (data.requireLocationTracking !== undefined) {
+        updatePayload.requireLocationTracking = data.requireLocationTracking;
+      }
 
       // Update user document
       await userRef.update(updatePayload);
@@ -456,6 +464,7 @@ export const employeeAdminService = {
         promotionDate: data.promotionDate || '',
         promotionDetails: data.promotionDetails || '',
         documents: data.documents || {},
+        requireLocationTracking: data.requireLocationTracking ?? true,
         createdAt: now,
         updatedAt: now,
       });

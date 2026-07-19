@@ -65,9 +65,6 @@ export function ProjectListView({
               Project Name
             </th>
             <th className="px-2 py-2 text-left text-xs font-medium text-gray-700 dark:text-gray-300" style={{ minWidth: '140px' }}>
-              Client
-            </th>
-            <th className="px-2 py-2 text-left text-xs font-medium text-gray-700 dark:text-gray-300" style={{ minWidth: '140px' }}>
               Team
             </th>
             <th className="px-2 py-2 text-left text-xs font-medium text-gray-700 dark:text-gray-300" style={{ minWidth: '120px' }}>
@@ -118,13 +115,6 @@ export function ProjectListView({
               <td className="px-2 py-2 text-xs font-medium text-gray-900 dark:text-white">
                 <div className="truncate" title={project.projectName}>
                   {project.projectName}
-                </div>
-              </td>
-
-              {/* Client */}
-              <td className="px-2 py-2 text-xs text-gray-700 dark:text-gray-300">
-                <div className="truncate" title={project.client?.name || '—'}>
-                  {project.client?.name || '—'}
                 </div>
               </td>
 

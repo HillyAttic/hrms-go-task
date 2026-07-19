@@ -16,6 +16,7 @@ import { NoResultsEmptyState, NoDataEmptyState } from '@/components/ui/empty-sta
 import { CardGridSkeleton, StatsGridSkeleton } from '@/components/ui/loading-skeletons';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { ManagerGuard } from '@/components/Auth/PermissionGuard';
+import { authenticatedFetch } from '@/lib/api-client';
 import { PlusIcon, ArrowUpTrayIcon, ShieldExclamationIcon } from '@heroicons/react/24/outline';
 import { z } from 'zod';
 
@@ -215,6 +216,7 @@ export default function EmployeesPage() {
           promotionDetails: data.promotionDetails || '',
           salaryChanges: (data as any).salaryChanges || undefined,
           documents: (data as any).documents || undefined,
+          requireLocationTracking: (data as any).requireLocationTracking ?? true,
         };
         await updateEmployee(
           editingEmployee.id!,
@@ -247,6 +249,7 @@ export default function EmployeesPage() {
           promotionDetails: data.promotionDetails || '',
           salaryChanges: (data as any).salaryChanges || undefined,
           documents: (data as any).documents || undefined,
+          requireLocationTracking: (data as any).requireLocationTracking ?? true,
         };
         await createEmployee(employeeData, data.password || '');
         alert('Employee created successfully!');
@@ -295,11 +298,8 @@ export default function EmployeesPage() {
       console.log('Bulk deleting employees:', employeeIds);
       
       // Call bulk delete API
-      const response = await fetch('/api/employees/bulk-delete', {
+      const response = await authenticatedFetch('/api/employees/bulk-delete', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({ employeeIds }),
       });
 
@@ -361,11 +361,8 @@ export default function EmployeesPage() {
       console.log('Deleting all employees:', allEmployeeIds.length);
       
       // Call bulk delete API
-      const response = await fetch('/api/employees/bulk-delete', {
+      const response = await authenticatedFetch('/api/employees/bulk-delete', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({ employeeIds: allEmployeeIds }),
       });
 

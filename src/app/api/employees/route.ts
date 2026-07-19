@@ -10,7 +10,7 @@ const createEmployeeSchema = z.object({
   firstName: z.string().optional(),
   lastName: z.string().optional(),
   email: z.string().email('Invalid email format'),
-  phone: z.string().regex(/^\+?[\d\s\-()]+$/, 'Invalid phone format'),
+  phone: z.string().regex(/^\+?[\d\s\-()]*$/, 'Invalid phone format').optional().default(''),
   department: z.string().optional(),
   dateOfBirth: z.string().optional(),
   salary: z.number().optional(),

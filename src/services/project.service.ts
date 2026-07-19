@@ -25,8 +25,6 @@ export type {
 
 export interface ProjectFormData {
   projectName: string;
-  clientId: string;
-  clientName: string;
   teamMembers: ProjectTeamMember[];
   clientSpocName: string;
   clientSpocEmail?: string;
@@ -78,7 +76,7 @@ export const projectService = {
     // Client-side search
     if (filters?.search) {
       projects = await projectFirebaseService.searchMultipleFields(
-        ['projectName', 'projectNumber', 'client.name', 'clientSpoc.name'],
+        ['projectName', 'projectNumber', 'clientSpoc.name'],
         filters.search,
         options
       );

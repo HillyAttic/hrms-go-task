@@ -138,19 +138,15 @@ export function EmployeeBulkImportModal({
           continue;
         }
         // Validate email format
+        const emailErrors: string[] = [];
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emp.email)) {
-          errors.push({ row: rowNum, error: 'Invalid email format', data: emp });
+          emailErrors.push(`Invalid email format (${emp.email})`);
+        }
+        if (emailErrors.length > 0) {
+          errors.push({ row: rowNum, error: emailErrors.join('; '), data: emp });
           continue;
         }
-        if (!emp.phone) {
-          errors.push({ row: rowNum, error: 'Phone is required', data: emp });
-          continue;
-        }
-        // Validate phone format (E.164: starts with + followed by digits)
-        if (!/^\+\d{10,15}$/.test(emp.phone)) {
-          errors.push({ row: rowNum, error: 'Invalid phone format. Must be in E.164 format (e.g., +919876543210)', data: emp });
-          continue;
-        }
+        // Phone is optional - skip validation if empty
         if (!emp.password) {
           errors.push({ row: rowNum, error: 'Password is required', data: emp });
           continue;
@@ -230,6 +226,15 @@ export function EmployeeBulkImportModal({
         setTimeout(() => {
           handleClose();
         }, 2000);
+      } else if (successCount === 0 && importErrors.length > 0) {
+        // Prominent alert when ALL rows failed - so user doesn't miss that nothing was imported
+        alert(
+          `⚠️ No employees were imported!\n\n` +
+          `All ${importErrors.length} row(s) failed validation.\n\n` +
+          `First few errors:\n` +
+          importErrors.slice(0, 5).map(e => `  Row ${e.row}: ${e.error}`).join('\n') +
+          (importErrors.length > 5 ? `\n  ...and ${importErrors.length - 5} more` : '')
+        );
       }
     } catch (error) {
       console.error('Error importing employees:', error);
@@ -417,11 +422,11 @@ export function EmployeeBulkImportModal({
                 <div className="text-xs text-gray-600 dark:text-gray-400 space-y-1">
                   <p className="font-medium text-gray-900 dark:text-white">CSV Format Requirements:</p>
                   <ul className="list-disc list-inside space-y-0.5 ml-2">
-                    <li>Required columns: Employee ID, Name, Email, Phone, Role, Password, Status</li>
+                    <li>Required columns: Employee ID, Name, Email, Role, Password, Status</li>
+                    <li>Optional columns: Phone (if provided, must be in E.164 format e.g., +919876543210)</li>
                     <li>Role must be: Manager, Admin, or Employee</li>
                     <li>Status must be: active or on-leave</li>
                     <li>Password will be hashed automatically</li>
-                    <li><strong>Phone must be in E.164 format</strong> (e.g., +919876543210 or +15551234567)</li>
                     <li><strong>All Employee IDs must be unique</strong> (duplicates will be rejected)</li>
                     <li><strong>Emails must be unique</strong> (existing emails will be rejected)</li>
                   </ul>

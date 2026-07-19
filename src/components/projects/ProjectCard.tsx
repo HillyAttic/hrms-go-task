@@ -6,7 +6,6 @@ import { ProjectStatusBadge } from './ProjectStatusBadge';
 import {
   PencilSquareIcon,
   TrashIcon,
-  BuildingOfficeIcon,
   UserGroupIcon,
   CurrencyRupeeIcon,
   DocumentTextIcon,
@@ -70,12 +69,6 @@ export function ProjectCard({ project, onEdit, onDelete }: ProjectCardProps) {
               <TrashIcon className="w-4 h-4" />
             </Button>
           </div>
-        </div>
-
-        {/* Client */}
-        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 mb-2">
-          <BuildingOfficeIcon className="w-4 h-4 flex-shrink-0" />
-          <span className="truncate">{project.client?.name || '—'}</span>
         </div>
 
         {/* Team Members */}

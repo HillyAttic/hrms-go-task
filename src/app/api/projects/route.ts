@@ -21,10 +21,6 @@ const milestoneSchema = z.object({
 
 const createProjectSchema = z.object({
   projectName: z.string().min(1, 'Project name is required').max(200),
-  client: z.object({
-    id: z.string().min(1, 'Client is required'),
-    name: z.string().min(1),
-  }),
   teamMembers: z.array(teamMemberSchema).min(1, 'At least one team member is required'),
   clientSpoc: z.object({
     name: z.string().min(1, 'Client SPOC name is required'),
@@ -64,14 +60,12 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status') || undefined;
     const search = searchParams.get('search') || undefined;
     const teamMember = searchParams.get('teamMember') || undefined;
-    const clientId = searchParams.get('clientId') || undefined;
     const limit = parseInt(searchParams.get('limit') || '1000');
 
     const projects = await projectAdminService.getAll({
       status,
       search,
       teamMember,
-      clientId,
       limit,
     });
 
