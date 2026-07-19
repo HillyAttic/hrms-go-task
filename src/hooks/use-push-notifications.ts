@@ -103,12 +103,12 @@ export function usePushNotifications() {
       const { notification, data } = payload;
       
       if (notification) {
-        const notificationTitle = notification.title || 'JPCO Dashboard';
+        const notificationTitle = notification.title || 'EdVentureHub Dashboard';
         const notificationOptions = {
           body: notification.body || '',
           icon: notification.icon || '/images/logo/logo-icon.svg',
           badge: '/images/logo/logo-icon.svg',
-          tag: data?.notificationId || 'jpco-' + Date.now(),
+          tag: data?.notificationId || 'edventurehub-' + Date.now(),
           data: {
             url: data?.url || '/notifications',
             ...data,

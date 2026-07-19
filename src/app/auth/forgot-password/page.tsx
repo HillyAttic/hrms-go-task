@@ -91,7 +91,7 @@ const ForgotPasswordPage = () => {
               <Logo />
             </div>
             <h2 className="mb-2 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-              JPCO Admin Dashboard
+              EdVentureHub Admin Dashboard
             </h2>
             <p className="text-black dark:text-white">
               Securely manage your account

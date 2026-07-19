@@ -10,21 +10,21 @@ const TermsPage = () => {
         <section className="mb-6">
           <h2 className="text-xl font-semibold text-black dark:text-white mb-3">Introduction</h2>
           <p className="text-gray-600 dark:text-gray-300">
-            Welcome to JPCO. These terms and conditions outline the rules and regulations for the use of our services.
+            Welcome to EdVentureHub. These terms and conditions outline the rules and regulations for the use of our services.
           </p>
         </section>
 
         <section className="mb-6">
           <h2 className="text-xl font-semibold text-black dark:text-white mb-3">Acceptance of Terms</h2>
           <p className="text-gray-600 dark:text-gray-300">
-            By accessing this website, we assume you accept these terms and conditions. Do not continue to use JPCO if you do not agree to all of the terms stated on this page.
+            By accessing this website, we assume you accept these terms and conditions. Do not continue to use EdVentureHub if you do not agree to all of the terms stated on this page.
           </p>
         </section>
 
         <section className="mb-6">
           <h2 className="text-xl font-semibold text-black dark:text-white mb-3">License to Use</h2>
           <p className="text-gray-600 dark:text-gray-300">
-            Unless otherwise stated, JPCO and/or its licensors own the intellectual property rights for all material on JPCO. All intellectual property rights are reserved.
+            Unless otherwise stated, EdVentureHub and/or its licensors own the intellectual property rights for all material on EdVentureHub. All intellectual property rights are reserved.
           </p>
         </section>
 
@@ -38,7 +38,7 @@ const TermsPage = () => {
         <section className="mb-6">
           <h2 className="text-xl font-semibold text-black dark:text-white mb-3">Limitations of Liability</h2>
           <p className="text-gray-600 dark:text-gray-300">
-            JPCO shall not be held liable for any consequential, incidental, indirect, or special damages arising out of your use of this platform.
+            EdVentureHub shall not be held liable for any consequential, incidental, indirect, or special damages arising out of your use of this platform.
           </p>
         </section>
 

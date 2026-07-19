@@ -21,17 +21,43 @@ import { z } from 'zod';
 
 // Form schema for employee data
 const employeeFormSchema = z.object({
-  employeeId: z.string().min(1, 'Employee ID is required').max(20),
-  name: z.string().min(1, 'Name is required').max(100),
+  // Personal Info
+  firstName: z.string().min(1, 'First name is required').max(50),
+  lastName: z.string().optional(),
   email: z.string().email('Invalid email format'),
   phone: z.string().regex(/^\d{10}$/, 'Phone must be exactly 10 digits'),
+  dateOfBirth: z.string().optional(),
   department: z.string().optional(),
+
+  // Employment
+  employeeId: z.string().min(1, 'Employee ID is required').max(20),
+  dateOfJoining: z.string().optional(),
+  salary: z.coerce.number().optional(),
+  status: z.enum(['active', 'on-leave', 'resigned']),
+
+  // Role
   role: z.enum(['Manager', 'Admin', 'Employee']),
+
+  // Manager
+  managerId: z.string().optional(),
+  managerName: z.string().optional(),
+
+  // Probation & Promotion
+  probationDuration: z.coerce.number().optional(),
+  probationEndDate: z.string().optional(),
+  workAnniversary: z.string().optional(),
+  promotionDate: z.string().optional(),
+  promotionDetails: z.string().optional(),
+
+  // Password
   currentPassword: z.string().optional(),
   password: z.string().optional(),
   confirmPassword: z.string().optional(),
-  avatar: z.instanceof(File).optional(),
-  status: z.enum(['active', 'on-leave', 'resigned']),
+
+  // Extra payload (not validated in schema but passed through)
+  name: z.string().optional(),
+  salaryChanges: z.any().optional(),
+  documents: z.any().optional(),
 });
 
 type EmployeeFormData = z.infer<typeof employeeFormSchema>;
@@ -163,17 +189,33 @@ export default function EmployeesPage() {
   const handleSubmitEmployee = async (data: EmployeeFormData) => {
     setIsSubmitting(true);
     try {
+      // Build the name from firstName + lastName
+      const fullName = [data.firstName, data.lastName].filter(Boolean).join(' ');
+
       if (editingEmployee) {
-        // Update existing employee - only update allowed fields
-        const employeeData = {
-          name: data.name,
+        // Update existing employee
+        const employeeData: any = {
+          firstName: data.firstName,
+          lastName: data.lastName || '',
+          name: fullName,
           email: data.email,
           phone: data.phone,
-          department: data.department,
+          department: data.department || '',
           role: data.role,
           status: data.status,
+          dateOfBirth: data.dateOfBirth || '',
+          salary: data.salary || undefined,
+          dateOfJoining: data.dateOfJoining || '',
+          managerId: data.managerId || '',
+          managerName: data.managerName || '',
+          probationDuration: data.probationDuration || undefined,
+          probationEndDate: data.probationEndDate || '',
+          workAnniversary: data.workAnniversary || '',
+          promotionDate: data.promotionDate || '',
+          promotionDetails: data.promotionDetails || '',
+          salaryChanges: (data as any).salaryChanges || undefined,
+          documents: (data as any).documents || undefined,
         };
-        // Pass password and currentPassword if provided (optional for updates)
         await updateEmployee(
           editingEmployee.id!,
           employeeData,
@@ -182,17 +224,30 @@ export default function EmployeesPage() {
         );
         alert('Employee updated successfully!');
       } else {
-        // Create new employee - minimal fields
-        const employeeData = {
+        // Create new employee
+        const employeeData: any = {
           employeeId: data.employeeId,
-          name: data.name,
+          firstName: data.firstName,
+          lastName: data.lastName || '',
+          name: fullName,
           email: data.email,
           phone: data.phone,
-          department: data.department,
+          department: data.department || '',
           role: data.role,
           status: data.status,
+          dateOfBirth: data.dateOfBirth || '',
+          salary: data.salary || undefined,
+          dateOfJoining: data.dateOfJoining || '',
+          managerId: data.managerId || '',
+          managerName: data.managerName || '',
+          probationDuration: data.probationDuration || undefined,
+          probationEndDate: data.probationEndDate || '',
+          workAnniversary: data.workAnniversary || '',
+          promotionDate: data.promotionDate || '',
+          promotionDetails: data.promotionDetails || '',
+          salaryChanges: (data as any).salaryChanges || undefined,
+          documents: (data as any).documents || undefined,
         };
-        // Pass password separately for hashing
         await createEmployee(employeeData, data.password || '');
         alert('Employee created successfully!');
       }
@@ -203,7 +258,7 @@ export default function EmployeesPage() {
       console.error('Error submitting employee:', error);
       const errorMessage = error instanceof Error ? error.message : 'Failed to save employee';
       alert(errorMessage);
-      throw error; // Re-throw to let modal handle the error
+      throw error;
     } finally {
       setIsSubmitting(false);
     }

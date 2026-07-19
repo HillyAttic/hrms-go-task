@@ -51,7 +51,7 @@ export function Header() {
             src={"/images/logo/logo-icon.svg"}
             width={32}
             height={32}
-            alt="JPCO Logo"
+            alt="EdVentureHub Logo"
             className="h-8 w-8"
           />
         </Link>

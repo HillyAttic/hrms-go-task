@@ -34,6 +34,7 @@ import {
   Settings,
   Lock as LucideLock,
   LockOpen as LucideLockOpen,
+  FolderKanban,
 } from "lucide-react";
 
 export type PropsType = SVGProps<SVGSVGElement>;
@@ -79,6 +80,7 @@ export const MISTrackerIcon = wrap(FileSpreadsheet);
 export const SettingsIcon = wrap(Settings);
 export const LockIcon = wrap(LucideLock);
 export const LockOpenIcon = wrap(LucideLockOpen);
+export const ProjectIcon = wrap(FolderKanban);
 
 export function ChevronUp(props: PropsType) {
   const { className } = props;

@@ -25,13 +25,6 @@ export const NAV_DATA = [
         hideOnMobile: true, // Hide on mobile view
       },
       {
-        title: "Categories",
-        url: "/categories",
-        icon: Icons.CategoriesIcon,
-        items: [],
-        hideOnMobile: true, // Hide on mobile view
-      },
-      {
         title: "Kanban",
         url: "/kanban",
         icon: Icons.KanbanIcon,
@@ -51,6 +44,13 @@ export const NAV_DATA = [
   {
     label: "MANAGEMENT",
     items: [
+      {
+        title: "Projects",
+        url: "/projects",
+        icon: Icons.ProjectIcon,
+        items: [],
+        requiresRole: ['admin', 'manager', 'employee'],
+      },
       {
         title: "Non-Recurring",
         url: "/tasks/non-recurring",
@@ -227,6 +227,12 @@ export const NAV_DATA = [
         title: "MIS Accessibility",
         url: "/admin/mis-accessibility",
         icon: Icons.SettingsIcon,
+        items: [],
+      },
+      {
+        title: "Categories",
+        url: "/categories",
+        icon: Icons.CategoriesIcon,
         items: [],
       },
     ],

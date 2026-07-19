@@ -114,7 +114,7 @@ const SignUpPage = () => {
               <Logo />
             </div>
             <h2 className="mb-2 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-              Join JPCO Today
+              Join EdVentureHub Today
             </h2>
             <p className="text-black dark:text-white">
               Create an account to access all features of our platform

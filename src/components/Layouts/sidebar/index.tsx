@@ -177,12 +177,20 @@ export function Sidebar() {
             )}
           </div>
 
-          {/* Logo - edVenture branding */}
+          {/* Logo - edVenture branding (light/dark) */}
           <div className="px-3.5" style={{ marginBottom: '-0.5rem' }}>
+            {/* Light mode logo */}
             <img
               src="/images/branding_edVenture-5.png"
               alt="edVenture Logo"
-              className="h-auto w-full"
+              className="h-auto w-full block dark:hidden"
+              style={{ maxWidth: '220px' }}
+            />
+            {/* Dark mode logo */}
+            <img
+              src="/images/dark-mode.png"
+              alt="edVenture Logo"
+              className="h-auto w-full hidden dark:block"
               style={{ maxWidth: '220px' }}
             />
           </div>

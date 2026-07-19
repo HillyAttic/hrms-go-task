@@ -9,7 +9,7 @@ export function Logo() {
         src={logo}
         fill
         className="dark:hidden"
-        alt="JPCO logo"
+        alt="EdVentureHub logo"
         role="presentation"
         quality={100}
       />
@@ -18,7 +18,7 @@ export function Logo() {
         src={darkLogo}
         fill
         className="hidden dark:block"
-        alt="JPCO logo"
+        alt="EdVentureHub logo"
         role="presentation"
         quality={100}
       />

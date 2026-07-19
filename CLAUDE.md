@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-JPCO Panel is a Next.js 16 admin dashboard for managing compliance tasks, clients, employees, attendance, and team workflows. Built with TypeScript, Tailwind CSS, and Firebase (Firestore + Auth).
+EdVentureHub is a Next.js 16 admin dashboard for managing compliance tasks, clients, employees, attendance, and team workflows. Built with TypeScript, Tailwind CSS, and Firebase (Firestore + Auth).
 
 **Tech Stack:**
 - Next.js 16 (App Router, React 19, TypeScript)

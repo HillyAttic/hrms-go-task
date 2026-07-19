@@ -12,16 +12,55 @@ import { UserRole } from '@/types/auth.types';
 export interface Employee {
   id?: string; // This is the Firebase Auth UID
   employeeId: string;
-  name: string; // Maps to displayName in users collection
+  name: string; // Auto-generated from firstName + lastName (maps to displayName)
+  firstName?: string;
+  lastName?: string;
   email: string;
   phone: string;
   department?: string;
+  dateOfBirth?: string; // DOB - date string
+  salary?: number;
+  dateOfJoining?: string; // DOJ - date string
   photoURL?: string;
   role: 'Manager' | 'Admin' | 'Employee';
   passwordHash?: string; // Hashed password, not plain text
   status: 'active' | 'on-leave' | 'resigned';
+  // Manager info
+  managerId?: string;
+  managerName?: string;
+  reportees?: Array<{ id: string; name: string; employeeId: string }>;
+  // Probation & Promotion
+  probationDuration?: number; // in months
+  probationEndDate?: string;
+  workAnniversary?: string;
+  salaryChanges?: Array<{
+    date: string;
+    oldSalary: number;
+    newSalary: number;
+    reason: 'probation' | 'promotion' | 'revision';
+    notes?: string;
+  }>;
+  promotionDate?: string;
+  promotionDetails?: string;
+  // Documents
+  documents?: {
+    addressProof?: string | { url: string; path?: string; name?: string; size?: number; mimeType?: string };
+    cancelledCheque?: string | { url: string; path?: string; name?: string; size?: number; mimeType?: string };
+    aadhaarCard?: string | { url: string; path?: string; name?: string; size?: number; mimeType?: string };
+    panCard?: string | { url: string; path?: string; name?: string; size?: number; mimeType?: string };
+    resignationLetter?: string | { url: string; path?: string; name?: string; size?: number; mimeType?: string };
+    salarySlips?: (string | { url: string; path?: string; name?: string; size?: number; mimeType?: string })[];
+    marksheet10th?: string | { url: string; path?: string; name?: string; size?: number; mimeType?: string };
+    marksheet12th?: string | { url: string; path?: string; name?: string; size?: number; mimeType?: string };
+    degree?: string | { url: string; path?: string; name?: string; size?: number; mimeType?: string };
+  };
   createdAt?: Date;
   updatedAt?: Date;
+}
+
+/** Helper to combine firstName + lastName into displayName */
+export function getFullName(firstName?: string, lastName?: string): string {
+  return [firstName, lastName].filter(Boolean).join(' ') || '';
 }
 
 /**
@@ -54,12 +93,27 @@ export const employeeService = {
           id: doc.id, // Firebase Auth UID
           employeeId: data.employeeId || data.uid || doc.id,
           name: data.displayName || data.name || '',
+          firstName: data.firstName || '',
+          lastName: data.lastName || '',
           email: data.email || '',
           phone: data.phoneNumber || data.phone || '',
           department: data.department || '',
+          dateOfBirth: data.dateOfBirth || '',
+          salary: data.salary || undefined,
+          dateOfJoining: data.dateOfJoining || '',
           photoURL: data.photoURL || '',
           role: this.mapUserRoleToEmployeeRole(data.role),
           status: data.isActive === false ? 'on-leave' : 'active',
+          managerId: data.managerId || '',
+          managerName: data.managerName || '',
+          reportees: data.reportees || [],
+          probationDuration: data.probationDuration || undefined,
+          probationEndDate: data.probationEndDate || '',
+          workAnniversary: data.workAnniversary || '',
+          salaryChanges: data.salaryChanges || [],
+          promotionDate: data.promotionDate || '',
+          promotionDetails: data.promotionDetails || '',
+          documents: data.documents || {},
           createdAt: data.createdAt?.toDate?.() || new Date(),
           updatedAt: data.updatedAt?.toDate?.() || new Date(),
         });
@@ -123,12 +177,27 @@ export const employeeService = {
         id: userDoc.id,
         employeeId: data.employeeId || data.uid || userDoc.id,
         name: data.displayName || data.name || '',
+        firstName: data.firstName || '',
+        lastName: data.lastName || '',
         email: data.email || '',
         phone: data.phoneNumber || data.phone || '',
         department: data.department || '',
+        dateOfBirth: data.dateOfBirth || '',
+        salary: data.salary || undefined,
+        dateOfJoining: data.dateOfJoining || '',
         photoURL: data.photoURL || '',
         role: this.mapUserRoleToEmployeeRole(data.role),
         status: data.isActive === false ? 'on-leave' : 'active',
+        managerId: data.managerId || '',
+        managerName: data.managerName || '',
+        reportees: data.reportees || [],
+        probationDuration: data.probationDuration || undefined,
+        probationEndDate: data.probationEndDate || '',
+        workAnniversary: data.workAnniversary || '',
+        salaryChanges: data.salaryChanges || [],
+        promotionDate: data.promotionDate || '',
+        promotionDetails: data.promotionDetails || '',
+        documents: data.documents || {},
         createdAt: data.createdAt?.toDate?.() || new Date(),
         updatedAt: data.updatedAt?.toDate?.() || new Date(),
       };
@@ -158,12 +227,27 @@ export const employeeService = {
         id: doc.id,
         employeeId: data.employeeId || data.uid || doc.id,
         name: data.displayName || data.name || '',
+        firstName: data.firstName || '',
+        lastName: data.lastName || '',
         email: data.email || '',
         phone: data.phoneNumber || data.phone || '',
         department: data.department || '',
+        dateOfBirth: data.dateOfBirth || '',
+        salary: data.salary || undefined,
+        dateOfJoining: data.dateOfJoining || '',
         photoURL: data.photoURL || '',
         role: this.mapUserRoleToEmployeeRole(data.role),
         status: data.isActive === false ? 'on-leave' : 'active',
+        managerId: data.managerId || '',
+        managerName: data.managerName || '',
+        reportees: data.reportees || [],
+        probationDuration: data.probationDuration || undefined,
+        probationEndDate: data.probationEndDate || '',
+        workAnniversary: data.workAnniversary || '',
+        salaryChanges: data.salaryChanges || [],
+        promotionDate: data.promotionDate || '',
+        promotionDetails: data.promotionDetails || '',
+        documents: data.documents || {},
         createdAt: data.createdAt?.toDate?.() || new Date(),
         updatedAt: data.updatedAt?.toDate?.() || new Date(),
       };

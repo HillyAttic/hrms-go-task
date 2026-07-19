@@ -95,7 +95,7 @@ export function InstallPrompt() {
           </div>
           <div className="flex-1 min-w-0">
             <h4 className="text-sm font-semibold text-dark dark:text-white">
-              Install JPCO Dashboard
+              Install EdVentureHub Dashboard
             </h4>
             <p className="text-sm text-dark-4 dark:text-dark-6 mt-1">
               Install the app for quick access, offline support, and a native app experience.

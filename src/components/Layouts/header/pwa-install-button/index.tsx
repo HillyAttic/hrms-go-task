@@ -151,7 +151,7 @@ export function PWAInstallButton() {
           ${isTouchDevice ? 'min-h-[44px] min-w-[44px]' : 'min-h-[36px] min-w-[36px]'}
         `}
         aria-label="Install App"
-        title={isIOS ? "Add to Home Screen" : "Install JPCO Dashboard"}
+        title={isIOS ? "Add to Home Screen" : "Install EdVentureHub Dashboard"}
       >
         <span className="sr-only">Install App</span>
         <div className={`
@@ -215,7 +215,7 @@ export function PWAInstallButton() {
           >
             <div className="flex justify-between items-start mb-4">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                Install JPCO Dashboard
+                Install EdVentureHub Dashboard
               </h3>
               <button
                 onClick={closeInstructions}

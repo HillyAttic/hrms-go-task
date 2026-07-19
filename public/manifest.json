@@ -1,7 +1,7 @@
 {
-  "name": "JPCO Dashboard",
-  "short_name": "JPCO",
-  "description": "JPCO admin dashboard toolkit with responsive design and offline support",
+  "name": "EdVentureHub Dashboard",
+  "short_name": "EdVentureHub",
+  "description": "EdVentureHub admin dashboard toolkit with responsive design and offline support",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#020d1a",

@@ -2,12 +2,15 @@ import { Employee } from '@/services/employee.service';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { 
-  PencilSquareIcon, 
-  TrashIcon, 
-  EnvelopeIcon, 
+import {
+  PencilSquareIcon,
+  TrashIcon,
+  EnvelopeIcon,
   PhoneIcon,
-  UserMinusIcon 
+  UserMinusIcon,
+  BuildingOfficeIcon,
+  CalendarDaysIcon,
+  CurrencyRupeeIcon,
 } from '@heroicons/react/24/outline';
 
 interface EmployeeCardProps {
@@ -22,7 +25,6 @@ interface EmployeeCardProps {
 /**
  * EmployeeCard Component
  * Displays employee information in a card format with photo, contact details, and action buttons
- * Validates Requirements: 5.3, 5.5, 5.6
  */
 export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selected = false, onSelect }: EmployeeCardProps) {
   // Generate initials from employee name for avatar fallback
@@ -61,6 +63,11 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
     }
   };
 
+  const formatCurrency = (amount?: number) => {
+    if (!amount) return null;
+    return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(amount);
+  };
+
   return (
     <Card className={`group hover:shadow-lg transition-all duration-200 ${selected ? 'ring-2 ring-blue-500' : ''}`}>
       <CardContent className="p-6">
@@ -76,7 +83,7 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
             />
           </div>
         )}
-        
+
         <div className={`flex items-start justify-between mb-4 ${onSelect ? 'ml-8' : ''}`}>
           {/* Name and Role */}
           <div className="flex items-start gap-4 flex-1">
@@ -94,7 +101,7 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
                 </span>
               )}
             </div>
-            
+
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
                 <h3 className="text-lg font-semibold text-gray-900 dark:text-white truncate">
@@ -119,7 +126,7 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
             >
               <PencilSquareIcon className="w-4 h-4" />
             </Button>
-            
+
             {employee.status === 'active' && (
               <Button
                 size="sm"
@@ -131,7 +138,7 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
                 <UserMinusIcon className="w-4 h-4" />
               </Button>
             )}
-            
+
             <Button
               size="sm"
               variant="ghost"
@@ -144,7 +151,7 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
           </div>
         </div>
 
-        {/* Contact Information */}
+        {/* Contact & Employment Information */}
         <div className="space-y-2">
           {/* Employee ID */}
           <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
@@ -155,7 +162,7 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
           {/* Email */}
           <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
             <EnvelopeIcon className="w-4 h-4 flex-shrink-0" />
-            <a 
+            <a
               href={`mailto:${employee.email}`}
               className="hover:text-blue-600 truncate"
             >
@@ -166,13 +173,44 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
           {/* Phone */}
           <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
             <PhoneIcon className="w-4 h-4 flex-shrink-0" />
-            <a 
+            <a
               href={`tel:${employee.phone}`}
               className="hover:text-blue-600"
             >
               {employee.phone}
             </a>
           </div>
+
+          {/* Department */}
+          {employee.department && (
+            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+              <BuildingOfficeIcon className="w-4 h-4 flex-shrink-0" />
+              <span>{employee.department}</span>
+            </div>
+          )}
+
+          {/* DOJ */}
+          {employee.dateOfJoining && (
+            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+              <CalendarDaysIcon className="w-4 h-4 flex-shrink-0" />
+              <span>Joined: {new Date(employee.dateOfJoining).toLocaleDateString('en-IN')}</span>
+            </div>
+          )}
+
+          {/* Salary */}
+          {employee.salary && (
+            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+              <CurrencyRupeeIcon className="w-4 h-4 flex-shrink-0" />
+              <span>{formatCurrency(employee.salary)}</span>
+            </div>
+          )}
+
+          {/* Manager */}
+          {employee.managerName && (
+            <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-500">
+              <span className="text-xs">Reports to: {employee.managerName}</span>
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>

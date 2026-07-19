@@ -2,7 +2,7 @@
 // This service worker handles offline functionality and PWA installation
 // VERSION: 2.1 - Force logo cache refresh for existing users
 
-const CACHE_NAME = 'jpco-dashboard-v4';
+const CACHE_NAME = 'edventurehub-dashboard-v4';
 
 // Only cache truly static assets that won't change between deployments
 const STATIC_ASSETS = [
@@ -133,7 +133,7 @@ self.addEventListener('push', (event) => {
   if (event.data) {
     try {
       const data = event.data.json();
-      const title = data.title || 'JPCO Dashboard';
+      const title = data.title || 'EdVentureHub Dashboard';
       const options = {
         body: data.body || 'You have a new notification',
         icon: '/images/logo/logo-192.png',

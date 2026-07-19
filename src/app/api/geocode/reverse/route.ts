@@ -18,7 +18,7 @@ async function geocodeOne(lat: number, lon: number): Promise<string> {
     const url = `https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&addressdetails=1&accept-language=en`;
     const res = await fetch(url, {
       headers: {
-        'User-Agent': 'JPCO-Panel-AttendanceExport/1.0 (internal-tool)',
+        'User-Agent': 'EdVentureHub-AttendanceExport/1.0 (internal-tool)',
         'Accept-Language': 'en',
       },
     });

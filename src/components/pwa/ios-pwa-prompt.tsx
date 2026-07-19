@@ -50,7 +50,7 @@ export function IOSPWAPrompt() {
           </div>
           <div className="flex-1 min-w-0">
             <h4 className="text-sm font-semibold text-white">
-              Install JPCO Dashboard
+              Install EdVentureHub Dashboard
             </h4>
             <p className="text-sm text-white/90 mt-1">
               To receive push notifications on iOS, install this app to your home screen:

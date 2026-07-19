@@ -105,7 +105,7 @@ export async function sendNotification(
             url: data?.url || '/notifications',
             type: data?.type || 'general',
             taskId: data?.taskId || '',
-            notificationId: `jpco-${Date.now()}`,
+            notificationId: `edventurehub-${Date.now()}`,
             timestamp: Date.now().toString(),
           },
           token: fcmToken,

@@ -19,11 +19,11 @@ import Script from "next/script";
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | JPCO",
-    default: "JPCO",
+    template: "%s | EdVentureHub",
+    default: "EdVentureHub",
   },
   description:
-    "JPCO admin dashboard toolkit with 200+ templates, UI components, and integrations for fast dashboard development.",
+    "EdVentureHub admin dashboard toolkit with 200+ templates, UI components, and integrations for fast dashboard development.",
   manifest: "/manifest.json",
   icons: {
     apple: '/images/logo/apple-touch-icon.png',
@@ -31,7 +31,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "JPCO Dashboard",
+    title: "EdVentureHub Dashboard",
   },
   formatDetection: {
     telephone: false,

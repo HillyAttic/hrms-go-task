@@ -123,7 +123,7 @@ async function generateScreenshots() {
             <rect width="1280" height="720" fill="#f8fafc"/>
             <rect x="40" y="40" width="1200" height="640" rx="12" fill="white" stroke="#e2e8f0" stroke-width="2"/>
             <rect x="60" y="60" width="200" height="600" fill="#5750f1" opacity="0.1"/>
-            <text x="640" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" fill="#334155">JPCO Dashboard</text>
+            <text x="640" y="360" text-anchor="middle" font-family="Arial, sans-serif" font-size="48" fill="#334155">EdVentureHub Dashboard</text>
             <text x="640" y="420" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#64748b">Desktop View</text>
           </svg>
         `),
@@ -150,7 +150,7 @@ async function generateScreenshots() {
             <rect width="390" height="844" fill="#f8fafc"/>
             <rect x="20" y="20" width="350" height="804" rx="12" fill="white" stroke="#e2e8f0" stroke-width="2"/>
             <rect x="30" y="30" width="330" height="60" fill="#5750f1"/>
-            <text x="195" y="422" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#334155">JPCO Dashboard</text>
+            <text x="195" y="422" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" fill="#334155">EdVentureHub Dashboard</text>
             <text x="195" y="460" text-anchor="middle" font-family="Arial, sans-serif" font-size="16" fill="#64748b">Mobile View</text>
           </svg>
         `),

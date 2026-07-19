@@ -157,7 +157,7 @@ export default function NotificationTestPage() {
           <li>Title: "New Task Assigned"</li>
           <li>Body: "You have been assigned a new task: Test Notification"</li>
           <li>Action buttons: "Open" and "Dismiss"</li>
-          <li>Icon: JPCO logo</li>
+          <li>Icon: EdVentureHub logo</li>
         </ul>
       </div>
 

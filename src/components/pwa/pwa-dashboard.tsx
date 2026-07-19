@@ -87,7 +87,7 @@ export function PWADashboard() {
           <div className="space-y-4">
             <div>
               <h2 className="text-lg font-semibold text-dark dark:text-white mb-2">
-                Install JPCO Dashboard
+                Install EdVentureHub Dashboard
               </h2>
               <p className="text-sm text-dark-4 dark:text-dark-6 mb-4">
                 Install the app for a native experience with offline support and quick access.
@@ -105,7 +105,7 @@ export function PWADashboard() {
                       App Installed
                     </h3>
                     <p className="text-sm text-green-700 dark:text-green-300 mt-1">
-                      JPCO Dashboard is installed and ready to use. You can access it from your home screen or app launcher.
+                      EdVentureHub Dashboard is installed and ready to use. You can access it from your home screen or app launcher.
                     </p>
                   </div>
                 </div>

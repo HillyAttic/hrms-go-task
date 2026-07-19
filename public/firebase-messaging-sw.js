@@ -92,7 +92,7 @@ setInterval(() => {
 
 // Build notification options from data payload - ENHANCED FOR MOBILE
 function buildNotificationOptions(data, notification = {}) {
-  const notificationId = data.notificationId || `jpco-${Date.now()}`;
+  const notificationId = data.notificationId || `edventurehub-${Date.now()}`;
 
   // Check if we've already shown this notification
   if (shownNotifications.has(notificationId)) {
@@ -152,7 +152,7 @@ messaging.onBackgroundMessage((payload) => {
     const notification = payload.notification || {};
 
     // Priority: data.title > notification.title > default
-    const title = data.title || notification.title || 'JPCO Dashboard';
+    const title = data.title || notification.title || 'EdVentureHub Dashboard';
 
     console.log('[SW v7.0] Extracted title:', title);
     console.log('[SW v7.0] Data keys:', Object.keys(data));
@@ -178,11 +178,11 @@ messaging.onBackgroundMessage((payload) => {
     console.error('[SW v7.0] ❌ Stack:', error.stack);
 
     // Fallback notification
-    return self.registration.showNotification('JPCO Dashboard', {
+    return self.registration.showNotification('EdVentureHub Dashboard', {
       body: 'You have a new notification',
       icon: '/images/logo/logo-icon.svg',
       badge: '/images/logo/logo-icon.svg',
-      tag: 'jpco-error-' + Date.now(),
+      tag: 'edventurehub-error-' + Date.now(),
       requireInteraction: true,
       vibrate: [300, 100, 300, 100, 300],
     });
