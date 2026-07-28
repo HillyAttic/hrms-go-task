@@ -36,6 +36,8 @@ function convertTimestamps(data: any, id: string) {
 
 function validateLocation(location: any) {
     if (!location) return undefined;
+    // Defense in depth: reject placeholder payloads even if a buggy client sends them
+    if (location.placeholder === true) return undefined;
     const lat = location.latitude ?? location.lat;
     const lng = location.longitude ?? location.lng;
     if (typeof lat === 'number' && typeof lng === 'number' && !isNaN(lat) && !isNaN(lng)) {

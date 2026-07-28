@@ -357,7 +357,7 @@ export function GeolocationAttendanceTracker() {
     try {
       console.log('Starting clock in process...');
 
-      let locationData;
+      let locationData: any = undefined;
       if (requireLocation) {
         const loc = await getCurrentLocation();
         console.log('Location obtained - Raw:', loc);
@@ -388,16 +388,15 @@ export function GeolocationAttendanceTracker() {
         console.log('Captured location: Lat', loc.lat, ', Lng', loc.lng);
         console.log('Difference: Lat', Math.abs(28.637959 - loc.lat).toFixed(6), ', Lng', Math.abs(77.285334 - loc.lng).toFixed(6));
       } else {
-        // Location tracking disabled — use placeholder
-        console.log('Location tracking disabled, using placeholder coordinates');
-        locationData = { latitude: 0, longitude: 0, accuracy: 0, placeholder: true };
+        // Location tracking disabled — skip location entirely (no placeholder writes)
+        console.log('Location tracking disabled, skipping location data');
       }
-      
+
       const record = await attendanceService.clockIn({
         employeeId: auth.user.uid,
         employeeName: auth.userProfile?.displayName || auth.user.email || 'User',
         timestamp: new Date(),
-        location: locationData
+        ...(locationData !== undefined ? { location: locationData } : {})
       });
       
       console.log('Clock in result:', record);
@@ -472,7 +471,7 @@ export function GeolocationAttendanceTracker() {
     setError('');
 
     try {
-      let locationData;
+      let locationData: any = undefined;
       if (requireLocation) {
         const loc = await getCurrentLocation();
         console.log('Clock out - Location obtained - Raw:', loc);
@@ -490,15 +489,15 @@ export function GeolocationAttendanceTracker() {
           accuracy: loc.accuracy
         };
       } else {
-        console.log('Clock out - Location tracking disabled, using placeholder');
-        locationData = { latitude: 0, longitude: 0, accuracy: 0, placeholder: true };
+        // Location tracking disabled — skip location entirely (no placeholder writes)
+        console.log('Clock out - Location tracking disabled, skipping location data');
       }
-      
+
       console.log('Sending clock out location data to service:', locationData);
-      
+
       await attendanceService.clockOut(recordId, {
         timestamp: new Date(),
-        location: locationData
+        ...(locationData !== undefined ? { location: locationData } : {})
       });
       
       // Refresh status to ensure UI is in sync with backend
