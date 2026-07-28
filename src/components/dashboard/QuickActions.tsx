@@ -11,7 +11,6 @@ import {
   CalendarDaysIcon,
   ClipboardDocumentCheckIcon,
   ClockIcon,
-  MapPinIcon,
   CheckCircleIcon,
   CalendarIcon,
   Squares2X2Icon,
@@ -101,13 +100,6 @@ export function QuickActions({
       showForManager: true
     },
     {
-      label: 'Client Visits',
-      icon: <MapPinIcon className="w-5 h-5" />,
-      onClick: () => router.push('/admin/client-visits'),
-      color: 'bg-purple-600 hover:bg-purple-700',
-      showForManager: false
-    },
-    {
       label: 'Leave Approvals',
       icon: <CheckCircleIcon className="w-5 h-5" />,
       onClick: () => router.push('/admin/leave-approvals'),
@@ -130,9 +122,9 @@ export function QuickActions({
       showForManager: false
     },
     {
-      label: 'Clients',
+      label: 'Projects',
       icon: <BuildingOfficeIcon className="w-5 h-5" />,
-      onClick: () => router.push('/clients'),
+      onClick: () => router.push('/projects'),
       color: 'bg-emerald-600 hover:bg-emerald-700',
       showForManager: false
     },
