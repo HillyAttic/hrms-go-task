@@ -19,6 +19,12 @@ import {
   UserGroupIcon,
   ExclamationTriangleIcon,
   ShieldExclamationIcon,
+  FolderIcon,
+  EyeIcon,
+  PencilIcon,
+  TrashIcon,
+  Squares2X2Icon,
+  ListBulletIcon,
 } from '@heroicons/react/24/outline';
 import { useModal } from '@/contexts/modal-context';
 
@@ -252,53 +258,53 @@ export default function TeamsPage() {
           </Card>
         )}
 
-        {/* Team Statistics */}
+        {/* Team Statistics - Redesigned with gradients */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <UserGroupIcon className="w-6 h-6 text-blue-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Total Teams</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">{teams.length}</p>
-                </div>
+          {/* Total Teams */}
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 p-6 shadow-lg shadow-blue-500/25 border-0">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.15)_1px,transparent_0)] bg-[size:20px_20px]" />
+            <div className="relative flex items-center gap-4">
+              <div className="flex-shrink-0 p-3 bg-white/20 rounded-xl backdrop-blur-sm">
+                <UserGroupIcon className="w-7 h-7 text-white" />
               </div>
-            </CardContent>
-          </Card>
+              <div>
+                <p className="text-sm text-blue-100 font-medium">Total Teams</p>
+                <p className="text-3xl font-bold text-white">{teams.length}</p>
+              </div>
+            </div>
+          </div>
 
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-green-100 rounded-lg">
-                  <UserGroupIcon className="w-6 h-6 text-green-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Active Teams</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {teams.filter(team => team.status === 'active').length}
-                  </p>
-                </div>
+          {/* Active Teams */}
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 p-6 shadow-lg shadow-emerald-500/25 border-0">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.15)_1px,transparent_0)] bg-[size:20px_20px]" />
+            <div className="relative flex items-center gap-4">
+              <div className="flex-shrink-0 p-3 bg-white/20 rounded-xl backdrop-blur-sm">
+                <UserGroupIcon className="w-7 h-7 text-white" />
               </div>
-            </CardContent>
-          </Card>
+              <div>
+                <p className="text-sm text-emerald-100 font-medium">Active Teams</p>
+                <p className="text-3xl font-bold text-white">
+                  {teams.filter(team => team.status === 'active').length}
+                </p>
+              </div>
+            </div>
+          </div>
 
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-yellow-100 rounded-lg">
-                  <UserGroupIcon className="w-6 h-6 text-yellow-600" />
-                </div>
-                <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Total Members</p>
-                  <p className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {teams.reduce((total, team) => total + team.members.length + 1, 0)}
-                  </p>
-                </div>
+          {/* Total Members */}
+          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 p-6 shadow-lg shadow-amber-500/25 border-0">
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.15)_1px,transparent_0)] bg-[size:20px_20px]" />
+            <div className="relative flex items-center gap-4">
+              <div className="flex-shrink-0 p-3 bg-white/20 rounded-xl backdrop-blur-sm">
+                <UserGroupIcon className="w-7 h-7 text-white" />
               </div>
-            </CardContent>
-          </Card>
+              <div>
+                <p className="text-sm text-amber-100 font-medium">Total Members</p>
+                <p className="text-3xl font-bold text-white">
+                  {teams.reduce((total, team) => total + team.members.length + 1, 0)}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Filters */}
@@ -312,22 +318,22 @@ export default function TeamsPage() {
           availableDepartments={[]}
         />
 
-        {/* View Toggle Buttons */}
+        {/* View Toggle Buttons - Icon based */}
         <div className="flex justify-end">
-          <div className="flex items-center space-x-2">
+          <div className="inline-flex rounded-lg border border-gray-300 dark:border-gray-600 overflow-hidden shadow-sm">
             <button
               onClick={() => setViewMode('grid')}
-              className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${viewMode === 'grid' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'}`}
+              className={`p-2.5 transition-colors ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
               aria-label="Grid view"
             >
-              Grid
+              <Squares2X2Icon className="w-5 h-5" />
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${viewMode === 'list' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'}`}
+              className={`p-2.5 border-l border-gray-300 dark:border-gray-600 transition-colors ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
               aria-label="List view"
             >
-              List
+              <ListBulletIcon className="w-5 h-5" />
             </button>
           </div>
         </div>
@@ -364,92 +370,140 @@ export default function TeamsPage() {
                 ))}
               </div>
             ) : (
-              /* List View */
-              <div className="bg-white dark:bg-gray-dark rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-                <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-3 bg-gray-50 dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 border-b border-gray-200 dark:border-gray-700">
-                  <div className="col-span-4">Team Name</div>
-                  <div className="col-span-3">Leader</div>
-                  <div className="col-span-2">Members</div>
-                  <div className="col-span-1">Status</div>
-                  <div className="col-span-2">Actions</div>
+              /* List View - Redesigned */
+              <div className="bg-white dark:bg-gray-dark rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
+                {/* Table Header */}
+                <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-3.5 bg-gray-50 dark:bg-gray-800/80 border-b-2 border-gray-200 dark:border-gray-700">
+                  <div className="col-span-4 text-[11px] uppercase tracking-wider font-semibold text-gray-500 dark:text-gray-400">Team Name</div>
+                  <div className="col-span-3 text-[11px] uppercase tracking-wider font-semibold text-gray-500 dark:text-gray-400">Leader</div>
+                  <div className="col-span-2 text-[11px] uppercase tracking-wider font-semibold text-gray-500 dark:text-gray-400">Members</div>
+                  <div className="col-span-1 text-[11px] uppercase tracking-wider font-semibold text-gray-500 dark:text-gray-400">Status</div>
+                  <div className="col-span-2 text-[11px] uppercase tracking-wider font-semibold text-gray-500 dark:text-gray-400 text-right">Actions</div>
                 </div>
-                <div className="divide-y divide-gray-200 dark:divide-gray-700">
+                <div className="divide-y divide-gray-100 dark:divide-gray-800">
                   {teams.map((team) => (
                     <div
                       key={team.id}
-                      className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 px-4 md:px-6 py-4 text-sm bg-white dark:bg-gray-dark hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                      className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 px-4 md:px-6 py-4 text-sm bg-white dark:bg-gray-dark hover:bg-gray-50/80 dark:hover:bg-gray-800/50 transition-colors"
                     >
                       {/* Mobile card view */}
-                      <div className="md:hidden space-y-2">
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <div className="font-medium text-gray-900 dark:text-white">{team.name}</div>
-                            <div className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                              {team.description || 'No description'}
+                      <div className="md:hidden space-y-3">
+                        <div className="flex items-start justify-between gap-3">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="font-semibold text-gray-900 dark:text-white">{team.name}</span>
+                              {team.linkedProjectId && (
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-medium bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-800">
+                                  <FolderIcon className="w-2.5 h-2.5" />
+                                  {team.linkedProjectName || 'Project Team'}
+                                </span>
+                              )}
                             </div>
+                            {team.description && (
+                              <div className="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">
+                                {team.description}
+                              </div>
+                            )}
                           </div>
-                          <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ml-2 ${team.status === 'active' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'}`}>
+                          <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium flex-shrink-0 ${team.status === 'active' ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-800' : team.status === 'inactive' ? 'bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border border-amber-100 dark:border-amber-800' : 'bg-gray-50 text-gray-600 dark:bg-gray-800 dark:text-gray-400 border border-gray-200 dark:border-gray-700'}`}>
                             {team.status}
                           </span>
                         </div>
-                        <div className="text-xs text-gray-600 dark:text-gray-400 space-y-0.5">
-                          <div>Leader: <span className="text-gray-800 dark:text-gray-200">{team.leaderName || 'Unassigned'}</span></div>
-                          <div>{team.members.length} {team.members.length === 1 ? 'member' : 'members'}</div>
+                        <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
+                          <div className="flex items-center gap-1.5">
+                            <UserGroupIcon className="w-3.5 h-3.5" />
+                            <span>Leader: <span className="font-medium text-gray-800 dark:text-gray-200">{team.leaderName || 'Unassigned'}</span></span>
+                          </div>
+                          <div className="flex items-center gap-1.5">
+                            <UserGroupIcon className="w-3.5 h-3.5" />
+                            <span>{team.members.length} {team.members.length === 1 ? 'member' : 'members'}</span>
+                          </div>
                         </div>
-                        <div className="flex gap-3 pt-1">
+                        <div className="flex gap-2 pt-2 border-t border-gray-100 dark:border-gray-800">
                           <button
                             onClick={() => handleViewDetails(team.id!)}
-                            className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium"
+                            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-600 bg-blue-50 rounded-md hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/20 dark:hover:bg-blue-900/40 transition-colors"
                             aria-label="View details"
-                          >View</button>
+                          >
+                            <EyeIcon className="w-3.5 h-3.5" />View
+                          </button>
                           <button
                             onClick={() => handleEditClick(team)}
-                            className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 text-sm font-medium"
+                            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-indigo-600 bg-indigo-50 rounded-md hover:bg-indigo-100 dark:text-indigo-400 dark:bg-indigo-900/20 dark:hover:bg-indigo-900/40 transition-colors"
                             aria-label="Edit team"
-                          >Edit</button>
+                          >
+                            <PencilIcon className="w-3.5 h-3.5" />Edit
+                          </button>
                           <button
                             onClick={() => handleDeleteTeam(team.id!)}
-                            className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 text-sm font-medium"
+                            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 rounded-md hover:bg-red-100 dark:text-red-400 dark:bg-red-900/20 dark:hover:bg-red-900/40 transition-colors"
                             aria-label="Delete team"
-                          >Delete</button>
+                          >
+                            <TrashIcon className="w-3.5 h-3.5" />Delete
+                          </button>
                         </div>
                       </div>
 
                       {/* Desktop grid view */}
                       <div className="hidden md:contents">
-                        <div className="col-span-4">
-                          <div className="font-medium text-gray-900 dark:text-white">{team.name}</div>
-                          <div className="text-gray-500 dark:text-gray-400 text-xs mt-1 truncate">
-                            {team.description || 'No description'}
+                        <div className="col-span-4 flex items-center gap-3">
+                          <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-sm font-bold shadow-sm">
+                            {team.name.charAt(0).toUpperCase()}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2 flex-wrap">
+                              <span className="font-semibold text-gray-900 dark:text-white truncate">{team.name}</span>
+                              {team.linkedProjectId && (
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-medium bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-800 flex-shrink-0">
+                                  <FolderIcon className="w-2.5 h-2.5" />
+                                  {team.linkedProjectName || 'Project Team'}
+                                </span>
+                              )}
+                            </div>
+                            {team.description && (
+                              <div className="text-gray-500 dark:text-gray-400 text-xs mt-0.5 truncate">
+                                {team.description}
+                              </div>
+                            )}
                           </div>
                         </div>
                         <div className="col-span-3 text-gray-700 dark:text-gray-300 flex items-center">
-                          {team.leaderName || 'Unassigned'}
+                          <span className="text-gray-600 dark:text-gray-400">{team.leaderName || 'Unassigned'}</span>
                         </div>
-                        <div className="col-span-2 text-gray-700 dark:text-gray-300 flex items-center">
-                          {team.members.length}
+                        <div className="col-span-2 text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                          <UserGroupIcon className="w-4 h-4 text-gray-400" />
+                          <span className="font-medium">{team.members.length}</span>
                         </div>
                         <div className="col-span-1 flex items-center">
-                          <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${team.status === 'active' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300'}`}>
+                          <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${team.status === 'active' ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-800' : team.status === 'inactive' ? 'bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border border-amber-100 dark:border-amber-800' : 'bg-gray-50 text-gray-600 dark:bg-gray-800 dark:text-gray-400 border border-gray-200 dark:border-gray-700'}`}>
                             {team.status}
                           </span>
                         </div>
-                        <div className="col-span-2 flex items-center space-x-2">
+                        <div className="col-span-2 flex items-center justify-end gap-1">
                           <button
                             onClick={() => handleViewDetails(team.id!)}
-                            className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 text-sm"
+                            className="p-2 rounded-lg text-blue-600 hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-900/20 transition-colors"
                             aria-label="View details"
-                          >View</button>
+                            title="View details"
+                          >
+                            <EyeIcon className="w-4 h-4" />
+                          </button>
                           <button
                             onClick={() => handleEditClick(team)}
-                            className="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 dark:hover:text-indigo-300 text-sm"
+                            className="p-2 rounded-lg text-indigo-600 hover:bg-indigo-50 dark:text-indigo-400 dark:hover:bg-indigo-900/20 transition-colors"
                             aria-label="Edit team"
-                          >Edit</button>
+                            title="Edit team"
+                          >
+                            <PencilIcon className="w-4 h-4" />
+                          </button>
                           <button
                             onClick={() => handleDeleteTeam(team.id!)}
-                            className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 text-sm"
+                            className="p-2 rounded-lg text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20 transition-colors"
                             aria-label="Delete team"
-                          >Delete</button>
+                            title="Delete team"
+                          >
+                            <TrashIcon className="w-4 h-4" />
+                          </button>
                         </div>
                       </div>
                     </div>

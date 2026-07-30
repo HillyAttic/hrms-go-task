@@ -73,6 +73,9 @@ export function ProjectListView({
             <th className="px-2 py-2 text-left text-xs font-medium text-gray-700 dark:text-gray-300" style={{ minWidth: '100px' }}>
               Start Date
             </th>
+            <th className="px-2 py-2 text-left text-xs font-medium text-gray-700 dark:text-gray-300" style={{ minWidth: '100px' }}>
+              End Date
+            </th>
             <th className="px-2 py-2 text-center text-xs font-medium text-gray-700 dark:text-gray-300" style={{ minWidth: '100px' }}>
               Status
             </th>
@@ -121,10 +124,24 @@ export function ProjectListView({
               {/* Team */}
               <td className="px-2 py-2 text-xs text-gray-700 dark:text-gray-300">
                 <div className="truncate" title={project.teamMembers?.map((m) => m.name).join(', ')}>
-                  {project.teamMembers?.slice(0, 2).map((m) => m.name).join(', ')}
-                  {project.teamMembers && project.teamMembers.length > 2 && (
-                    <span className="text-gray-400"> +{project.teamMembers.length - 2}</span>
-                  )}
+                  {(() => {
+                    const lead = project.teamMembers?.find((m) => m.isTeamLead);
+                    const members = project.teamMembers || [];
+                    return (
+                      <>
+                        {lead && (
+                          <span className="inline-flex items-center gap-0.5 text-amber-700 dark:text-amber-400 font-medium">
+                            ★ {lead.name}
+                          </span>
+                        )}
+                        {members.length > 0 && (
+                          <span className={lead ? 'text-gray-500 ml-1' : ''}>
+                            ({members.length} {members.length === 1 ? 'member' : 'members'})
+                          </span>
+                        )}
+                      </>
+                    );
+                  })()}
                 </div>
               </td>
 
@@ -136,6 +153,11 @@ export function ProjectListView({
               {/* Start Date */}
               <td className="px-2 py-2 text-xs text-gray-700 dark:text-gray-300">
                 {formatDate(project.startDate)}
+              </td>
+
+              {/* End Date */}
+              <td className="px-2 py-2 text-xs text-gray-700 dark:text-gray-300">
+                {formatDate(project.endDate)}
               </td>
 
               {/* Status */}

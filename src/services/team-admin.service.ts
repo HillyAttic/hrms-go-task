@@ -22,6 +22,8 @@ export interface Team {
   memberIds: string[];
   members: TeamMember[];
   status: 'active' | 'inactive' | 'archived';
+  linkedProjectId?: string;   // Set when team is auto-synced from a project
+  linkedProjectName?: string; // Name of the linked project (avoids extra Firestore read)
   createdAt?: Date;
   updatedAt?: Date;
 }

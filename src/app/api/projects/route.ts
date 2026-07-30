@@ -10,6 +10,7 @@ const teamMemberSchema = z.object({
   name: z.string().min(1),
   email: z.string().email().optional(),
   role: z.string().optional(),
+  isTeamLead: z.boolean().optional(),
 });
 
 const milestoneSchema = z.object({
@@ -128,6 +129,20 @@ export async function POST(request: NextRequest) {
     };
 
     const newProject = await projectAdminService.create(projectData as any);
+    console.log('[API /api/projects POST] Created project:', newProject.id);
+
+    // Sync team members to a linked team in the 'teams' collection
+    try {
+      console.log('[API /api/projects POST] Starting team sync for project:', newProject.id);
+      const teamId = await projectAdminService.syncProjectTeam(
+        newProject.id!,
+        newProject.projectName,
+        data.teamMembers
+      );
+      console.log('[API /api/projects POST] Team sync successful, team ID:', teamId);
+    } catch (syncError) {
+      console.error('[API /api/projects POST] Team sync failed (project was still created):', syncError);
+    }
 
     return NextResponse.json(newProject, { status: 201 });
   } catch (error) {

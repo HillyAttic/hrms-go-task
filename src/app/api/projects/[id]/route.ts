@@ -10,6 +10,7 @@ const teamMemberSchema = z.object({
   name: z.string().min(1),
   email: z.string().email().optional(),
   role: z.string().optional(),
+  isTeamLead: z.boolean().optional(),
 });
 
 const milestoneSchema = z.object({
@@ -133,6 +134,22 @@ export async function PUT(
     }
 
     const updatedProject = await projectAdminService.update(id, updateData);
+    console.log('[API /api/projects/[id] PUT] Updated project:', id);
+
+    // Sync team members to the linked team if teamMembers were updated
+    if (updateData.teamMembers) {
+      try {
+        console.log('[API /api/projects/[id] PUT] Starting team sync for project:', id);
+        const teamId = await projectAdminService.syncProjectTeam(
+          id,
+          updatedProject.projectName,
+          updateData.teamMembers
+        );
+        console.log('[API /api/projects/[id] PUT] Team sync successful, team ID:', teamId);
+      } catch (syncError) {
+        console.error('[API /api/projects/[id] PUT] Team sync failed (project was still updated):', syncError);
+      }
+    }
 
     return NextResponse.json(updatedProject);
   } catch (error) {

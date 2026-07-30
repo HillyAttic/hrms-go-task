@@ -58,6 +58,7 @@ function handleFirebaseError(error: any): ErrorResponse {
     'unauthenticated': 'Authentication required',
     'unavailable': 'Service temporarily unavailable. Please try again',
     'deadline-exceeded': 'Request timeout. Please try again',
+    'failed-precondition': 'A required database index is pending. This is a one-time setup that completes within minutes.',
     'auth/invalid-phone-number': 'Invalid phone number format. Use 10 digits or E.164 format (+919876543210)',
     'auth/phone-number-already-exists': 'Phone number already registered',
     'auth/email-already-exists': 'Email address already registered',

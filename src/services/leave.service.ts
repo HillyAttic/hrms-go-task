@@ -257,7 +257,7 @@ export const leaveService = {
       // Return default leave types if fetch fails
       return [
         {
-          id: 'sick-leave',
+          id: 'sick',
           name: 'Sick Leave',
           code: 'SICK',
           isPaid: true,
@@ -271,7 +271,7 @@ export const leaveService = {
           updatedAt: new Date()
         },
         {
-          id: 'casual-leave',
+          id: 'casual',
           name: 'Casual Leave',
           code: 'CASUAL',
           isPaid: true,

@@ -18,8 +18,12 @@ import {
   PlusIcon,
   XMarkIcon,
   MagnifyingGlassIcon,
+  StarIcon as StarOutline,
 } from '@heroicons/react/24/outline';
-import { CheckCircleIcon as CheckCircleSolid } from '@heroicons/react/24/solid';
+import {
+  CheckCircleIcon as CheckCircleSolid,
+  StarIcon as StarSolid,
+} from '@heroicons/react/24/solid';
 
 // ── Zod Schema ─────────────────────────────────────────────────────────────
 
@@ -30,6 +34,7 @@ const projectFormSchema = z.object({
     name: z.string().min(1),
     email: z.string().email().optional(),
     role: z.string().optional(),
+    isTeamLead: z.boolean().optional(),
   })).min(1, 'At least one team member is required'),
   clientSpocName: z.string().min(1, 'Client SPOC name is required'),
   clientSpocEmail: z.string().email().optional().or(z.literal('')),
@@ -171,17 +176,20 @@ export function ProjectModal({
   // ── Populate form when editing ─────────────────────────────────────────
   useEffect(() => {
     if (project) {
-      const toDate = (val: any): Date =>
-        val?.toDate ? val.toDate() : val instanceof Date ? val : new Date(val);
+      const toDate = (val: any): Date | null => {
+        if (!val) return null;
+        const d = val?.toDate ? val.toDate() : val instanceof Date ? val : new Date(val);
+        return isNaN(d.getTime()) ? null : d;
+      };
 
       const startDate = project.startDate
-        ? toDate(project.startDate).toISOString().split('T')[0]
+        ? toDate(project.startDate)?.toISOString().split('T')[0] ?? ''
         : '';
       const endDate = project.endDate
-        ? toDate(project.endDate).toISOString().split('T')[0]
+        ? toDate(project.endDate)?.toISOString().split('T')[0] ?? ''
         : '';
       const invoiceRaisedAt = project.invoice?.raisedAt
-        ? toDate(project.invoice.raisedAt).toISOString().split('T')[0]
+        ? toDate(project.invoice.raisedAt)?.toISOString().split('T')[0] ?? ''
         : '';
 
       reset({
@@ -253,6 +261,26 @@ export function ProjectModal({
     if (current) {
       setValue(`milestones.${index}.completed`, !current.completed);
     }
+  };
+
+  // ── Team Lead helpers ──────────────────────────────────────────────────
+  const setTeamLead = (uid: string) => {
+    // Set this member as the lead, unset all others (exclusive)
+    if (!watchedTeamMembers) return;
+    const updated = watchedTeamMembers.map((m) => ({
+      ...m,
+      isTeamLead: m.uid === uid,
+    }));
+    setValue('teamMembers', updated);
+  };
+
+  const clearTeamLead = (uid: string) => {
+    // Only clear if this member is currently the lead
+    if (!watchedTeamMembers) return;
+    const updated = watchedTeamMembers.map((m) =>
+      m.uid === uid ? { ...m, isTeamLead: false } : m
+    );
+    setValue('teamMembers', updated);
   };
 
   // ── Auto-calculate progress from milestones ───────────────────────────
@@ -370,9 +398,39 @@ export function ProjectModal({
                 {watchedTeamMembers.map((member, idx) => (
                   <span
                     key={member.uid}
-                    className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300 text-xs font-medium"
+                    className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${
+                      member.isTeamLead
+                        ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 ring-2 ring-amber-400 dark:ring-amber-500'
+                        : 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'
+                    }`}
                   >
+                    {member.isTeamLead && (
+                      <StarSolid className="w-3 h-3 mr-0.5 text-amber-500" aria-label="Team Lead" />
+                    )}
                     {member.name}
+                    {member.isTeamLead && (
+                      <span className="ml-0.5 text-[10px] uppercase tracking-wide font-bold">TL</span>
+                    )}
+                    {!member.isTeamLead && (
+                      <button
+                        type="button"
+                        onClick={() => setTeamLead(member.uid)}
+                        title="Mark as Team Lead"
+                        className="hover:bg-amber-200 dark:hover:bg-amber-800 rounded-full p-0.5 ml-0.5"
+                      >
+                        <StarOutline className="w-3 h-3 text-amber-600 dark:text-amber-400" />
+                      </button>
+                    )}
+                    {member.isTeamLead && (
+                      <button
+                        type="button"
+                        onClick={() => clearTeamLead(member.uid)}
+                        title="Remove Team Lead"
+                        className="hover:bg-amber-200 dark:hover:bg-amber-800 rounded-full p-0.5 ml-0.5"
+                      >
+                        <StarSolid className="w-3 h-3 text-amber-500" />
+                      </button>
+                    )}
                     <button
                       type="button"
                       onClick={() => removeMember(idx)}
@@ -408,42 +466,60 @@ export function ProjectModal({
                 ) : (
                   (Array.isArray(filteredUsers) ? filteredUsers : []).map((user) => {
                     const isSelected = selectedUids.has(user.uid);
+                    const isLead = watchedTeamMembers?.find((m) => m.uid === user.uid)?.isTeamLead || false;
                     return (
-                      <label
+                      <div
                         key={user.uid}
-                        className={`flex items-center gap-3 px-3 py-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800 ${
-                          isSelected ? 'bg-blue-50 dark:bg-blue-900/10' : ''
+                        className={`flex items-center gap-2 px-3 py-2 ${
+                          isSelected ? 'bg-blue-50 dark:bg-blue-900/10' : 'hover:bg-gray-50 dark:hover:bg-gray-800'
                         }`}
                       >
-                        <input
-                          type="checkbox"
-                          checked={isSelected}
-                          onChange={() => {
-                            if (isSelected) {
-                              const idx = watchedTeamMembers?.findIndex(
-                                (m) => m.uid === user.uid
-                              );
-                              if (idx !== undefined && idx >= 0) removeMember(idx);
-                            } else {
-                              appendMember({
-                                uid: user.uid,
-                                name: user.displayName,
-                                email: user.email,
-                                role: '',
-                              });
-                            }
-                          }}
-                          className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                        />
-                        <div className="text-sm">
-                          <span className="font-medium text-gray-900 dark:text-white">
-                            {user.displayName}
-                          </span>
-                          {user.email && (
-                            <span className="text-gray-500 ml-2">{user.email}</span>
-                          )}
-                        </div>
-                      </label>
+                        <label className="flex items-center gap-3 cursor-pointer flex-1">
+                          <input
+                            type="checkbox"
+                            checked={isSelected}
+                            onChange={() => {
+                              if (isSelected) {
+                                const idx = watchedTeamMembers?.findIndex(
+                                  (m) => m.uid === user.uid
+                                );
+                                if (idx !== undefined && idx >= 0) removeMember(idx);
+                              } else {
+                                appendMember({
+                                  uid: user.uid,
+                                  name: user.displayName,
+                                  email: user.email,
+                                  role: '',
+                                  isTeamLead: false,
+                                });
+                              }
+                            }}
+                            className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                          />
+                          <div className="text-sm">
+                            <span className="font-medium text-gray-900 dark:text-white">
+                              {user.displayName}
+                            </span>
+                            {user.email && (
+                              <span className="text-gray-500 ml-2">{user.email}</span>
+                            )}
+                          </div>
+                        </label>
+                        {isSelected && (
+                          <button
+                            type="button"
+                            onClick={() => (isLead ? clearTeamLead(user.uid) : setTeamLead(user.uid))}
+                            title={isLead ? 'Remove Team Lead' : 'Mark as Team Lead'}
+                            className="flex-shrink-0 p-1 rounded-full hover:bg-amber-100 dark:hover:bg-amber-900/30"
+                          >
+                            {isLead ? (
+                              <StarSolid className="w-4 h-4 text-amber-500" />
+                            ) : (
+                              <StarOutline className="w-4 h-4 text-gray-400 hover:text-amber-500" />
+                            )}
+                          </button>
+                        )}
+                      </div>
                     );
                   })
                 )}

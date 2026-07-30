@@ -12,18 +12,34 @@ export const NAV_DATA = [
         items: [],
       },
       {
+        title: "Attendance",
+        url: "/attendance",
+        icon: Icons.ClockIcon,
+        items: [],
+      },
+      {
         title: "Tasks",
         url: "/tasks",
         icon: Icons.TaskTrayIcon,
         items: [],
       },
       {
-        title: "Compliance",
-        url: "/calendar",
-        icon: Icons.ComplianceIcon,
+        title: "Projects",
+        url: "/projects",
+        icon: Icons.ProjectIcon,
         items: [],
-        hideOnMobile: true, // Hide on mobile view
       },
+      {
+        title: "My Schedule",
+        url: "/roster/update-schedule",
+        icon: Icons.Calendar,
+        items: [],
+      },
+    ],
+  },
+  {
+    label: "MANAGEMENT",
+    items: [
       {
         title: "Kanban",
         url: "/kanban",
@@ -36,20 +52,6 @@ export const NAV_DATA = [
         url: "/my-tasks",
         icon: Icons.MyTasksIcon,
         items: [],
-        // Available to all authenticated users
-      },
-
-    ],
-  },
-  {
-    label: "MANAGEMENT",
-    items: [
-      {
-        title: "Projects",
-        url: "/projects",
-        icon: Icons.ProjectIcon,
-        items: [],
-        requiresRole: ['admin', 'manager', 'employee'],
       },
       {
         title: "Non-Recurring",
@@ -72,12 +74,6 @@ export const NAV_DATA = [
         requiresRole: ['admin', 'manager'], // Only managers and admins can see this
       },
       {
-        title: "Attendance",
-        url: "/attendance",
-        icon: Icons.ClockIcon,
-        items: [],
-      },
-      {
         title: "Attendance Tray",
         url: "/attendance/tray",
         icon: Icons.ClockIcon,
@@ -94,19 +90,6 @@ export const NAV_DATA = [
         title: "View Roster",
         url: "/roster/view-schedule",
         icon: Icons.RosterIcon,
-        items: [],
-        requiresRole: ['admin', 'manager'], // Only managers and admins can see this
-      },
-      {
-        title: "Update Roster",
-        url: "/roster/update-schedule",
-        icon: Icons.Calendar,
-        items: [],
-      },
-      {
-        title: "Reports",
-        url: "/reports",
-        icon: Icons.ReportsIcon,
         items: [],
         requiresRole: ['admin', 'manager'], // Only managers and admins can see this
       },
@@ -234,6 +217,20 @@ export const NAV_DATA = [
         url: "/categories",
         icon: Icons.CategoriesIcon,
         items: [],
+      },
+      {
+        title: "Calendar",
+        url: "/calendar",
+        icon: Icons.ComplianceIcon,
+        items: [],
+        hideOnMobile: true,
+      },
+      {
+        title: "Reports",
+        url: "/reports",
+        icon: Icons.ReportsIcon,
+        items: [],
+        requiresRole: ['admin', 'manager'],
       },
     ],
   },

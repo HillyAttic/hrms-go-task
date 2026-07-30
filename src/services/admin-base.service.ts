@@ -20,6 +20,48 @@ export interface QueryOptions {
 }
 
 /**
+ * Recursively convert Firestore Timestamp objects to JavaScript Dates.
+ * Handles nested objects and arrays.
+ */
+function convertTimestampsToDates<T>(data: T): T {
+  if (data === null || data === undefined) return data;
+
+  // Firestore Timestamp (firebase-admin v11+)
+  if (typeof (data as any).toDate === 'function') {
+    return (data as any).toDate() as T;
+  }
+
+  // Plain Timestamp-like object { seconds, nanoseconds }
+  if (
+    typeof data === 'object' &&
+    'seconds' in (data as any) &&
+    'nanoseconds' in (data as any) &&
+    Object.keys(data as any).length === 2
+  ) {
+    return new Date(
+      ((data as any).seconds as number) * 1000 +
+        ((data as any).nanoseconds as number) / 1_000_000
+    ) as T;
+  }
+
+  // Array — recurse each element
+  if (Array.isArray(data)) {
+    return data.map(convertTimestampsToDates) as unknown as T;
+  }
+
+  // Plain object — recurse keys
+  if (typeof data === 'object' && data.constructor === Object) {
+    const result: Record<string, any> = {};
+    for (const [key, value] of Object.entries(data as Record<string, any>)) {
+      result[key] = convertTimestampsToDates(value);
+    }
+    return result as T;
+  }
+
+  return data;
+}
+
+/**
  * Create an Admin SDK service for a Firestore collection
  * @param collectionName - Name of the Firestore collection
  */
@@ -31,7 +73,7 @@ export function createAdminService<T extends { id?: string }>(collectionName: st
     async getAll(options?: QueryOptions): Promise<T[]> {
       try {
         console.log(`[AdminService:${collectionName}] Fetching documents`);
-        
+
         let query: any = adminDb.collection(collectionName);
 
         // Apply filters
@@ -58,10 +100,8 @@ export function createAdminService<T extends { id?: string }>(collectionName: st
         snapshot.forEach((doc: any) => {
           const data = doc.data();
           documents.push({
-            ...data,
+            ...convertTimestampsToDates(data),
             id: doc.id,
-            createdAt: data.createdAt?.toDate?.() || data.createdAt,
-            updatedAt: data.updatedAt?.toDate?.() || data.updatedAt,
           } as unknown as T);
         });
 
@@ -85,10 +125,8 @@ export function createAdminService<T extends { id?: string }>(collectionName: st
 
         const data = doc.data()!;
         return {
-          ...data,
+          ...convertTimestampsToDates(data),
           id: doc.id,
-          createdAt: data.createdAt?.toDate?.() || data.createdAt,
-          updatedAt: data.updatedAt?.toDate?.() || data.updatedAt,
         } as unknown as T;
       } catch (error) {
         console.error(`[AdminService:${collectionName}] Error in getById:`, error);

@@ -828,7 +828,7 @@ export default function UpdateSchedulePage() {
                       onChange={(e) => setFormData({ ...formData, activityName: e.target.value })}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       required
-                      placeholder="e.g., Audit, Monthly Visit, ROC Filing"
+                      placeholder="e.g., Project planning, Sprint review, Team sync"
                     />
                   </div>
                   <div>
@@ -880,7 +880,7 @@ export default function UpdateSchedulePage() {
                       onChange={(e) => setFormData({ ...formData, taskDetail: e.target.value })}
                       className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                       required
-                      placeholder="e.g., GST filing and reconciliation"
+                      placeholder="e.g., Client visit, Project work, HR meeting"
                     />
                   </div>
                   <div>

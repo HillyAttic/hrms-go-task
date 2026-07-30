@@ -82,16 +82,43 @@ export class FirebaseService<T extends { id?: string }> {
   }
 
   /**
-   * Convert Firestore timestamp to Date
+   * Recursively convert Firestore Timestamp objects to JavaScript Dates.
+   * Handles nested objects and arrays so deeply nested date fields
+   * (e.g. invoice.raisedAt, milestones[].completedAt) are also converted.
    */
   private convertTimestamps(data: any): any {
-    const converted = { ...data };
-    Object.keys(converted).forEach((key) => {
-      if (converted[key] instanceof Timestamp) {
-        converted[key] = converted[key].toDate();
-      }
-    });
-    return converted;
+    if (data === null || data === undefined) return data;
+
+    // Firestore Timestamp instance
+    if (data instanceof Timestamp) {
+      return data.toDate();
+    }
+
+    // Plain Timestamp-like object { seconds, nanoseconds }
+    if (
+      typeof data === 'object' &&
+      'seconds' in data &&
+      'nanoseconds' in data &&
+      Object.keys(data).length === 2
+    ) {
+      return new Date(data.seconds * 1000 + data.nanoseconds / 1_000_000);
+    }
+
+    // Array — recurse each element
+    if (Array.isArray(data)) {
+      return data.map((item) => this.convertTimestamps(item));
+    }
+
+    // Plain object — recurse keys
+    if (typeof data === 'object' && data.constructor === Object) {
+      const result: Record<string, any> = {};
+      Object.keys(data).forEach((key) => {
+        result[key] = this.convertTimestamps(data[key]);
+      });
+      return result;
+    }
+
+    return data;
   }
 
   /**

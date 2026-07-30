@@ -388,24 +388,30 @@ export async function POST(request: NextRequest) {
     const end = new Date(endDate);
 
     // Check for duplicate submissions within the last 5 minutes
-    const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
-    const duplicateCheck = await adminDb
-      .collection('leave-requests')
-      .where('employeeId', '==', authResult.user.uid)
-      .where('leaveType', '==', leaveType)
-      .where('createdAt', '>', fiveMinutesAgo)
-      .get();
+    // Wrapped in try-catch so a missing index or other Firestore error doesn't block submission
+    let exactDuplicate: FirebaseFirestore.QueryDocumentSnapshot | undefined;
+    try {
+      const fiveMinutesAgo = new Date(Date.now() - 5 * 60 * 1000);
+      const duplicateCheck = await adminDb
+        .collection('leave-requests')
+        .where('employeeId', '==', authResult.user.uid)
+        .where('leaveType', '==', leaveType)
+        .where('createdAt', '>', fiveMinutesAgo)
+        .get();
 
-    // Check if any match exact dates and halfDay flag
-    const exactDuplicate = duplicateCheck.docs.find(doc => {
-      const data = doc.data();
-      const docStart = data.startDate?.toDate ? data.startDate.toDate() : new Date(data.startDate);
-      const docEnd = data.endDate?.toDate ? data.endDate.toDate() : new Date(data.endDate);
+      exactDuplicate = duplicateCheck.docs.find(doc => {
+        const data = doc.data();
+        const docStart = data.startDate?.toDate ? data.startDate.toDate() : new Date(data.startDate);
+        const docEnd = data.endDate?.toDate ? data.endDate.toDate() : new Date(data.endDate);
 
-      return docStart.toISOString() === start.toISOString() &&
-             docEnd.toISOString() === end.toISOString() &&
-             data.halfDay === (halfDay || false);
-    });
+        return docStart.toISOString() === start.toISOString() &&
+               docEnd.toISOString() === end.toISOString() &&
+               data.halfDay === (halfDay || false);
+      });
+    } catch (dupError) {
+      console.error('[leave-requests] Duplicate check failed (non-blocking):', dupError);
+      // Don't block submission — duplicate detection is a best-effort optimization
+    }
 
     if (exactDuplicate) {
       return NextResponse.json(
@@ -562,6 +568,12 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
+    console.error('[leave-requests] ❌ POST handler error:', {
+      message: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack?.split('\n').slice(0, 3).join('\n') : undefined,
+      code: (error as any)?.code,
+      details: (error as any)?.details,
+    });
     return handleApiError(error);
   }
 }

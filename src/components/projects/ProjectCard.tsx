@@ -72,12 +72,29 @@ export function ProjectCard({ project, onEdit, onDelete }: ProjectCardProps) {
         </div>
 
         {/* Team Members */}
-        <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 mb-3">
-          <UserGroupIcon className="w-4 h-4 flex-shrink-0" />
-          <span className="truncate">
-            {project.teamMembers?.slice(0, 3).map((m) => m.name).join(', ')}
-            {project.teamMembers?.length > 3 && ` +${project.teamMembers.length - 3} more`}
-          </span>
+        <div className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400 mb-3">
+          <UserGroupIcon className="w-4 h-4 flex-shrink-0 mt-0.5" />
+          <div className="truncate">
+            {(() => {
+              const lead = project.teamMembers?.find((m) => m.isTeamLead);
+              const members = project.teamMembers || [];
+              return (
+                <>
+                  {lead && (
+                    <div className="flex items-center gap-1 text-amber-700 dark:text-amber-400 font-medium">
+                      <span>★</span>
+                      <span className="truncate">{lead.name}</span>
+                      <span className="text-xs font-normal text-gray-500 dark:text-gray-400">TL</span>
+                    </div>
+                  )}
+                  <div className="truncate">
+                    {members.slice(0, 3).map((m) => m.name).join(', ')}
+                    {members.length > 3 && ` +${members.length - 3} more`}
+                  </div>
+                </>
+              );
+            })()}
+          </div>
         </div>
 
         {/* Progress Bar */}

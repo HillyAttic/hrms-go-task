@@ -60,7 +60,7 @@ export const leaveRequestSchema = z.object({
   endDate: z.date(),
   reason: z.string()
     .min(10, 'Reason must be at least 10 characters')
-    .max(1000, 'Reason must be 1000 characters or less'),
+    .max(500, 'Reason must be 500 characters or less'),
   halfDay: z.boolean().optional(),
 }).refine(
   (data) => data.endDate >= data.startDate,
@@ -76,7 +76,7 @@ export const wfhRequestSchema = z.object({
   endDate: z.date(),
   reason: z.string()
     .min(10, 'Reason must be at least 10 characters')
-    .max(1000, 'Reason must be 1000 characters or less'),
+    .max(500, 'Reason must be 500 characters or less'),
 }).refine(
   (data) => data.endDate >= data.startDate,
   {

@@ -21,6 +21,8 @@ export interface Team {
   memberIds: string[];
   members: TeamMember[];
   status: 'active' | 'inactive' | 'archived';
+  linkedProjectId?: string;
+  linkedProjectName?: string; // Name of the linked project (set when auto-synced from a project)
   createdAt?: Date;
   updatedAt?: Date;
 }
