@@ -86,9 +86,8 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
 
     const { action, reason, approvalReason } = validation.data;
 
-    if (action === 'reject' && !reason) {
-      return ErrorResponses.badRequest('Rejection reason is required');
-    }
+    // A rejection reason is optional: "Reject" rejects outright, while
+    // "Reject with Reason" attaches a note for the employee.
 
     // Use Admin SDK to get approver name and update leave request
     const { adminDb } = await import('@/lib/firebase-admin');
