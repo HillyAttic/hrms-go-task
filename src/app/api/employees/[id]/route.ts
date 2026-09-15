@@ -15,6 +15,11 @@ const updateEmployeeSchema = z.object({
   dateOfBirth: z.string().optional(),
   salary: z.number().optional(),
   dateOfJoining: z.string().optional(),
+  // Payroll fields (src/types/payroll.types.ts)
+  grossSalary: z.number().optional(),
+  doj: z.string().nullable().optional(),
+  pan: z.string().nullable().optional(),
+  designation: z.string().optional(),
   role: z.enum(['Manager', 'Admin', 'Employee']).optional(),
   status: z.enum(['active', 'on-leave', 'resigned']).optional(),
   managerId: z.string().optional(),

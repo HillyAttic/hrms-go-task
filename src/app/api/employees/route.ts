@@ -176,6 +176,11 @@ export async function GET(request: NextRequest) {
             phone: data.phoneNumber || data.phone || '',
             role: employeeAdminService.mapUserRoleToEmployeeRole(data.role),
             status: (data.status as 'active' | 'on-leave' | 'resigned') || 'active',
+            department: data.department || '',
+            grossSalary: data.grossSalary ?? data.salary ?? 0,
+            doj: data.doj || data.dateOfJoining || null,
+            pan: data.pan || null,
+            designation: data.designation || '',
             createdAt: data.createdAt?.toDate?.() || new Date(),
             updatedAt: data.updatedAt?.toDate?.() || new Date(),
           };

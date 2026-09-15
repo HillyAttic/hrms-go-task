@@ -87,6 +87,23 @@ export function Notification() {
   }, [isOpen, permissionGranted, requestPermission]);
 
   const handleNotificationClick = async (notification: any) => {
+    // Salary-slip notifications deep-link to a specific period. Stash it for the
+    // page to pick up on mount, and fire the event so an already-mounted page
+    // retargets itself instead of needing a reload.
+    const slipMonth = notification.metadata?.month ?? notification.data?.month;
+    const slipYear = notification.metadata?.year ?? notification.data?.year;
+    if (notification.type === 'salary-slip-generated' || notification.type === 'salary-slip-access') {
+      if (slipMonth !== undefined && slipYear !== undefined) {
+        sessionStorage.setItem('salarySlipMonth', String(slipMonth));
+        sessionStorage.setItem('salarySlipYear', String(slipYear));
+        window.dispatchEvent(
+          new CustomEvent('salarySlipFilterChange', {
+            detail: { month: Number(slipMonth), year: Number(slipYear) },
+          })
+        );
+      }
+    }
+
     if (!notification.read) {
       await markAsRead(notification.id);
     }

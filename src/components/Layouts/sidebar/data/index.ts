@@ -100,6 +100,13 @@ export const NAV_DATA = [
         items: [],
         dynamicVisibility: true, // Visibility controlled by MIS config
       },
+      {
+        title: "Salary Slip",
+        url: "/salary-slip",
+        icon: Icons.SalarySlipIcon,
+        items: [],
+        dynamicVisibility: true, // Shown only once an admin grants access to a slip
+      },
     ],
   },
   {
@@ -139,6 +146,13 @@ export const NAV_DATA = [
         icon: Icons.InvoiceIcon,
         items: [],
         requiresRole: ['admin'],
+      },
+      {
+        title: "Payroll Panel",
+        url: "/admin/salary-config",
+        icon: Icons.SalaryConfigIcon,
+        items: [],
+        requiresRole: ['admin', 'manager'],
       },
       // Authentication menu item hidden - users can access auth pages directly via URL if needed
       // {

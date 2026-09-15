@@ -123,6 +123,9 @@ function buildNotificationOptions(data, notification = {}) {
       type: data.type || 'general',
       taskId: data.taskId || null,
       timestamp: Date.now(),
+      // Salary-slip notifications deep-link to a period; keep it through the click.
+      month: data.month !== undefined ? data.month : null,
+      year: data.year !== undefined ? data.year : null,
     },
     // Add action buttons for better UX
     actions: [
@@ -202,7 +205,21 @@ self.addEventListener('notificationclick', (event) => {
     return;
   }
 
-  const urlToOpen = event.notification.data?.url || '/notifications';
+  const notificationData = event.notification.data || {};
+  let urlToOpen = notificationData.url || '/notifications';
+
+  // Salary-slip notifications: carry the period so the page can preselect it.
+  if (
+    notificationData.type === 'salary-slip' &&
+    notificationData.month !== null &&
+    notificationData.month !== undefined &&
+    notificationData.year !== null &&
+    notificationData.year !== undefined
+  ) {
+    const separator = urlToOpen.includes('?') ? '&' : '?';
+    urlToOpen = `${urlToOpen}${separator}month=${notificationData.month}&year=${notificationData.year}`;
+  }
+
   const fullUrl = new URL(urlToOpen, self.location.origin).href;
 
   console.log('[SW v7.0] Opening URL:', fullUrl);

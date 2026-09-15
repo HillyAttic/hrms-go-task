@@ -156,9 +156,15 @@ self.addEventListener('notificationclick', (event) => {
   event.notification.close();
 
   if (event.notification.data && event.notification.data.url) {
-    event.waitUntil(
-      clients.openWindow(event.notification.data.url)
-    );
+    // Salary-slip notifications carry the period so the page can preselect it.
+    // sessionStorage is not reachable from here, so it rides in as a query param.
+    const data = event.notification.data;
+    let url = data.url;
+    if (data.type === 'salary-slip' && data.month !== undefined && data.year !== undefined) {
+      const separator = url.includes('?') ? '&' : '?';
+      url = `${url}${separator}month=${data.month}&year=${data.year}`;
+    }
+    event.waitUntil(clients.openWindow(url));
   }
 });
 

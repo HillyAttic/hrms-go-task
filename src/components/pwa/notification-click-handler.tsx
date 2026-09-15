@@ -25,7 +25,30 @@ export function NotificationClickHandler() {
           // Set flag to prevent AuthWrapper from interfering
           sessionStorage.setItem('notificationNavigation', 'true');
 
-          router.push(url);
+          // Salary-slip deep links carry the period as query params; the page reads
+          // it from sessionStorage, so hand it over before navigating.
+          let target = url;
+          try {
+            const parsed = new URL(url, window.location.origin);
+            const month = parsed.searchParams.get('month');
+            const year = parsed.searchParams.get('year');
+            if (month !== null && year !== null) {
+              sessionStorage.setItem('salarySlipMonth', month);
+              sessionStorage.setItem('salarySlipYear', year);
+              window.dispatchEvent(
+                new CustomEvent('salarySlipFilterChange', {
+                  detail: { month: Number(month), year: Number(year) },
+                })
+              );
+              parsed.searchParams.delete('month');
+              parsed.searchParams.delete('year');
+              target = parsed.pathname + (parsed.search || '');
+            }
+          } catch {
+            target = url;
+          }
+
+          router.push(target);
 
           // Clear flag after navigation completes
           setTimeout(() => {

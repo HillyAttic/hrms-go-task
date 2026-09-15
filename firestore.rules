@@ -369,6 +369,34 @@ service cloud.firestore {
       allow write: if false;
     }
 
+    // PAYROLL SETTINGS (singleton)
+    // Employees need these to render their slip; only admins may change them.
+    match /payroll-settings/{settingsId} {
+      allow read: if isManager();
+      allow write: if isAdmin();
+    }
+
+    // SALARY SLIPS
+    // An employee may read their OWN slip — the sidebar's realtime listener needs to
+    // see the doc to decide whether to show the nav item, so accessGranted is NOT part
+    // of the read condition here. It IS enforced in the API for every other path, and
+    // the app only ever reads a granted slip. Tighten to `&& resource.data.accessGranted
+    // == true` and move the sidebar check to an API call if that gap matters to you.
+    // Managers reach other employees' slips through API routes (Admin SDK) only.
+    match /salary-slips/{slipId} {
+      allow read: if isAuthenticated() && resource.data.employeeId == request.auth.uid;
+      allow read, write: if isAdmin();
+    }
+
+    // SALARY SLIP TEMPLATES
+    // Employees render their slip from a template, so authenticated read is required.
+    // (The reference implementation omitted this block entirely and only worked
+    // because the Admin SDK bypasses rules — do not repeat that.)
+    match /salary-slip-templates/{templateId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
     // CATCH ALL - Deny everything else
     match /{document=**} {
       allow read, write: if false;

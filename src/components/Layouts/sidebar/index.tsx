@@ -12,6 +12,8 @@ import { MenuItem } from "./menu-item";
 import { useSidebarContext } from "./sidebar-context";
 import { useAuthEnhanced } from "@/hooks/use-auth-enhanced";
 import { authenticatedFetch } from "@/lib/api-client";
+import { collection, onSnapshot, query, where } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -25,6 +27,8 @@ export function Sidebar() {
   const [misConfig, setMisConfig] = useState<any>(null);
   const [misConfigLoaded, setMisConfigLoaded] = useState(false);
   const [isExclusivityLocked, setIsExclusivityLocked] = useState(true);
+  const [hasAccessibleSlips, setHasAccessibleSlips] = useState(false);
+  const [slipCheckDone, setSlipCheckDone] = useState(false);
 
   const toggleSection = (label: string) => {
     setCollapsedSections((prev) =>
@@ -42,6 +46,35 @@ export function Sidebar() {
       setIsOpen(false);
     }
   }, [pathname, isMobile]);
+
+  // Live check for the Salary Slip nav item. This is the ONE place payroll data is
+  // read with the client SDK — it is safe only because the `salary-slips` rule in
+  // firestore.rules restricts reads to `resource.data.employeeId == request.auth.uid`.
+  // Everything else in the payroll module goes through the API with the Admin SDK.
+  useEffect(() => {
+    if (!user?.uid) {
+      setSlipCheckDone(true);
+      return;
+    }
+
+    const unsubscribe = onSnapshot(
+      query(
+        collection(db, "salary-slips"),
+        where("employeeId", "==", user.uid),
+        where("accessGranted", "==", true)
+      ),
+      (snapshot) => {
+        setHasAccessibleSlips(!snapshot.empty);
+        setSlipCheckDone(true);
+      },
+      (error) => {
+        console.error("Error checking salary slip access:", error);
+        setSlipCheckDone(true);
+      }
+    );
+
+    return () => unsubscribe();
+  }, [user?.uid]);
 
   // Fetch MIS config for dynamic visibility
   useEffect(() => {
@@ -212,6 +245,11 @@ export function Sidebar() {
                 if (item.dynamicVisibility && item.url === '/mis-tracker') {
                   if (!misConfigLoaded) return false;
                   return misConfig?.hasSheetAccess || false;
+                }
+                // Salary Slip appears only once an admin has granted access to a slip
+                if (item.dynamicVisibility && item.url === '/salary-slip') {
+                  if (!slipCheckDone) return false;
+                  return hasAccessibleSlips === true;
                 }
                 // Filter out items that require specific roles
                 if (item.requiresRole) {

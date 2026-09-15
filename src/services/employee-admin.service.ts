@@ -19,6 +19,12 @@ export interface Employee {
   dateOfBirth?: string;
   salary?: number;
   dateOfJoining?: string;
+  // Payroll fields (see src/types/payroll.types.ts). grossSalary/doj are the payroll
+  // source of truth; salary/dateOfJoining are the legacy profile fields they fall back to.
+  grossSalary?: number;
+  doj?: string | null;
+  pan?: string | null;
+  designation?: string;
   photoURL?: string;
   role: 'Manager' | 'Admin' | 'Employee';
   status: 'active' | 'on-leave' | 'resigned';
@@ -99,6 +105,10 @@ export const employeeAdminService = {
           dateOfBirth: data.dateOfBirth || '',
           salary: data.salary || undefined,
           dateOfJoining: data.dateOfJoining || '',
+          grossSalary: data.grossSalary ?? data.salary ?? 0,
+          doj: data.doj || data.dateOfJoining || null,
+          pan: data.pan || null,
+          designation: data.designation || '',
           photoURL: data.photoURL || '',
           role: this.mapUserRoleToEmployeeRole(data.role),
           status: (data.status as 'active' | 'on-leave' | 'resigned') || 'active',
@@ -184,6 +194,10 @@ export const employeeAdminService = {
         dateOfBirth: data.dateOfBirth || '',
         salary: data.salary || undefined,
         dateOfJoining: data.dateOfJoining || '',
+        grossSalary: data.grossSalary ?? data.salary ?? 0,
+        doj: data.doj || data.dateOfJoining || null,
+        pan: data.pan || null,
+        designation: data.designation || '',
         photoURL: data.photoURL || '',
         role: this.mapUserRoleToEmployeeRole(data.role),
         status: (data.status as 'active' | 'on-leave' | 'resigned') || 'active',
@@ -236,6 +250,10 @@ export const employeeAdminService = {
         dateOfBirth: data.dateOfBirth || '',
         salary: data.salary || undefined,
         dateOfJoining: data.dateOfJoining || '',
+        grossSalary: data.grossSalary ?? data.salary ?? 0,
+        doj: data.doj || data.dateOfJoining || null,
+        pan: data.pan || null,
+        designation: data.designation || '',
         photoURL: data.photoURL || '',
         role: this.mapUserRoleToEmployeeRole(data.role),
         status: (data.status as 'active' | 'on-leave' | 'resigned') || 'active',
@@ -322,6 +340,20 @@ export const employeeAdminService = {
       }
       if (data.dateOfJoining !== undefined) {
         updatePayload.dateOfJoining = data.dateOfJoining;
+      }
+      // Payroll fields. `doj`/`grossSalary` are written on their own so the payroll
+      // module does not depend on the legacy profile fields staying in sync.
+      if (data.doj !== undefined) {
+        updatePayload.doj = data.doj;
+      }
+      if (data.pan !== undefined) {
+        updatePayload.pan = data.pan;
+      }
+      if (data.designation !== undefined) {
+        updatePayload.designation = data.designation;
+      }
+      if (data.grossSalary !== undefined) {
+        updatePayload.grossSalary = data.grossSalary;
       }
       if (data.role) {
         updatePayload.role = this.mapEmployeeRoleToUserRole(data.role);
@@ -450,6 +482,10 @@ export const employeeAdminService = {
         dateOfBirth: data.dateOfBirth || '',
         salary: data.salary || null,
         dateOfJoining: data.dateOfJoining || '',
+        grossSalary: data.grossSalary ?? data.salary ?? 0,
+        doj: data.doj || data.dateOfJoining || null,
+        pan: data.pan || null,
+        designation: data.designation || '',
         role: userRole,
         employeeId: data.employeeId,
         status: data.status,
@@ -487,6 +523,10 @@ export const employeeAdminService = {
         dateOfBirth: data.dateOfBirth || '',
         salary: data.salary,
         dateOfJoining: data.dateOfJoining || '',
+        grossSalary: data.grossSalary ?? data.salary ?? 0,
+        doj: data.doj || data.dateOfJoining || null,
+        pan: data.pan || null,
+        designation: data.designation || '',
         photoURL: '',
         role: data.role,
         status: data.status,
