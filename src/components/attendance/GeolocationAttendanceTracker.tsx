@@ -18,7 +18,8 @@ import {
   Coffee,
   RotateCcw,
   ShieldAlert,
-  Wifi
+  Wifi,
+  X
 } from 'lucide-react';
 
 interface LocationData {
@@ -246,7 +247,10 @@ export function GeolocationAttendanceTracker() {
       const result = await navigator.permissions.query({ name: 'geolocation' as PermissionName });
       console.log('Location permission status:', result.state);
       setPermissionStatus(result.state as 'granted' | 'denied' | 'prompt');
-      
+      if (result.state === 'denied' && requireLocation) {
+        setShowLocationDeniedModal(true);
+      }
+
       // Listen for permission changes
       result.addEventListener('change', () => {
         console.log('Permission status changed to:', result.state);
@@ -328,7 +332,7 @@ export function GeolocationAttendanceTracker() {
             case error.PERMISSION_DENIED:
               setPermissionStatus('denied');
               setShowLocationDeniedModal(true); // Show persistent modal
-              errorMessage = 'Location access denied. Please enable location permissions in your browser settings and refresh the page.';
+              errorMessage = 'Location access denied. Enable location for this site in your browser settings, then click "I\'ve Enabled Location" in the instructions above.';
               break;
             case error.POSITION_UNAVAILABLE:
               errorMessage = 'Location information is unavailable. This may be due to using an insecure connection (HTTP). Please use HTTPS.';
@@ -850,12 +854,20 @@ export function GeolocationAttendanceTracker() {
       {/* Persistent Location Denied Modal */}
       {showLocationDeniedModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full shadow-xl">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 sm:p-6 max-w-md w-full shadow-xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center gap-3 mb-4">
-              <div className="bg-red-100 dark:bg-red-900/30 p-3 rounded-full">
+              <div className="bg-red-100 dark:bg-red-900/30 p-3 rounded-full shrink-0">
                 <MapPin className="h-6 w-6 text-red-600" />
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white">Location Access Required</h3>
+              <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white flex-1 min-w-0">Location Access Required</h3>
+              <button
+                type="button"
+                aria-label="Close"
+                onClick={() => setShowLocationDeniedModal(false)}
+                className="shrink-0 p-1.5 rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-700"
+              >
+                <X className="h-5 w-5" />
+              </button>
             </div>
             
             <div className="space-y-4 mb-6">

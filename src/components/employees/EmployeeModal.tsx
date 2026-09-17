@@ -36,8 +36,10 @@ const employeeFormSchema = z.object({
   dateOfBirth: z.string().optional(),
   department: z.string().optional(),
 
-  // Employment
-  employeeId: z.string().min(1, 'Employee ID is required').max(20),
+  // Employment — max matches the API schema (src/app/api/employees/[id]/route.ts:8).
+  // Records with no stored employeeId fall back to the Firebase UID (28 chars), so a
+  // tighter limit blocked every save from those rows with an invisible form error.
+  employeeId: z.string().min(1, 'Employee ID is required').max(50),
   dateOfJoining: z.string().optional(),
   salary: z.coerce.number().optional(),
   status: z.enum(['active', 'on-leave', 'resigned']),
@@ -68,6 +70,17 @@ const employeeFormSchema = z.object({
 });
 
 type EmployeeFormData = z.infer<typeof employeeFormSchema>;
+
+// Where each field lives, so an invalid submit can reveal itself instead of
+// silently doing nothing when the offending field is on an inactive tab.
+const TAB_FOR_FIELD: Record<string, 'employment' | 'probation'> = {
+  employeeId: 'employment', dateOfJoining: 'employment', salary: 'employment',
+  workAnniversary: 'employment', role: 'employment', status: 'employment',
+  managerId: 'employment', managerName: 'employment', requireLocationTracking: 'employment',
+  currentPassword: 'employment', password: 'employment', confirmPassword: 'employment',
+  probationDuration: 'probation', probationEndDate: 'probation',
+  promotionDate: 'probation', promotionDetails: 'probation',
+};
 
 interface SalaryChangeItem {
   date: string;
@@ -309,6 +322,12 @@ export function EmployeeModal({
     } catch (error) {
       console.error('Error submitting employee:', error);
     }
+  };
+
+  // Show the tab holding the first invalid field — otherwise the click looks like a no-op.
+  const handleInvalidSubmit = (fieldErrors: Record<string, any>) => {
+    const firstField = Object.keys(fieldErrors)[0];
+    setActiveTab(TAB_FOR_FIELD[firstField] || 'personal');
   };
 
   const handleClose = () => {
@@ -651,7 +670,7 @@ export function EmployeeModal({
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(handleFormSubmit, handleInvalidSubmit)} className="space-y-4">
           {/* Avatar Display */}
           <div className="flex flex-col items-center gap-2">
             <div className="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden">
