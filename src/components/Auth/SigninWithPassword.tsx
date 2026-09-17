@@ -6,9 +6,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import InputGroup from "../FormElements/InputGroup";
 import { Checkbox } from "../FormElements/checkbox";
 import { useEnhancedAuth } from "@/contexts/enhanced-auth.context";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/lib/firebase";
-import { roleManagementService } from "@/services/role-management.service";
 
 export default function SigninWithPassword() {
   const router = useRouter();
@@ -34,37 +31,6 @@ export default function SigninWithPassword() {
     }
   }, [searchParams]);
 
-  // Create test admin user if it doesn't exist
-  const createTestAdminUser = async () => {
-    try {
-      console.log('Creating test admin user...');
-      const userCredential = await createUserWithEmailAndPassword(
-        auth, 
-        "admin@gmail.com", 
-        "admin@123"
-      );
-
-      // Create admin profile in Firestore
-      await roleManagementService.createUserProfile(userCredential.user.uid, {
-        email: "admin@gmail.com",
-        displayName: "Test Admin",
-        role: "admin",
-        department: "IT",
-        createdBy: userCredential.user.uid,
-      });
-
-      console.log('Test admin user created successfully');
-      return userCredential.user;
-    } catch (error: any) {
-      if (error.code === 'auth/email-already-in-use') {
-        console.log('Test admin user already exists');
-        return null; // User already exists, this is fine
-      }
-      console.error('Error creating test admin user:', error);
-      throw error;
-    }
-  };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setData({
       ...data,
@@ -80,29 +46,12 @@ export default function SigninWithPassword() {
     setError("");
 
     try {
-      // First, try to sign in
       const result = await signIn(data.email, data.password);
-      
+
       if (result.success) {
-        console.log('Sign in successful');
         router.push('/dashboard');
       } else {
-        // If sign in fails and it's the test admin credentials, try to create the user
-        if (data.email === "admin@gmail.com" && data.password === "admin@123") {
-          console.log('Test admin sign in failed, attempting to create user...');
-          await createTestAdminUser();
-          
-          // Try signing in again after creating the user
-          const retryResult = await signIn(data.email, data.password);
-          if (retryResult.success) {
-            console.log('Sign in successful after creating test admin');
-            router.push('/dashboard');
-          } else {
-            setError(retryResult.error || 'Failed to sign in after creating test admin user');
-          }
-        } else {
-          setError(result.error || 'Sign in failed');
-        }
+        setError(result.error || 'Sign in failed');
       }
     } catch (error: any) {
       console.error('Sign in error:', error);

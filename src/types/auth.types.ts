@@ -24,6 +24,9 @@ export interface UserProfile {
   department?: string;
   phoneNumber?: string;
   photoURL?: string;
+  // Present on every employee record; absent on bare logins (self-signup, seed/test
+  // accounts). Its presence is what makes an account an employee — see verifyAuthToken.
+  employeeId?: string;
 }
 
 export interface AuthResult {

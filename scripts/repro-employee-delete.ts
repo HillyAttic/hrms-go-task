@@ -34,9 +34,10 @@ const db = admin.firestore();
 const auth = admin.auth();
 let victimUid = '';
 let ghostUid = '';
+let shellUid = '';
 
 async function cleanup() {
-  for (const uid of [victimUid, ghostUid]) {
+  for (const uid of [victimUid, ghostUid, shellUid]) {
     if (!uid) continue;
     await auth.deleteUser(uid).catch(() => {});
     await db.collection('users').doc(uid).delete().catch(() => {});
@@ -57,7 +58,9 @@ async function idTokenFor(u: string) {
 
 (async () => {
   // admin (the deleter) and a throwaway employee (the victim)
-  const adminToken = await idTokenFor('Dxeszz55bCZfhxySFZCeylaiGNj1');
+  // Must be a real employee admin (users/{uid}.employeeId set) — verifyAuthToken now
+  // rejects accounts that are not in /employees, so a bare login cannot drive the API.
+  const adminToken = await idTokenFor((await auth.getUserByEmail('admin@edventurehub.com')).uid);
   const victim = await auth.createUser({ email: `zz-repro-${Date.now()}@example.com`, password: 'Test1234!' });
   victimUid = victim.uid;
   await auth.setCustomUserClaims(victimUid, { role: 'admin' });
@@ -96,6 +99,18 @@ async function idTokenFor(u: string) {
   const ghostCall = await fetch('http://localhost:3000/api/employees', { headers: headers(await idTokenFor(ghostUid)) });
   const ghostRecreated = (await db.collection('users').doc(ghostUid).get()).exists;
 
+  // A leftover login: users/{uid} exists (so verifyAuthToken finds a profile) but has no
+  // employeeId, so /employees never lists it. This is the "user is not in the list yet can
+  // still sign in" account — it must be rejected too, claim or no claim.
+  const shell = await auth.createUser({ email: `zz-shell-${Date.now()}@example.com`, password: 'Test1234!' });
+  shellUid = shell.uid;
+  await auth.setCustomUserClaims(shellUid, { role: 'admin' });
+  await db.collection('users').doc(shellUid).set({
+    email: shell.email, displayName: 'ZZ Shell', role: 'admin', status: 'active', isActive: true,
+    createdAt: admin.firestore.Timestamp.now(), updatedAt: admin.firestore.Timestamp.now(),
+  });
+  const shellCall = await fetch('http://localhost:3000/api/employees', { headers: headers(await idTokenFor(shellUid)) });
+
   console.log(`\nusers/${victimUid} deleted:      ${docGone ? 'PASS' : 'FAIL'}`);
   console.log(`auth account deleted:         ${authGone ? 'PASS' : 'FAIL'}`);
   console.log(`gone from /employees:         ${listGone ? 'PASS' : 'FAIL'}`);
@@ -103,7 +118,8 @@ async function idTokenFor(u: string) {
   console.log(`profile not re-created:       ${stillGone ? 'PASS' : 'FAIL'}`);
   console.log(`profile-less account:         ${ghostCall.status === 401 ? 'PASS' : 'FAIL'} (${ghostCall.status})`);
   console.log(`  ...and not re-created:      ${!ghostRecreated ? 'PASS' : 'FAIL'}`);
+  console.log(`login without employeeId:     ${shellCall.status === 401 ? 'PASS' : 'FAIL'} (${shellCall.status})`);
 
   await cleanup();
-  if (!docGone || !authGone || !listGone || staleCall.status !== 401 || !stillGone || ghostCall.status !== 401 || ghostRecreated) process.exit(1);
+  if (!docGone || !authGone || !listGone || staleCall.status !== 401 || !stillGone || ghostCall.status !== 401 || ghostRecreated || shellCall.status !== 401) process.exit(1);
 })().catch(async (e) => { console.error(e); await cleanup(); process.exit(1); });

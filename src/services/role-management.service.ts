@@ -109,25 +109,12 @@ export class RoleManagementService {
    * Get user profile from Firestore
    */
   async getUserProfile(uid: string): Promise<UserProfile | null> {
-    try {
-      const userRef = doc(db, 'users', uid);
-      const userDoc = await getDoc(userRef);
-      
-      if (userDoc.exists()) {
-        return userDoc.data() as UserProfile;
-      }
-      
-      return null;
-    } catch (error: any) {
-      // Handle "No document to update" error gracefully
-      if (error?.code === 'not-found' || error?.message?.includes('No document to update')) {
-        console.warn(`User document not found for UID: ${uid}`);
-        return null;
-      }
-      
-      console.error('Error getting user profile:', error);
-      return null;
-    }
+    // Missing doc is not an error — getDoc reports it as exists() === false. A throw here
+    // therefore means the read itself failed, and callers need to tell the two apart:
+    // callers that grant access treat "no profile" as "not a user of this system", so
+    // swallowing a transient failure into null would evict a real employee.
+    const userDoc = await getDoc(doc(db, 'users', uid));
+    return userDoc.exists() ? (userDoc.data() as UserProfile) : null;
   }
 
   /**

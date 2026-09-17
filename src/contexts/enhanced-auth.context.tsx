@@ -57,11 +57,12 @@ export const EnhancedAuthProvider: React.FC<EnhancedAuthProviderProps> = ({ chil
   /**
    * Load user profile and claims
    */
-  const loadUserData = useCallback(async (currentUser: User | null) => {
+  // Returns whether this account is an employee — see the gate in onAuthStateChanged.
+  const loadUserData = useCallback(async (currentUser: User | null): Promise<boolean> => {
     if (!currentUser) {
       setUserProfile(null);
       setClaims(null);
-      return;
+      return false;
     }
 
     try {
@@ -80,6 +81,11 @@ export const EnhancedAuthProvider: React.FC<EnhancedAuthProviderProps> = ({ chil
       };
 
       setClaims(customClaims);
+
+      // users/{uid}.employeeId is what puts an account in /employees. Without it the
+      // account is a bare login, not a user of this system — same predicate as
+      // verifyAuthToken. It must not count as signed in.
+      return !!profile?.employeeId;
     } catch (error) {
       console.error('Error loading user data:', error);
       // Set default claims if loading fails
@@ -90,6 +96,10 @@ export const EnhancedAuthProvider: React.FC<EnhancedAuthProviderProps> = ({ chil
         createdAt: new Date().toISOString(),
         lastRoleUpdate: new Date().toISOString(),
       });
+      // The read failed, so absence was never established. Keep the session rather than
+      // evicting a real employee over a transient Firestore error; the API still refuses
+      // a genuinely invalid account.
+      return true;
     }
   }, []);
 
@@ -184,8 +194,12 @@ export const EnhancedAuthProvider: React.FC<EnhancedAuthProviderProps> = ({ chil
         }
       }
 
-      setUser(currentUser);
-      await loadUserData(currentUser);
+      // Login ≠ access. Gate `user` on loadUserData's answer, because AuthWrapper
+      // redirects any truthy `user` away from /auth/sign-in to /dashboard — so setting it
+      // first would navigate a bare login off the page before signIn()'s refusal message
+      // could render. Loading stays true across the read, which is what holds that redirect.
+      const isEmployee = await loadUserData(currentUser);
+      setUser(isEmployee ? currentUser : null);
       setLoading(false);
     });
 
@@ -198,7 +212,27 @@ export const EnhancedAuthProvider: React.FC<EnhancedAuthProviderProps> = ({ chil
   const signIn = async (email: string, password: string): Promise<AuthResult> => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      
+
+      // Firebase Auth says who you are; users/{uid}.employeeId says whether this system
+      // knows you. Without it the account is not in /employees, so it must not reach the
+      // dashboard at all — the API would 401 on its first request anyway, but only after
+      // the shell has rendered. Same predicate as verifyAuthToken and the auth-state gate.
+      const profile = await roleManagementService
+        .getUserProfile(userCredential.user.uid)
+        .catch(() => {
+          // Read failed, so absence was not established — don't tell a real employee they
+          // don't exist. The outer catch surfaces this message.
+          throw new Error('Could not verify your account. Please try again.');
+        });
+
+      if (!profile?.employeeId) {
+        await firebaseSignOut(auth);
+        return {
+          success: false,
+          error: 'User does not exist in the database. Please contact the administrator.',
+        };
+      }
+
       // Update last login time
       if (userCredential.user) {
         await roleManagementService.updateUserProfile(userCredential.user.uid, {

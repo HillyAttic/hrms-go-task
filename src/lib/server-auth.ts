@@ -103,7 +103,22 @@ export async function verifyAuthToken(request: NextRequest): Promise<{
         };
       }
 
-      userData = userDoc.data();
+      const profile = userDoc.data();
+
+      // employeeId is what /employees filters on, so it is also what separates an
+      // employee from a bare login. createUserProfile() (self-signup, the old
+      // settings "create user" form, seed scripts) writes a users doc with no
+      // employeeId — such an account is absent from /employees yet had a full
+      // session and its role claim. Same predicate as employee-admin.service getAll.
+      if (!profile?.employeeId) {
+        console.warn(`[Auth] users/${decodedToken.uid} has no employeeId. Rejecting.`);
+        return {
+          success: false,
+          error: 'Not an employee account',
+        };
+      }
+
+      userData = profile;
       setCachedProfile(decodedToken.uid, userData);
     }
 
