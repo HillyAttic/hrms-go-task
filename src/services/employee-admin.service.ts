@@ -93,6 +93,12 @@ export const employeeAdminService = {
 
       snapshot.forEach((doc) => {
         const data = doc.data();
+
+        // Bare login profiles (auto-created by verifyAuthToken) have no employeeId
+        // and are not employee records — listing them reads as "the deleted
+        // employee came back", under their raw uid as the Employee ID.
+        if (!data.employeeId) return;
+
         employees.push({
           id: doc.id,
           employeeId: data.employeeId || data.uid || doc.id,
@@ -583,6 +589,13 @@ export const employeeAdminService = {
 
   async delete(id: string): Promise<void> {
     try {
+      // The Auth account has to go too. verifyAuthToken() re-creates users/{uid}
+      // for any signed-in account whose doc is missing (src/lib/server-auth.ts:91),
+      // so a Firestore-only delete resurrects itself on that user's next request.
+      const { adminAuth } = await import('@/lib/firebase-admin');
+      await adminAuth.deleteUser(id).catch((error: any) => {
+        if (error?.code !== 'auth/user-not-found') throw error;
+      });
       await adminDb.collection('users').doc(id).delete();
       console.log('[EmployeeAdminService] Employee deleted:', id);
     } catch (error) {

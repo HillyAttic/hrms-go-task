@@ -3,9 +3,16 @@
 import { useEffect, useRef } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useEnhancedAuth } from '@/contexts/enhanced-auth.context';
+import { installAuthFailureHandler } from '@/lib/api-client';
 import { Sidebar } from '@/components/Layouts/sidebar';
 import { Header } from '@/components/Layouts/header';
 import { MobileBottomNav } from '@/components/Layouts/mobile-bottom-nav';
+
+// At module scope, not in an effect: child pages fetch in their own effects, which
+// React runs before the parent's, so an effect here would install too late.
+if (typeof window !== 'undefined') {
+  installAuthFailureHandler();
+}
 
 interface AuthWrapperProps {
   children: React.ReactNode;

@@ -260,6 +260,11 @@ export async function DELETE(
 
     const { id } = await params;
 
+    // Deleting your own account would delete your Firebase Auth login too
+    if (id === authResult.user.uid) {
+      return ErrorResponses.badRequest('You cannot delete your own account');
+    }
+
     // Check if employee exists (use Admin SDK)
     const existingEmployee = await employeeAdminService.getById(id);
     if (!existingEmployee) {

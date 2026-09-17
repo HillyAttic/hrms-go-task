@@ -69,9 +69,12 @@ export async function verifyAuthToken(request: NextRequest): Promise<{
       };
     }
 
-    // Verify the ID token using Firebase Admin SDK
-    // Pass false for checkRevoked to speed up verification (skip extra network call)
-    const decodedToken = await admin.auth().verifyIdToken(idToken, false);
+    // Verify the ID token using Firebase Admin SDK.
+    // checkRevoked=true costs one Auth lookup per request, but it is the only thing
+    // that locks out a deleted account immediately: its ID token stays
+    // signature-valid until it expires (up to 1h), and without this a deleted
+    // employee keeps API access — and re-creates their profile.
+    const decodedToken = await admin.auth().verifyIdToken(idToken, true);
 
     if (!decodedToken || !decodedToken.uid) {
       return {
@@ -82,44 +85,26 @@ export async function verifyAuthToken(request: NextRequest): Promise<{
 
     // Try to get user profile from cache first (avoids Firestore read on every API call)
     let userData = getCachedProfile(decodedToken.uid);
-    let userDocExists = true;
 
     if (!userData) {
       // Cache miss — fetch from Firestore and cache for 5 minutes
       const userDoc = await adminDb.collection('users').doc(decodedToken.uid).get();
 
       if (!userDoc.exists) {
-        console.warn(`[Auth] User profile not found at users/${decodedToken.uid}. Auto-creating minimal profile.`);
-        userDocExists = false;
-
-        // Auto-create a minimal user profile so API calls don't fail
-        // This handles cases where Firebase Auth user exists but Firestore doc wasn't created
-        const minimalProfile = {
-          email: decodedToken.email || '',
-          displayName: decodedToken.name || decodedToken.email?.split('@')[0] || 'User',
-          role: (decodedToken.role as UserRole) || 'employee',
-          permissions: [],
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          lastRoleUpdate: new Date().toISOString(),
+        // users/{uid} is the authorization record, not a cache of the Auth account.
+        // This used to auto-create a profile for any valid token, so a deleted
+        // employee whose Auth account survived signed in and re-provisioned itself
+        // with a fresh 'employee' profile — the delete undid itself. No profile
+        // means "not a user of this system". Reject.
+        console.warn(`[Auth] No profile at users/${decodedToken.uid}. Rejecting.`);
+        return {
+          success: false,
+          error: 'User profile not found',
         };
-
-        try {
-          await adminDb.collection('users').doc(decodedToken.uid).set(minimalProfile);
-          userData = minimalProfile;
-          setCachedProfile(decodedToken.uid, userData);
-          console.log(`[Auth] Auto-created user profile for ${decodedToken.uid}`);
-        } catch (createError) {
-          console.error('[Auth] Failed to auto-create user profile:', createError);
-          return {
-            success: false,
-            error: 'User profile not found and could not be created',
-          };
-        }
-      } else {
-        userData = userDoc.data();
-        setCachedProfile(decodedToken.uid, userData);
       }
+
+      userData = userDoc.data();
+      setCachedProfile(decodedToken.uid, userData);
     }
 
     const role = (decodedToken.role as UserRole) || userData?.role || 'employee';

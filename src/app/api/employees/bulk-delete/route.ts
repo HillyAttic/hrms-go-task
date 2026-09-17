@@ -40,6 +40,11 @@ export async function POST(request: NextRequest) {
 
     // Delete employees one by one using Admin SDK
     for (const id of employeeIds) {
+      // Deleting your own account would delete your Firebase Auth login too
+      if (id === authResult.user.uid) {
+        results.failed.push({ id, error: 'Cannot delete your own account' });
+        continue;
+      }
       try {
         await employeeAdminService.delete(id);
         results.success.push(id);

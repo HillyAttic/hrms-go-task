@@ -17,6 +17,7 @@ import { CardGridSkeleton, StatsGridSkeleton } from '@/components/ui/loading-ske
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { ManagerGuard } from '@/components/Auth/PermissionGuard';
 import { authenticatedFetch } from '@/lib/api-client';
+import { useEnhancedAuth } from '@/contexts/enhanced-auth.context';
 import { PlusIcon, ArrowUpTrayIcon, ShieldExclamationIcon } from '@heroicons/react/24/outline';
 import { z } from 'zod';
 
@@ -69,6 +70,7 @@ type EmployeeFormData = z.infer<typeof employeeFormSchema>;
  * Validates Requirements: 5.1, 5.2, 10.1, 10.2, 10.3, 10.4
  */
 export default function EmployeesPage() {
+  const { user } = useEnhancedAuth();
   const {
     employees,
     loading,
@@ -166,12 +168,17 @@ export default function EmployeesPage() {
   };
 
   const handleDeleteEmployee = async (id: string) => {
+    // Your own row is your login — the API refuses it, so don't even ask
+    if (id === user?.uid) {
+      alert("You can't delete your own account — that's the row you're signed in as.");
+      return;
+    }
     if (window.confirm('Are you sure you want to delete this employee? This action cannot be undone.')) {
       try {
         await deleteEmployee(id);
       } catch (error) {
         console.error('Error deleting employee:', error);
-        alert('Failed to delete employee. Please try again.');
+        alert(error instanceof Error ? error.message : 'Failed to delete employee. Please try again.');
       }
     }
   };
