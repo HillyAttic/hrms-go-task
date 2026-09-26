@@ -90,7 +90,7 @@ export default function SharePage() {
                 href={shareData.url} 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-primary hover:underline mt-1 block"
+                className="text-foreground hover:underline mt-1 block"
               >
                 {shareData.url}
               </a>
@@ -105,7 +105,7 @@ export default function SharePage() {
 
           <button
             onClick={handleCreateTask}
-            className="w-full flex items-center justify-between p-4 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+            className="w-full flex items-center justify-between p-4 bg-foreground text-background rounded-md border-2 border-border hover:bg-foreground/90 transition-colors"
           >
             <div className="flex items-center space-x-3">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

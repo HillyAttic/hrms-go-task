@@ -88,7 +88,7 @@ export default function UserMultiSelect({
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder={placeholder}
-          className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-ring focus:border-transparent"
         />
       </div>
 
@@ -99,7 +99,7 @@ export default function UserMultiSelect({
               type="checkbox"
               checked={selectedCount === totalCount && totalCount > 0}
               onChange={toggleAll}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              className="h-4 w-4 text-blue-600 focus:ring-ring border-gray-300 rounded"
             />
             <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
               Select All
@@ -122,7 +122,7 @@ export default function UserMultiSelect({
                   type="checkbox"
                   checked={selectedUserIds.includes(user.uid)}
                   onChange={() => toggleUser(user.uid)}
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded flex-shrink-0"
+                  className="h-4 w-4 text-blue-600 focus:ring-ring border-gray-300 rounded flex-shrink-0"
                 />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-gray-900 dark:text-white truncate">

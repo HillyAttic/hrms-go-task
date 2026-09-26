@@ -35,7 +35,7 @@ export function IOSPWAPrompt() {
         <div className="flex items-start space-x-3">
           <div className="flex-shrink-0">
             <svg 
-              className="w-8 h-8 text-white" 
+              className="w-8 h-8 text-primary-foreground" 
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -49,13 +49,13 @@ export function IOSPWAPrompt() {
             </svg>
           </div>
           <div className="flex-1 min-w-0">
-            <h4 className="text-sm font-semibold text-white">
+            <h4 className="text-sm font-semibold text-primary-foreground">
               Install EdVentureHub Dashboard
             </h4>
-            <p className="text-sm text-white/90 mt-1">
+            <p className="text-sm text-primary-foreground/90 mt-1">
               To receive push notifications on iOS, install this app to your home screen:
             </p>
-            <ol className="text-xs text-white/80 mt-2 space-y-1 list-decimal list-inside">
+            <ol className="text-xs text-primary-foreground/80 mt-2 space-y-1 list-decimal list-inside">
               <li>Tap the Share button in Safari</li>
               <li>Scroll down and tap "Add to Home Screen"</li>
               <li>Tap "Add" to install</li>
@@ -63,7 +63,7 @@ export function IOSPWAPrompt() {
           </div>
           <button
             onClick={handleDismiss}
-            className="flex-shrink-0 text-white/80 hover:text-white"
+            className="flex-shrink-0 text-primary-foreground/80 hover:text-primary-foreground"
             aria-label="Dismiss"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

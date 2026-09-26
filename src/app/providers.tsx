@@ -1,7 +1,7 @@
 "use client";
 
 import { SidebarProvider } from "@/components/Layouts/sidebar/sidebar-context";
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider, useTheme } from "next-themes";
 import { EnhancedAuthProvider } from "@/contexts/enhanced-auth.context";
 import { NotificationProvider } from "@/contexts/notification.context";
 import { ModalProvider } from "@/contexts/modal-context";
@@ -21,21 +21,29 @@ export function Providers({ children }: { children: React.ReactNode }) {
             <NotificationPermissionPrompt />
             <IOSPWAPrompt />
             <NotificationClickHandler />
-            <ToastContainer
-              position="top-right"
-              autoClose={5000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              theme="light"
-            />
+            <ThemedToasts />
           </ModalProvider>
         </EnhancedAuthProvider>
       </NotificationProvider>
     </ThemeProvider>
+  );
+}
+
+/** Toasts follow the active theme; a hardcoded "light" left them bright in dark mode. */
+function ThemedToasts() {
+  const { resolvedTheme } = useTheme();
+  return (
+    <ToastContainer
+      position="top-right"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme={resolvedTheme === "dark" ? "dark" : "light"}
+    />
   );
 }

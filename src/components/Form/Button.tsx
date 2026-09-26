@@ -16,8 +16,8 @@ export const Button: React.FC<ButtonProps> = ({
   const baseClasses = "flex w-full justify-center rounded-lg border font-medium transition hover:opacity-90";
   
   const variantClasses = {
-    primary: "bg-primary text-white border-primary hover:bg-opacity-90",
-    secondary: "bg-gray-200 text-black border-gray-200 hover:bg-gray-300 dark:bg-boxdark-2 dark:text-white dark:border-boxdark-2 dark:hover:bg-boxdark",
+    primary: "bg-foreground text-background border-border hover:bg-foreground/90",
+    secondary: "bg-gray-200 text-black border-gray-200 hover:bg-gray-300 dark:bg-muted dark:text-white dark:border-border dark:hover:bg-card",
     danger: "bg-red text-white border-red hover:bg-opacity-90",
   };
   

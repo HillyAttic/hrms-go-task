@@ -207,7 +207,7 @@ export function ReportsView() {
           <button
             onClick={loadData}
             disabled={loading}
-            className="flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex items-center justify-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg hover:bg-foreground/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className={`w-5 h-5 ${loading ? 'animate-spin' : ''}`}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99" />
@@ -229,7 +229,7 @@ export function ReportsView() {
             </p>
             <button
               onClick={() => window.location.href = '/recurring-tasks'}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="px-4 py-2 bg-foreground text-background rounded-lg hover:bg-foreground/90 transition-colors"
             >
               Go to Recurring Tasks
             </button>
@@ -243,7 +243,7 @@ export function ReportsView() {
             <select
               value={selectedFY}
               onChange={e => { setSelectedFY(e.target.value); setSelectedMonth('all'); }}
-              className="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1.5 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1.5 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ring"
             >
               {financialYears.map(fy => (
                 <option key={fy} value={fy}>FY {fy}</option>
@@ -252,7 +252,7 @@ export function ReportsView() {
             <select
               value={selectedMonth}
               onChange={e => setSelectedMonth(e.target.value)}
-              className="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1.5 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1.5 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ring"
             >
               <option value="all">All Months</option>
               {MONTH_NAMES.map(m => (
@@ -356,7 +356,7 @@ export function ReportsView() {
                         </div>
                         {/* Mobile: Show recurrence and client count */}
                         <div className="flex items-center gap-3 text-xs md:hidden">
-                          <span className="px-2 py-0.5 rounded-full bg-blue-600 text-white font-semibold">
+                          <span className="px-2 py-0.5 rounded-full bg-foreground text-background font-semibold">
                             {task.recurrencePattern}
                           </span>
                           <span className="text-gray-500 dark:text-gray-400">
@@ -370,7 +370,7 @@ export function ReportsView() {
                       </div>
                     </td>
                     <td className="hidden md:table-cell px-3 sm:px-6 py-4 whitespace-nowrap">
-                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-600 text-white">
+                      <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-foreground text-background">
                         {task.recurrencePattern}
                       </span>
                     </td>

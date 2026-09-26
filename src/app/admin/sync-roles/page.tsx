@@ -102,7 +102,7 @@ export default function SyncRolesPage() {
         <button
           onClick={handleSync}
           disabled={syncing}
-          className="w-full sm:w-auto px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors font-medium flex items-center justify-center space-x-2"
+          className="w-full sm:w-auto px-6 py-3 bg-foreground text-background rounded-lg hover:bg-foreground/90 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors font-medium flex items-center justify-center space-x-2"
         >
           {syncing ? (
             <>

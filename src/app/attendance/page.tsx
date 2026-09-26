@@ -4,11 +4,12 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useModal } from '@/contexts/modal-context';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { PageHeader } from '@/components/ui/page-header';
 import { Badge } from '@/components/ui/badge';
 import { GeolocationAttendanceTracker, LeaveRequestModal, WfhRequestModal } from '@/components/attendance';
 import { History, ArrowRight, Calendar as CalendarIcon, CheckCircle, XCircle, Clock as ClockIconBox } from 'lucide-react';
 import { useEnhancedAuth } from '@/contexts/enhanced-auth.context';
-import { ClockIcon, PlayIcon, MapPinIcon, HomeIcon } from '@heroicons/react/24/outline';
+import { ClockIcon, MapPinIcon, HomeIcon } from '@heroicons/react/24/outline';
 import { leaveService } from '@/services/leave.service';
 import { LeaveRequest, LeaveType, LeaveBalance, LeaveRequestFormData, WfhRequestFormData } from '@/types/attendance.types';
 import { toast } from 'react-toastify';
@@ -219,13 +220,13 @@ export default function AttendancePage() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'approved':
-        return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Approved</Badge>;
+        return <Badge variant="success">Approved</Badge>;
       case 'rejected':
-        return <Badge className="bg-red-100 text-red-800 hover:bg-red-100">Rejected</Badge>;
+        return <Badge variant="danger">Rejected</Badge>;
       case 'pending':
-        return <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">Pending</Badge>;
+        return <Badge variant="warning">Pending</Badge>;
       case 'cancelled':
-        return <Badge className="bg-gray-100 text-gray-800 hover:bg-gray-100">Cancelled</Badge>;
+        return <Badge variant="default">Cancelled</Badge>;
       default:
         return <Badge>{status}</Badge>;
     }
@@ -252,7 +253,7 @@ export default function AttendancePage() {
           <p className="text-gray-600 dark:text-gray-400 mb-6">Please sign in to access the attendance tracking system.</p>
           <Button
             onClick={() => window.location.href = '/auth/signin'}
-            className="bg-blue-600 hover:bg-blue-700 text-white"
+            className="bg-foreground hover:bg-foreground/90 text-background"
           >
             Sign In to Continue
           </Button>
@@ -263,48 +264,39 @@ export default function AttendancePage() {
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4">
-        <div className="flex-1">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Attendance Tracking</h1>
-            <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200 w-fit">
-              <PlayIcon className="h-3 w-3 mr-1" />
-              Connected
-            </Badge>
-          </div>
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1 sm:mt-2">Track time, manage leaves, and view history</p>
-        </div>
-        <div className="flex flex-wrap gap-2 w-full sm:w-auto">
-          <Button
-            onClick={() => setShowLeaveModal(true)}
-            className="flex items-center gap-2"
-          >
-            <CalendarIcon className="h-4 w-4" />
-            Apply Leave
-          </Button>
+      <PageHeader
+        eyebrow="Time"
+        title="Attendance Tracking"
+        description="Track time, manage leaves, and view history."
+        actions={
+          <>
+            <Button onClick={() => setShowLeaveModal(true)} className="flex items-center gap-2">
+              <CalendarIcon className="h-4 w-4" />
+              Apply Leave
+            </Button>
 
-          <Button
-            onClick={() => setShowWfhModal(true)}
-            variant="outline"
-            className="flex items-center gap-2"
-          >
-            <HomeIcon className="h-4 w-4" />
-            Apply WFH
-          </Button>
+            <Button
+              onClick={() => setShowWfhModal(true)}
+              variant="secondary"
+              className="flex items-center gap-2"
+            >
+              <HomeIcon className="h-4 w-4" />
+              Apply WFH
+            </Button>
 
-          <Button
-            onClick={() => window.location.href = '/attendance/history'}
-            variant="outline"
-            className="flex items-center gap-2"
-          >
-            <History className="h-4 w-4" />
-            <span className="hidden sm:inline">History</span>
-          </Button>
-        </div>
-      </div>
+            <Button
+              onClick={() => window.location.href = '/attendance/history'}
+              variant="secondary"
+              className="flex items-center gap-2"
+            >
+              <History className="h-4 w-4" />
+              <span className="hidden sm:inline">History</span>
+            </Button>
+          </>
+        }
+      />
 
-      <div className="flex flex-col items-center justify-center py-4 sm:py-8 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+      <div className="flex flex-col items-center justify-center rounded-lg border-2 border-border bg-card py-4 shadow-hard sm:py-8">
         <GeolocationAttendanceTracker key="geolocation-tracker" />
       </div>
 
@@ -349,7 +341,7 @@ export default function AttendancePage() {
                       <Button
                         size="sm"
                         variant="default"
-                        className="bg-blue-600 hover:bg-blue-700 flex-1 sm:flex-none"
+                        className="bg-foreground hover:bg-foreground/90 flex-1 sm:flex-none"
                         onClick={() => openApproveModal(request)}
                         disabled={processingId === request.id}
                       >
@@ -411,7 +403,7 @@ export default function AttendancePage() {
                       <Button
                         size="sm"
                         variant="default"
-                        className="bg-blue-600 hover:bg-blue-700 flex-1 sm:flex-none"
+                        className="bg-foreground hover:bg-foreground/90 flex-1 sm:flex-none"
                         onClick={() => openApproveModal(request)}
                         disabled={processingId === request.id}
                       >

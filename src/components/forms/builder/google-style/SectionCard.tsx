@@ -129,7 +129,7 @@ export function SectionCard({
             onChange={(e) => onUpdate({ description: e.target.value })}
             onClick={(e) => e.stopPropagation()}
             placeholder="Section description (optional)"
-            className="mt-2 w-full border-b border-gray-300 focus:border-blue-500 outline-none text-sm py-0.5 bg-transparent text-gray-500"
+            className="mt-2 w-full border-b border-gray-300 focus:border-ring outline-none text-sm py-0.5 bg-transparent text-gray-500"
           />
         )}
         {!isSelected && field.description && (

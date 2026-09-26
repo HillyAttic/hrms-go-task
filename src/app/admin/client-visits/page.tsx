@@ -233,7 +233,7 @@ export default function ClientVisitsPage() {
         <div className="flex gap-2">
           <button
             onClick={handleSearch}
-            className="flex-1 sm:flex-none px-4 py-2 text-sm sm:text-base bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+            className="flex-1 sm:flex-none px-4 py-2 text-sm sm:text-base bg-foreground text-background rounded-lg hover:bg-foreground/90 transition"
           >
             Search
           </button>

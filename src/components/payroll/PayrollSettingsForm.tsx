@@ -35,7 +35,7 @@ interface PayrollSettingsFormProps {
 }
 
 const inputClass =
-  'w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500';
+  'w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ring';
 const labelClass = 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1';
 const errorClass = 'mt-1 text-xs text-red-500';
 const sectionTitleClass = 'text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2';
@@ -196,7 +196,7 @@ export function PayrollSettingsForm({ onSaveSuccess }: PayrollSettingsFormProps)
             type="checkbox"
             id="include-paid-leaves"
             {...register('includePaidLeavesInPaidDays')}
-            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700"
+            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-ring dark:border-gray-600 dark:bg-gray-700"
           />
           <label htmlFor="include-paid-leaves" className="text-sm text-gray-700 dark:text-gray-300">
             Include Allowed Paid Leaves in Paid Days count

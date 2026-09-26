@@ -129,7 +129,7 @@ export default function NotificationTestPage() {
           <button
             onClick={checkSetup}
             disabled={loading}
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50"
+            className="px-6 py-3 bg-foreground text-background rounded-lg hover:bg-foreground/90 disabled:opacity-50"
           >
             {loading ? 'Checking...' : 'Check Setup'}
           </button>

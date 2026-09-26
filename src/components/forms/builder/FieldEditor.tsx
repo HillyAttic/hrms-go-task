@@ -291,7 +291,7 @@ export function FieldEditor({ field, onUpdate, onDelete, onClose }: FieldEditorP
               </div>
               <button
                 onClick={handleAddOption}
-                className="px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white text-xs sm:text-sm font-medium rounded-lg transition-colors"
+                className="px-3 py-1.5 bg-foreground hover:bg-foreground/90 text-background text-xs sm:text-sm font-medium rounded-lg transition-colors"
               >
                 + Add
               </button>
@@ -306,14 +306,14 @@ export function FieldEditor({ field, onUpdate, onDelete, onClose }: FieldEditorP
                   exit={{ opacity: 0, x: 10 }}
                   className="flex items-center space-x-2"
                 >
-                  <div className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white flex items-center justify-center text-xs font-medium rounded">
+                  <div className="flex-shrink-0 w-6 h-6 bg-foreground text-background flex items-center justify-center text-xs font-medium rounded">
                     {index + 1}
                   </div>
                   <input
                     type="text"
                     value={typeof option === 'string' ? option : option.label}
                     onChange={(e) => handleUpdateOption(index, e.target.value)}
-                    className="flex-1 px-2 sm:px-3 py-1.5 sm:py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="flex-1 px-2 sm:px-3 py-1.5 sm:py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
                     placeholder={`Option ${index + 1}`}
                   />
                   <button

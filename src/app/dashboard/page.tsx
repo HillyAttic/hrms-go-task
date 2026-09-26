@@ -38,6 +38,7 @@ import { useEnhancedAuth } from '@/contexts/enhanced-auth.context';
 import { useModal } from '@/contexts/modal-context';
 import { getDbLazy, getAuthLazy, preloadFirebase } from '@/lib/firebase-optimized';
 import { SimpleStatCard } from '@/components/dashboard/SimpleStatCard';
+import { PageHeader } from '@/components/ui/page-header';
 import { TaskOverview } from '@/components/dashboard/TaskOverview';
 import { UpcomingDeadlines } from '@/components/dashboard/UpcomingDeadlines';
 import { ActivityFeed } from '@/components/dashboard/ActivityFeed';
@@ -979,6 +980,12 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
+      <PageHeader
+        eyebrow="Overview"
+        title="Dashboard"
+        description="A quick overview of your team's current activity."
+      />
+
       {/* Stats Cards - Critical, render immediately */}
       <div className="grid grid-cols-3 gap-2 sm:gap-4 md:grid-cols-5 md:gap-4 lg:gap-5 xl:gap-6">
         <SimpleStatCard
@@ -1073,7 +1080,7 @@ export default function DashboardPage() {
                     onClick={() => setSelectedKanbanBusinessId(b.id)}
                     className={`px-3 py-1.5 text-sm rounded-full whitespace-nowrap transition-colors flex items-center gap-2 ${
                       selectedKanbanBusinessId === b.id
-                        ? 'bg-blue-600 text-white'
+                        ? 'bg-foreground text-background'
                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
                     }`}
                   >
@@ -1255,7 +1262,7 @@ export default function DashboardPage() {
             <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-700">
               <div className="flex items-center justify-between gap-2 sm:gap-4">
                 <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-                  <div className="p-1.5 sm:p-2 bg-blue-600 rounded-lg flex-shrink-0">
+                  <div className="p-1.5 sm:p-2 bg-foreground rounded-lg flex-shrink-0">
                     <ClipboardDocumentListIcon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -1330,7 +1337,7 @@ export default function DashboardPage() {
                                     isOverdue ? 'bg-red-600 text-white' :
                                     daysUntilDue === 0 ? 'bg-orange-600 text-white' :
                                     daysUntilDue === 1 ? 'bg-red-600 text-white' :
-                                    'bg-blue-600 text-white'
+                                    'bg-foreground text-background'
                                   }`}>
                                     {isOverdue ? `${Math.abs(daysUntilDue!)} days overdue` :
                                      daysUntilDue === 0 ? 'Due today' :
@@ -1341,7 +1348,7 @@ export default function DashboardPage() {
                               )}
                               {task.status === 'completed' && getCompletedTimeText() && (
                                 <div className="flex items-center gap-2 flex-shrink-0">
-                                  <div className="px-2 sm:px-3 py-0.5 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-semibold whitespace-nowrap bg-blue-600 text-white">
+                                  <div className="px-2 sm:px-3 py-0.5 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-semibold whitespace-nowrap bg-foreground text-background">
                                     {getCompletedTimeText()}
                                   </div>
                                 </div>
@@ -1365,7 +1372,7 @@ export default function DashboardPage() {
                                 </span>
                               )}
                               {task.isRecurring && (
-                                <span className="px-2 py-0.5 bg-blue-600 text-white rounded-full font-medium">
+                                <span className="px-2 py-0.5 bg-foreground text-background rounded-full font-medium">
                                   Recurring
                                 </span>
                               )}
@@ -1480,7 +1487,7 @@ export default function DashboardPage() {
                                 </span>
                               )}
                               {task.isRecurring && (
-                                <span className="px-2 py-0.5 bg-blue-600 text-white rounded-full font-medium">
+                                <span className="px-2 py-0.5 bg-foreground text-background rounded-full font-medium">
                                   Recurring
                                 </span>
                               )}
@@ -1577,7 +1584,7 @@ export default function DashboardPage() {
                                     isOverdue ? 'bg-red-600 text-white' :
                                     daysUntilDue === 0 ? 'bg-orange-600 text-white' :
                                     daysUntilDue === 1 ? 'bg-red-600 text-white' :
-                                    'bg-blue-600 text-white'
+                                    'bg-foreground text-background'
                                   }`}>
                                     {isOverdue ? `${Math.abs(daysUntilDue!)} days overdue` :
                                      daysUntilDue === 0 ? 'Due today' :
@@ -1601,7 +1608,7 @@ export default function DashboardPage() {
                                 </span>
                               )}
                               {task.isRecurring && (
-                                <span className="px-2 py-0.5 bg-blue-600 text-white rounded-full font-medium">
+                                <span className="px-2 py-0.5 bg-foreground text-background rounded-full font-medium">
                                   Recurring
                                 </span>
                               )}
@@ -1698,7 +1705,7 @@ export default function DashboardPage() {
                                     isOverdue ? 'bg-red-600 text-white' :
                                     daysUntilDue === 0 ? 'bg-orange-600 text-white' :
                                     daysUntilDue === 1 ? 'bg-red-600 text-white' :
-                                    'bg-blue-600 text-white'
+                                    'bg-foreground text-background'
                                   }`}>
                                     {isOverdue ? `${Math.abs(daysUntilDue!)} days overdue` :
                                      daysUntilDue === 0 ? 'Due today' :
@@ -1722,7 +1729,7 @@ export default function DashboardPage() {
                                 </span>
                               )}
                               {task.isRecurring && (
-                                <span className="px-2 py-0.5 bg-blue-600 text-white rounded-full font-medium">
+                                <span className="px-2 py-0.5 bg-foreground text-background rounded-full font-medium">
                                   Recurring
                                 </span>
                               )}
@@ -1837,7 +1844,7 @@ export default function DashboardPage() {
                                 </span>
                               )}
                               {task.isRecurring && (
-                                <span className="px-2 py-0.5 bg-blue-600 text-white rounded-full font-medium">
+                                <span className="px-2 py-0.5 bg-foreground text-background rounded-full font-medium">
                                   Recurring
                                 </span>
                               )}

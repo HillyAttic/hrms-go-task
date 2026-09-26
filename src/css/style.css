@@ -2,11 +2,114 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Design tokens.
+ *
+ * Values are space-separated RGB channels (not hex) so Tailwind's alpha
+ * modifier keeps working: `bg-primary/90`, `ring-ring/45`, `border-border/50`.
+ * Plain hex inside var() would silently break every one of those.
+ *
+ * NOTE: --primary is now the lime brand accent. Because lime is only legible as a
+ * SURFACE (1.2:1 as text on white, 14.5:1 as a surface under ink), `bg-primary`
+ * must always be paired with `text-primary-foreground` (ink), never `text-white`.
+ * Solid dark CTAs use `bg-foreground text-background` instead.
+ *
+ * For NON-TEXT indicators — checkbox/radio/switch fills, slider tracks,
+ * notification dots — use `bg-ring`, not `bg-primary`. Lime fails WCAG 1.4.11
+ * (needs 3:1) against a white ground; --ring is ink in light mode (17.3:1) and
+ * lime in dark mode (15.6:1), so it is the correct colour in both. Progress bars
+ * use `bg-foreground` on a `bg-muted` track for the same reason.
+ * Lime stays reserved for large surfaces (button/card/badge/chip backgrounds).
+ */
+:root {
+  --background: 255 255 255;
+  --surface: 247 247 245;
+  --foreground: 25 26 35;
+
+  --card: 255 255 255;
+  --card-foreground: 25 26 35;
+
+  --muted: 241 241 239;
+  --muted-foreground: 85 85 85;
+
+  --border: 25 26 35;
+  --input: 255 255 255;
+  /*
+   * Focus ring.
+   *
+   * NOT lime in light mode: lime on white is 1.2:1, far below the 3:1 WCAG 2.1
+   * SC 1.4.11 minimum for non-text UI indicators — a keyboard user cannot see it.
+   * Ink on white is 14:1. Dark mode uses lime, where it is 15.6:1 on the dark
+   * ground. Both brand colours, each used where it is actually legible.
+   */
+  --ring: 25 26 35;
+
+  --primary: 185 255 102;
+  --primary-foreground: 25 26 35;
+
+  --accent: 185 255 102;
+  --accent-foreground: 25 26 35;
+
+  --secondary: 241 241 239;
+  --secondary-foreground: 25 26 35;
+
+  --destructive: 220 38 38;
+  --destructive-foreground: 255 255 255;
+  /* Status hues are chosen to be legible as *text* on their own tint
+     (e.g. text-success on bg-success/15) in this mode. */
+  --success: 21 128 61;
+  --warning: 180 83 9;
+  --info: 29 78 216;
+
+  /* Fixed dark surfaces — identical in both themes (dark cards on light pages) */
+  --dark: 25 26 35;
+  --dark-secondary: 37 38 47;
+
+  --radius: 20px;
+}
+
+.dark {
+  --background: 17 18 23;
+  --surface: 17 18 23;
+  --foreground: 255 255 255;
+
+  --card: 25 26 35;
+  --card-foreground: 255 255 255;
+
+  --muted: 37 38 47;
+  --muted-foreground: 181 181 181;
+
+  /* 104 104 116 is the minimum that clears WCAG 1.4.11's 3:1 against BOTH the page
+     ground (3.43:1) and the card (3.17:1). The old 58 58 66 was 1.66:1 — form-input
+     boundaries were effectively invisible, and a dark card reads only by its border. */
+  --border: 104 104 116;
+  --input: 37 38 47;
+  --ring: 185 255 102;
+
+  --primary: 185 255 102;
+  --primary-foreground: 25 26 35;
+
+  --accent: 185 255 102;
+  --accent-foreground: 25 26 35;
+
+  --secondary: 37 38 47;
+  --secondary-foreground: 255 255 255;
+
+  --destructive: 239 68 68;
+  --destructive-foreground: 255 255 255;
+  /* Lighter status hues — the dark tints are too dim to read as text on a dark ground. */
+  --success: 74 222 128;
+  --warning: 251 191 36;
+  --info: 96 165 250;
+}
+
 @layer base {
   body {
-    @apply bg-[#F8FAFC] text-dark-5 dark:bg-[#020D1A] dark:text-dark-6;
+    @apply bg-surface text-foreground;
     margin: 0;
-    font-family: system-ui, -apple-system, sans-serif;
+    /* No font-family here — it would override the font-sans utility on <body>
+       (element selector 0,0,1 loses to class 0,1,0 only if both are in the same
+       layer; keeping the declaration out avoids the ambiguity entirely). */
   }
 
   /* Loading skeleton animation */
@@ -27,7 +130,7 @@
 
   /* Accessibility: Focus Indicators - Requirement 7.3 */
   *:focus-visible {
-    @apply outline-none ring-2 ring-primary/60 ring-offset-2 ring-offset-white dark:ring-offset-gray-900;
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
   }
 
   /* Ensure keyboard focus is always visible */
@@ -38,7 +141,7 @@
   textarea:focus-visible,
   [role="button"]:focus-visible,
   [tabindex]:not([tabindex="-1"]):focus-visible {
-    @apply outline-none ring-2 ring-primary/60 ring-offset-2;
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
   }
 
   /* Screen reader only content */
@@ -56,7 +159,7 @@
 
   /* Skip to main content link */
   .skip-to-main {
-    @apply absolute left-0 top-0 z-[9999] -translate-y-full bg-primary px-4 py-2 text-white transition-transform focus:translate-y-0;
+    @apply absolute left-0 top-0 z-[9999] -translate-y-full rounded-b-xl border-2 border-border bg-foreground px-4 py-2 font-semibold text-background transition-transform focus:translate-y-0;
   }
 }
 
@@ -127,26 +230,6 @@
     background: linear-gradient(135deg, #e0e7ff 0%, #ddd6fe 100%);
     border: 2px dashed #6366f1;
   }
-
-  /* Modal backdrop - covers everything including header */
-  .modal-backdrop {
-    position: fixed;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px);
-    z-index: 9998;
-  }
-
-  .modal-content {
-    position: fixed;
-    z-index: 9999;
-  }
-
-  /* Ensure modals always appear above everything */
-  [data-portal] {
-    position: relative;
-    z-index: 10000;
-  }
 }
 
 /* third-party libraries CSS */
@@ -156,7 +239,7 @@
 }
 
 .tableCheckbox:checked ~ div {
-  @apply border-primary bg-primary;
+  @apply border-foreground bg-foreground;
 }
 
 .apexcharts-legend-text {
@@ -238,7 +321,7 @@
 
 .flatpickr-months .flatpickr-prev-month:hover svg,
 .flatpickr-months .flatpickr-next-month:hover svg {
-  @apply !fill-primary;
+  @apply !fill-foreground;
 }
 
 .flatpickr-calendar.arrowTop:before {
@@ -374,8 +457,8 @@ span.flatpickr-weekday,
 .flatpickr-day.selected.nextMonthDay,
 .flatpickr-day.startRange.nextMonthDay,
 .flatpickr-day.endRange.nextMonthDay {
-  background: #0447FD;
-  @apply !border-primary !bg-primary hover:!border-primary hover:!bg-primary;
+  background: rgb(var(--accent));
+  @apply !border-border !bg-accent text-accent-foreground hover:!bg-accent;
 }
 
 .flatpickr-day.selected.startRange + .endRange:not(:nth-child(7n + 1)),
@@ -385,7 +468,7 @@ span.flatpickr-weekday,
 }
 
 .map-btn .jvm-zoom-btn {
-  @apply flex h-7.5 w-7.5 items-center justify-center rounded border border-stroke bg-white px-0 pb-0.5 pt-0 text-2xl leading-none text-dark-5 hover:border-primary hover:bg-primary hover:text-white dark:border-dark-3 dark:bg-dark-2 dark:text-dark-6 dark:hover:border-primary dark:hover:bg-primary dark:hover:text-white;
+  @apply flex h-7.5 w-7.5 items-center justify-center rounded border border-stroke bg-white px-0 pb-0.5 pt-0 text-2xl leading-none text-dark-5 hover:border-border hover:bg-foreground hover:text-background dark:border-dark-3 dark:bg-dark-2 dark:text-dark-6 dark:hover:bg-foreground dark:hover:text-background;
 }
 
 .mapOne .jvm-zoom-btn {
@@ -421,7 +504,7 @@ span.flatpickr-weekday,
 }
 
 .taskCheckbox:checked ~ .box {
-  @apply border-primary bg-primary dark:border-primary;
+  @apply border-foreground bg-foreground;
 }
 
 .custom-input-date::-webkit-calendar-picker-indicator {
@@ -501,7 +584,7 @@ span.flatpickr-weekday,
 }
 
 .data-table-one .datatable-search input {
-  @apply h-[46px] w-full rounded border border-stroke bg-transparent px-5 outline-none focus:border-primary dark:border-dark-3 dark:bg-dark-2 dark:focus:border-primary;
+  @apply h-[46px] w-full rounded border border-stroke bg-transparent px-5 outline-none focus:border-foreground dark:border-dark-3 dark:bg-dark-2 dark:focus:border-ring;
 }
 
 .data-table-common .datatable-selector {
@@ -539,15 +622,15 @@ span.flatpickr-weekday,
 }
 
 .data-table-common .datatable-table > thead > tr:last-child > th input {
-  @apply h-[34px] w-full rounded border border-stroke bg-transparent px-3 text-sm outline-none focus:border-primary dark:border-dark-3 dark:bg-dark-2 dark:focus:border-primary;
+  @apply h-[34px] w-full rounded border border-stroke bg-transparent px-3 text-sm outline-none focus:border-foreground dark:border-dark-3 dark:bg-dark-2 dark:focus:border-ring;
 }
 
 .data-table-common .datatable-table > tbody > tr {
-  @apply hover:bg-primary hover:bg-opacity-5;
+  @apply hover:bg-muted;
 }
 
 .data-table-one .datatable-table > tbody > tr > td:first-child {
-  @apply text-primary dark:text-white;
+  @apply text-foreground;
 }
 
 .data-table-common .datatable-table > tbody > tr > td {
@@ -571,11 +654,11 @@ span.flatpickr-weekday,
 }
 
 .data-table-common .datatable-pagination a {
-  @apply flex h-8 w-8 cursor-pointer items-center justify-center rounded p-0 font-medium text-dark-5 hover:bg-primary hover:text-white dark:text-dark-6;
+  @apply flex h-8 w-8 cursor-pointer items-center justify-center rounded p-0 font-medium text-muted-foreground hover:bg-foreground hover:text-background;
 }
 
 .data-table-common .datatable-pagination .datatable-active a {
-  @apply bg-primary text-white;
+  @apply bg-foreground text-background;
 }
 
 .data-table-common .datatable-pagination li.datatable-hidden {
@@ -587,7 +670,7 @@ span.flatpickr-weekday,
 }
 
 .data-table-two .datatable-search input {
-  @apply h-11.5 w-full rounded border border-stroke bg-gray-2 px-5 outline-none focus:border-primary dark:border-dark-3 dark:bg-dark-2 dark:focus:border-primary;
+  @apply h-11.5 w-full rounded border border-stroke bg-gray-2 px-5 outline-none focus:border-foreground dark:border-dark-3 dark:bg-dark-2 dark:focus:border-ring;
 }
 
 .rangeSliderCommon .noUi-target {
@@ -599,15 +682,15 @@ span.flatpickr-weekday,
 }
 
 .rangeSliderCommon .noUi-connect {
-  @apply h-1.5 rounded-full bg-primary;
+  @apply h-1.5 rounded-full bg-ring;
 }
 
 .rangeSliderOne .noUi-horizontal .noUi-handle {
-  @apply -top-2 h-5.5 w-5.5 rounded-full border-none bg-primary shadow-none;
+  @apply -top-2 h-5.5 w-5.5 rounded-full border-none bg-ring shadow-none;
 }
 
 .rangeSliderTwo .noUi-horizontal .noUi-handle {
-  @apply -top-2 h-6 w-6 rounded-full border-[6px] border-primary bg-white shadow-none dark:bg-dark;
+  @apply -top-2 h-6 w-6 rounded-full border-[6px] border-ring bg-white shadow-none dark:bg-dark;
 }
 
 .noUi-horizontal .noUi-handle:after,
@@ -648,7 +731,7 @@ img {
 
 /* Focus styles for accessibility */
 .focus-visible:focus-visible {
-  outline: 2px solid theme('colors.primary');
+  outline: 2px solid rgb(var(--ring));
   outline-offset: 2px;
 }
 

@@ -407,7 +407,7 @@ export default function AttendanceTrayPage() {
           <p className="text-gray-600 dark:text-gray-400 mb-6">Please sign in to view attendance tray.</p>
           <Button 
             onClick={() => window.location.href = '/auth/signin'}
-            className="bg-blue-600 hover:bg-blue-700 text-white"
+            className="bg-foreground hover:bg-foreground/90 text-background"
           >
             Sign In to Continue
           </Button>
@@ -488,7 +488,7 @@ export default function AttendanceTrayPage() {
                   setSelectedEmployee(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
               >
                 <option value="all">All Employees</option>
                 {employees.map((emp) => (
@@ -510,7 +510,7 @@ export default function AttendanceTrayPage() {
                   setSelectedStatus(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
               >
                 <option value="all">All Status</option>
                 <option value="active">Active</option>
@@ -529,7 +529,7 @@ export default function AttendanceTrayPage() {
                   setDateFilter(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
               >
                 <option value="all">All Time</option>
                 <option value="today">Today</option>

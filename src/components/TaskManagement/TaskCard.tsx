@@ -10,7 +10,7 @@ interface TaskCardProps {
 const getStatusColor = (status: TaskStatus) => {
   switch (status) {
     case TaskStatus.TODO:
-      return 'bg-blue-600 text-white';
+      return 'bg-foreground text-background';
     case TaskStatus.IN_PROGRESS:
       return 'bg-yellow-100 text-yellow-800';
     case TaskStatus.COMPLETED:
@@ -23,13 +23,13 @@ const getStatusColor = (status: TaskStatus) => {
 const getPriorityColor = (priority: TaskPriority) => {
   switch (priority) {
     case TaskPriority.HIGH:
-      return 'bg-red-100 text-red-800';
+      return 'bg-destructive/15 text-destructive';
     case TaskPriority.MEDIUM:
-      return 'bg-orange-100 text-orange-800';
+      return 'bg-warning/15 text-warning';
     case TaskPriority.LOW:
-      return 'bg-green-100 text-green-800';
+      return 'bg-success/15 text-success';
     default:
-      return 'bg-gray-100 text-gray-800';
+      return 'bg-muted text-muted-foreground';
   }
 };
 
@@ -44,7 +44,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
 
   return (
     <div 
-      className="bg-white dark:bg-boxdark rounded-lg border border-stroke dark:border-strokedark p-4 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer transform hover:-translate-y-0.5"
+      className="bg-card rounded-lg border-2 border-border p-4 shadow-hard transition-all duration-200 cursor-pointer transform hover:-translate-y-0.5"
       onClick={onClick}
     >
       <div className="flex justify-between items-start mb-2">

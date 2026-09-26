@@ -136,7 +136,7 @@ export default function SigninWithPassword() {
 
         <Link
           href="/auth/forgot-password"
-          className="hover:text-primary dark:text-white dark:hover:text-primary"
+          className="hover:text-foreground dark:text-white dark:hover:text-foreground"
         >
           Forgot Password?
         </Link>
@@ -146,7 +146,7 @@ export default function SigninWithPassword() {
         <button
           type="submit"
           disabled={loading}
-          className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-primary p-4 font-medium text-white transition hover:bg-opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="flex w-full cursor-pointer items-center justify-center gap-2 rounded-lg bg-foreground p-4 font-semibold text-background border-2 border-border transition hover:bg-foreground/90 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? 'Signing In...' : 'Sign In'}
           {loading && (

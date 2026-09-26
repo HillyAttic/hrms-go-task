@@ -163,7 +163,7 @@ export function TaskListView({
       case 'completed':
         return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400';
       case 'in-progress':
-        return 'bg-blue-600 text-white dark:bg-blue-600 dark:text-white';
+        return 'bg-foreground text-background dark:bg-foreground dark:text-background';
       case 'pending':
         return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
       default:
@@ -495,7 +495,7 @@ export function TaskListView({
               </button>
               <button
                 onClick={() => onEdit(task)}
-                className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg font-medium bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-600 dark:text-white dark:hover:bg-blue-700 transition-colors min-h-[40px]"
+                className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg font-medium bg-foreground text-background hover:bg-foreground/90 dark:bg-foreground dark:text-background dark:hover:bg-foreground/90 transition-colors min-h-[40px]"
                 aria-label="Edit task"
               >
                 <PencilIcon className="w-4 h-4" />

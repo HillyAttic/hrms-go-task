@@ -4,13 +4,13 @@ import Link from "next/link";
 import { useSidebarContext } from "./sidebar-context";
 
 const menuItemBaseStyles = cva(
-  "rounded-xl px-3.5 text-sm font-medium text-dark-4 transition-all duration-200 dark:text-dark-6",
+  "rounded-md border-2 border-transparent px-3.5 text-sm font-medium text-muted-foreground transition-colors duration-150",
   {
     variants: {
       isActive: {
-        true: "bg-primary/[0.08] text-primary font-semibold shadow-sm",
-        false:
-          "hover:bg-gray-100 hover:text-dark hover:dark:bg-white/[0.06] hover:dark:text-white",
+        // Lime surface + dark ink: the active state, per the design language.
+        true: "border-border bg-accent font-semibold text-accent-foreground",
+        false: "hover:bg-muted hover:text-foreground",
       },
     },
     defaultVariants: {

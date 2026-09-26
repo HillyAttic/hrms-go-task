@@ -262,17 +262,20 @@ export function TemplateManager() {
         )}
       </div>
 
-      <DialogPrimitive.Root open={editorOpen} onOpenChange={setEditorOpen}>
+      {/* Shared Dialog root (not the raw primitive) so useModal() fires and the
+          header/bottom nav hide while this drawer is open. */}
+      <Dialog open={editorOpen} onOpenChange={setEditorOpen}>
         <DialogPrimitive.Portal>
-          <DialogPrimitive.Overlay className="fixed inset-0 bg-black/50 z-40" />
+          {/* z-[100] clears the sidebar and bottom nav, which are both z-50. */}
+          <DialogPrimitive.Overlay className="fixed inset-0 z-[100] bg-foreground/60" />
           <DialogPrimitive.Content
             // A stray click outside must not discard an unsaved template.
             onPointerDownOutside={(event) => event.preventDefault()}
             onInteractOutside={(event) => event.preventDefault()}
-            className="fixed inset-y-0 right-0 w-full max-w-2xl bg-white dark:bg-gray-800 z-50 overflow-y-auto shadow-xl"
+            className="fixed inset-y-0 right-0 w-full max-w-2xl bg-card z-[100] overflow-y-auto shadow-hard-lg border-l-2 border-border"
           >
-            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-gray-200 bg-white px-4 py-3 dark:border-gray-700 dark:bg-gray-800">
-              <DialogPrimitive.Title className="text-base font-semibold text-gray-900 dark:text-white">
+            <div className="sticky top-0 z-10 flex items-center justify-between border-b-2 border-border bg-card px-4 py-3">
+              <DialogPrimitive.Title className="text-base font-semibold text-foreground">
                 {draft?.id ? 'Edit Template' : 'New Template'}
               </DialogPrimitive.Title>
               <button
@@ -294,7 +297,7 @@ export function TemplateManager() {
                   <input
                     value={draft.title}
                     onChange={(event) => patchDraft({ title: event.target.value })}
-                    className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ring"
                   />
                 </div>
 
@@ -309,7 +312,7 @@ export function TemplateManager() {
                           type="checkbox"
                           checked={section.visible}
                           onChange={() => toggleSection(sectionIndex)}
-                          className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700"
+                          className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-ring dark:border-gray-600 dark:bg-gray-700"
                         />
                         <span
                           className={cn(
@@ -339,7 +342,7 @@ export function TemplateManager() {
                               checked={field.visible}
                               disabled={!section.visible}
                               onChange={() => toggleField(sectionIndex, fieldIndex)}
-                              className="h-4 w-4 shrink-0 rounded border-gray-300 text-blue-600 focus:ring-blue-500 disabled:opacity-50 dark:border-gray-600 dark:bg-gray-700"
+                              className="h-4 w-4 shrink-0 rounded border-gray-300 text-blue-600 focus:ring-ring disabled:opacity-50 dark:border-gray-600 dark:bg-gray-700"
                             />
                             <span className="text-xs font-mono truncate text-gray-500 dark:text-gray-400">
                               {field.key}
@@ -348,7 +351,7 @@ export function TemplateManager() {
                           <input
                             value={field.label}
                             onChange={(event) => relabelField(sectionIndex, fieldIndex, event.target.value)}
-                            className="h-8 w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="h-8 w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ring"
                           />
                         </div>
                       ))}
@@ -362,7 +365,7 @@ export function TemplateManager() {
                       type="checkbox"
                       checked={draft.showFooterNote}
                       onChange={(event) => patchDraft({ showFooterNote: event.target.checked })}
-                      className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700"
+                      className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-ring dark:border-gray-600 dark:bg-gray-700"
                     />
                     Show footer note
                   </label>
@@ -371,7 +374,7 @@ export function TemplateManager() {
                       type="checkbox"
                       checked={draft.showSlipNumber}
                       onChange={(event) => patchDraft({ showSlipNumber: event.target.checked })}
-                      className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700"
+                      className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-ring dark:border-gray-600 dark:bg-gray-700"
                     />
                     Show slip number
                   </label>
@@ -394,7 +397,7 @@ export function TemplateManager() {
               </div>
             )}
 
-            <div className="sticky bottom-0 flex justify-end gap-2 border-t border-gray-200 bg-white px-4 py-3 dark:border-gray-700 dark:bg-gray-800">
+            <div className="sticky bottom-0 flex justify-end gap-2 border-t-2 border-border bg-card px-4 py-3">
               <Button variant="outline" onClick={() => setEditorOpen(false)} disabled={saving}>
                 Cancel
               </Button>
@@ -404,7 +407,7 @@ export function TemplateManager() {
             </div>
           </DialogPrimitive.Content>
         </DialogPrimitive.Portal>
-      </DialogPrimitive.Root>
+      </Dialog>
 
       <Dialog open={Boolean(preview)} onOpenChange={(open) => !open && setPreview(null)}>
         <DialogContent className="sm:max-w-2xl max-h-[90vh] overflow-y-auto">

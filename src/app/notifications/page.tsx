@@ -295,7 +295,7 @@ export default function NotificationsPage() {
               <button
                 onClick={handleEnableNotifications}
                 disabled={isEnabling}
-                className="w-full sm:w-auto px-4 py-2.5 sm:py-2 bg-blue-600 text-white text-sm sm:text-base rounded-lg hover:bg-blue-700 transition-colors font-medium disabled:opacity-70 disabled:cursor-wait flex items-center justify-center gap-2"
+                className="w-full sm:w-auto px-4 py-2.5 sm:py-2 bg-foreground text-background text-sm sm:text-base rounded-lg hover:bg-foreground/90 transition-colors font-medium disabled:opacity-70 disabled:cursor-wait flex items-center justify-center gap-2"
               >
                 {isEnabling ? (
                   <>
@@ -425,7 +425,7 @@ export default function NotificationsPage() {
                       {!notification.read && (
                         <span className="flex-shrink-0 relative flex items-center justify-center">
                           <span className="absolute inline-flex h-full w-full rounded-full bg-blue-500 opacity-75 animate-ping"></span>
-                          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-blue-600 shadow-lg shadow-blue-500/50"></span>
+                          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-foreground shadow-lg shadow-blue-500/50"></span>
                         </span>
                       )}
                     </div>

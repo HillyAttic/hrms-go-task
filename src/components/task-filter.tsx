@@ -135,7 +135,7 @@ export function TaskFilter({ filters, onFiltersChange, onClearFilters, taskCount
             <div className="mt-4 pt-4 border-t">
               <div className="flex flex-wrap gap-2">
                 {filters.search && (
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-600 text-white">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-foreground text-background">
                     Search: {filters.search}
                     <button
                       onClick={() => handleFilterChange('search', undefined)}

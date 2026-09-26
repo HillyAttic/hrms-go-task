@@ -274,7 +274,7 @@ export function FormToUserMappingDialog({
                             type="checkbox"
                             checked={isChecked}
                             onChange={() => handleUserCheckbox(user.uid)}
-                            className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 cursor-pointer"
+                            className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-ring cursor-pointer"
                           />
                           <div className="flex-1 min-w-0">
                             <div className="text-sm text-gray-800 dark:text-gray-200 truncate">
@@ -300,7 +300,7 @@ export function FormToUserMappingDialog({
                     id="clockout-required"
                     checked={requiredForClockout}
                     onChange={(e) => setRequiredForClockout(e.target.checked)}
-                    className="mt-0.5 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                    className="mt-0.5 h-4 w-4 text-blue-600 focus:ring-ring border-gray-300 rounded"
                   />
                   <label htmlFor="clockout-required" className="text-xs text-gray-700 dark:text-gray-300 cursor-pointer">
                     Require this form submission before clock-out

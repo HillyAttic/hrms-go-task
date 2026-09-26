@@ -91,10 +91,10 @@ export const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
   // Show loading spinner while checking authentication
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-800">
+      <div className="flex min-h-screen items-center justify-center bg-surface">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600 dark:text-gray-400">Loading...</p>
+          <div className="mx-auto h-12 w-12 animate-spin rounded-full border-2 border-border border-t-transparent" />
+          <p className="mt-4 text-sm text-muted-foreground">Loading…</p>
         </div>
       </div>
     );
@@ -106,10 +106,10 @@ export const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
   // Show loading for redirects
   if (!user && !isPublicRoute) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-800">
+      <div className="flex min-h-screen items-center justify-center bg-surface">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600 dark:text-gray-400">Redirecting to sign in...</p>
+          <div className="mx-auto h-12 w-12 animate-spin rounded-full border-2 border-border border-t-transparent" />
+          <p className="mt-4 text-sm text-muted-foreground">Redirecting to sign in…</p>
         </div>
       </div>
     );
@@ -118,8 +118,8 @@ export const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
   // For auth pages, render without sidebar and header
   if (isPublicRoute) {
     return (
-      <div className="min-h-screen bg-gray-2 dark:bg-[#020d1a]">
-        <main className="flex-1 mx-auto w-full max-w-screen-2xl overflow-hidden p-4 md:p-6 2xl:p-10">
+      <div className="min-h-screen bg-surface">
+        <main className="mx-auto w-full max-w-screen-2xl overflow-hidden p-4 md:p-6 2xl:p-10">
           {children}
         </main>
       </div>
@@ -131,17 +131,22 @@ export const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
 
   // For protected pages, render with sidebar and conditionally with header
   return (
-    <div className="flex min-h-screen bg-gray-2 dark:bg-[#020d1a]">
+    <div className="flex min-h-screen bg-surface">
       <Sidebar />
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex min-w-0 flex-1 flex-col">
         {/* Show header on mobile always, hide on desktop for specific routes */}
         <div className={shouldHideHeaderOnDesktop ? 'md:hidden' : ''}>
           <Header />
         </div>
+        {/*
+          The shell owns max-width and padding. Pages must not add their own outer
+          padding (several previously did, e.g. `p-6` / `max-w-[1080px]`).
+          pb-20 on mobile clears the fixed bottom nav.
+        */}
         <main
           id="main-content"
-          className={`flex-1 mx-auto w-full max-w-screen-2xl overflow-x-hidden pb-20 md:pb-10 ${
-            shouldHideHeaderOnDesktop ? '' : 'p-4 md:p-6 2xl:p-10'
+          className={`mx-auto w-full max-w-screen-2xl flex-1 overflow-x-hidden pb-24 md:pb-10 ${
+            shouldHideHeaderOnDesktop ? '' : 'px-4 py-6 md:px-6 md:py-8 2xl:px-10'
           }`}
           role="main"
           aria-label="Main content"

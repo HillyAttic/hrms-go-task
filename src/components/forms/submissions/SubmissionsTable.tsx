@@ -115,21 +115,21 @@ export function SubmissionsTable({
             placeholder="Search by name or email..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
           />
           <input
             type="date"
             placeholder="Start date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            className="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
           />
           <input
             type="date"
             placeholder="End date"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            className="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
           />
         </div>
       </div>
@@ -318,7 +318,7 @@ export function SubmissionsTable({
                       <div className="flex items-center space-x-2">
                         <button
                           onClick={() => setSelectedSubmission(submission)}
-                          className="flex-1 px-3 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700"
+                          className="flex-1 px-3 py-2 bg-foreground text-background text-sm font-medium rounded-lg hover:bg-foreground/90"
                         >
                           View Details
                         </button>

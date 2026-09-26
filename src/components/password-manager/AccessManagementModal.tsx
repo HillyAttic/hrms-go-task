@@ -120,7 +120,7 @@ export default function AccessManagementModal({
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search users..."
-              className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ring"
             />
 
             <div className="max-h-72 overflow-y-auto space-y-1 rounded-lg border border-gray-200 dark:border-gray-700 p-1">
@@ -138,7 +138,7 @@ export default function AccessManagementModal({
                       type="checkbox"
                       checked={user.hasAccess}
                       onChange={() => toggleUser(user.uid)}
-                      className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-ring"
                     />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
@@ -172,7 +172,7 @@ export default function AccessManagementModal({
           <button
             onClick={handleSave}
             disabled={saving || loading}
-            className="px-4 py-2 text-sm rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
+            className="px-4 py-2 text-sm rounded-lg bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50"
           >
             {saving ? 'Saving...' : 'Save Access'}
           </button>

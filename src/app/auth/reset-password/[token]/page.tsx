@@ -106,7 +106,7 @@ const ResetPasswordPage = () => {
   };
 
   return (
-    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-border dark:bg-card">
       <div className="flex flex-wrap items-center">
         <div className="hidden xl:block xl:w-1/2">
           <div className="px-26 py-17.5 text-center">
@@ -122,7 +122,7 @@ const ResetPasswordPage = () => {
           </div>
         </div>
 
-        <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
+        <div className="w-full border-stroke dark:border-border xl:w-1/2 xl:border-l-2">
           <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
             <div className="mb-8 text-center">
               <Logo />
@@ -170,7 +170,7 @@ const ResetPasswordPage = () => {
               <div className="mt-6 text-center">
                 <p className="font-medium text-black dark:text-white">
                   Remember your password?{' '}
-                  <Link href="/auth/signin" className="text-primary hover:underline">
+                  <Link href="/auth/signin" className="text-foreground hover:underline">
                     Back to sign in
                   </Link>
                 </p>

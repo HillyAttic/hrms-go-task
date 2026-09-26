@@ -176,7 +176,7 @@ export default function MISAccessibilityPage() {
               </div>
               <button
                 onClick={() => setShowMappingDialog(true)}
-                className="w-full sm:w-auto px-3 sm:px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-xs sm:text-sm font-medium whitespace-nowrap"
+                className="w-full sm:w-auto px-3 sm:px-4 py-2 bg-foreground text-background rounded-lg hover:bg-foreground/90 text-xs sm:text-sm font-medium whitespace-nowrap"
               >
                 Manage Assignments
               </button>
@@ -284,7 +284,7 @@ export default function MISAccessibilityPage() {
             <button
               onClick={handleSave}
               disabled={saving}
-              className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base font-medium"
+              className="w-full sm:w-auto px-4 sm:px-6 py-2.5 sm:py-3 bg-foreground text-background rounded-lg hover:bg-foreground/90 disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base font-medium"
             >
               {saving ? 'Saving...' : 'Save Configuration'}
             </button>

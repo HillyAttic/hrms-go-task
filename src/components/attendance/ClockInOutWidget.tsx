@@ -110,7 +110,7 @@ export function ClockInOutWidget({
 
           {currentStatus?.isClockedIn && (
             <div className="space-y-2">
-              <div className="text-4xl font-bold text-primary">
+              <div className="text-4xl font-bold text-foreground">
                 {formatDuration(elapsedTime)}
               </div>
               <div className="text-sm text-muted-foreground">

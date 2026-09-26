@@ -31,7 +31,7 @@ export function FormSettingsPanel({
           onChange={(e) =>
             onUpdateSettings({ ...settings, submitButtonText: e.target.value })
           }
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
           placeholder="Submit"
         />
       </div>
@@ -47,7 +47,7 @@ export function FormSettingsPanel({
             onUpdateSettings({ ...settings, successMessage: e.target.value })
           }
           rows={3}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
           placeholder="Thank you for your submission!"
         />
       </div>
@@ -64,7 +64,7 @@ export function FormSettingsPanel({
               allowMultipleSubmissions: e.target.checked,
             })
           }
-          className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+          className="w-4 h-4 text-blue-600 rounded focus:ring-ring"
         />
         <label htmlFor="allowMultiple" className="ml-2 text-sm text-gray-700">
           Allow multiple submissions per user
@@ -89,7 +89,7 @@ export function FormSettingsPanel({
                   type: e.target.value as any,
                 })
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
             >
               <option value="public">Anyone (Public)</option>
               <option value="authenticated">Any logged-in user</option>
@@ -124,7 +124,7 @@ export function FormSettingsPanel({
                             });
                           }
                         }}
-                        className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                        className="w-4 h-4 text-blue-600 rounded focus:ring-ring"
                       />
                       <span className="ml-2 text-sm text-gray-700 capitalize">
                         {role}
@@ -150,7 +150,7 @@ export function FormSettingsPanel({
                     })
                   }
                   rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent font-mono text-sm"
                   placeholder="Enter user IDs (one per line)"
                 />
                 <p className="text-xs text-gray-500 mt-1">

@@ -309,7 +309,7 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
             </button>
             <button
               onClick={() => setCurrentDate(new Date())}
-              className="px-3 py-1 text-sm rounded-md bg-blue-600 text-white hover:bg-blue-700"
+              className="px-3 py-1 text-sm rounded-md bg-foreground text-background hover:bg-foreground/90"
             >
               Today
             </button>
@@ -399,7 +399,7 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
                     {day.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                   </div>
                   {isToday && (
-                    <span className="text-xs px-2 py-0.5 bg-blue-600 text-white rounded-full">Today</span>
+                    <span className="text-xs px-2 py-0.5 bg-foreground text-background rounded-full">Today</span>
                   )}
                 </div>
 

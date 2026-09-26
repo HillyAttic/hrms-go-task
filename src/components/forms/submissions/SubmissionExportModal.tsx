@@ -127,7 +127,7 @@ export function SubmissionExportModal({
                   value="csv"
                   checked={format === 'csv'}
                   onChange={(e) => setFormat(e.target.value as 'csv')}
-                  className="w-4 h-4 text-blue-600 focus:ring-blue-500"
+                  className="w-4 h-4 text-blue-600 focus:ring-ring"
                 />
                 <div className="ml-3">
                   <div className="text-sm font-medium text-gray-900">CSV</div>
@@ -144,7 +144,7 @@ export function SubmissionExportModal({
                   value="excel"
                   checked={format === 'excel'}
                   onChange={(e) => setFormat(e.target.value as 'excel')}
-                  className="w-4 h-4 text-blue-600 focus:ring-blue-500"
+                  className="w-4 h-4 text-blue-600 focus:ring-ring"
                 />
                 <div className="ml-3">
                   <div className="text-sm font-medium text-gray-900">Excel</div>
@@ -168,7 +168,7 @@ export function SubmissionExportModal({
                   type="date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                 />
               </div>
               <div>
@@ -177,7 +177,7 @@ export function SubmissionExportModal({
                   type="date"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                 />
               </div>
             </div>

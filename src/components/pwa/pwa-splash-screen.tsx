@@ -27,7 +27,7 @@ export function PWASplashScreen() {
   if (!show) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#020d1a]">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-background">
       <div className="w-64 h-64">
         <DotLottieReact
           src="https://lottie.host/0f9de11b-81b5-44f0-a176-9d40c8c91354/5SN6fm3CAC.lottie"

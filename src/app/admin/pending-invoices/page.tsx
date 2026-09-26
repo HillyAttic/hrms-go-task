@@ -169,7 +169,7 @@ export default function PendingInvoicesPage() {
               onClick={() => setActiveTab('pending')}
               className={`pb-3 sm:pb-4 px-1 font-medium text-sm whitespace-nowrap transition-colors ${
                 activeTab === 'pending'
-                  ? 'text-primary border-b-2 border-primary'
+                  ? 'text-foreground border-b-2 border-primary'
                   : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
               }`}
             >
@@ -177,7 +177,7 @@ export default function PendingInvoicesPage() {
                 <ArchiveBoxIcon className="w-4 h-4" />
                 Pending
                 {activeTab === 'pending' && invoices.length > 0 && (
-                  <span className="bg-primary text-white text-xs px-2 py-0.5 rounded-full">
+                  <span className="bg-accent text-accent-foreground text-xs font-semibold px-2 py-0.5 rounded-full">
                     {invoices.length}
                   </span>
                 )}
@@ -365,7 +365,7 @@ export default function PendingInvoicesPage() {
         <DialogContent className="sm:max-w-3xl max-h-[90vh] overflow-y-auto w-[95vw] sm:w-full">
           <DialogHeader>
             <DialogTitle className="text-lg sm:text-xl flex items-center gap-2">
-              <DocumentTextIcon className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+              <DocumentTextIcon className="w-5 h-5 sm:w-6 sm:h-6 text-foreground" />
               Invoice Details
             </DialogTitle>
             <DialogDescription className="text-sm">
@@ -447,14 +447,14 @@ export default function PendingInvoicesPage() {
 
               {/* Amount Highlight */}
               {viewingInvoice.amount != null && (
-                <div className="bg-gradient-to-br from-primary/10 to-primary/5 dark:from-primary/20 dark:to-primary/10 rounded-lg p-4 sm:p-5 border-2 border-primary/20 dark:border-primary/30">
+                <div className="bg-muted rounded-lg p-4 sm:p-5 border-2 border-border">
                   <div className="flex items-center gap-3">
-                    <div className="p-2 sm:p-3 bg-primary/10 dark:bg-primary/20 rounded-xl">
-                      <CurrencyRupeeIcon className="w-5 h-5 sm:w-6 sm:h-6 text-primary" />
+                    <div className="p-2 sm:p-3 bg-background rounded-xl border-2 border-border">
+                      <CurrencyRupeeIcon className="w-5 h-5 sm:w-6 sm:h-6 text-foreground" />
                     </div>
                     <div>
                       <label className="text-xs font-medium text-gray-600 dark:text-gray-300 uppercase tracking-wide">Invoice Amount</label>
-                      <p className="mt-1 text-xl sm:text-2xl font-bold text-primary">{formatCurrency(viewingInvoice.amount)}</p>
+                      <p className="mt-1 text-xl sm:text-2xl font-bold text-foreground">{formatCurrency(viewingInvoice.amount)}</p>
                     </div>
                   </div>
                 </div>

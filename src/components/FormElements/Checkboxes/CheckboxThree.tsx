@@ -26,7 +26,7 @@ const CheckboxThree = () => {
             }`}
           >
             <span
-              className={`text-primary opacity-0 ${
+              className={`text-foreground opacity-0 ${
                 isChecked && "!opacity-100"
               }`}
             >

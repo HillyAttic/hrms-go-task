@@ -69,7 +69,7 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
   };
 
   return (
-    <Card className={`group hover:shadow-lg transition-all duration-200 ${selected ? 'ring-2 ring-blue-500' : ''}`}>
+    <Card className={`group hover:shadow-lg transition-all duration-200 ${selected ? 'ring-2 ring-ring' : ''}`}>
       <CardContent className="p-6">
         {/* Selection Checkbox */}
         {onSelect && (
@@ -78,7 +78,7 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
               type="checkbox"
               checked={selected}
               onChange={(e) => onSelect(employee.id!, e.target.checked)}
-              className="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500 cursor-pointer"
+              className="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-ring cursor-pointer"
               aria-label={`Select ${employee.name}`}
             />
           </div>

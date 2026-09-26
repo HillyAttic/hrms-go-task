@@ -3,6 +3,7 @@
 import { useResponsive } from "@/hooks/use-responsive";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useSidebarContext } from "../sidebar/sidebar-context";
 import { MenuIcon } from "./icons";
 import { Notification } from "./notification";
@@ -11,36 +12,52 @@ import { ThemeToggleSwitch } from "./theme-toggle";
 import { UserInfo } from "./user-info";
 import { useModal } from "@/contexts/modal-context";
 
+/** Derive a readable page title from the route, e.g. /admin/leave-approvals -> "Leave Approvals". */
+function titleFromPath(pathname: string): string {
+  const segment = pathname.split("/").filter(Boolean).pop();
+  if (!segment) return "Dashboard";
+  return segment
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
+
 export function Header() {
   const { toggleSidebar, isMobile, isTablet } = useSidebarContext();
   const { device, isTouchDevice } = useResponsive();
   const { isModalOpen } = useModal();
+  const pathname = usePathname();
 
-  // Hide header when modal is open
-  if (isModalOpen) {
-    return null;
-  }
+  const pageTitle = titleFromPath(pathname);
 
   return (
-    <header className="sticky top-0 z-30 flex items-center justify-between border-b border-gray-100 bg-white px-4 py-4 shadow-[0_1px_3px_0_rgba(0,0,0,0.08)] dark:border-stroke-dark dark:bg-gray-dark md:px-5 md:py-5 2xl:px-10">
+    <header
+      className={`
+        sticky top-0 z-30 flex items-center justify-between border-b-2 border-border
+        bg-card px-4 py-4 transition-transform duration-200
+        md:px-6 md:py-4 2xl:px-10
+        ${isModalOpen ? '-translate-y-full' : 'translate-y-0'}
+      `}
+      aria-hidden={isModalOpen}
+    >
       {/* Mobile/Tablet Menu Button */}
       <button
         onClick={toggleSidebar}
         className={`
-          rounded-lg border px-2 py-2 transition-colors
-          dark:border-stroke-dark dark:bg-[#020D1A] hover:dark:bg-[#FFFFFF1A]
+          rounded-md border-2 border-border bg-card p-2 text-foreground transition-colors hover:bg-muted
+          focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/45
           ${(isMobile || isTablet) ? 'block' : 'hidden lg:hidden'}
           ${isTouchDevice ? 'min-h-[44px] min-w-[44px]' : 'min-h-[36px] min-w-[36px]'}
         `}
-        aria-label="Toggle Sidebar"
+        aria-label="Toggle navigation"
       >
         <MenuIcon />
       </button>
 
       {/* Mobile Logo */}
       {isMobile && (
-        <Link 
-          href={"/"} 
+        <Link
+          href={"/dashboard"}
           className={`
             ml-2 flex items-center justify-center
             max-[430px]:hidden min-[375px]:ml-4
@@ -51,23 +68,17 @@ export function Header() {
             src={"/images/logo/logo-icon.svg"}
             width={32}
             height={32}
-            alt="EdVentureHub Logo"
+            alt="EdVentureHub"
             className="h-8 w-8"
           />
         </Link>
       )}
 
-      {/* Desktop Title */}
-      <div className={`
-        ${device.type === 'desktop' ? 'block' : 'hidden'}
-        max-xl:hidden
-      `}>
-        <h1 className="mb-0.5 text-heading-5 font-bold text-dark dark:text-white">
-          Dashboard
+      {/* Desktop page title — derived from the route so it is never stale */}
+      <div className={`${device.type === 'desktop' ? 'block' : 'hidden'} max-xl:hidden`}>
+        <h1 className="font-display text-xl font-semibold tracking-tight text-foreground">
+          {pageTitle}
         </h1>
-        <p className="font-medium text-sm text-dark-4 dark:text-dark-6">
-          edVenture Admin Dashboard
-        </p>
       </div>
 
       {/* Header Actions */}

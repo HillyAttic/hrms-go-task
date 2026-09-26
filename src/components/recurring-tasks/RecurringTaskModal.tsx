@@ -428,7 +428,7 @@ export function RecurringTaskModal({
             <select
               id="recurrencePattern"
               {...register('recurrencePattern')}
-              className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isLoading}
             >
               <option value="monthly">Monthly</option>
@@ -708,7 +708,7 @@ export function RecurringTaskModal({
                 id="startDate"
                 type="date"
                 {...register('startDate')}
-                className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={isLoading}
                 required
               />
@@ -724,7 +724,7 @@ export function RecurringTaskModal({
                 id="dueDate"
                 type="date"
                 {...register('dueDate')}
-                className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={isLoading}
               />
               {errors.dueDate && (
@@ -739,7 +739,7 @@ export function RecurringTaskModal({
             <select
               id="priority"
               {...register('priority')}
-              className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isLoading}
             >
               <option value="low">Low</option>
@@ -759,7 +759,7 @@ export function RecurringTaskModal({
                 type="checkbox"
                 id="requiresArn"
                 {...register('requiresArn')}
-                className="w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500"
+                className="w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded focus:ring-ring"
                 disabled={isLoading}
               />
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Require ARN on completion</span>
@@ -769,7 +769,7 @@ export function RecurringTaskModal({
                 type="checkbox"
                 id="requiresRemark"
                 {...register('requiresRemark')}
-                className="w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500"
+                className="w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded focus:ring-ring"
                 disabled={isLoading}
               />
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Require Remark on completion</span>

@@ -321,7 +321,7 @@ export default function AttendanceHistoryPage() {
           <p className="text-gray-600 dark:text-gray-400 mb-6">Please sign in to view attendance history.</p>
           <Button 
             onClick={() => window.location.href = '/auth/signin'}
-            className="bg-blue-600 hover:bg-blue-700 text-white"
+            className="bg-foreground hover:bg-foreground/90 text-background"
           >
             Sign In to Continue
           </Button>

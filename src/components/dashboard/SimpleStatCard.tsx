@@ -1,13 +1,18 @@
 /**
- * Simplified StatCard for Dashboard
- * Lightweight wrapper with sensible defaults
+ * Adapter over the shared StatsCard for the dashboard / analytics grids.
+ *
+ * Kept as a thin shim so the existing call sites don't churn. New code should
+ * use `StatsCard` from '@/components/ui/stats-card' directly.
+ *
+ * `color` no longer maps to a rainbow of tints — the icon tile is the lime brand
+ * accent for every card, with only genuine status cards tinted semantically.
  */
 
 import React from 'react';
-import { StatCard } from './StatCard';
+import { StatsCard } from '@/components/ui/stats-card';
 
 interface SimpleStatCardProps {
-  title: string;
+  title: React.ReactNode;
   mobileTitle?: string; // Optional shorter title for mobile
   value: number | string;
   icon: React.ReactNode;
@@ -17,27 +22,11 @@ interface SimpleStatCardProps {
   compact?: boolean;
 }
 
-const colorMap = {
-  blue: {
-    iconBgColor: 'bg-blue-100 dark:bg-blue-900',
-    iconColor: 'text-blue-600 dark:text-blue-400',
-  },
-  green: {
-    iconBgColor: 'bg-green-100 dark:bg-green-900',
-    iconColor: 'text-green-600 dark:text-green-400',
-  },
-  orange: {
-    iconBgColor: 'bg-orange-100 dark:bg-orange-900',
-    iconColor: 'text-orange-600 dark:text-orange-400',
-  },
-  red: {
-    iconBgColor: 'bg-red-100 dark:bg-red-900',
-    iconColor: 'text-red-600 dark:text-red-400',
-  },
-  purple: {
-    iconBgColor: 'bg-purple-100 dark:bg-purple-900',
-    iconColor: 'text-purple-600 dark:text-purple-400',
-  },
+/** Only the semantically meaningful states get a tint; the rest stay lime. */
+const statusIconClass: Partial<Record<NonNullable<SimpleStatCardProps['color']>, string>> = {
+  green: 'bg-success/15 text-success',
+  orange: 'bg-warning/15 text-warning',
+  red: 'bg-destructive/15 text-destructive',
 };
 
 export function SimpleStatCard({
@@ -46,28 +35,27 @@ export function SimpleStatCard({
   value,
   icon,
   onClick,
-  color = 'blue',
+  color,
   subtitle,
   compact = false,
 }: SimpleStatCardProps) {
-  const colors = colorMap[color];
-  
   // Use mobile title on small screens if provided, otherwise use regular title
   const displayTitle = mobileTitle ? (
     <>
       <span className="sm:hidden">{mobileTitle}</span>
       <span className="hidden sm:inline">{title}</span>
     </>
-  ) : title;
-  
+  ) : (
+    title
+  );
+
   return (
-    <StatCard
-      title={displayTitle}
+    <StatsCard
+      label={displayTitle}
       value={value}
-      subtitle={subtitle || (onClick ? 'Click to view details' : '')}
+      change={subtitle}
       icon={icon}
-      iconBgColor={colors.iconBgColor}
-      iconColor={colors.iconColor}
+      iconClassName={color ? statusIconClass[color] : undefined}
       onClick={onClick}
       compact={compact}
     />

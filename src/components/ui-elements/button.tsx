@@ -2,22 +2,22 @@ import { cva, VariantProps } from "class-variance-authority";
 import type { HTMLAttributes } from "react";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2.5 text-center font-medium hover:bg-opacity-90 font-medium transition focus:outline-none",
+  "inline-flex items-center justify-center gap-2.5 text-center font-semibold transition focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/45",
   {
     variants: {
       variant: {
-        primary: "bg-primary text-white",
-        green: "bg-green text-white",
-        dark: "bg-dark text-white dark:bg-white/10",
+        primary: "bg-foreground text-background hover:bg-foreground/90",
+        green: "bg-success text-white hover:bg-success/90",
+        dark: "bg-dark text-white hover:bg-dark/90",
         outlinePrimary:
-          "border border-primary hover:bg-primary/10 text-primary",
-        outlineGreen: "border border-green hover:bg-green/10 text-green",
+          "border-2 border-border text-foreground hover:bg-muted",
+        outlineGreen: "border-2 border-border text-success hover:bg-success/10",
         outlineDark:
-          "border border-dark hover:bg-dark/10 text-dark dark:hover:bg-white/10 dark:border-white/25 dark:text-white",
+          "border-2 border-border text-foreground hover:bg-muted",
       },
       shape: {
-        default: "",
-        rounded: "rounded-[5px]",
+        default: "rounded-md",
+        rounded: "rounded-md",
         full: "rounded-full",
       },
       size: {

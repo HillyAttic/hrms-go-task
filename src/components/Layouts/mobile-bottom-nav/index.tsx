@@ -88,8 +88,7 @@ export function MobileBottomNav() {
     <nav
       className={cn(
         "fixed bottom-0 left-0 right-0 z-50 md:hidden",
-        "bg-white/95 dark:bg-[#1c1c1e]/90 backdrop-blur-2xl",
-        "shadow-[0_-0.5px_0_0_rgba(0,0,0,0.12)] dark:shadow-[0_-0.5px_0_0_rgba(255,255,255,0.08)]",
+        "border-t-2 border-border bg-card",
         "pb-[env(safe-area-inset-bottom,0px)]",
         "transition-transform duration-300 ease-in-out",
         visible && !isModalOpen ? "translate-y-0" : "translate-y-full"
@@ -125,7 +124,7 @@ export function MobileBottomNav() {
                 className={cn(
                   "flex items-center justify-center transition-all duration-200",
                   isActive
-                    ? "bg-primary/10 dark:bg-primary/20 rounded-[12px] px-3 py-1"
+                    ? "bg-accent rounded-md px-3 py-1"
                     : "px-3 py-1"
                 )}
               >
@@ -135,8 +134,8 @@ export function MobileBottomNav() {
                     className={cn(
                       "transition-all duration-200",
                       isActive
-                        ? "w-[22px] h-[22px] text-primary"
-                        : "w-[22px] h-[22px] text-gray-400 dark:text-gray-500"
+                        ? "w-[22px] h-[22px] text-accent-foreground"
+                        : "w-[22px] h-[22px] text-muted-foreground"
                     )}
                     aria-hidden="true"
                   />
@@ -156,8 +155,8 @@ export function MobileBottomNav() {
                 className={cn(
                   "text-[10px] font-medium transition-colors duration-200 leading-none",
                   isActive
-                    ? "text-primary"
-                    : "text-gray-400 dark:text-gray-500"
+                    ? "font-bold text-foreground"
+                    : "text-muted-foreground"
                 )}
               >
                 {displayLabel}

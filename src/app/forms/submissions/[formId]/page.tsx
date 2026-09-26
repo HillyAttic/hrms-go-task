@@ -101,7 +101,7 @@ export default function FormSubmissionsPage({ params }: { params: Promise<{ form
           <p className="text-gray-600">Form not found</p>
           <button
             onClick={() => router.push('/forms/builder')}
-            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className="mt-4 px-4 py-2 bg-foreground text-background rounded-lg hover:bg-foreground/90"
           >
             Back to Forms
           </button>

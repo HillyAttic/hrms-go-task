@@ -72,7 +72,7 @@ export function TeamFilter({
               id="status-filter"
               value={filters.status}
               onChange={handleStatusChange}
-              className="w-full appearance-none px-3 py-2.5 pr-10 text-sm border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all"
+              className="w-full appearance-none px-3 py-2.5 pr-10 text-sm border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-ring focus:ring-2 focus:ring-ring dark:focus:ring-ring bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all"
               aria-label="Filter by status"
             >
               <option value="all">All Statuses</option>
@@ -94,7 +94,7 @@ export function TeamFilter({
               id="department-filter"
               value={filters.department}
               onChange={handleDepartmentChange}
-              className="w-full appearance-none px-3 py-2.5 pr-10 text-sm border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all"
+              className="w-full appearance-none px-3 py-2.5 pr-10 text-sm border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-ring focus:ring-2 focus:ring-ring dark:focus:ring-ring bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all"
               aria-label="Filter by department"
             >
               <option value="all">All Departments</option>

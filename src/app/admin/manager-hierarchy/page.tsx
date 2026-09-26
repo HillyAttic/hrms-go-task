@@ -141,7 +141,7 @@ export default function ManagerHierarchyPage() {
             setShowModal(true);
             openModal();
           }}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          className="px-4 py-2 bg-foreground text-background rounded-lg hover:bg-foreground/90"
         >
           Add Manager Hierarchy
         </button>
@@ -169,7 +169,7 @@ export default function ManagerHierarchyPage() {
                   <div className="flex gap-2">
                     <button
                       onClick={() => handleEdit(hierarchy)}
-                      className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
+                      className="px-3 py-1 bg-foreground text-background text-sm rounded hover:bg-foreground/90"
                     >
                       Edit
                     </button>
@@ -260,7 +260,7 @@ export default function ManagerHierarchyPage() {
             <div className="flex gap-2">
               <button
                 onClick={handleSave}
-                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                className="flex-1 px-4 py-2 bg-foreground text-background rounded-lg hover:bg-foreground/90"
               >
                 Save
               </button>

@@ -28,7 +28,7 @@ const DatePickerOne = () => {
         />
 
         <div className="pointer-events-none absolute inset-0 left-auto right-5 flex items-center">
-          <Calendar className="size-5 text-[#9CA3AF]" />
+          <Calendar className="size-5 text-muted-foreground" />
         </div>
       </div>
     </div>

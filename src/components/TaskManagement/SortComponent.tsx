@@ -32,7 +32,7 @@ export const SortComponent: React.FC<SortComponentProps> = ({ onSortChange }) =>
         <select
           value={selectedOption}
           onChange={handleOptionChange}
-          className="rounded-lg border border-stroke bg-transparent py-2 px-4 text-black dark:text-white outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input"
+          className="rounded-lg border border-stroke bg-transparent py-2 px-4 text-black dark:text-white outline-none transition focus:border-primary active:border-primary dark:border-border dark:bg-input"
         >
           <option value="dueDate">Due Date</option>
           <option value="priority">Priority</option>
@@ -51,8 +51,8 @@ export const SortComponent: React.FC<SortComponentProps> = ({ onSortChange }) =>
             onClick={handleOrderChange}
             className={`px-4 py-2 rounded-lg ${
               sortOrder === 'asc'
-                ? 'bg-primary text-white'
-                : 'bg-gray-200 dark:bg-boxdark-2 text-black dark:text-white'
+                ? 'bg-accent text-accent-foreground'
+                : 'bg-gray-200 dark:bg-muted text-black dark:text-white'
             }`}
           >
             {sortOrder === 'asc' ? 'Ascending' : 'Descending'}

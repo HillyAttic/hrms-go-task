@@ -477,7 +477,7 @@ export function TaskModal({
               type="date"
               {...register('dueDate')}
               min={getMinDate()}
-              className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isLoading}
               required
             />
@@ -492,7 +492,7 @@ export function TaskModal({
             <select
               id="priority"
               {...register('priority')}
-              className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isLoading}
             >
               <option value="low">Low</option>
@@ -511,7 +511,7 @@ export function TaskModal({
             <select
               id="status"
               {...register('status')}
-              className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isLoading}
             >
               <option value="pending">Pending</option>
@@ -535,7 +535,7 @@ export function TaskModal({
                 placeholder="Search employees..."
                 value={employeeSearch}
                 onChange={(e) => setEmployeeSearch(e.target.value)}
-                className="w-full px-3 py-2 mb-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white"
+                className="w-full px-3 py-2 mb-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring dark:bg-gray-800 dark:text-white"
                 disabled={isLoading || loadingEmployees}
               />
               <div className="border border-gray-300 dark:border-gray-600 rounded-md max-h-48 overflow-y-auto">
@@ -670,7 +670,7 @@ export function TaskModal({
               value={projectSearch}
               onChange={(e) => setProjectSearch(e.target.value)}
               disabled={isLoading || loadingProjects}
-              className="w-full px-3 py-2 mb-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full px-3 py-2 mb-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring dark:bg-gray-800 dark:text-white disabled:cursor-not-allowed disabled:opacity-50"
             />
 
             {/* Project list */}

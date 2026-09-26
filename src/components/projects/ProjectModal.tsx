@@ -363,7 +363,7 @@ export function ProjectModal({
                   <select
                     id="status"
                     {...register('status')}
-                    className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-dark disabled:opacity-50"
+                    className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-dark disabled:opacity-50"
                     disabled={isLoading}
                   >
                     <option value="wip">WIP</option>
@@ -455,7 +455,7 @@ export function ProjectModal({
                   placeholder="Search team members..."
                   value={memberSearch}
                   onChange={(e) => setMemberSearch(e.target.value)}
-                  className="w-full pl-9 pr-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-dark focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full pl-9 pr-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-dark focus:outline-none focus:ring-2 focus:ring-ring"
                 />
               </div>
               <div className="max-h-40 overflow-y-auto">
@@ -494,7 +494,7 @@ export function ProjectModal({
                                 });
                               }
                             }}
-                            className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                            className="rounded border-gray-300 text-blue-600 focus:ring-ring"
                           />
                           <div className="text-sm">
                             <span className="font-medium text-gray-900 dark:text-white">
@@ -677,7 +677,7 @@ export function ProjectModal({
                         type="text"
                         {...register(`milestones.${index}.title` as const)}
                         placeholder="Milestone title"
-                        className={`flex-1 px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-dark focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                        className={`flex-1 px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-dark focus:outline-none focus:ring-2 focus:ring-ring ${
                           watchedMilestones?.[index]?.completed ? 'line-through text-gray-400' : ''
                         }`}
                         disabled={isLoading}

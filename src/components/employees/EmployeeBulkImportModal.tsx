@@ -363,7 +363,7 @@ export function EmployeeBulkImportModal({
                   </p>
                   <div className="w-full bg-blue-200 rounded-full h-2 mt-2">
                     <div 
-                      className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                      className="bg-foreground h-2 rounded-full transition-all duration-300"
                       style={{ width: `${(importProgress.current / importProgress.total) * 100}%` }}
                     ></div>
                   </div>

@@ -2,26 +2,45 @@ import React from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
+/**
+ * The single button system.
+ *
+ * Height utilities (h-9 / h-10 / h-11 / w-10) are asserted by
+ * src/__tests__/ui-button-touch-target.test.tsx — keep them verbatim.
+ *
+ * `accent` (lime) is the brand CTA; `default` is the solid black CTA. Both carry
+ * the 2px outline + hard offset shadow that define the card/button language.
+ */
 const buttonVariants = cva(
-  'inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none ring-offset-background',
+  [
+    'inline-flex items-center justify-center gap-2 whitespace-nowrap',
+    'rounded-md border-2 border-border font-semibold',
+    'transition-[transform,background-color,box-shadow] duration-150',
+    'focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/45 focus-visible:ring-offset-2 focus-visible:ring-offset-background',
+    'disabled:pointer-events-none disabled:opacity-50',
+  ].join(' '),
   {
     variants: {
       variant: {
-        primary: 'bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600',
-        default: 'bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600',
-        secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600',
-        danger: 'bg-red-600 text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600',
-        destructive: 'bg-red-600 text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600',
-        outline: 'border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-900 dark:text-gray-100',
-        ghost: 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-900 dark:text-gray-100',
-        link: 'underline-offset-4 hover:underline text-blue-600 dark:text-blue-400',
+        // Brand CTA — lime surface, dark ink
+        accent: 'bg-accent text-accent-foreground shadow-hard-sm hover:-translate-y-px hover:shadow-hard active:translate-y-0 active:shadow-none',
+        // Solid black CTA
+        default: 'bg-foreground text-background shadow-hard-sm hover:-translate-y-px hover:shadow-hard active:translate-y-0 active:shadow-none',
+        primary: 'bg-foreground text-background shadow-hard-sm hover:-translate-y-px hover:shadow-hard active:translate-y-0 active:shadow-none',
+        // Outlined on white
+        secondary: 'bg-card text-foreground hover:bg-muted',
+        outline: 'bg-card text-foreground hover:bg-muted',
+        ghost: 'border-transparent bg-transparent text-foreground hover:bg-muted',
+        danger: 'bg-destructive text-destructive-foreground shadow-hard-sm hover:-translate-y-px hover:shadow-hard active:translate-y-0 active:shadow-none',
+        destructive: 'bg-destructive text-destructive-foreground shadow-hard-sm hover:-translate-y-px hover:shadow-hard active:translate-y-0 active:shadow-none',
+        link: 'border-transparent bg-transparent text-foreground underline-offset-4 hover:underline',
       },
       size: {
-        default: 'h-10 py-2 px-4', // 40px height
-        sm: 'h-9 px-3 rounded-md', // 36px height - use sparingly
-        md: 'h-10 py-2 px-4', // 40px height
-        lg: 'h-11 px-8 rounded-md', // 44px height - meets touch target requirement
-        icon: 'h-10 w-10', // 40px - adequate for touch
+        default: 'h-10 px-4 text-sm',
+        sm: 'h-9 px-3 text-sm',
+        md: 'h-10 px-4 text-sm',
+        lg: 'h-11 px-6 text-sm',
+        icon: 'h-10 w-10',
       },
     },
     defaultVariants: {
@@ -47,7 +66,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       >
         {loading && (
-          <span className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+          <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
         )}
         {children}
       </button>

@@ -364,7 +364,7 @@ export function AttendanceCalendarModal({
                   return (
                     <div
                       key={date.toISOString()}
-                      className={`p-1.5 sm:p-3 rounded-lg border ${getStatusColor(status.status)} bg-opacity-20 border-opacity-50 ${isToday ? 'ring-2 ring-blue-500' : ''}`}
+                      className={`p-1.5 sm:p-3 rounded-lg border ${getStatusColor(status.status)} bg-opacity-20 border-opacity-50 ${isToday ? 'ring-2 ring-ring' : ''}`}
                     >
                       <div className="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">
                         {date.getDate()}

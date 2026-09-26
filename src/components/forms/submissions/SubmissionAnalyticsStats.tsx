@@ -425,7 +425,7 @@ export function SubmissionAnalyticsStats({
                 onClick={() => applyReportPreset(preset)}
                 className={`px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${
                   reportPreset === preset
-                    ? 'bg-blue-600 border-blue-600 text-white'
+                    ? 'bg-foreground border-blue-600 text-background'
                     : 'bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                 }`}
               >
@@ -440,7 +440,7 @@ export function SubmissionAnalyticsStats({
               applyReportChartPreset('week');
             }}
             disabled={branchReportLoading || !branchReportData}
-            className="w-full xl:w-auto px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white text-sm font-medium rounded-lg transition-colors"
+            className="w-full xl:w-auto px-4 py-2 bg-foreground hover:bg-foreground/90 disabled:bg-gray-400 text-background text-sm font-medium rounded-lg transition-colors"
           >
             Open Full-Screen Reports
           </button>
@@ -448,7 +448,7 @@ export function SubmissionAnalyticsStats({
           <button
             onClick={() => fetchBranchReport()}
             disabled={branchReportLoading}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white text-sm font-medium rounded-lg transition-colors"
+            className="px-4 py-2 bg-foreground hover:bg-foreground/90 disabled:bg-gray-400 text-background text-sm font-medium rounded-lg transition-colors"
           >
             Apply
           </button>

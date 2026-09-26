@@ -46,7 +46,7 @@ export function NotificationPermissionPrompt() {
         <div className="flex items-start space-x-3">
           <div className="flex-shrink-0">
             <svg 
-              className="w-10 h-10 text-primary" 
+              className="w-10 h-10 text-foreground" 
               fill="none" 
               stroke="currentColor" 
               viewBox="0 0 24 24"
@@ -66,7 +66,7 @@ export function NotificationPermissionPrompt() {
             <p className="text-sm text-dark-4 dark:text-dark-6 mt-1">
               Get instant updates about tasks, attendance, and team activities even when the app is closed.
               {notificationInfo?.isIOS && notificationInfo?.isPWA && (
-                <span className="block mt-1 text-xs text-primary">
+                <span className="block mt-1 text-xs text-foreground">
                   ✓ Running as PWA - notifications supported
                 </span>
               )}

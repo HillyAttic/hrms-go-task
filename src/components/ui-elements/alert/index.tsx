@@ -8,9 +8,9 @@ const alertVariants = cva(
   {
     variants: {
       variant: {
-        success: "border-green bg-green-light-7 dark:bg-[#1B1B24]",
-        warning: "border-[#FFB800] bg-[#FEF5DE] dark:bg-[#1B1B24]",
-        error: "border-red-light bg-red-light-5 dark:bg-[#1B1B24]",
+        success: "border-green bg-green-light-7 dark:bg-card",
+        warning: "border-warning bg-warning/15 dark:bg-card",
+        error: "border-red-light bg-red-light-5 dark:bg-card",
       },
     },
     defaultVariants: {
@@ -51,9 +51,9 @@ const Alert = ({
       <div className="w-full">
         <h5
           className={cn("mb-4 font-bold leading-[22px]", {
-            "text-[#004434] dark:text-[#34D399]": variant === "success",
-            "text-[#9D5425]": variant === "warning",
-            "text-[#BC1C21]": variant === "error",
+            "text-success": variant === "success",
+            "text-warning": variant === "warning",
+            "text-destructive": variant === "error",
           })}
         >
           {title}
@@ -61,9 +61,9 @@ const Alert = ({
 
         <div
           className={cn({
-            "text-[#637381]": variant === "success",
-            "text-[#D0915C]": variant == "warning",
-            "text-[#CD5D5D]": variant === "error",
+            "text-muted-foreground": variant === "success",
+            "text-warning": variant == "warning",
+            "text-destructive": variant === "error",
           })}
         >
           {description}

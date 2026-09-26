@@ -81,7 +81,7 @@ export default function FormPage({ params }: { params: Promise<{ formId: string 
           </p>
           <button
             onClick={() => router.push('/')}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className="px-6 py-2 bg-foreground text-background rounded-lg hover:bg-foreground/90"
           >
             Go to Dashboard
           </button>
@@ -103,7 +103,7 @@ export default function FormPage({ params }: { params: Promise<{ formId: string 
           </p>
           <button
             onClick={() => router.push('/')}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className="px-6 py-2 bg-foreground text-background rounded-lg hover:bg-foreground/90"
           >
             Go to Dashboard
           </button>

@@ -53,7 +53,7 @@ export function ProjectListView({
                     if (input) input.indeterminate = someSelected;
                   }}
                   onChange={onToggleSelectAll}
-                  className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-ring"
                   aria-label="Select all projects"
                 />
               )}
@@ -103,7 +103,7 @@ export function ProjectListView({
                     type="checkbox"
                     checked={selectedIds.has(project.id!)}
                     onChange={() => onToggleSelection(project.id!)}
-                    className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-ring"
                     aria-label={`Select ${project.projectName}`}
                   />
                 )}
@@ -189,7 +189,7 @@ export function ProjectListView({
                 <div className="flex items-center gap-2">
                   <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 min-w-[60px]">
                     <div
-                      className="bg-blue-600 h-1.5 rounded-full transition-all"
+                      className="bg-foreground h-1.5 rounded-full transition-all"
                       style={{ width: `${project.progress?.percentage ?? 0}%` }}
                     />
                   </div>

@@ -106,7 +106,7 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-border dark:bg-card">
       <div className="flex flex-wrap items-center">
         <div className="hidden xl:block xl:w-1/2">
           <div className="px-26 py-17.5 text-center">
@@ -122,7 +122,7 @@ const SignUpPage = () => {
           </div>
         </div>
 
-        <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
+        <div className="w-full border-stroke dark:border-border xl:w-1/2 xl:border-l-2">
           <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
             <div className="mb-8 text-center">
               <Logo />
@@ -192,36 +192,20 @@ const SignUpPage = () => {
                   <label
                     htmlFor="acceptTerms"
                     className={`${
-                      formData.acceptTerms ? 'bg-primary' : 'bg-white dark:bg-boxdark-2'
+                      formData.acceptTerms ? 'bg-ring' : 'bg-white dark:bg-muted'
                     } flex h-5 w-5 items-center justify-center rounded border ${
                       errors.acceptTerms
                         ? '!border-red dark:!border-red'
-                        : 'border-stroke dark:border-form-strokedark'
-                    } peer-checked:before:block`}
-                  >
-                    <span className="hidden">
-                      <svg
-                        className="h-3.5 w-3.5 text-white"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={4}
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-                    </span>
-                  </label>
+                        : 'border-stroke dark:border-border'
+                    }`}
+                  />
                 </div>
                 <label
                   htmlFor="acceptTerms"
                   className="text-sm font-medium text-black dark:text-white"
                 >
                   I agree to the{' '}
-                  <Link href="/terms" className="text-primary hover:underline">
+                  <Link href="/terms" className="text-foreground hover:underline">
                     Terms and Conditions
                   </Link>
                 </label>
@@ -245,7 +229,7 @@ const SignUpPage = () => {
               <div className="mt-6 text-center">
                 <p className="font-medium text-black dark:text-white">
                   Already have an account?{' '}
-                  <Link href="/auth/signin" className="text-primary hover:underline">
+                  <Link href="/auth/signin" className="text-foreground hover:underline">
                     Sign in
                   </Link>
                 </p>

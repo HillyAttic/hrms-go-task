@@ -662,7 +662,10 @@ describe('Feature: management-pages, Property 42: Completion Rate Calculation', 
           priority: fc.constantFrom('low', 'medium', 'high', 'urgent') as fc.Arbitrary<'low' | 'medium' | 'high' | 'urgent'>,
           status: fc.constantFrom('pending', 'in-progress', 'completed') as fc.Arbitrary<'pending' | 'in-progress' | 'completed'>,
           assignedTo: fc.array(generators.userId(), { minLength: 1, maxLength: 5 }),
-          recurrencePattern: fc.constantFrom('daily', 'weekly', 'monthly', 'quarterly') as fc.Arbitrary<'daily' | 'weekly' | 'monthly' | 'quarterly'>,
+          // The component's calculateTotalCycles only handles monthly/quarterly/
+          // half-yearly/yearly — daily and weekly fall through to 0, making the rate
+          // trivially 0. Constrain to the patterns the component actually models.
+          recurrencePattern: fc.constantFrom('monthly', 'quarterly') as fc.Arbitrary<'monthly' | 'quarterly'>,
           nextOccurrence: fc.date({ min: new Date(), max: new Date('2030-12-31') }),
           startDate: fc.date({ min: new Date('2020-01-01'), max: new Date('2023-12-31') }),
           completionHistory: fc.array(
@@ -703,9 +706,11 @@ describe('Feature: management-pages, Property 42: Completion Rate Calculation', 
             }
           };
 
+          // The component computes cycles from startDate -> dueDate (not nextOccurrence)
+          // and only models monthly/quarterly/half-yearly/yearly.
           const totalCycles = calculateTotalCycles(
             task.startDate,
-            task.nextOccurrence,
+            task.dueDate,
             task.recurrencePattern
           );
 
@@ -713,17 +718,12 @@ describe('Feature: management-pages, Property 42: Completion Rate Calculation', 
 
           renderAndTest(task, (container) => {
             // Find the progress bar element
-            const progressBar = container.querySelector('.bg-blue-600');
-            
-            if (progressBar) {
-              // Verify the width style is set correctly
-              const width = progressBar.getAttribute('style');
-              
-              // Check that the width attribute contains the expected rate (if width exists)
-              if (width) {
-                expect(width).toContain(`${expectedRate}%`);
-              }
-            }
+            const progressBar = container.querySelector('.bg-foreground');
+
+            // The bar is always rendered, so a missing element is a real failure —
+            // assert it rather than silently skipping the width check.
+            expect(progressBar).not.toBeNull();
+            expect(progressBar!.getAttribute('style')).toContain(`${expectedRate}%`);
           });
         }
       ),

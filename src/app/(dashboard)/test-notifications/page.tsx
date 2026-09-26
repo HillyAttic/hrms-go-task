@@ -55,7 +55,7 @@ export default function TestNotificationsPage() {
             <button
               onClick={handleTestNotification}
               disabled={loading || !currentUser}
-              className="px-4 py-2 bg-primary text-white rounded hover:bg-primary/90 disabled:opacity-50"
+              className="px-4 py-2 bg-foreground text-background rounded-md border-2 border-border font-semibold hover:bg-foreground/90 disabled:opacity-50"
             >
               Send Test Notification
             </button>

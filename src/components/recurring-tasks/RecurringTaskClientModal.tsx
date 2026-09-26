@@ -768,7 +768,7 @@ export function RecurringTaskClientModal({
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="flex-1 sm:flex-none px-4 py-2 text-xs sm:text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 sm:flex-none px-4 py-2 text-xs sm:text-sm font-medium text-background bg-foreground rounded-md hover:bg-foreground/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {saving ? 'Saving...' : 'Save Changes'}
               </button>
@@ -814,7 +814,7 @@ export function RecurringTaskClientModal({
                     }}
                     placeholder="Enter 15-digit ARN"
                     maxLength={15}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
                   />
                   <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                     {arnNumber.length}/15 digits
@@ -857,7 +857,7 @@ export function RecurringTaskClientModal({
                 </button>
                 <button
                   onClick={handleArnSubmit}
-                  className="flex-1 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors"
+                  className="flex-1 px-4 py-2 text-sm font-medium text-background bg-foreground rounded-md hover:bg-foreground/90 transition-colors"
                 >
                   Submit
                 </button>
@@ -908,7 +908,7 @@ export function RecurringTaskClientModal({
                     }}
                     placeholder="Enter your remark..."
                     rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-800 dark:text-white resize-none"
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring dark:bg-gray-800 dark:text-white resize-none"
                   />
                 </div>
 
@@ -962,7 +962,7 @@ export function RecurringTaskClientModal({
                 </button>
                 <button
                   onClick={handleRemarkSubmit}
-                  className="flex-1 px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+                  className="flex-1 px-4 py-2 text-sm font-medium text-background bg-foreground rounded-md hover:bg-foreground/90 transition-colors flex items-center justify-center gap-2"
                 >
                   Submit and mark completed
                   <CheckIcon className="w-4 h-4" />

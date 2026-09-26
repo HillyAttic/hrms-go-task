@@ -195,7 +195,7 @@ const MultiSelect: React.FC<DropdownProps> = ({ id }) => {
                     {options.map((option, index) => (
                       <div key={index}>
                         <div
-                          className="w-full cursor-pointer rounded-t border-b border-stroke hover:bg-primary/5 dark:border-dark-3"
+                          className="w-full cursor-pointer rounded-t border-b border-stroke hover:bg-muted dark:border-dark-3"
                           onClick={(event) => select(index, event)}
                         >
                           <div

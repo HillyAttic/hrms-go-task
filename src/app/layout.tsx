@@ -1,4 +1,3 @@
-import "@/css/satoshi.css";
 import "@/css/style.css";
 import "@/css/mobile-responsive.css";
 
@@ -12,6 +11,7 @@ import type { Metadata } from "next";
 import NextTopLoader from "nextjs-toploader";
 import type { PropsWithChildren } from "react";
 import { Providers } from "./providers";
+import { fontVariables } from "./fonts";
 import { ServiceWorkerProvider } from "./service-worker-provider";
 import { AuthWrapper } from "@/components/Auth/AuthWrapper";
 import { PWASplashScreen } from "@/components/pwa/pwa-splash-screen";
@@ -40,18 +40,21 @@ export const metadata: Metadata = {
 
 export const viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#0447FD" },
-    { media: "(prefers-color-scheme: dark)", color: "#002176" },
+    { media: "(prefers-color-scheme: light)", color: "#F7F7F5" },
+    { media: "(prefers-color-scheme: dark)", color: "#111217" },
   ],
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,
-  userScalable: false,
 };
 
 export default function RootLayout({ children }: PropsWithChildren) {
   return (
-    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
+    <html
+      lang="en"
+      suppressHydrationWarning
+      data-scroll-behavior="smooth"
+      className={fontVariables}
+    >
       <head>
         {/* Preconnect to critical origins */}
         <link rel="preconnect" href="https://firestore.googleapis.com" />
@@ -80,12 +83,12 @@ export default function RootLayout({ children }: PropsWithChildren) {
             {/* Skip to main content link for keyboard navigation */}
             <a
               href="#main-content"
-              className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[9999] bg-primary text-white px-4 py-2 rounded-md text-sm font-medium"
+              className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-[9999] rounded-xl border-2 border-border bg-foreground px-4 py-2 text-sm font-semibold text-background"
             >
               Skip to main content
             </a>
 
-            <NextTopLoader color="#0447FD" showSpinner={false} />
+            <NextTopLoader color="#B9FF66" showSpinner={false} />
 
             <AuthWrapper>
               {children}

@@ -45,7 +45,7 @@ export function RadioInput({
           >
             <span
               className={cn(
-                "hidden size-2.5 rounded-full bg-primary",
+                "hidden size-2.5 rounded-full bg-ring",
                 variant === "circle" && "bg-transparent",
               )}
             />

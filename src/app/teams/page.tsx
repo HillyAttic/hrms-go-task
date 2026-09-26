@@ -323,14 +323,14 @@ export default function TeamsPage() {
           <div className="inline-flex rounded-lg border border-gray-300 dark:border-gray-600 overflow-hidden shadow-sm">
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-2.5 transition-colors ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
+              className={`p-2.5 transition-colors ${viewMode === 'grid' ? 'bg-foreground text-background' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
               aria-label="Grid view"
             >
               <Squares2X2Icon className="w-5 h-5" />
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`p-2.5 border-l border-gray-300 dark:border-gray-600 transition-colors ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
+              className={`p-2.5 border-l border-gray-300 dark:border-gray-600 transition-colors ${viewMode === 'list' ? 'bg-foreground text-background' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
               aria-label="List view"
             >
               <ListBulletIcon className="w-5 h-5" />

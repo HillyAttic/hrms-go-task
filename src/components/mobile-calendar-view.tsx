@@ -257,9 +257,9 @@ export function MobileCalendarView({ tasks, onTaskClick }: MobileCalendarViewPro
   }, [days]);
 
   return (
-    <div className="bg-white dark:bg-[#1a1a2e] rounded-2xl shadow-lg max-w-md mx-auto overflow-hidden border border-gray-200 dark:border-gray-800">
+    <div className="bg-white dark:bg-card rounded-2xl shadow-lg max-w-md mx-auto overflow-hidden border border-gray-200 dark:border-gray-800">
       {/* Mobile Header - Google Calendar Style */}
-      <div className="flex items-center justify-between px-4 py-3 bg-white dark:bg-[#1a1a2e]">
+      <div className="flex items-center justify-between px-4 py-3 bg-white dark:bg-card">
         <div className="flex items-center gap-3">
           <Bars3Icon className="w-6 h-6 text-gray-500 dark:text-gray-400" />
           <div className="flex items-center gap-1">
@@ -294,14 +294,14 @@ export function MobileCalendarView({ tasks, onTaskClick }: MobileCalendarViewPro
           >
             {day}
             {isTodayWeekday(index) && (
-              <div className="mt-1 mx-auto w-6 h-0.5 rounded-full bg-blue-600 dark:bg-blue-400" />
+              <div className="mt-1 mx-auto w-6 h-0.5 rounded-full bg-foreground dark:bg-blue-400" />
             )}
           </div>
         ))}
       </div>
 
       {/* Month Navigation - Compact */}
-      <div className="flex items-center justify-between px-4 py-2 bg-gray-50 dark:bg-[#16162a]">
+      <div className="flex items-center justify-between px-4 py-2 bg-gray-50 dark:bg-muted">
         <button
           onClick={() => navigateMonth('prev')}
           className="p-1.5 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
@@ -346,7 +346,7 @@ export function MobileCalendarView({ tasks, onTaskClick }: MobileCalendarViewPro
                   <div className="flex justify-center mb-1">
                     <div className={`w-7 h-7 flex items-center justify-center text-sm font-medium rounded-full transition-colors ${
                       todayHighlight
-                        ? 'bg-blue-600 text-white shadow-sm shadow-blue-600/30'
+                        ? 'bg-foreground text-background shadow-sm shadow-blue-600/30'
                         : isCurrentMonth
                           ? 'text-gray-800 dark:text-gray-200'
                           : 'text-gray-400 dark:text-gray-600'
@@ -454,7 +454,7 @@ export function MobileCalendarView({ tasks, onTaskClick }: MobileCalendarViewPro
             onClick={() => { setShowBottomSheet(false); }}
           />
           {/* Sheet */}
-          <div className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-[#1e1e36] rounded-t-2xl shadow-2xl max-h-[60vh] animate-slide-up">
+          <div className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-card rounded-t-2xl shadow-2xl max-h-[60vh] animate-slide-up">
             {/* Handle */}
             <div className="flex justify-center pt-3 pb-1">
               <div className="w-10 h-1 rounded-full bg-gray-300 dark:bg-gray-600" />

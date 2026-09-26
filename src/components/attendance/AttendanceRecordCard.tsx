@@ -33,7 +33,7 @@ export function AttendanceRecordCard({
       case 'completed':
         return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
       case 'active':
-        return 'bg-blue-600 text-white dark:bg-blue-600 dark:text-white';
+        return 'bg-foreground text-background dark:bg-foreground dark:text-background';
       case 'incomplete':
         return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
       case 'edited':

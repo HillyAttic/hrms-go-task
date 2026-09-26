@@ -9,6 +9,10 @@ const createJestConfig = nextJest({
 const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   testEnvironment: 'jest-environment-jsdom',
+  // Keep the transform cache on the project drive. The OS temp drive can fill up
+  // (jest writes here on every run) and a full disk surfaces as confusing
+  // "Exceeded timeout" / ENOSPC failures rather than a clear error.
+  cacheDirectory: '<rootDir>/.jest-cache',
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
@@ -16,6 +20,10 @@ const customJestConfig = {
     '**/__tests__/**/*.test.[jt]s?(x)',
     '**/?(*.)+(spec|test).[jt]s?(x)',
   ],
+  // .kilo/worktrees/* are full repo copies (git worktrees). Without this, the
+  // testMatch globs collect every suite twice, and the copies resolve '@/' back
+  // to <rootDir>/src — so a stale duplicate test can fail against current source.
+  testPathIgnorePatterns: ['<rootDir>/node_modules/', '<rootDir>/.kilo/', '<rootDir>/.next/'],
   collectCoverageFrom: [
     'src/**/*.{js,jsx,ts,tsx}',
     '!src/**/*.d.ts',

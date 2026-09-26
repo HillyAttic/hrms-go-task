@@ -137,7 +137,7 @@ export const TaskKanbanView: React.FC<TaskKanbanViewProps> = ({
           <div className={`flex items-center mb-4 pb-2 border-b-2 ${getStatusColor(status as TaskStatus)}`}>
             <h2 className="text-xl font-bold text-black dark:text-white">
               {getStatusTitle(status as TaskStatus)} 
-              <span className="ml-2 bg-gray-200 dark:bg-boxdark-2 text-gray-700 dark:text-gray-300 text-sm font-medium px-2.5 py-0.5 rounded">
+              <span className="ml-2 bg-gray-200 dark:bg-muted text-gray-700 dark:text-gray-300 text-sm font-medium px-2.5 py-0.5 rounded">
                 {statusTasks.length}
               </span>
             </h2>

@@ -80,7 +80,7 @@ export function InstallPrompt() {
         <div className="flex items-start space-x-3">
           <div className="flex-shrink-0">
             <svg
-              className="w-10 h-10 text-primary"
+              className="w-10 h-10 text-foreground"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

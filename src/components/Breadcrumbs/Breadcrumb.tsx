@@ -50,7 +50,7 @@ const Breadcrumb = ({ pageName }: BreadcrumbProps) => {
         <ol className="flex items-center gap-2">
           <li>
             <Link 
-              className="font-medium hover:text-primary transition-colors" 
+              className="font-medium hover:text-foreground transition-colors" 
               href="/dashboard"
             >
               Dashboard
@@ -60,10 +60,10 @@ const Breadcrumb = ({ pageName }: BreadcrumbProps) => {
             <li key={item.href} className="flex items-center gap-2">
               <span className="text-dark-5 dark:text-dark-6">/</span>
               {index === breadcrumbs.length - 1 ? (
-                <span className="font-medium text-primary">{item.label}</span>
+                <span className="font-medium text-foreground">{item.label}</span>
               ) : (
                 <Link
-                  className="font-medium hover:text-primary transition-colors"
+                  className="font-medium hover:text-foreground transition-colors"
                   href={item.href}
                 >
                   {item.label}

@@ -19,7 +19,7 @@ export function FormSubmitButton({
         className={`px-6 py-3 rounded-lg font-medium text-white transition-colors ${
           isSubmitting
             ? 'bg-gray-400 cursor-not-allowed'
-            : 'bg-blue-600 hover:bg-blue-700'
+            : 'bg-foreground hover:bg-foreground/90'
         }`}
       >
         {isSubmitting ? (

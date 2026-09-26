@@ -205,7 +205,7 @@ export function HolidayManagementModal({ isOpen, onClose, managerId, isManager, 
                   type="date"
                   value={holidayDate}
                   onChange={(e) => setHolidayDate(e.target.value)}
-                  className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
                 />
               </div>
 
@@ -217,7 +217,7 @@ export function HolidayManagementModal({ isOpen, onClose, managerId, isManager, 
                   value={holidayName}
                   onChange={(e) => setHolidayName(e.target.value)}
                   placeholder="e.g., Independence Day"
-                  className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
                 />
               </div>
 
@@ -229,7 +229,7 @@ export function HolidayManagementModal({ isOpen, onClose, managerId, isManager, 
                   value={holidayDescription}
                   onChange={(e) => setHolidayDescription(e.target.value)}
                   placeholder="e.g., National Holiday"
-                  className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
                 />
               </div>
             </div>
@@ -237,7 +237,7 @@ export function HolidayManagementModal({ isOpen, onClose, managerId, isManager, 
             <Button
               onClick={handleAddHoliday}
               disabled={saving || !holidayDate || !holidayName.trim()}
-              className="mt-4 bg-blue-600 hover:bg-blue-700 text-white"
+              className="mt-4 bg-foreground hover:bg-foreground/90 text-background"
             >
               {saving ? (
                 <>

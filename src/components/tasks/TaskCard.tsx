@@ -55,7 +55,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleComplete, onView, sel
   // Get custom color classes for high priority (orange)
   const getPriorityClasses = (priority: string): string => {
     if (priority === 'high') {
-      return 'border-transparent bg-orange-100 text-orange-800 hover:bg-orange-200';
+      return 'border-transparent bg-warning/15 text-warning';
     }
     return '';
   };
@@ -82,7 +82,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleComplete, onView, sel
   const isCompleted = task.status === 'completed';
 
   return (
-    <Card className={`group hover:shadow-lg transition-all duration-200 ${isOverdue ? 'border-red-300 bg-red-50/30' : ((task.commentCount != null && task.commentCount > 0) || (task.attachments && task.attachments.length > 0)) ? 'border-blue-300 dark:border-blue-700 bg-blue-50/30 dark:bg-blue-900/10' : ''} ${selected ? 'ring-2 ring-blue-500' : ''}`}>
+    <Card className={`group hover:shadow-lg transition-all duration-200 ${isOverdue ? 'border-destructive bg-destructive/5' : ((task.commentCount != null && task.commentCount > 0) || (task.attachments && task.attachments.length > 0)) ? 'border-info bg-info/5' : ''} ${selected ? 'ring-2 ring-ring' : ''}`}>
       <CardContent className="p-6">
         {/* Selection Checkbox */}
         {onSelect && (
@@ -91,7 +91,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleComplete, onView, sel
               type="checkbox"
               checked={selected}
               onChange={(e) => onSelect(task.id, e.target.checked)}
-              className="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500 cursor-pointer"
+              className="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-ring cursor-pointer"
               aria-label={`Select ${task.title}`}
             />
           </div>

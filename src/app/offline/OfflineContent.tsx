@@ -64,7 +64,7 @@ export default function OfflineContent() {
           <div className="space-y-3">
             <button
               onClick={() => window.location.reload()}
-              className="w-full bg-primary hover:bg-primary-dark text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200"
+              className="w-full rounded-md border-2 border-border bg-foreground py-3 px-4 font-semibold text-background transition-transform hover:-translate-y-px"
             >
               Try Again
             </button>

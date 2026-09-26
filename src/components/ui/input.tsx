@@ -3,6 +3,14 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 
+/**
+ * Text input.
+ *
+ * Previously this referenced `border-input bg-background ring-ring
+ * placeholder:text-muted-foreground text-destructive`, none of which existed in
+ * tailwind.config.ts — so it rendered with no border, no background and no
+ * placeholder colour. Those tokens now resolve (see src/css/style.css).
+ */
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   error?: string;
   label?: string;
@@ -11,14 +19,15 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, error, label, helperText, id, ...props }, ref) => {
-    const inputId = id || `input-${React.useId()}`;
-    
+    const generatedId = React.useId();
+    const inputId = id || `input-${generatedId}`;
+
     return (
       <div className="space-y-2">
         {label && (
-          <label 
+          <label
             htmlFor={inputId}
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            className="block text-[13px] font-semibold leading-none text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           >
             {label}
             {props.required && <span className="text-destructive"> *</span>}
@@ -28,8 +37,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           id={inputId}
           type={type}
           className={cn(
-            'flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50',
-            error && 'border-destructive focus-visible:ring-destructive',
+            'flex h-10 w-full rounded-md border-2 border-border bg-input px-3 py-2 text-sm text-foreground',
+            'placeholder:text-muted-foreground',
+            'file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground',
+            'focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/45 focus-visible:ring-offset-0',
+            'disabled:cursor-not-allowed disabled:opacity-50',
+            'aria-[invalid=true]:border-destructive aria-[invalid=true]:focus-visible:ring-destructive/30',
             className
           )}
           aria-invalid={error ? 'true' : 'false'}
@@ -38,12 +51,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           {...props}
         />
         {error && (
-          <p id={`${inputId}-error`} className="text-sm text-destructive" role="alert">
+          <p id={`${inputId}-error`} className="text-[13px] font-medium text-destructive" role="alert">
             {error}
           </p>
         )}
         {helperText && !error && (
-          <p id={`${inputId}-helper`} className="text-sm text-muted-foreground">
+          <p id={`${inputId}-helper`} className="text-[13px] text-muted-foreground">
             {helperText}
           </p>
         )}

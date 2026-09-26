@@ -22,6 +22,7 @@ import { BulkActionToolbar } from '@/components/ui/BulkActionToolbar';
 import { BulkDeleteDialog } from '@/components/ui/BulkDeleteDialog';
 import { NoDataEmptyState } from '@/components/ui/empty-state';
 import { CardGridSkeleton } from '@/components/ui/loading-skeletons';
+import { ViewToggle } from '@/components/ui/view-toggle';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { Button } from '@/components/ui/button';
 import { PlusIcon } from '@heroicons/react/24/outline';
@@ -396,22 +397,15 @@ export default function RecurringTasksPage() {
         {/* View Toggle Buttons */}
         {!loading && tasks.length > 0 && (
           <div className="flex justify-end">
-            <div className="flex items-center space-x-2">
-              <button
-                onClick={() => setViewMode('grid')}
-                className={`px-3 py-2 md:py-1.5 rounded-md text-sm font-medium transition-colors min-h-[44px] md:min-h-0 ${viewMode === 'grid' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'}`}
-                aria-label="Grid view"
-              >
-                Grid
-              </button>
-              <button
-                onClick={() => setViewMode('list')}
-                className={`px-3 py-2 md:py-1.5 rounded-md text-sm font-medium transition-colors min-h-[44px] md:min-h-0 ${viewMode === 'list' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'}`}
-                aria-label="List view"
-              >
-                List
-              </button>
-            </div>
+            <ViewToggle
+              value={viewMode}
+              onChange={setViewMode}
+              aria-label="Change view mode"
+              options={[
+                { value: 'grid', label: 'Grid' },
+                { value: 'list', label: 'List' },
+              ]}
+            />
           </div>
         )}
 

@@ -105,7 +105,7 @@ export function ProjectCard({ project, onEdit, onDelete }: ProjectCardProps) {
           </div>
           <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
             <div
-              className="bg-blue-600 h-2 rounded-full transition-all"
+              className="bg-foreground h-2 rounded-full transition-all"
               style={{ width: `${progress}%` }}
             />
           </div>

@@ -78,7 +78,7 @@ export function EmployeeFilter({
               value={filters.search}
               onChange={handleSearchChange}
               placeholder="Search by name, email, position, or employee ID..."
-              className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 dark:text-gray-400"
+              className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 dark:text-gray-400"
               aria-label="Search employees"
             />
           </div>
@@ -94,7 +94,7 @@ export function EmployeeFilter({
               id="status-filter"
               value={filters.status}
               onChange={handleStatusChange}
-              className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+              className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
               aria-label="Filter by status"
             >
               <option value="all">All Statuses</option>
@@ -124,7 +124,7 @@ export function EmployeeFilter({
             )}
             
             {filters.status !== 'all' && (
-              <span className="inline-flex items-center gap-1 px-3 py-1 bg-blue-600 dark:bg-blue-500 text-white text-xs font-medium rounded-full">
+              <span className="inline-flex items-center gap-1 px-3 py-1 bg-foreground dark:bg-blue-500 text-background text-xs font-medium rounded-full">
                 Status: {filters.status === 'on-leave' ? 'On Leave' : filters.status.charAt(0).toUpperCase() + filters.status.slice(1)}
                 <button
                   onClick={() => onFilterChange({ ...filters, status: 'all' })}

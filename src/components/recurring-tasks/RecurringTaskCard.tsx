@@ -168,7 +168,7 @@ export function RecurringTaskCard({
   const completionRate = calculateCompletionRate();
 
   return (
-    <Card className={`group hover:shadow-lg transition-all duration-200 ${isOverdue ? 'border-red-300 bg-red-50/30' : ''} ${task.isPaused ? 'opacity-75' : ''} ${selected ? 'ring-2 ring-blue-500' : ''}`}>
+    <Card className={`group hover:shadow-lg transition-all duration-200 ${isOverdue ? 'border-red-300 bg-red-50/30' : ''} ${task.isPaused ? 'opacity-75' : ''} ${selected ? 'ring-2 ring-ring' : ''}`}>
       <CardContent className="p-6">
         {/* Selection Checkbox */}
         {onSelect && (
@@ -177,7 +177,7 @@ export function RecurringTaskCard({
               type="checkbox"
               checked={selected}
               onChange={(e) => task.id && onSelect(task.id, e.target.checked)}
-              className="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-blue-500 cursor-pointer"
+              className="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-ring cursor-pointer"
               aria-label={`Select ${task.title}`}
             />
           </div>
@@ -304,12 +304,14 @@ export function RecurringTaskCard({
         {/* Progress Indicator - Requirement 3.9 */}
         <div className="mb-4">
           <div className="flex items-center justify-between text-sm mb-2">
-            <span className="text-gray-600 dark:text-gray-400 font-medium">Completion Rate</span>
-            <span className="text-gray-900 dark:text-white font-semibold">{completionRate}%</span>
+            <span className="text-muted-foreground font-medium">Completion Rate</span>
+            <span className="text-foreground font-semibold">{completionRate}%</span>
           </div>
-          <div className="w-full bg-gray-200 rounded-full h-2">
-            <div 
-              className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+          <div className="w-full bg-muted rounded-full h-2">
+            {/* Ink, not lime: a progress bar is a non-text indicator and needs 3:1
+                against its track — lime on white is only 1.2:1. */}
+            <div
+              className="bg-foreground h-2 rounded-full transition-all duration-300"
               style={{ width: `${completionRate}%` }}
             />
           </div>

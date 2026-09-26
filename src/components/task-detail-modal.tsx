@@ -362,7 +362,7 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
 
             <div className="grid grid-cols-2 gap-4">
               {/* Status - Editable for everyone */}
-              <div className={!canEditAll ? 'ring-2 ring-blue-500 ring-offset-2 rounded-lg p-2 -m-2' : ''}>
+              <div className={!canEditAll ? 'ring-2 ring-ring ring-offset-2 rounded-lg p-2 -m-2' : ''}>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Status {!canEditAll && <span className="text-blue-600 text-xs">(You can edit this)</span>}
                 </label>

@@ -72,7 +72,7 @@ export function TaskStatsCard({ tasks }: TaskStatsCardProps) {
             label="Total Tasks"
             value={totalTasks}
             color="text-white"
-            bgColor="bg-blue-600"
+            bgColor="bg-foreground"
           />
 
           {/* Pending Tasks */}

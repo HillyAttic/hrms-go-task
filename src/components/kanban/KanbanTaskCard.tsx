@@ -78,7 +78,7 @@ export function KanbanTaskCard({ task, onDragStart, onClick, onStatusChange, onD
       draggable
       onDragStart={(e) => onDragStart(e, task)}
       onClick={() => onClick(task)}
-      className="p-2.5 mb-2 cursor-move hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      className="p-2.5 mb-2 cursor-move hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring"
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {

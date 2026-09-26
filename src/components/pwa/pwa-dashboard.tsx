@@ -19,7 +19,7 @@ export function PWADashboard() {
             onClick={() => setActiveTab('notifications')}
             className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
               activeTab === 'notifications'
-                ? 'text-primary border-b-2 border-primary'
+                ? 'text-foreground border-b-2 border-primary'
                 : 'text-dark-4 dark:text-dark-6 hover:text-dark dark:hover:text-white'
             }`}
           >
@@ -35,7 +35,7 @@ export function PWADashboard() {
             onClick={() => setActiveTab('install')}
             className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
               activeTab === 'install'
-                ? 'text-primary border-b-2 border-primary'
+                ? 'text-foreground border-b-2 border-primary'
                 : 'text-dark-4 dark:text-dark-6 hover:text-dark dark:hover:text-white'
             }`}
           >
@@ -51,7 +51,7 @@ export function PWADashboard() {
             onClick={() => setActiveTab('status')}
             className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
               activeTab === 'status'
-                ? 'text-primary border-b-2 border-primary'
+                ? 'text-foreground border-b-2 border-primary'
                 : 'text-dark-4 dark:text-dark-6 hover:text-dark dark:hover:text-white'
             }`}
           >
@@ -146,7 +146,7 @@ export function PWADashboard() {
                 
                 <button
                   onClick={promptInstall}
-                  className="w-full bg-primary text-white py-3 px-4 rounded-lg hover:bg-primary/90 transition-colors font-medium"
+                  className="w-full bg-foreground text-background py-3 px-4 rounded-md border-2 border-border hover:bg-foreground/90 transition-colors font-semibold"
                 >
                   Install Now
                 </button>

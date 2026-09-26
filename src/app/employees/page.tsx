@@ -12,6 +12,7 @@ import { EmployeeBulkImportModal } from '@/components/employees/EmployeeBulkImpo
 import { BulkActionToolbar } from '@/components/ui/BulkActionToolbar';
 import { BulkDeleteDialog } from '@/components/ui/BulkDeleteDialog';
 import { Button } from '@/components/ui/button';
+import { ViewToggle } from '@/components/ui/view-toggle';
 import { NoResultsEmptyState, NoDataEmptyState } from '@/components/ui/empty-state';
 import { CardGridSkeleton, StatsGridSkeleton } from '@/components/ui/loading-skeletons';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
@@ -517,22 +518,15 @@ export default function EmployeesPage() {
           </p>
           
           {/* View Toggle Buttons */}
-          <div className="flex items-center space-x-2">
-            <button
-              onClick={() => setViewMode('grid')}
-              className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${viewMode === 'grid' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'}`}
-              aria-label="Grid view"
-            >
-              Grid
-            </button>
-            <button
-              onClick={() => setViewMode('list')}
-              className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${viewMode === 'list' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'}`}
-              aria-label="List view"
-            >
-              List
-            </button>
-          </div>
+          <ViewToggle
+              value={viewMode}
+              onChange={setViewMode}
+              aria-label="Change view mode"
+              options={[
+                { value: 'grid', label: 'Grid' },
+                { value: 'list', label: 'List' },
+              ]}
+            />
         </div>
 
         {/* Employee Grid/List View */}
@@ -579,7 +573,7 @@ export default function EmployeesPage() {
                             type="checkbox"
                             checked={isSelected(employee.id!)}
                             onChange={(e) => toggleSelection(employee.id!, e.target.checked)}
-                            className="h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-primary focus:ring-primary mt-1"
+                            className="h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-foreground focus:ring-primary mt-1"
                           />
                           <div>
                             <div className="font-medium text-gray-900 dark:text-white">{employee.name}</div>
@@ -619,7 +613,7 @@ export default function EmployeesPage() {
                           type="checkbox"
                           checked={isSelected(employee.id!)}
                           onChange={(e) => toggleSelection(employee.id!, e.target.checked)}
-                          className="h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-primary focus:ring-primary"
+                          className="h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-foreground focus:ring-primary"
                         />
                       </div>
                       <div className="col-span-1 font-medium text-gray-900 dark:text-white flex items-center">{employee.employeeId}</div>

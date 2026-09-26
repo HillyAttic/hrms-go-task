@@ -128,7 +128,7 @@ export function Notification() {
       setIsOpen={setIsOpen}
     >
       <DropdownTrigger
-        className="grid size-12 place-items-center rounded-full border border-gray-100 bg-[#F8FAFC] text-dark outline-none hover:text-primary focus-visible:border-primary focus-visible:text-primary dark:border-dark-4 dark:bg-dark-3 dark:text-white dark:focus-visible:border-primary"
+        className="grid size-12 place-items-center rounded-full border border-gray-100 bg-surface text-dark outline-none hover:text-foreground focus-visible:border-primary focus-visible:text-foreground dark:border-dark-4 dark:bg-dark-3 dark:text-white dark:focus-visible:border-primary"
         aria-label="View Notifications"
       >
         <span className="relative">
@@ -156,12 +156,12 @@ export function Notification() {
           <div className="flex items-center gap-2">
             {unreadCount > 0 && (
               <>
-                <span className="rounded-md bg-primary px-[9px] py-0.5 text-xs font-medium text-white">
+                <span className="rounded-md bg-accent px-[9px] py-0.5 text-xs font-semibold text-accent-foreground">
                   {unreadCount} new
                 </span>
                 <button
                   onClick={handleMarkAllAsRead}
-                  className="text-xs text-primary hover:underline"
+                  className="text-xs text-foreground hover:underline"
                   title="Mark all as read"
                 >
                   Mark all read
@@ -208,7 +208,7 @@ export function Notification() {
                           {notification.title}
                         </strong>
                         {!notification.read && (
-                          <span className="flex-shrink-0 w-2 h-2 bg-primary rounded-full mt-1.5"></span>
+                          <span className="flex-shrink-0 w-2 h-2 bg-ring rounded-full mt-1.5"></span>
                         )}
                       </div>
 
@@ -237,7 +237,7 @@ export function Notification() {
               <Link
                 href="/notifications"
                 onClick={() => setIsOpen(false)}
-                className="block rounded-lg border border-primary p-2 text-center text-sm font-medium tracking-wide text-primary outline-none transition-colors hover:bg-blue-light-5 focus:bg-blue-light-5 focus:text-primary focus-visible:border-primary dark:border-dark-3 dark:text-dark-6 dark:hover:border-dark-5 dark:hover:bg-dark-3 dark:hover:text-dark-7 dark:focus-visible:border-dark-5 dark:focus-visible:bg-dark-3 dark:focus-visible:text-dark-7"
+                className="block rounded-lg border border-primary p-2 text-center text-sm font-medium tracking-wide text-foreground outline-none transition-colors hover:bg-blue-light-5 focus:bg-blue-light-5 focus:text-foreground focus-visible:border-primary dark:border-dark-3 dark:text-dark-6 dark:hover:border-dark-5 dark:hover:bg-dark-3 dark:hover:text-dark-7 dark:focus-visible:border-dark-5 dark:focus-visible:bg-dark-3 dark:focus-visible:text-dark-7"
               >
                 See all notifications
               </Link>

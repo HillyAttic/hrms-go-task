@@ -370,7 +370,7 @@ export function TeamMemberMappingDialog({
                                 handleClientCheckbox(client.id!, index, e.ctrlKey || e.metaKey);
                               }
                             }}
-                            className={`w-4 h-4 rounded border-gray-300 focus:ring-blue-500 ${
+                            className={`w-4 h-4 rounded border-gray-300 focus:ring-ring ${
                               isAssignedToSelectedUser
                                 ? 'text-red-600 border-red-400 cursor-not-allowed opacity-60'
                                 : 'text-blue-600 cursor-pointer'

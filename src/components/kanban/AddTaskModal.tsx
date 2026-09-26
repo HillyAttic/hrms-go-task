@@ -100,7 +100,7 @@ export function AddTaskModal({ isOpen, onClose, onSave, editTask }: AddTaskModal
               type="text"
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
               placeholder="Enter task title"
               required
             />
@@ -114,7 +114,7 @@ export function AddTaskModal({ isOpen, onClose, onSave, editTask }: AddTaskModal
             <textarea
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
               placeholder="Enter task description"
               rows={3}
               required
@@ -130,7 +130,7 @@ export function AddTaskModal({ isOpen, onClose, onSave, editTask }: AddTaskModal
               <select
                 value={formData.status}
                 onChange={(e) => setFormData({ ...formData, status: e.target.value as KanbanStatus })}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
               >
                 <option value="todo">To Do</option>
                 <option value="in-progress">In Progress</option>
@@ -145,7 +145,7 @@ export function AddTaskModal({ isOpen, onClose, onSave, editTask }: AddTaskModal
               <select
                 value={formData.priority}
                 onChange={(e) => setFormData({ ...formData, priority: e.target.value as any })}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
               >
                 <option value="low">Low</option>
                 <option value="medium">Medium</option>
@@ -163,7 +163,7 @@ export function AddTaskModal({ isOpen, onClose, onSave, editTask }: AddTaskModal
               type="date"
               value={formData.dueDate}
               onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
             />
           </div>
 
@@ -179,7 +179,7 @@ export function AddTaskModal({ isOpen, onClose, onSave, editTask }: AddTaskModal
             </Button>
             <Button
               type="submit"
-              className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white"
+              className="w-full sm:w-auto bg-foreground hover:bg-foreground/90 text-background"
             >
               {editTask ? 'Update Task' : 'Add Task'}
             </Button>

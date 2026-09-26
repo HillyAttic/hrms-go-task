@@ -526,7 +526,7 @@ export function EmployeeModal({
           <div className="mb-2">
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <div
-                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                className="bg-foreground h-2 rounded-full transition-all duration-300"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -612,7 +612,7 @@ export function EmployeeModal({
               value={typeof slip === 'string' ? slip : ''}
               onChange={(e) => updateSalarySlipUrl(index, e.target.value)}
               placeholder={`Salary slip ${index + 1} URL (optional)`}
-              className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100 text-sm"
+              className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100 text-sm"
               disabled={isUploading || isLoading}
             />
           </div>
@@ -623,7 +623,7 @@ export function EmployeeModal({
           <div className="mb-2">
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <div
-                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                className="bg-foreground h-2 rounded-full transition-all duration-300"
                 style={{ width: `${progress}%` }}
               />
             </div>
@@ -657,7 +657,7 @@ export function EmployeeModal({
   const tabClass = (tab: string) =>
     `px-4 py-2 text-sm font-medium rounded-md transition-colors ${
       activeTab === tab
-        ? 'bg-blue-600 text-white'
+        ? 'bg-foreground text-background'
         : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
     }`;
 
@@ -837,7 +837,7 @@ export function EmployeeModal({
                   <select
                     id="role"
                     {...register('role')}
-                    className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100"
+                    className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100"
                     disabled={isLoading}
                   >
                     <option value="Employee">Employee</option>
@@ -855,7 +855,7 @@ export function EmployeeModal({
                   <select
                     id="status"
                     {...register('status')}
-                    className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100"
+                    className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100"
                     disabled={isLoading}
                   >
                     <option value="active">Active</option>
@@ -877,7 +877,7 @@ export function EmployeeModal({
                     <select
                       id="managerId"
                       {...register('managerId')}
-                      className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100"
+                      className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100"
                       disabled={isLoading}
                       onChange={(e) => {
                         const selectedManager = managers.find(m => m.id === e.target.value);
@@ -921,7 +921,7 @@ export function EmployeeModal({
                     />
                     <label
                       htmlFor="requireLocationTracking"
-                      className="relative block h-6 w-11 cursor-pointer rounded-full bg-gray-300 dark:bg-[#5A616B] transition-colors peer-checked:bg-blue-600 peer-focus:ring-2 peer-focus:ring-blue-500 peer-checked:[&>span]:translate-x-5"
+                      className="relative block h-6 w-11 cursor-pointer rounded-full bg-gray-300 dark:bg-muted transition-colors peer-checked:bg-ring peer-focus:ring-2 peer-focus:ring-ring peer-checked:[&>span]:translate-x-5"
                     >
                       <span className="absolute left-0.5 top-0.5 size-5 rounded-full bg-white transition-transform" />
                     </label>
@@ -1097,7 +1097,7 @@ export function EmployeeModal({
                           type="date"
                           value={change.date}
                           onChange={(e) => updateSalaryChange(index, 'date', e.target.value)}
-                          className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100 text-sm"
+                          className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100 text-sm"
                         />
                       </div>
                       <div>
@@ -1105,7 +1105,7 @@ export function EmployeeModal({
                         <select
                           value={change.reason}
                           onChange={(e) => updateSalaryChange(index, 'reason', e.target.value)}
-                          className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100 text-sm"
+                          className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100 text-sm"
                         >
                           <option value="probation">After Probation</option>
                           <option value="promotion">Promotion</option>
@@ -1118,7 +1118,7 @@ export function EmployeeModal({
                           type="number"
                           value={change.oldSalary}
                           onChange={(e) => updateSalaryChange(index, 'oldSalary', parseFloat(e.target.value) || 0)}
-                          className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100 text-sm"
+                          className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100 text-sm"
                         />
                       </div>
                       <div>
@@ -1127,7 +1127,7 @@ export function EmployeeModal({
                           type="number"
                           value={change.newSalary}
                           onChange={(e) => updateSalaryChange(index, 'newSalary', parseFloat(e.target.value) || 0)}
-                          className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100 text-sm"
+                          className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100 text-sm"
                         />
                       </div>
                       <div className="md:col-span-2">
@@ -1137,7 +1137,7 @@ export function EmployeeModal({
                           value={change.notes || ''}
                           onChange={(e) => updateSalaryChange(index, 'notes', e.target.value)}
                           placeholder="Reason or details about this change"
-                          className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100 text-sm"
+                          className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100 text-sm"
                         />
                       </div>
                     </div>

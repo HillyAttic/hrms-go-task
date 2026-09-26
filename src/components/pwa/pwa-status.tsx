@@ -61,7 +61,7 @@ export function PWAStatus() {
     return (
       <button
         onClick={() => setShowDetails(true)}
-        className="fixed bottom-20 right-4 bg-primary text-white p-3 rounded-full shadow-lg hover:bg-primary/90 transition-colors z-40"
+        className="fixed bottom-20 right-4 bg-accent text-accent-foreground border-2 border-border p-3 rounded-full hover:bg-accent/90 transition-colors z-40"
         aria-label="Show PWA Status"
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -96,7 +96,7 @@ export function PWAStatus() {
           {isInstallable && !isInstalled && (
             <button
               onClick={promptInstall}
-              className="text-xs text-primary hover:underline"
+              className="text-xs text-foreground hover:underline"
             >
               Install
             </button>
@@ -140,7 +140,7 @@ export function PWAStatus() {
               </div>
               <div className="w-full bg-gray-300 dark:bg-gray-700 rounded-full h-2">
                 <div
-                  className="bg-primary h-2 rounded-full transition-all"
+                  className="bg-foreground h-2 rounded-full transition-all"
                   style={{ width: `${Math.min(cacheInfo.percentage, 100)}%` }}
                 />
               </div>
@@ -165,7 +165,7 @@ export function PWAStatus() {
             ) : (
               <button
                 onClick={handleEnablePeriodicSync}
-                className="text-xs text-primary hover:underline"
+                className="text-xs text-foreground hover:underline"
               >
                 Enable periodic updates
               </button>
@@ -185,7 +185,7 @@ export function PWAStatus() {
       <div className="mt-4 pt-4 border-t border-stroke dark:border-stroke-dark">
         <button
           onClick={loadCacheInfo}
-          className="w-full text-sm text-primary hover:underline"
+          className="w-full text-sm text-foreground hover:underline"
         >
           Refresh Status
         </button>

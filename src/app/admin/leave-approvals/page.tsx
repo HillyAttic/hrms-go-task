@@ -233,7 +233,7 @@ export default function LeaveApprovalsPage() {
           onClick={() => setActiveTab('leave')}
           className={`px-4 py-2 rounded-lg font-medium transition-colors ${
             activeTab === 'leave'
-              ? 'bg-blue-600 text-white'
+              ? 'bg-foreground text-background'
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300'
           }`}
         >
@@ -243,7 +243,7 @@ export default function LeaveApprovalsPage() {
           onClick={() => setActiveTab('wfh')}
           className={`px-4 py-2 rounded-lg font-medium transition-colors ${
             activeTab === 'wfh'
-              ? 'bg-blue-600 text-white'
+              ? 'bg-foreground text-background'
               : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300'
           }`}
         >
@@ -260,7 +260,7 @@ export default function LeaveApprovalsPage() {
               onClick={() => setFilter(status)}
               className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg font-medium transition-colors text-xs sm:text-base whitespace-nowrap ${
                 filter === status
-                  ? 'bg-blue-600 text-white'
+                  ? 'bg-foreground text-background'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300'
               }`}
             >
@@ -356,7 +356,7 @@ export default function LeaveApprovalsPage() {
                               <button
                                 onClick={() => openApproveModal(request)}
                                 disabled={busy}
-                                className={`${ACTION_BTN} col-start-1 row-start-2 bg-blue-600 hover:bg-blue-700`}
+                                className={`${ACTION_BTN} col-start-1 row-start-2 bg-foreground hover:bg-foreground/90`}
                               >
                                 Approve w/ Reason
                               </button>
@@ -512,7 +512,7 @@ export default function LeaveApprovalsPage() {
             <textarea
               value={rejectionReason}
               onChange={(e) => setRejectionReason(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-ring dark:bg-gray-700 dark:text-white"
               rows={4}
               placeholder="Enter rejection reason..."
             />

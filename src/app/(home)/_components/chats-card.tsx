@@ -64,7 +64,7 @@ export async function ChatsCard() {
                 </div>
 
                 {!!chat.unreadCount && (
-                  <div className="pointer-events-none absolute right-0 top-1/2 aspect-square max-w-fit -translate-y-1/2 select-none rounded-full bg-primary px-2 py-0.5 text-sm font-medium text-white">
+                  <div className="pointer-events-none absolute right-0 top-1/2 aspect-square max-w-fit -translate-y-1/2 select-none rounded-full bg-accent px-2 py-0.5 text-sm font-semibold text-accent-foreground">
                     {chat.unreadCount}
                   </div>
                 )}

@@ -53,7 +53,7 @@ export function ClientListView({
                     if (input) input.indeterminate = someSelected;
                   }}
                   onChange={onToggleSelectAll}
-                  className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-ring"
                   aria-label="Select all clients"
                 />
               )}
@@ -100,7 +100,7 @@ export function ClientListView({
                     type="checkbox"
                     checked={selectedIds.has(client.id!)}
                     onChange={() => onToggleSelection(client.id!)}
-                    className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-ring"
                     aria-label={`Select ${client.clientName}`}
                   />
                 )}

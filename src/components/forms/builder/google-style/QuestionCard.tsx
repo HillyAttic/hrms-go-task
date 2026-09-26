@@ -129,7 +129,7 @@ export function QuestionCard({
             onChange={(e) => onUpdate({ helpText: e.target.value })}
             onClick={(e) => e.stopPropagation()}
             placeholder="Description (optional)"
-            className="w-full text-sm text-gray-500 border-0 border-b border-gray-200 focus:border-blue-400 focus:outline-none py-1 mt-2 bg-transparent"
+            className="w-full text-sm text-gray-500 border-0 border-b border-gray-200 focus:border-ring focus:outline-none py-1 mt-2 bg-transparent"
           />
         )}
         {!isSelected && field.helpText && (
@@ -165,7 +165,7 @@ export function QuestionCard({
                 onChange={(e) => onUpdate({ description: e.target.value })}
                 onClick={(e) => e.stopPropagation()}
                 placeholder="Section description (optional)"
-                className="mt-2 w-full border-b border-gray-300 focus:border-blue-500 outline-none text-sm py-0.5 bg-transparent text-gray-500"
+                className="mt-2 w-full border-b border-gray-300 focus:border-ring outline-none text-sm py-0.5 bg-transparent text-gray-500"
               />
             )}
           </div>

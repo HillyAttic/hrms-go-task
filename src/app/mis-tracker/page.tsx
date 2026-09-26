@@ -211,7 +211,7 @@ export default function MISTrackerPage() {
           </p>
           <button
             onClick={() => router.push('/dashboard')}
-            className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200"
+            className="px-6 py-2 bg-foreground hover:bg-foreground/90 text-background font-medium rounded-lg transition-colors duration-200"
           >
             Go to Dashboard
           </button>
@@ -234,7 +234,7 @@ export default function MISTrackerPage() {
           <div className="flex gap-3 justify-center">
             <button
               onClick={() => router.push('/forms/builder')}
-              className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors duration-200"
+              className="px-6 py-2 bg-foreground hover:bg-foreground/90 text-background font-medium rounded-lg transition-colors duration-200"
             >
               Go to Form Builder
             </button>
@@ -267,7 +267,7 @@ export default function MISTrackerPage() {
               <select
                 value={selectedFormId || ''}
                 onChange={(e) => handleFormChange(e.target.value)}
-                className="flex-1 sm:flex-none sm:min-w-[250px] px-3 sm:px-4 py-2 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="flex-1 sm:flex-none sm:min-w-[250px] px-3 sm:px-4 py-2 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-ring focus:border-transparent"
               >
                 {availableForms.map((form) => (
                   <option key={form.id} value={form.id}>

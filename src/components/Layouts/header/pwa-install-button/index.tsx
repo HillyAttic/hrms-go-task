@@ -145,9 +145,9 @@ export function PWAInstallButton() {
       <button
         onClick={handleInstallClick}
         className={`
-          group rounded-full bg-gray-3 p-[5px] text-[#111928] outline-1 outline-primary 
-          focus-visible:outline dark:bg-[#020D1A] dark:text-current
-          hover:bg-gray-4 dark:hover:bg-[#FFFFFF1A] transition-colors
+          group rounded-full bg-surface p-[5px] text-foreground outline-1 outline-ring 
+          focus-visible:outline dark:bg-background dark:text-current
+          hover:bg-gray-4 dark:hover:bg-foreground/10 transition-colors
           ${isTouchDevice ? 'min-h-[44px] min-w-[44px]' : 'min-h-[36px] min-w-[36px]'}
         `}
         aria-label="Install App"
@@ -260,7 +260,7 @@ export function PWAInstallButton() {
 
             <button
               onClick={closeInstructions}
-              className="mt-6 w-full bg-primary text-white py-2 px-4 rounded-lg hover:bg-primary/90 transition-colors"
+              className="mt-6 w-full bg-foreground text-background py-2 px-4 rounded-md border-2 border-border font-semibold hover:bg-foreground/90 transition-colors"
             >
               Got it
             </button>

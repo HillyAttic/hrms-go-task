@@ -254,7 +254,7 @@ export function SubmissionDetailModal({
                             href={file.fileUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700"
+                            className="px-3 py-1 text-sm bg-foreground text-background rounded hover:bg-foreground/90"
                           >
                             Download
                           </a>

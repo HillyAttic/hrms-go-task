@@ -6,6 +6,7 @@ import { Project } from '@/services/project.service';
 import { ProjectList } from '@/components/projects/ProjectList';
 import { ProjectModal } from '@/components/projects/ProjectModal';
 import { Button } from '@/components/ui/button';
+import { ViewToggle } from '@/components/ui/view-toggle';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { toast } from 'react-toastify';
 
@@ -231,30 +232,15 @@ export default function ProjectsPage() {
 
       {/* View Toggle Buttons */}
       <div className="flex justify-end">
-        <div className="flex items-center space-x-2">
-          <button
-            onClick={() => setViewMode('grid')}
-            className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-              viewMode === 'grid'
-                ? 'bg-primary text-white'
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'
-            }`}
-            aria-label="Grid view"
-          >
-            Grid
-          </button>
-          <button
-            onClick={() => setViewMode('list')}
-            className={`px-3 py-1.5 rounded-md text-sm font-medium transition-colors ${
-              viewMode === 'list'
-                ? 'bg-primary text-white'
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'
-            }`}
-            aria-label="List view"
-          >
-            List
-          </button>
-        </div>
+        <ViewToggle
+          value={viewMode}
+          onChange={setViewMode}
+          aria-label="Project view mode"
+          options={[
+            { value: 'grid', label: 'Grid' },
+            { value: 'list', label: 'List' },
+          ]}
+        />
       </div>
 
       {/* Project List */}

@@ -35,7 +35,7 @@ export const Filters: React.FC<FiltersProps> = ({ onFilterChange }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-boxdark rounded-lg border border-stroke dark:border-strokedark p-4 mb-6">
+    <div className="bg-white dark:bg-card rounded-lg border border-stroke dark:border-border p-4 mb-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         {/* Status Filter */}
         <div>
@@ -45,7 +45,7 @@ export const Filters: React.FC<FiltersProps> = ({ onFilterChange }) => {
           <select
             value={status}
             onChange={(e) => setStatus(e.target.value as TaskStatus || '')}
-            className="w-full rounded-lg border border-stroke bg-transparent py-2 px-4 text-black dark:text-white outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input"
+            className="w-full rounded-lg border border-stroke bg-transparent py-2 px-4 text-black dark:text-white outline-none transition focus:border-primary active:border-primary dark:border-border dark:bg-input"
           >
             <option value="">All Statuses</option>
             <option value={TaskStatus.TODO}>To Do</option>
@@ -62,7 +62,7 @@ export const Filters: React.FC<FiltersProps> = ({ onFilterChange }) => {
           <select
             value={priority}
             onChange={(e) => setPriority(e.target.value as TaskPriority || '')}
-            className="w-full rounded-lg border border-stroke bg-transparent py-2 px-4 text-black dark:text-white outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input"
+            className="w-full rounded-lg border border-stroke bg-transparent py-2 px-4 text-black dark:text-white outline-none transition focus:border-primary active:border-primary dark:border-border dark:bg-input"
           >
             <option value="">All Priorities</option>
             <option value={TaskPriority.LOW}>Low</option>
@@ -81,7 +81,7 @@ export const Filters: React.FC<FiltersProps> = ({ onFilterChange }) => {
             value={category}
             onChange={(e) => setCategory(e.target.value)}
             placeholder="Enter category"
-            className="w-full rounded-lg border border-stroke bg-transparent py-2 px-4 text-black dark:text-white outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input"
+            className="w-full rounded-lg border border-stroke bg-transparent py-2 px-4 text-black dark:text-white outline-none transition focus:border-primary active:border-primary dark:border-border dark:bg-input"
           />
         </div>
 
@@ -95,7 +95,7 @@ export const Filters: React.FC<FiltersProps> = ({ onFilterChange }) => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Search tasks..."
-            className="w-full rounded-lg border border-stroke bg-transparent py-2 px-4 text-black dark:text-white outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input"
+            className="w-full rounded-lg border border-stroke bg-transparent py-2 px-4 text-black dark:text-white outline-none transition focus:border-primary active:border-primary dark:border-border dark:bg-input"
           />
         </div>
 
@@ -103,13 +103,13 @@ export const Filters: React.FC<FiltersProps> = ({ onFilterChange }) => {
         <div className="flex items-end space-x-2">
           <button
             onClick={handleApplyFilters}
-            className="w-full bg-primary text-white py-2 px-4 rounded-lg hover:bg-opacity-90 transition"
+            className="w-full bg-foreground text-background py-2 px-4 rounded-md border-2 border-border font-semibold hover:bg-foreground/90 transition"
           >
             Apply
           </button>
           <button
             onClick={handleResetFilters}
-            className="w-full bg-gray-200 dark:bg-boxdark-2 text-black dark:text-white py-2 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-boxdark transition"
+            className="w-full bg-gray-200 dark:bg-muted text-black dark:text-white py-2 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-card transition"
           >
             Reset
           </button>

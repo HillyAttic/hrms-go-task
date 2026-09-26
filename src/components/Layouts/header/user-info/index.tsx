@@ -88,7 +88,7 @@ export function UserInfo() {
               height={48}
             />
           ) : (
-            <div className="size-12 rounded-full bg-primary flex items-center justify-center text-white font-semibold shadow-sm">
+            <div className="size-12 rounded-full bg-accent flex items-center justify-center text-accent-foreground font-semibold border-2 border-border">
               {userInitials}
             </div>
           )}
@@ -124,7 +124,7 @@ export function UserInfo() {
               height={48}
             />
           ) : (
-            <div className="size-12 rounded-full bg-primary flex items-center justify-center text-white font-semibold">
+            <div className="size-12 rounded-full bg-accent flex items-center justify-center text-accent-foreground font-semibold border-2 border-border">
               {userInitials}
             </div>
           )}
@@ -136,15 +136,15 @@ export function UserInfo() {
 
             <div className="leading-none text-gray-6">{displayEmail}</div>
             
-            <div className="text-xs text-primary font-medium">
+            <div className="text-xs text-foreground font-medium">
               {userRole}
             </div>
           </figcaption>
         </figure>
 
-        <hr className="border-[#E8E8E8] dark:border-dark-3" />
+        <hr className="border-border dark:border-dark-3" />
 
-        <div className="p-2 text-base text-[#4B5563] dark:text-dark-6">
+        <div className="p-2 text-base text-muted-foreground dark:text-dark-6">
           <Link
             href="/profile"
             onClick={() => setIsOpen(false)}
@@ -190,9 +190,9 @@ export function UserInfo() {
           </button>
         </div>
         
-        <hr className="border-[#E8E8E8] dark:border-dark-3" />
+        <hr className="border-border dark:border-dark-3" />
         
-        <div className="p-2 text-base text-[#4B5563] dark:text-dark-6">
+        <div className="p-2 text-base text-muted-foreground dark:text-dark-6">
           <button
             className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-[9px] hover:bg-gray-2 hover:text-dark dark:hover:bg-dark-3 dark:hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={handleSignOut}

@@ -233,7 +233,7 @@ export default function DiagnosticPage() {
         <button
           onClick={runDiagnostics}
           disabled={loading}
-          className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 disabled:opacity-50"
+          className="px-6 py-3 bg-foreground text-background rounded-md border-2 border-border font-semibold hover:bg-foreground/90 disabled:opacity-50"
         >
           {loading ? 'Running...' : 'Run Again'}
         </button>

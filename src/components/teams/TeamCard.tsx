@@ -59,7 +59,7 @@ export function TeamCard({ team, onEdit, onDelete, onViewDetails, selected = fal
 
   return (
     <Card
-      className={`group hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden ${selected ? 'ring-2 ring-blue-500' : ''}`}
+      className={`group hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden ${selected ? 'ring-2 ring-ring' : ''}`}
       onClick={() => {
         onViewDetails(team.id!);
       }}

@@ -18,7 +18,7 @@ export function CampaignVisitorsChart({ data }: PropsType) {
   const options: ApexOptions = {
     colors: ["#0447FD"],
     chart: {
-      fontFamily: "Satoshi, sans-serif",
+      fontFamily: "Inter, sans-serif",
       type: "bar",
       height: 200,
       toolbar: {
@@ -52,7 +52,7 @@ export function CampaignVisitorsChart({ data }: PropsType) {
       show: true,
       position: "top",
       horizontalAlign: "left",
-      fontFamily: "Satoshi",
+      fontFamily: "Inter",
     },
     grid: {
       strokeDashArray: 7,

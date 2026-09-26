@@ -60,7 +60,7 @@ export function QuickActions({
       label: 'Create Task',
       icon: <PlusCircleIcon className="w-5 h-5" />,
       onClick: onCreateTask,
-      color: 'bg-blue-600 hover:bg-blue-700',
+      color: 'bg-foreground hover:bg-foreground/90',
       showForManager: true
     },
     {

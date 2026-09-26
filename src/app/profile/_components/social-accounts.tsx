@@ -46,7 +46,7 @@ export function SocialAccounts() {
           <Link
             key={item.platform}
             href={item.url}
-            className="hover:text-primary"
+            className="hover:text-foreground"
           >
             <span className="sr-only">View {item.platform} Account</span>
 

@@ -100,10 +100,10 @@ export const TouchOptimizedButton = forwardRef<HTMLButtonElement, TouchOptimized
     };
 
     const variantClasses = {
-      primary: 'bg-primary text-white hover:bg-primary/90 focus:ring-primary/20',
-      secondary: 'bg-gray-200 text-dark hover:bg-gray-300 dark:bg-gray-dark dark:text-white dark:hover:bg-gray-700 focus:ring-gray-500/20',
-      outline: 'border border-primary text-primary hover:bg-primary hover:text-white focus:ring-primary/20',
-      ghost: 'text-primary hover:bg-primary/10 focus:ring-primary/20'
+      primary: 'bg-foreground text-background hover:bg-foreground/90 focus:ring-ring/30',
+      secondary: 'bg-muted text-foreground hover:bg-muted/80 focus:ring-ring/30',
+      outline: 'border-2 border-border text-foreground hover:bg-muted focus:ring-ring/30',
+      ghost: 'text-foreground hover:bg-muted focus:ring-ring/30'
     };
 
     const sizeClasses = {

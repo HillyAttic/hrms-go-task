@@ -250,21 +250,21 @@ export function SubmissionsSpreadsheetView({
             placeholder="Search by name or email..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
           />
           <input
             type="date"
             placeholder="Start date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            className="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
           />
           <input
             type="date"
             placeholder="End date"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            className="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
           />
         </div>
 
@@ -307,7 +307,7 @@ export function SubmissionsSpreadsheetView({
                         onChange={(e) => handleUpdateNumericFilter(filter.id, {
                           fieldId: e.target.value
                         })}
-                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                       >
                         {numericFields.map(field => (
                           <option key={field.id} value={field.id}>
@@ -328,7 +328,7 @@ export function SubmissionsSpreadsheetView({
                           operator: e.target.value as NumericFilter['operator'],
                           valueTo: e.target.value === 'between' ? filter.valueTo : null
                         })}
-                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                       >
                         <option value="equals">=  Equals</option>
                         <option value="not_equals">≠  Not Equals</option>
@@ -354,7 +354,7 @@ export function SubmissionsSpreadsheetView({
                               value: e.target.value ? parseFloat(e.target.value) : null
                             })}
                             placeholder="Min"
-                            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                           />
                         </div>
                         <div className="lg:col-span-2">
@@ -368,7 +368,7 @@ export function SubmissionsSpreadsheetView({
                               valueTo: e.target.value ? parseFloat(e.target.value) : null
                             })}
                             placeholder="Max"
-                            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                           />
                         </div>
                       </>
@@ -384,7 +384,7 @@ export function SubmissionsSpreadsheetView({
                             value: e.target.value ? parseFloat(e.target.value) : null
                           })}
                           placeholder="Enter value"
-                          className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                          className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                         />
                       </div>
                     )}

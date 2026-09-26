@@ -254,19 +254,19 @@ describe('Feature: management-pages, Property 28: Priority Badge Color Mapping',
               switch (task.priority) {
                 case 'low':
                   // Green - success variant
-                  expect(classes).toMatch(/bg-green|text-green/);
+                  expect(classes).toMatch(/bg-success|text-success/);
                   break;
                 case 'medium':
                   // Yellow - warning variant
-                  expect(classes).toMatch(/bg-yellow|text-yellow/);
+                  expect(classes).toMatch(/bg-warning|text-warning/);
                   break;
                 case 'high':
                   // Orange - custom classes
-                  expect(classes).toMatch(/bg-orange|text-orange/);
+                  expect(classes).toMatch(/bg-warning|text-warning/);
                   break;
                 case 'urgent':
                   // Red - danger variant
-                  expect(classes).toMatch(/bg-red|text-red/);
+                  expect(classes).toMatch(/bg-destructive|text-destructive/);
                   break;
               }
             }
@@ -297,7 +297,7 @@ describe('Feature: management-pages, Property 28: Priority Badge Color Mapping',
             const badgeElement = badge.closest('.inline-flex');
             
             if (badgeElement) {
-              expect(badgeElement.className).toMatch(/bg-green|text-green/);
+              expect(badgeElement.className).toMatch(/bg-success|text-success/);
             }
           });
         }
@@ -326,7 +326,7 @@ describe('Feature: management-pages, Property 28: Priority Badge Color Mapping',
             const badgeElement = badge.closest('.inline-flex');
             
             if (badgeElement) {
-              expect(badgeElement.className).toMatch(/bg-yellow|text-yellow/);
+              expect(badgeElement.className).toMatch(/bg-warning|text-warning/);
             }
           });
         }
@@ -355,7 +355,7 @@ describe('Feature: management-pages, Property 28: Priority Badge Color Mapping',
             const badgeElement = badge.closest('.inline-flex');
             
             if (badgeElement) {
-              expect(badgeElement.className).toMatch(/bg-orange|text-orange/);
+              expect(badgeElement.className).toMatch(/bg-warning|text-warning/);
             }
           });
         }
@@ -384,7 +384,7 @@ describe('Feature: management-pages, Property 28: Priority Badge Color Mapping',
             const badgeElement = badge.closest('.inline-flex');
             
             if (badgeElement) {
-              expect(badgeElement.className).toMatch(/bg-red|text-red/);
+              expect(badgeElement.className).toMatch(/bg-destructive|text-destructive/);
             }
           });
         }
@@ -492,12 +492,19 @@ describe('Feature: management-pages, Property 33: Overdue Task Indication', () =
         }),
         (task) => {
           renderAndTest(task, (container) => {
-            // Find the card element
+            // Card element for this component is `.group` (src/components/tasks/TaskCard.tsx)
             const card = container.querySelector('.group');
-            
-            if (card) {
-              // Verify card has red border styling for overdue tasks
-              expect(card.className).toMatch(/border-red/);
+            expect(card).toBeTruthy();
+
+            // fc.date() can yield an Invalid Date; isOverdue is false for those, so
+            // only assert the overdue outline when the date is genuinely in the past.
+            const due = task.dueDate instanceof Date ? task.dueDate.getTime() : NaN;
+            const isOverdue = task.status !== 'completed' && !Number.isNaN(due) && due < Date.now();
+
+            if (isOverdue) {
+              expect(card!.className).toMatch(/border-destructive/);
+            } else {
+              expect(card!.className).not.toMatch(/border-destructive/);
             }
           });
         }

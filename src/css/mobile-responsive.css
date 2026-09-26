@@ -205,17 +205,12 @@ body.modal-open header {
   }
 }
 
-/* Dark Mode Mobile Optimizations */
-@media (prefers-color-scheme: dark) and (max-width: 768px) {
-
-  /* Reduce brightness for OLED screens */
-  body {
-    background-color: #000000;
-  }
-
-  .card {
-    background-color: #1a1a1a;
-  }
+/* Dark Mode Mobile Optimizations
+   Scoped to .dark rather than prefers-color-scheme: next-themes drives dark mode
+   via a class (attribute="class"), so an OS-preference query here would paint a
+   black body behind a light-mode app whenever the OS is dark. */
+.dark body {
+  background-color: rgb(var(--background));
 }
 
 /* Accessibility - Reduced Motion */

@@ -319,7 +319,7 @@ export default function AttendanceRosterPage() {
         </select>
         <button
           onClick={fetchAttendanceData}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          className="px-4 py-2 bg-foreground text-background rounded-lg hover:bg-foreground/90"
         >
           Refresh
         </button>

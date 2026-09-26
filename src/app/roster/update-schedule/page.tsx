@@ -665,7 +665,7 @@ export default function UpdateSchedulePage() {
                     {calDay.date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                   </div>
                   {calDay.date.toDateString() === new Date().toDateString() && (
-                    <span className="text-xs px-2 py-0.5 bg-blue-600 text-white rounded-full">Today</span>
+                    <span className="text-xs px-2 py-0.5 bg-foreground text-background rounded-full">Today</span>
                   )}
                 </div>
 
@@ -682,7 +682,7 @@ export default function UpdateSchedulePage() {
                         e.stopPropagation();
                         handleAddTask(calDay.date, 'single');
                       }}
-                      className="p-1.5 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors flex items-center justify-center"
+                      className="p-1.5 bg-foreground text-background rounded hover:bg-foreground/90 transition-colors flex items-center justify-center"
                       title="Add Client Task"
                     >
                       <PlusCircleIcon className="w-5 h-5" />
@@ -700,7 +700,7 @@ export default function UpdateSchedulePage() {
                   >
                     <button
                       onClick={() => handleAddTask(calDay.date, 'single')}
-                      className="p-1 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors flex items-center justify-center"
+                      className="p-1 bg-foreground text-background rounded hover:bg-foreground/90 transition-colors flex items-center justify-center"
                       title="Add Client Task"
                     >
                       <PlusCircleIcon className="w-4 h-4" />
@@ -793,7 +793,7 @@ export default function UpdateSchedulePage() {
                     onClick={() => setTaskType('single')}
                     className={`flex-1 py-2 px-3 sm:px-4 text-sm sm:text-base rounded-lg border ${
                       taskType === 'single'
-                        ? 'bg-blue-600 text-white border-blue-600'
+                        ? 'bg-foreground text-background border-blue-600'
                         : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
                     }`}
                   >
@@ -804,7 +804,7 @@ export default function UpdateSchedulePage() {
                     onClick={() => setTaskType('multi')}
                     className={`flex-1 py-2 px-3 sm:px-4 text-sm sm:text-base rounded-lg border ${
                       taskType === 'multi'
-                        ? 'bg-blue-600 text-white border-blue-600'
+                        ? 'bg-foreground text-background border-blue-600'
                         : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
                     }`}
                   >
@@ -826,7 +826,7 @@ export default function UpdateSchedulePage() {
                       type="text"
                       value={formData.activityName}
                       onChange={(e) => setFormData({ ...formData, activityName: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                       required
                       placeholder="e.g., Project planning, Sprint review, Team sync"
                     />
@@ -839,7 +839,7 @@ export default function UpdateSchedulePage() {
                       type="date"
                       value={formData.startDate}
                       onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                       required
                     />
                   </div>
@@ -851,7 +851,7 @@ export default function UpdateSchedulePage() {
                       type="date"
                       value={formData.endDate}
                       onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                       required
                     />
                   </div>
@@ -862,7 +862,7 @@ export default function UpdateSchedulePage() {
                     <textarea
                       value={formData.notes}
                       onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                       rows={3}
                       placeholder="Additional details..."
                     />
@@ -878,7 +878,7 @@ export default function UpdateSchedulePage() {
                       type="text"
                       value={formData.taskDetail}
                       onChange={(e) => setFormData({ ...formData, taskDetail: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                       required
                       placeholder="e.g., Client visit, Project work, HR meeting"
                     />
@@ -891,7 +891,7 @@ export default function UpdateSchedulePage() {
                       type="date"
                       value={formData.taskDate}
                       onChange={(e) => setFormData({ ...formData, taskDate: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                       required
                     />
                   </div>
@@ -903,7 +903,7 @@ export default function UpdateSchedulePage() {
                       type="time"
                       value={formData.timeStart}
                       onChange={(e) => setFormData({ ...formData, timeStart: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                       required
                     />
                   </div>
@@ -915,7 +915,7 @@ export default function UpdateSchedulePage() {
                       type="time"
                       value={formData.timeEnd}
                       onChange={(e) => setFormData({ ...formData, timeEnd: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                       required
                     />
                   </div>
@@ -1154,7 +1154,7 @@ export default function UpdateSchedulePage() {
                   handleCloseTaskViewModal();
                   handleEditTask(selectedTaskForAction);
                 }}
-                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="flex-1 px-4 py-2 bg-foreground text-background rounded-lg hover:bg-foreground/90 transition-colors"
               >
                 Edit Task
               </button>
@@ -1196,7 +1196,7 @@ export default function UpdateSchedulePage() {
                     handleCloseTaskTable();
                     handleAddTask(selectedDate, 'single');
                   }}
-                  className="flex items-center gap-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                  className="flex items-center gap-2 px-3 py-2 bg-foreground text-background rounded-lg hover:bg-foreground/90 transition-colors text-sm font-medium"
                 >
                   <PlusCircleIcon className="w-4 h-4" />
                   <span className="hidden sm:inline">Add Task</span>
@@ -1219,7 +1219,7 @@ export default function UpdateSchedulePage() {
                     handleCloseTaskTable();
                     handleAddTask(selectedDate, 'single');
                   }}
-                  className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-sm font-medium"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-foreground text-background rounded-lg hover:bg-foreground/90 transition-colors text-sm font-medium"
                 >
                   <PlusCircleIcon className="w-5 h-5" />
                   Add Your First Task

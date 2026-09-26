@@ -323,7 +323,7 @@ export default function BulkImportModal({
               <button
                 onClick={handleImport}
                 disabled={parsedRows.length === 0}
-                className="px-4 py-2 text-sm rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50"
+                className="px-4 py-2 text-sm rounded-lg bg-foreground text-background hover:bg-foreground/90 disabled:opacity-50"
               >
                 Import {parsedRows.length} Records
               </button>
@@ -357,7 +357,7 @@ export default function BulkImportModal({
             <DialogFooter>
               <button
                 onClick={handleClose}
-                className="px-4 py-2 text-sm rounded-lg bg-blue-600 text-white hover:bg-blue-700"
+                className="px-4 py-2 text-sm rounded-lg bg-foreground text-background hover:bg-foreground/90"
               >
                 Done
               </button>

@@ -18,6 +18,7 @@ import { TaskStatsCard } from '@/components/tasks/TaskStatsCard';
 import { BulkActionToolbar } from '@/components/ui/BulkActionToolbar';
 import { BulkDeleteDialog } from '@/components/ui/BulkDeleteDialog';
 import { Button } from '@/components/ui/button';
+import { ViewToggle } from '@/components/ui/view-toggle';
 import { Input } from '@/components/ui/input';
 import { NoResultsEmptyState, NoDataEmptyState } from '@/components/ui/empty-state';
 import { CardGridSkeleton, StatsGridSkeleton } from '@/components/ui/loading-skeletons';
@@ -358,7 +359,7 @@ export default function NonRecurringTasksPage() {
             placeholder="Search tasks by title, description, or assignee..."
             value={searchQuery}
             onChange={handleSearchChange}
-            className="w-full h-10 pl-10 pr-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full h-10 pl-10 pr-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-ring"
             aria-label="Search tasks"
           />
         </div>
@@ -386,22 +387,15 @@ export default function NonRecurringTasksPage() {
         {/* View Toggle Buttons - Hidden on mobile */}
         {!loading && tasks.length > 0 && (
           <div className="hidden md:flex justify-end">
-            <div className="flex items-center space-x-2">
-              <button
-                onClick={() => setViewMode('grid')}
-                className={`px-3 py-2 md:py-1.5 rounded-md text-sm font-medium transition-colors min-h-[44px] md:min-h-0 ${viewMode === 'grid' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'}`}
-                aria-label="Grid view"
-              >
-                Grid
-              </button>
-              <button
-                onClick={() => setViewMode('list')}
-                className={`px-3 py-2 md:py-1.5 rounded-md text-sm font-medium transition-colors min-h-[44px] md:min-h-0 ${viewMode === 'list' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'}`}
-                aria-label="List view"
-              >
-                List
-              </button>
-            </div>
+            <ViewToggle
+              value={viewMode}
+              onChange={setViewMode}
+              aria-label="Change view mode"
+              options={[
+                { value: 'grid', label: 'Grid' },
+                { value: 'list', label: 'List' },
+              ]}
+            />
           </div>
         )}
 

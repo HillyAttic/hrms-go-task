@@ -7,7 +7,8 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['"Satoshi"', ...defaultTheme.fontFamily.sans],
+        sans: ["var(--font-inter)", ...defaultTheme.fontFamily.sans],
+        display: ["var(--font-space-grotesk)", ...defaultTheme.fontFamily.sans],
       },
       screens: {
         "2xsm": "375px",
@@ -19,18 +20,61 @@ const config: Config = {
         transparent: "transparent",
         white: "#FFFFFF",
         black: "#000000",
-        // Brand palette
-        primary: "#0447FD",
-        "primary-dark": "#0335C4",
+
+        // ---- Canonical semantic tokens (driven by CSS vars in src/css/style.css) ----
+        background: "rgb(var(--background) / <alpha-value>)",
+        surface: "rgb(var(--surface) / <alpha-value>)",
+        foreground: "rgb(var(--foreground) / <alpha-value>)",
+        card: {
+          DEFAULT: "rgb(var(--card) / <alpha-value>)",
+          foreground: "rgb(var(--card-foreground) / <alpha-value>)",
+        },
+        muted: {
+          DEFAULT: "rgb(var(--muted) / <alpha-value>)",
+          foreground: "rgb(var(--muted-foreground) / <alpha-value>)",
+        },
+        border: "rgb(var(--border) / <alpha-value>)",
+        input: "rgb(var(--input) / <alpha-value>)",
+        ring: "rgb(var(--ring) / <alpha-value>)",
+        accent: {
+          DEFAULT: "rgb(var(--accent) / <alpha-value>)",
+          foreground: "rgb(var(--accent-foreground) / <alpha-value>)",
+        },
+        secondary: {
+          DEFAULT: "rgb(var(--secondary) / <alpha-value>)",
+          foreground: "rgb(var(--secondary-foreground) / <alpha-value>)",
+        },
+        destructive: {
+          DEFAULT: "rgb(var(--destructive) / <alpha-value>)",
+          foreground: "rgb(var(--destructive-foreground) / <alpha-value>)",
+        },
+        success: "rgb(var(--success) / <alpha-value>)",
+        warning: "rgb(var(--warning) / <alpha-value>)",
+        info: "rgb(var(--info) / <alpha-value>)",
+
+        // ---- Brand palette ----
+        // primary is still the legacy blue through the migration; it flips to lime
+        // at the end. Use `accent` for lime in anything new.
+        primary: {
+          DEFAULT: "rgb(var(--primary) / <alpha-value>)",
+          foreground: "rgb(var(--primary-foreground) / <alpha-value>)",
+          dark: "#0335C4",
+        },
         "royal-blue": "#0D1DF2",
         "brand-purple": "#7F1BFF",
         "dark-navy": "#002176",
         "deep-indigo": "#1A0E62",
         "brand-bg": "#F8FAFC",
         stroke: "#E6EBF1",
-        "stroke-dark": "#27303E",
+        // #27303E was TailAdmin's navy dark-border. Re-pointed at the real token so
+        // the 22 `dark:border-stroke-dark` call sites invert with the palette.
+        "stroke-dark": "rgb(var(--border) / <alpha-value>)",
+
+        // ---- Deprecated TailAdmin vocabulary. Retained so unconverted files and the
+        // 43 @apply rules in style.css keep compiling. Removed at the end of the sweep.
         dark: {
-          DEFAULT: "#111928",
+          DEFAULT: "rgb(var(--dark) / <alpha-value>)",
+          secondary: "rgb(var(--dark-secondary) / <alpha-value>)",
           2: "#1F2A37",
           3: "#374151",
           4: "#4B5563",
@@ -39,9 +83,23 @@ const config: Config = {
           7: "#D1D5DB",
           8: "#E5E7EB",
         },
+        // These four names are used across ~12 files (auth pages, dashboard/loading,
+        // TaskManagement/*, pages/settings) but were never defined — so those
+        // `dark:bg-boxdark` / `dark:border-strokedark` classes emitted no CSS at all.
+        // Aliased onto the real tokens to fix that without touching the call sites.
+        boxdark: {
+          DEFAULT: "rgb(var(--card) / <alpha-value>)",
+          2: "rgb(var(--muted) / <alpha-value>)",
+        },
+        "border-boxdark": "rgb(var(--border) / <alpha-value>)",
+        strokedark: "rgb(var(--border) / <alpha-value>)",
+        "border-strokedark": "rgb(var(--border) / <alpha-value>)",
         gray: {
           DEFAULT: "#EFF4FB",
-          dark: "#122031",
+          // #122031 was TailAdmin's navy dark surface. All 194 `gray-dark` usages are
+          // `dark:`-prefixed, so re-pointing the token onto the real dark card fixes
+          // every one of them (84 files) without touching a single call site.
+          dark: "rgb(var(--card) / <alpha-value>)",
           1: "#F9FAFB",
           2: "#F3F4F6",
           3: "#E5E7EB",
@@ -297,7 +355,28 @@ const config: Config = {
         10: "10px",
         12: "12px",
       },
+      borderRadius: {
+        // One radius system. DEFAULT/lg are the card+input sizes, xl the large card,
+        // md/sm the compact controls. Existing rounded-* utilities now resolve here
+        // instead of Tailwind's defaults, so radii become consistent app-wide.
+        none: "0",
+        sm: "8px",
+        md: "12px",
+        DEFAULT: "20px",
+        lg: "18px",
+        xl: "24px",
+        "2xl": "28px",
+        "3xl": "36px",
+        full: "9999px",
+      },
       boxShadow: {
+        // Design-system shadows: hard offset, no blur — the card/button signature.
+        // Driven by --border so they invert correctly in dark mode instead of
+        // stamping a near-black offset onto a near-black page.
+        hard: "0 3px 0 rgb(var(--border))",
+        "hard-sm": "0 2px 0 rgb(var(--border))",
+        "hard-lg": "0 4px 0 rgb(var(--border))",
+
         default: "0px 4px 7px 0px rgba(0, 0, 0, 0.14)",
         error: "0px 12px 34px 0px rgba(13, 10, 44, 0.05)",
         card: "0px 1px 2px 0px rgba(0, 0, 0, 0.12)",

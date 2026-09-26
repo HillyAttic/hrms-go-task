@@ -106,7 +106,7 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
             id="status-filter"
             value={filters.status}
             onChange={handleStatusChange}
-            className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+            className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
             aria-label="Filter by status"
           >
             <option value="all">All Statuses</option>
@@ -125,7 +125,7 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
             id="priority-filter"
             value={filters.priority}
             onChange={handlePriorityChange}
-            className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+            className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
             aria-label="Filter by priority"
           >
             <option value="all">All Priorities</option>
@@ -152,7 +152,7 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
             onFocus={() => setIsMemberDropdownOpen(true)}
             placeholder="Search team member..."
             autoComplete="off"
-            className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+            className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
             aria-label="Search team member"
           />
           {isMemberDropdownOpen && (
@@ -193,7 +193,7 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
             id="client-filter"
             value={filters.clientId || ''}
             onChange={handleClientChange}
-            className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+            className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
             aria-label="Filter by client"
           >
             <option value="">All Clients</option>
@@ -211,7 +211,7 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
         <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
           <div className="flex flex-wrap gap-2">
             {filters.status !== 'all' && (
-              <span className="inline-flex items-center gap-1 px-3 py-1 bg-blue-600 dark:bg-blue-500 text-white text-xs font-medium rounded-full">
+              <span className="inline-flex items-center gap-1 px-3 py-1 bg-foreground dark:bg-blue-500 text-background text-xs font-medium rounded-full">
                 Status: {filters.status.split('-').map(word =>
                   word.charAt(0).toUpperCase() + word.slice(1)
                 ).join(' ')}

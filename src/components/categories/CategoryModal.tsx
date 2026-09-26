@@ -131,7 +131,7 @@ export function CategoryModal({
               id="description"
               {...register('description')}
               placeholder="Enter category description (optional)"
-              className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 min-h-[80px]"
+              className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring min-h-[80px]"
             />
             {errors.description && (
               <p className="text-sm text-red-600 mt-1">{errors.description.message}</p>
@@ -201,7 +201,7 @@ export function CategoryModal({
               type="checkbox"
               id="isActive"
               {...register('isActive')}
-              className="w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded focus:ring-blue-500"
+              className="w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded focus:ring-ring"
             />
             <Label htmlFor="isActive" className="cursor-pointer">
               Active (visible to users)

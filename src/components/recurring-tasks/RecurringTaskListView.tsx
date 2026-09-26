@@ -72,7 +72,7 @@ export function RecurringTaskListView({
       case 'completed':
         return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400';
       case 'in-progress':
-        return 'bg-blue-600 text-white dark:bg-blue-600 dark:text-white';
+        return 'bg-foreground text-background dark:bg-foreground dark:text-background';
       case 'pending':
         return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
       default:
@@ -213,7 +213,7 @@ export function RecurringTaskListView({
             <div
               className={`grid grid-cols-12 gap-4 px-6 py-4 text-sm transition-colors ${
                 selected.includes(task.id!)
-                  ? 'bg-blue-600/10 dark:bg-blue-600/20'
+                  ? 'bg-foreground/10 dark:bg-foreground/20'
                   : 'hover:bg-gray-50 dark:hover:bg-gray-800'
               }`}
             >
@@ -224,7 +224,7 @@ export function RecurringTaskListView({
                     type="checkbox"
                     checked={selected.includes(task.id!)}
                     onChange={() => onSelect(task.id!)}
-                    className="h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-primary focus:ring-primary"
+                    className="h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-foreground focus:ring-primary"
                   />
                 </div>
               )}

@@ -184,7 +184,7 @@ export function BranchReportFullscreenModal({
                 onClick={() => onPresetChange(item)}
                 className={`px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${
                   preset === item
-                    ? 'bg-blue-600 border-blue-600 text-white'
+                    ? 'bg-foreground border-blue-600 text-background'
                     : 'bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                 }`}
               >

@@ -169,7 +169,7 @@ export function TaskList({ tasks, onTaskClick, showStatus = true }: TaskListProp
                   
                   {task.assignedTo && task.assignedTo.length > 0 && (
                     <div className="flex items-center">
-                      <div className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-blue-300 dark:bg-blue-600 flex items-center justify-center mr-1.5 md:mr-2 flex-shrink-0">
+                      <div className="w-5 h-5 md:w-6 md:h-6 rounded-full bg-blue-300 dark:bg-foreground flex items-center justify-center mr-1.5 md:mr-2 flex-shrink-0">
                         <span className="text-[10px] md:text-xs font-medium text-blue-700 dark:text-blue-200">
                           {getUserName(task.assignedTo[0]).charAt(0).toUpperCase()}
                         </span>
@@ -202,7 +202,7 @@ export function TaskList({ tasks, onTaskClick, showStatus = true }: TaskListProp
               
               {task.commentCount !== undefined && task.commentCount > 0 && (
                 <div className="flex-shrink-0">
-                  <span className="inline-flex items-center px-1.5 md:px-2 py-0.5 md:py-1 rounded-full text-[10px] md:text-xs font-medium bg-blue-600 text-white">
+                  <span className="inline-flex items-center px-1.5 md:px-2 py-0.5 md:py-1 rounded-full text-[10px] md:text-xs font-medium bg-foreground text-background">
                     {task.commentCount}
                   </span>
                 </div>

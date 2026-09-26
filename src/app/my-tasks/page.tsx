@@ -146,7 +146,7 @@ export default function MyTasksPage() {
             <div className="flex items-center justify-center min-h-[60vh]">
                 <div className="text-center space-y-4">
                     <p className="text-red-500 text-sm">{error}</p>
-                    <button onClick={() => window.location.reload()} className="px-5 py-2 bg-primary text-white rounded-xl text-sm font-medium">
+                    <button onClick={() => window.location.reload()} className="px-5 py-2 bg-foreground text-background rounded-md border-2 border-border text-sm font-semibold">
                         Retry
                     </button>
                 </div>
@@ -163,7 +163,7 @@ export default function MyTasksPage() {
                 <h1 className="text-[28px] font-bold tracking-tight text-gray-900 dark:text-white">My Tasks</h1>
                 <button
                     onClick={() => setShowCreateListModal(true)}
-                    className="flex items-center gap-1.5 px-3.5 py-2 bg-primary text-white rounded-xl text-sm font-semibold shadow-sm active:scale-95 transition-transform"
+                    className="flex items-center gap-1.5 px-3.5 py-2 bg-foreground text-background rounded-md border-2 border-border text-sm font-semibold active:scale-95 transition-transform"
                 >
                     <Plus className="w-4 h-4" />
                     New List
@@ -205,7 +205,7 @@ export default function MyTasksPage() {
 
             {/* Selected list content */}
             {selectedList ? (
-                <div className="bg-white dark:bg-[#2c2c2e] rounded-2xl shadow-sm overflow-hidden">
+                <div className="bg-white dark:bg-card rounded-2xl shadow-sm overflow-hidden">
                     {/* List header */}
                     <div className="flex items-center justify-between px-4 pt-4 pb-2">
                         <div className="flex items-center gap-2">
@@ -312,7 +312,7 @@ export default function MyTasksPage() {
                     <p className="text-[15px] text-gray-500 dark:text-gray-400">No lists yet</p>
                     <button
                         onClick={() => setShowCreateListModal(true)}
-                        className="px-5 py-2.5 bg-primary text-white rounded-xl text-sm font-semibold"
+                        className="px-5 py-2.5 bg-foreground text-background rounded-md border-2 border-border text-sm font-semibold"
                     >
                         Create your first list
                     </button>
@@ -407,7 +407,7 @@ function CreateListModal({ onClose, onCreate }: CreateListModalProps) {
 
             {/* Sheet */}
             <div
-                className="relative bg-white dark:bg-[#2c2c2e] rounded-2xl shadow-2xl w-full max-w-md p-6 sm:p-6"
+                className="relative bg-white dark:bg-card rounded-2xl shadow-2xl w-full max-w-md p-6 sm:p-6"
                 onClick={e => e.stopPropagation()}
             >
                 <div className="flex items-center justify-between mb-5">
@@ -435,7 +435,7 @@ function CreateListModal({ onClose, onCreate }: CreateListModalProps) {
                             onClick={() => setColor(c)}
                             className={cn(
                                 "w-9 h-9 rounded-full transition-all active:scale-90",
-                                color === c && "ring-2 ring-offset-2 dark:ring-offset-[#2c2c2e] scale-110"
+                                color === c && "ring-2 ring-offset-2 dark:ring-offset-card scale-110"
                             )}
                             style={{ backgroundColor: c, outlineColor: c }}
                             aria-label={`Select colour ${c}`}

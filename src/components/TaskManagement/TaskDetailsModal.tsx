@@ -122,7 +122,7 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
   const getStatusColor = (status: TaskStatus) => {
     switch (status) {
       case TaskStatus.TODO:
-        return 'bg-blue-600 text-white';
+        return 'bg-foreground text-background';
       case TaskStatus.IN_PROGRESS:
         return 'bg-yellow-100 text-yellow-800';
       case TaskStatus.COMPLETED:
@@ -148,7 +148,7 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div 
-        className="bg-white dark:bg-boxdark rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+        className="bg-white dark:bg-card rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-6">
@@ -160,7 +160,7 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
                   type="text"
                   value={editedTask.title}
                   onChange={(e) => setEditedTask({...editedTask, title: e.target.value})}
-                  className="w-full bg-transparent border-b border-gray-300 dark:border-strokedark text-black dark:text-white focus:outline-none"
+                  className="w-full bg-transparent border-b border-gray-300 dark:border-border text-black dark:text-white focus:outline-none"
                 />
               ) : (
                 task.title
@@ -198,7 +198,7 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
               <textarea
                 value={editedTask.description}
                 onChange={(e) => setEditedTask({...editedTask, description: e.target.value})}
-                className="w-full h-32 p-3 bg-gray-50 dark:bg-boxdark-2 border border-stroke dark:border-strokedark rounded-lg text-black dark:text-white"
+                className="w-full h-32 p-3 bg-gray-50 dark:bg-muted border border-stroke dark:border-border rounded-lg text-black dark:text-white"
               />
             ) : (
               <p className="text-gray-600 dark:text-gray-300">
@@ -219,7 +219,7 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
                     ...editedTask, 
                     dueDate: e.target.value ? new Date(e.target.value) : new Date()
                   })}
-                  className="w-full p-2 bg-gray-50 dark:bg-boxdark-2 border border-stroke dark:border-strokedark rounded-lg text-black dark:text-white"
+                  className="w-full p-2 bg-gray-50 dark:bg-muted border border-stroke dark:border-border rounded-lg text-black dark:text-white"
                 />
               ) : (
                 <p className="text-gray-600 dark:text-gray-300">
@@ -250,7 +250,7 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
             ) : (
               <div className="space-y-4 max-h-60 overflow-y-auto pr-2">
                 {comments.map((comment) => (
-                  <div key={comment.id} className="bg-gray-50 dark:bg-boxdark-2 p-4 rounded-lg">
+                  <div key={comment.id} className="bg-gray-50 dark:bg-muted p-4 rounded-lg">
                     <div className="flex items-start">
                       <UserAvatar users={[comment.author]} size="sm" />
                       <div className="ml-3 flex-1">
@@ -278,7 +278,7 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
                 placeholder="Add a comment..."
-                className="flex-1 p-3 bg-gray-50 dark:bg-boxdark-2 border border-stroke dark:border-strokedark rounded-l-lg text-black dark:text-white focus:outline-none"
+                className="flex-1 p-3 bg-gray-50 dark:bg-muted border border-stroke dark:border-border rounded-l-lg text-black dark:text-white focus:outline-none"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
@@ -288,7 +288,7 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
               />
               <button
                 onClick={handleAddComment}
-                className="bg-primary text-white px-4 py-3 rounded-r-lg hover:bg-opacity-90 transition"
+                className="bg-foreground text-background px-4 py-3 rounded-r-md border-2 border-border font-semibold hover:bg-foreground/90 transition"
               >
                 Send
               </button>
@@ -296,12 +296,12 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
           </div>
 
           {/* Actions */}
-          <div className="flex justify-between pt-4 border-t border-stroke dark:border-strokedark">
+          <div className="flex justify-between pt-4 border-t border-stroke dark:border-border">
             <div>
               {!isEditing && (
                 <button
                   onClick={() => setIsEditing(true)}
-                  className="text-primary hover:text-primary-dark mr-4"
+                  className="mr-4 font-semibold text-foreground underline-offset-4 hover:underline"
                 >
                   Edit
                 </button>
@@ -318,13 +318,13 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
               <div>
                 <button
                   onClick={() => setIsEditing(false)}
-                  className="mr-2 px-4 py-2 bg-gray-200 dark:bg-boxdark-2 text-black dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-boxdark"
+                  className="mr-2 px-4 py-2 bg-gray-200 dark:bg-muted text-black dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-card"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleSave}
-                  className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-opacity-90"
+                  className="px-4 py-2 bg-foreground text-background rounded-md border-2 border-border font-semibold hover:bg-foreground/90"
                 >
                   Save Changes
                 </button>

@@ -13,14 +13,15 @@ export interface TextareaProps
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ className, error, label, helperText, id, ...props }, ref) => {
-    const textareaId = id || `textarea-${React.useId()}`;
-    
+    const generatedId = React.useId();
+    const textareaId = id || `textarea-${generatedId}`;
+
     return (
       <div className="space-y-2">
         {label && (
-          <label 
+          <label
             htmlFor={textareaId}
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            className="block text-[13px] font-semibold leading-none text-foreground peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           >
             {label}
             {props.required && <span className="text-destructive"> *</span>}
@@ -29,8 +30,10 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         <textarea
           id={textareaId}
           className={cn(
-            "flex min-h-[80px] w-full rounded-md border border-gray-200 bg-white px-3 py-2 text-sm ring-offset-white placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-950 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-            error && 'border-destructive focus-visible:ring-destructive',
+            "flex min-h-[80px] w-full rounded-md border-2 border-border bg-input px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground",
+            "focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/45 focus-visible:ring-offset-0",
+            "disabled:cursor-not-allowed disabled:opacity-50",
+            "aria-[invalid=true]:border-destructive aria-[invalid=true]:focus-visible:ring-destructive/30",
             className
           )}
           aria-invalid={error ? 'true' : 'false'}
@@ -39,12 +42,12 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           {...props}
         />
         {error && (
-          <p id={`${textareaId}-error`} className="text-sm text-destructive" role="alert">
+          <p id={`${textareaId}-error`} className="text-[13px] font-medium text-destructive" role="alert">
             {error}
           </p>
         )}
         {helperText && !error && (
-          <p id={`${textareaId}-helper`} className="text-sm text-muted-foreground">
+          <p id={`${textareaId}-helper`} className="text-[13px] text-muted-foreground">
             {helperText}
           </p>
         )}

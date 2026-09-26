@@ -849,7 +849,7 @@ export default function ViewSchedulePage() {
             <div className="sticky bottom-0 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-6">
               <button
                 onClick={handleCloseDayTasksModal}
-                className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                className="w-full px-4 py-2 bg-foreground text-background rounded-lg hover:bg-foreground/90 transition-colors font-medium"
               >
                 Close
               </button>
@@ -1241,7 +1241,7 @@ export default function ViewSchedulePage() {
             <div className="sticky bottom-0 bg-white dark:bg-gray-dark border-t border-gray-200 dark:border-gray-700 p-4">
               <button
                 onClick={handleCloseUserCalendarModal}
-                className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                className="w-full px-4 py-2 bg-foreground text-background rounded-lg hover:bg-foreground/90 transition-colors font-medium"
               >
                 Close
               </button>

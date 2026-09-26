@@ -26,7 +26,7 @@ export function AnalyticsDateFilter({ value, onChange }: AnalyticsDateFilterProp
           onClick={() => onChange(option.value)}
           className={`px-2.5 sm:px-3 md:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-lg transition-colors whitespace-nowrap ${
             value === option.value
-              ? 'bg-blue-600 text-white shadow-sm'
+              ? 'bg-foreground text-background shadow-sm'
               : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
           }`}
         >

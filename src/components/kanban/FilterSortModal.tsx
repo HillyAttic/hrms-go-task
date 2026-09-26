@@ -64,7 +64,7 @@ export function FilterSortModal({
               <select
                 value={filters.dueDate || 'all'}
                 onChange={(e) => setFilters({ ...filters, dueDate: e.target.value as any })}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
               >
                 <option value="all">All</option>
                 <option value="today">Today</option>
@@ -87,7 +87,7 @@ export function FilterSortModal({
                 <select
                   value={sort.field}
                   onChange={(e) => setSort({ ...sort, field: e.target.value as any })}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
                 >
                   <option value="dueDate">Due Date</option>
                   <option value="priority">Priority</option>
@@ -103,7 +103,7 @@ export function FilterSortModal({
                 <select
                   value={sort.direction}
                   onChange={(e) => setSort({ ...sort, direction: e.target.value as any })}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
                 >
                   <option value="asc">Ascending</option>
                   <option value="desc">Descending</option>
@@ -126,7 +126,7 @@ export function FilterSortModal({
           <Button
             type="button"
             onClick={handleApply}
-            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white"
+            className="w-full sm:w-auto bg-foreground hover:bg-foreground/90 text-background"
           >
             Apply
           </Button>

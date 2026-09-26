@@ -172,7 +172,7 @@ export function EnhancedKanbanBoard({ tasks, onTaskUpdate, onTaskAdd, onTaskDele
           <Button
             onClick={() => setShowFilterModal(true)}
             variant="outline"
-            className="flex items-center gap-1.5 sm:gap-2 hover:bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 text-sm sm:text-base px-3 py-1.5 sm:px-4 sm:py-2"
+            className="flex items-center gap-1.5 sm:gap-2 hover:bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-ring text-sm sm:text-base px-3 py-1.5 sm:px-4 sm:py-2"
           >
             <FunnelIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             <span className="hidden sm:inline">Filter & Sort</span>
@@ -181,7 +181,7 @@ export function EnhancedKanbanBoard({ tasks, onTaskUpdate, onTaskAdd, onTaskDele
           
           <Button
             onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-1.5 sm:gap-2 bg-blue-600 hover:bg-blue-700 text-white focus:ring-2 focus:ring-blue-500 text-sm sm:text-base px-3 py-1.5 sm:px-4 sm:py-2"
+            className="flex items-center gap-1.5 sm:gap-2 bg-foreground hover:bg-foreground/90 text-background focus:ring-2 focus:ring-ring text-sm sm:text-base px-3 py-1.5 sm:px-4 sm:py-2"
           >
             <PlusIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             <span className="hidden sm:inline">Add New Task</span>
