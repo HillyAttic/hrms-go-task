@@ -1,6 +1,8 @@
 import React from 'react';
 import { Project } from '@/services/project.service';
 import { ProjectStatusBadge } from './ProjectStatusBadge';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   PencilIcon,
   TrashIcon,
@@ -40,11 +42,12 @@ export function ProjectListView({
   const someSelected = projects.some((p) => selectedIds.has(p.id!)) && !allSelected;
 
   return (
-    <div className="bg-white dark:bg-gray-dark rounded-lg border border-gray-200 dark:border-gray-700 overflow-x-auto">
-      <table className="w-full text-xs">
-        <thead className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10">
+    <div className="custom-scrollbar bg-card rounded-lg border-2 border-border overflow-x-auto shadow-hard">
+      <table className="w-full text-[13px]">
+        <thead className="bg-muted border-b-2 border-border sticky top-0 z-10">
           <tr>
-            <th className="px-2 py-2 text-left text-xs font-medium text-gray-700 dark:text-gray-300 w-10 sticky left-0 bg-gray-50 dark:bg-gray-800">
+            {/* Frozen-left cells carry z-20 so they sit above the rest of the sticky header. */}
+            <th className="px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wide text-muted-foreground whitespace-nowrap w-10 sticky left-0 z-20 bg-muted">
               {onToggleSelectAll && (
                 <input
                   type="checkbox"
@@ -53,76 +56,76 @@ export function ProjectListView({
                     if (input) input.indeterminate = someSelected;
                   }}
                   onChange={onToggleSelectAll}
-                  className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-ring"
+                  className="w-4 h-4 rounded border-2 border-border accent-ring"
                   aria-label="Select all projects"
                 />
               )}
             </th>
-            <th className="px-2 py-2 text-left text-xs font-medium text-gray-700 dark:text-gray-300 sticky left-10 bg-gray-50 dark:bg-gray-800" style={{ minWidth: '80px' }}>
+            <th className="px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wide text-muted-foreground whitespace-nowrap sticky left-10 z-20 bg-muted" style={{ minWidth: '80px' }}>
               Project ID
             </th>
-            <th className="px-2 py-2 text-left text-xs font-medium text-gray-700 dark:text-gray-300" style={{ minWidth: '180px' }}>
+            <th className="px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wide text-muted-foreground whitespace-nowrap" style={{ minWidth: '180px' }}>
               Project Name
             </th>
-            <th className="px-2 py-2 text-left text-xs font-medium text-gray-700 dark:text-gray-300" style={{ minWidth: '140px' }}>
+            <th className="px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wide text-muted-foreground whitespace-nowrap" style={{ minWidth: '140px' }}>
               Team
             </th>
-            <th className="px-2 py-2 text-left text-xs font-medium text-gray-700 dark:text-gray-300" style={{ minWidth: '120px' }}>
+            <th className="px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wide text-muted-foreground whitespace-nowrap" style={{ minWidth: '120px' }}>
               Client SPOC
             </th>
-            <th className="px-2 py-2 text-left text-xs font-medium text-gray-700 dark:text-gray-300" style={{ minWidth: '100px' }}>
+            <th className="px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wide text-muted-foreground whitespace-nowrap" style={{ minWidth: '100px' }}>
               Start Date
             </th>
-            <th className="px-2 py-2 text-left text-xs font-medium text-gray-700 dark:text-gray-300" style={{ minWidth: '100px' }}>
+            <th className="px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wide text-muted-foreground whitespace-nowrap" style={{ minWidth: '100px' }}>
               End Date
             </th>
-            <th className="px-2 py-2 text-center text-xs font-medium text-gray-700 dark:text-gray-300" style={{ minWidth: '100px' }}>
+            <th className="px-3 py-2.5 text-center text-[11px] font-bold uppercase tracking-wide text-muted-foreground whitespace-nowrap" style={{ minWidth: '100px' }}>
               Status
             </th>
-            <th className="px-2 py-2 text-right text-xs font-medium text-gray-700 dark:text-gray-300" style={{ minWidth: '110px' }}>
+            <th className="px-3 py-2.5 text-right text-[11px] font-bold uppercase tracking-wide text-muted-foreground whitespace-nowrap" style={{ minWidth: '110px' }}>
               Value (₹)
             </th>
-            <th className="px-2 py-2 text-center text-xs font-medium text-gray-700 dark:text-gray-300" style={{ minWidth: '120px' }}>
+            <th className="px-3 py-2.5 text-center text-[11px] font-bold uppercase tracking-wide text-muted-foreground whitespace-nowrap" style={{ minWidth: '120px' }}>
               Invoice
             </th>
-            <th className="px-2 py-2 text-left text-xs font-medium text-gray-700 dark:text-gray-300" style={{ minWidth: '140px' }}>
+            <th className="px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wide text-muted-foreground whitespace-nowrap" style={{ minWidth: '140px' }}>
               Progress
             </th>
-            <th className="px-2 py-2 text-center text-xs font-medium text-gray-700 dark:text-gray-300 sticky right-0 bg-gray-50 dark:bg-gray-800" style={{ minWidth: '80px' }}>
+            <th className="px-3 py-2.5 text-center text-[11px] font-bold uppercase tracking-wide text-muted-foreground whitespace-nowrap sticky right-0 z-20 bg-muted" style={{ minWidth: '80px' }}>
               Actions
             </th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+        <tbody className="divide-y-2 divide-border">
           {projects.map((project) => (
-            <tr key={project.id} className="hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
+            <tr key={project.id} className="group hover:bg-muted transition-colors">
               {/* Checkbox */}
-              <td className="px-2 py-2 w-10 sticky left-0 bg-white dark:bg-gray-dark hover:bg-gray-50 dark:hover:bg-gray-800">
+              <td className="px-3 py-2.5 w-10 sticky left-0 z-[1] bg-card group-hover:bg-muted">
                 {onToggleSelection && (
                   <input
                     type="checkbox"
                     checked={selectedIds.has(project.id!)}
                     onChange={() => onToggleSelection(project.id!)}
-                    className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-ring"
+                    className="w-4 h-4 rounded border-2 border-border accent-ring"
                     aria-label={`Select ${project.projectName}`}
                   />
                 )}
               </td>
 
               {/* Project ID */}
-              <td className="px-2 py-2 text-xs font-mono text-gray-700 dark:text-gray-300 font-medium sticky left-10 bg-white dark:bg-gray-dark hover:bg-gray-50 dark:hover:bg-gray-800">
+              <td className="px-3 py-2.5 text-[13px] font-mono text-muted-foreground font-medium sticky left-10 z-[1] bg-card group-hover:bg-muted">
                 {project.projectNumber}
               </td>
 
               {/* Project Name */}
-              <td className="px-2 py-2 text-xs font-medium text-gray-900 dark:text-white">
+              <td className="px-3 py-2.5 text-[13px] font-medium text-foreground">
                 <div className="truncate" title={project.projectName}>
                   {project.projectName}
                 </div>
               </td>
 
               {/* Team */}
-              <td className="px-2 py-2 text-xs text-gray-700 dark:text-gray-300">
+              <td className="px-3 py-2.5 text-[13px] text-muted-foreground">
                 <div className="truncate" title={project.teamMembers?.map((m) => m.name).join(', ')}>
                   {(() => {
                     const lead = project.teamMembers?.find((m) => m.isTeamLead);
@@ -130,12 +133,12 @@ export function ProjectListView({
                     return (
                       <>
                         {lead && (
-                          <span className="inline-flex items-center gap-0.5 text-amber-700 dark:text-amber-400 font-medium">
+                          <span className="inline-flex items-center gap-0.5 text-warning font-medium">
                             ★ {lead.name}
                           </span>
                         )}
                         {members.length > 0 && (
-                          <span className={lead ? 'text-gray-500 ml-1' : ''}>
+                          <span className={lead ? 'text-muted-foreground ml-1' : ''}>
                             ({members.length} {members.length === 1 ? 'member' : 'members'})
                           </span>
                         )}
@@ -146,76 +149,75 @@ export function ProjectListView({
               </td>
 
               {/* Client SPOC */}
-              <td className="px-2 py-2 text-xs text-gray-700 dark:text-gray-300">
+              <td className="px-3 py-2.5 text-[13px] text-muted-foreground">
                 {project.clientSpoc?.name || '—'}
               </td>
 
               {/* Start Date */}
-              <td className="px-2 py-2 text-xs text-gray-700 dark:text-gray-300">
+              <td className="px-3 py-2.5 text-[13px] text-muted-foreground">
                 {formatDate(project.startDate)}
               </td>
 
               {/* End Date */}
-              <td className="px-2 py-2 text-xs text-gray-700 dark:text-gray-300">
+              <td className="px-3 py-2.5 text-[13px] text-muted-foreground">
                 {formatDate(project.endDate)}
               </td>
 
               {/* Status */}
-              <td className="px-2 py-2 text-center">
+              <td className="px-3 py-2.5 text-center">
                 <ProjectStatusBadge status={project.status} />
               </td>
 
               {/* Value */}
-              <td className="px-2 py-2 text-xs text-gray-700 dark:text-gray-300 text-right font-medium">
+              <td className="px-3 py-2.5 text-[13px] text-foreground text-right font-medium">
                 {formatCurrency(project.projectValue || 0)}
               </td>
 
               {/* Invoice */}
-              <td className="px-2 py-2 text-center">
-                {project.invoice?.raised ? (
-                  <span className="inline-block px-2 py-0.5 text-[10px] font-medium rounded bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-                    Raised
-                    {project.invoice.amount ? ` · ₹${project.invoice.amount.toLocaleString('en-IN')}` : ''}
-                  </span>
-                ) : (
-                  <span className="inline-block px-2 py-0.5 text-[10px] font-medium rounded bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400">
-                    No
-                  </span>
-                )}
+              <td className="px-3 py-2.5 text-center">
+                <Badge variant={project.invoice?.raised ? 'success' : 'default'}>
+                  {project.invoice?.raised
+                    ? `Raised${project.invoice.amount ? ` · ₹${project.invoice.amount.toLocaleString('en-IN')}` : ''}`
+                    : 'No'}
+                </Badge>
               </td>
 
               {/* Progress */}
               <td className="px-2 py-2">
                 <div className="flex items-center gap-2">
-                  <div className="flex-1 bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 min-w-[60px]">
+                  <div className="flex-1 bg-muted rounded-full h-1.5 min-w-[60px]">
                     <div
                       className="bg-foreground h-1.5 rounded-full transition-all"
                       style={{ width: `${project.progress?.percentage ?? 0}%` }}
                     />
                   </div>
-                  <span className="text-[10px] text-gray-500 dark:text-gray-400 w-8 text-right">
+                  <span className="text-[10px] text-muted-foreground w-8 text-right">
                     {project.progress?.percentage ?? 0}%
                   </span>
                 </div>
               </td>
 
               {/* Actions */}
-              <td className="px-2 py-2 sticky right-0 bg-white dark:bg-gray-dark hover:bg-gray-50 dark:hover:bg-gray-800">
+              <td className="px-3 py-2.5 sticky right-0 z-[1] bg-card group-hover:bg-muted">
                 <div className="flex items-center gap-1 justify-center">
-                  <button
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={() => onEdit(project)}
-                    className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 p-1"
+                    className="h-8 w-8"
                     aria-label="Edit project"
                   >
                     <PencilIcon className="w-4 h-4" />
-                  </button>
-                  <button
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
                     onClick={() => onDelete(project.id!)}
-                    className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 p-1"
+                    className="h-8 w-8 text-destructive"
                     aria-label="Delete project"
                   >
                     <TrashIcon className="w-4 h-4" />
-                  </button>
+                  </Button>
                 </div>
               </td>
             </tr>

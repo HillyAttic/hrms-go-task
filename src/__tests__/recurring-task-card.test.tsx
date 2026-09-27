@@ -658,7 +658,10 @@ describe('Feature: management-pages, Property 42: Completion Rate Calculation', 
           id: fc.uuid(),
           title: generators.title(),
           description: generators.description(),
-          dueDate: fc.date({ min: new Date(), max: new Date('2030-12-31') }),
+          // noInvalidDate: fc.date() can otherwise emit Invalid Date, which makes the
+          // component compute NaN and render width:NaN% — an artifact of the generator,
+          // not a real behaviour worth asserting on.
+          dueDate: fc.date({ min: new Date(), max: new Date('2030-12-31'), noInvalidDate: true }),
           priority: fc.constantFrom('low', 'medium', 'high', 'urgent') as fc.Arbitrary<'low' | 'medium' | 'high' | 'urgent'>,
           status: fc.constantFrom('pending', 'in-progress', 'completed') as fc.Arbitrary<'pending' | 'in-progress' | 'completed'>,
           assignedTo: fc.array(generators.userId(), { minLength: 1, maxLength: 5 }),
@@ -666,11 +669,11 @@ describe('Feature: management-pages, Property 42: Completion Rate Calculation', 
           // half-yearly/yearly — daily and weekly fall through to 0, making the rate
           // trivially 0. Constrain to the patterns the component actually models.
           recurrencePattern: fc.constantFrom('monthly', 'quarterly') as fc.Arbitrary<'monthly' | 'quarterly'>,
-          nextOccurrence: fc.date({ min: new Date(), max: new Date('2030-12-31') }),
-          startDate: fc.date({ min: new Date('2020-01-01'), max: new Date('2023-12-31') }),
+          nextOccurrence: fc.date({ min: new Date(), max: new Date('2030-12-31'), noInvalidDate: true }),
+          startDate: fc.date({ min: new Date('2020-01-01'), max: new Date('2023-12-31'), noInvalidDate: true }),
           completionHistory: fc.array(
             fc.record({
-              date: fc.date({ min: new Date('2020-01-01'), max: new Date() }),
+              date: fc.date({ min: new Date('2020-01-01'), max: new Date(), noInvalidDate: true }),
               completedBy: generators.userId(),
             }),
             { minLength: 0, maxLength: 10 }

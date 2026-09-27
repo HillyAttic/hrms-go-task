@@ -7,7 +7,9 @@ import { ProjectList } from '@/components/projects/ProjectList';
 import { ProjectModal } from '@/components/projects/ProjectModal';
 import { Button } from '@/components/ui/button';
 import { ViewToggle } from '@/components/ui/view-toggle';
-import { PlusIcon } from '@heroicons/react/24/outline';
+import { PageHeader } from '@/components/ui/page-header';
+import { Card, CardContent } from '@/components/ui/card';
+import { ExclamationTriangleIcon, PlusIcon } from '@heroicons/react/24/outline';
 import { toast } from 'react-toastify';
 
 /**
@@ -189,45 +191,40 @@ export default function ProjectsPage() {
   return (
     <div className="space-y-6">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
-            Projects
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">
-            Manage your projects, track progress, and invoices
-          </p>
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex items-center gap-3">
-          {selectedIds.size > 0 && (
-            <Button
-              onClick={handleBulkDelete}
-              variant="destructive"
-              className="flex items-center gap-2"
-              size="lg"
-            >
-              Delete Selected ({selectedIds.size})
+      <PageHeader
+        eyebrow="Delivery"
+        title="Projects"
+        description="Manage your projects, track progress, and invoices."
+        actions={
+          <>
+            {selectedIds.size > 0 && (
+              <Button
+                onClick={handleBulkDelete}
+                variant="destructive"
+                size="lg"
+              >
+                Delete Selected ({selectedIds.size})
+              </Button>
+            )}
+            <Button onClick={handleAddNew} size="lg">
+              <PlusIcon className="w-5 h-5" />
+              Add New Project
             </Button>
-          )}
-          <Button
-            onClick={handleAddNew}
-            className="flex items-center gap-2 text-white"
-            size="lg"
-          >
-            <PlusIcon className="w-5 h-5" />
-            Add New Project
-          </Button>
-        </div>
-      </div>
+          </>
+        }
+      />
 
       {/* Error Display */}
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
-          <p className="font-medium">Error loading projects</p>
-          <p className="text-sm">{error.message}</p>
-        </div>
+        <Card className="border-destructive bg-destructive/10">
+          <CardContent className="flex items-start gap-3 p-4">
+            <ExclamationTriangleIcon className="w-5 h-5 text-destructive flex-shrink-0" />
+            <div>
+              <p className="font-medium text-destructive">Error loading projects</p>
+              <p className="text-sm text-destructive/90">{error.message}</p>
+            </div>
+          </CardContent>
+        </Card>
       )}
 
       {/* View Toggle Buttons */}

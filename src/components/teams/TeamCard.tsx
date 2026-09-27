@@ -22,8 +22,12 @@ interface TeamCardProps {
 }
 
 /**
- * TeamCard Component - Enhanced with richer visual design
- * Displays team information in a card format with improved hierarchy
+ * TeamCard Component
+ * Displays team information in a card format.
+ *
+ * The `Team Members` label, the `.flex.-space-x-2` avatar row, the per-avatar
+ * `title` and the `+N` indicator are asserted by
+ * src/__tests__/team-card.test.tsx — keep them.
  */
 export function TeamCard({ team, onEdit, onDelete, onViewDetails, selected = false, onSelect }: TeamCardProps) {
   // Generate initials from name for avatar fallback
@@ -59,20 +63,28 @@ export function TeamCard({ team, onEdit, onDelete, onViewDetails, selected = fal
 
   return (
     <Card
-      className={`group hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden ${selected ? 'ring-2 ring-ring' : ''}`}
+      className={`group hover:-translate-y-0.5 transition-transform cursor-pointer overflow-hidden ${selected ? 'ring-2 ring-ring' : ''}`}
       onClick={() => {
         onViewDetails(team.id!);
       }}
     >
-      {/* Colored top accent bar */}
-      <div className={`h-1 ${team.status === 'active' ? 'bg-gradient-to-r from-emerald-400 to-emerald-500' : team.status === 'inactive' ? 'bg-gradient-to-r from-amber-400 to-amber-500' : 'bg-gradient-to-r from-gray-400 to-gray-500'}`} />
+      {/* Status accent bar — the one place the status hue appears at full strength */}
+      <div
+        className={`h-1.5 ${
+          team.status === 'active'
+            ? 'bg-success'
+            : team.status === 'inactive'
+              ? 'bg-warning'
+              : 'bg-muted-foreground'
+        }`}
+      />
 
       <CardContent className="p-5">
         {/* Header with Team Name and Status Badge */}
         <div className="flex items-start justify-between mb-3">
           <div className="flex-1 min-w-0 pr-3">
             <div className="flex items-center gap-2 mb-1.5">
-              <h3 className="text-base font-bold text-gray-900 dark:text-white truncate leading-tight">
+              <h3 className="font-display text-base font-bold text-foreground truncate leading-tight">
                 {team.name}
               </h3>
               <Badge variant={getStatusVariant(team.status)}>
@@ -82,7 +94,7 @@ export function TeamCard({ team, onEdit, onDelete, onViewDetails, selected = fal
             {/* Show linked project if this team is auto-synced from a project */}
             {team.linkedProjectId && (
               <div className="mt-1">
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-medium bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-800">
+                <span className="inline-flex items-center gap-1 rounded-md border border-border px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
                   <FolderIcon className="w-3 h-3" />
                   {team.linkedProjectName || 'Project Team'}
                 </span>
@@ -92,14 +104,14 @@ export function TeamCard({ team, onEdit, onDelete, onViewDetails, selected = fal
 
           {/* Action Buttons */}
           <div
-            className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
+            className="flex items-center gap-1 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity"
             onClick={(e) => e.stopPropagation()}
           >
             <Button
               size="icon"
               variant="ghost"
               onClick={() => onEdit(team)}
-              className="h-8 w-8 text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-900/20"
+              className="h-8 w-8"
               aria-label={`Edit ${team.name}`}
             >
               <PencilSquareIcon className="w-4 h-4" />
@@ -108,7 +120,7 @@ export function TeamCard({ team, onEdit, onDelete, onViewDetails, selected = fal
               size="icon"
               variant="ghost"
               onClick={() => onDelete(team.id!)}
-              className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
+              className="h-8 w-8 text-destructive"
               aria-label={`Delete ${team.name}`}
             >
               <TrashIcon className="w-4 h-4" />
@@ -118,25 +130,25 @@ export function TeamCard({ team, onEdit, onDelete, onViewDetails, selected = fal
 
         {/* Description */}
         {team.description && (
-          <p className="text-sm text-gray-500 dark:text-gray-400 mb-4 line-clamp-2 leading-relaxed">
+          <p className="text-sm text-muted-foreground mb-4 line-clamp-2 leading-relaxed">
             {team.description}
           </p>
         )}
 
         {/* Team Details - Stats Row */}
-        <div className="flex items-center gap-4 mb-4 pb-4 border-b border-gray-100 dark:border-gray-800">
+        <div className="flex items-center gap-4 mb-4 pb-4 border-b-2 border-border">
           {/* Team Leader */}
           <div className="flex items-center gap-1.5 text-sm">
-            <UserIcon className="w-4 h-4 text-gray-400" />
-            <span className="text-gray-600 dark:text-gray-400 text-xs">Leader:</span>
-            <span className="font-medium text-gray-800 dark:text-gray-200 text-xs truncate max-w-[120px]">{team.leaderName || 'Unassigned'}</span>
+            <UserIcon className="w-4 h-4 text-muted-foreground" />
+            <span className="text-muted-foreground text-xs">Leader:</span>
+            <span className="font-medium text-foreground text-xs truncate max-w-[120px]">{team.leaderName || 'Unassigned'}</span>
           </div>
 
           {/* Member Count */}
           <div className="flex items-center gap-1.5 text-sm">
-            <UserGroupIcon className="w-4 h-4 text-gray-400" />
-            <span className="text-gray-600 dark:text-gray-400 text-xs">Members:</span>
-            <span className="font-semibold text-gray-800 dark:text-gray-200 text-xs">{memberCount}</span>
+            <UserGroupIcon className="w-4 h-4 text-muted-foreground" />
+            <span className="text-muted-foreground text-xs">Members:</span>
+            <span className="font-semibold text-foreground text-xs">{memberCount}</span>
           </div>
         </div>
 
@@ -144,8 +156,8 @@ export function TeamCard({ team, onEdit, onDelete, onViewDetails, selected = fal
         {memberCount > 0 && (
           <div>
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-gray-500 dark:text-gray-400">Team Members</span>
-              <span className="text-xs text-gray-400 dark:text-gray-500">{memberCount} {memberCount === 1 ? 'member' : 'members'}</span>
+              <span className="text-xs font-medium text-muted-foreground">Team Members</span>
+              <span className="text-xs text-muted-foreground">{memberCount} {memberCount === 1 ? 'member' : 'members'}</span>
             </div>
             <div className="flex -space-x-2 mt-2">
               {/* Display first 5 member avatars */}
@@ -156,14 +168,14 @@ export function TeamCard({ team, onEdit, onDelete, onViewDetails, selected = fal
                   alt={member.name}
                   fallback={getInitials(member.name)}
                   size="sm"
-                  className="border-2 border-white dark:border-gray-dark"
+                  className="border-2 border-card"
                   title={member.name}
                 />
               ))}
               {/* Show count indicator for additional members */}
               {remainingCount > 0 && (
                 <div
-                  className="h-8 w-8 rounded-full bg-gray-100 dark:bg-gray-800 border-2 border-white dark:border-gray-dark flex items-center justify-center text-[10px] font-semibold text-gray-600 dark:text-gray-400"
+                  className="h-8 w-8 rounded-full bg-muted border-2 border-card flex items-center justify-center text-[10px] font-semibold text-muted-foreground"
                   title={`${remainingCount} more ${remainingCount === 1 ? 'member' : 'members'}`}
                 >
                   +{remainingCount}
@@ -175,7 +187,7 @@ export function TeamCard({ team, onEdit, onDelete, onViewDetails, selected = fal
 
         {/* Footer with creation date */}
         {team.createdAt && (
-          <div className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-800 text-[11px] text-gray-400 dark:text-gray-500">
+          <div className="mt-4 pt-3 border-t-2 border-border text-[11px] text-muted-foreground">
             Created {new Date(team.createdAt).toLocaleDateString()}
           </div>
         )}

@@ -320,7 +320,7 @@ export function ProjectModal({
         <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
           {/* ── Basic Info ───────────────────────────────────────────── */}
           <section>
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 border-b pb-2">
+            <h3 className="text-sm font-semibold text-foreground mb-3 border-b pb-2">
               Basic Information
             </h3>
             <div className="space-y-4">
@@ -363,7 +363,7 @@ export function ProjectModal({
                   <select
                     id="status"
                     {...register('status')}
-                    className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-dark disabled:opacity-50"
+                    className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/45 bg-input disabled:opacity-50"
                     disabled={isLoading}
                   >
                     <option value="wip">WIP</option>
@@ -388,7 +388,7 @@ export function ProjectModal({
 
           {/* ── Team Members ─────────────────────────────────────────── */}
           <section>
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 border-b pb-2">
+            <h3 className="text-sm font-semibold text-foreground mb-3 border-b pb-2">
               Team Members
             </h3>
 
@@ -400,12 +400,12 @@ export function ProjectModal({
                     key={member.uid}
                     className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium ${
                       member.isTeamLead
-                        ? 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-300 ring-2 ring-amber-400 dark:ring-amber-500'
-                        : 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300'
+                        ? 'bg-warning/15 text-warning border-2 border-border'
+                        : 'bg-muted text-foreground border-2 border-border'
                     }`}
                   >
                     {member.isTeamLead && (
-                      <StarSolid className="w-3 h-3 mr-0.5 text-amber-500" aria-label="Team Lead" />
+                      <StarSolid className="w-3 h-3 mr-0.5 text-warning" aria-label="Team Lead" />
                     )}
                     {member.name}
                     {member.isTeamLead && (
@@ -416,9 +416,9 @@ export function ProjectModal({
                         type="button"
                         onClick={() => setTeamLead(member.uid)}
                         title="Mark as Team Lead"
-                        className="hover:bg-amber-200 dark:hover:bg-amber-800 rounded-full p-0.5 ml-0.5"
+                        className="hover:bg-warning/20 rounded-full p-0.5 ml-0.5"
                       >
-                        <StarOutline className="w-3 h-3 text-amber-600 dark:text-amber-400" />
+                        <StarOutline className="w-3 h-3 text-warning" />
                       </button>
                     )}
                     {member.isTeamLead && (
@@ -426,15 +426,15 @@ export function ProjectModal({
                         type="button"
                         onClick={() => clearTeamLead(member.uid)}
                         title="Remove Team Lead"
-                        className="hover:bg-amber-200 dark:hover:bg-amber-800 rounded-full p-0.5 ml-0.5"
+                        className="hover:bg-warning/20 rounded-full p-0.5 ml-0.5"
                       >
-                        <StarSolid className="w-3 h-3 text-amber-500" />
+                        <StarSolid className="w-3 h-3 text-warning" />
                       </button>
                     )}
                     <button
                       type="button"
                       onClick={() => removeMember(idx)}
-                      className="hover:bg-blue-200 dark:hover:bg-blue-800 rounded-full p-0.5"
+                      className="hover:bg-foreground/10 rounded-full p-0.5"
                     >
                       <XMarkIcon className="w-3 h-3" />
                     </button>
@@ -443,24 +443,24 @@ export function ProjectModal({
               </div>
             )}
             {errors.teamMembers && (
-              <p className="text-sm text-red-600 mb-2">{errors.teamMembers.message}</p>
+              <p className="text-sm text-destructive mb-2">{errors.teamMembers.message}</p>
             )}
 
             {/* Search + list */}
-            <div className="border border-gray-200 dark:border-gray-700 rounded-md">
-              <div className="relative p-2 border-b border-gray-200 dark:border-gray-700">
-                <MagnifyingGlassIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <div className="border border-border rounded-md">
+              <div className="relative p-2 border-b border-border">
+                <MagnifyingGlassIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <input
                   type="text"
                   placeholder="Search team members..."
                   value={memberSearch}
                   onChange={(e) => setMemberSearch(e.target.value)}
-                  className="w-full pl-9 pr-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-dark focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="w-full pl-9 pr-3 py-1.5 text-sm border border-border rounded-md bg-input focus:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/45"
                 />
               </div>
               <div className="max-h-40 overflow-y-auto">
                 {filteredUsers.length === 0 ? (
-                  <p className="p-3 text-sm text-gray-500 text-center">
+                  <p className="p-3 text-sm text-muted-foreground text-center">
                     {loadingExternal ? 'Loading...' : 'No users found'}
                   </p>
                 ) : (
@@ -471,7 +471,7 @@ export function ProjectModal({
                       <div
                         key={user.uid}
                         className={`flex items-center gap-2 px-3 py-2 ${
-                          isSelected ? 'bg-blue-50 dark:bg-blue-900/10' : 'hover:bg-gray-50 dark:hover:bg-gray-800'
+                          isSelected ? 'bg-accent/40' : 'hover:bg-muted'
                         }`}
                       >
                         <label className="flex items-center gap-3 cursor-pointer flex-1">
@@ -494,14 +494,14 @@ export function ProjectModal({
                                 });
                               }
                             }}
-                            className="rounded border-gray-300 text-blue-600 focus:ring-ring"
+                            className="rounded border-2 border-border accent-ring"
                           />
                           <div className="text-sm">
-                            <span className="font-medium text-gray-900 dark:text-white">
+                            <span className="font-medium text-foreground">
                               {user.displayName}
                             </span>
                             {user.email && (
-                              <span className="text-gray-500 ml-2">{user.email}</span>
+                              <span className="text-muted-foreground ml-2">{user.email}</span>
                             )}
                           </div>
                         </label>
@@ -510,12 +510,12 @@ export function ProjectModal({
                             type="button"
                             onClick={() => (isLead ? clearTeamLead(user.uid) : setTeamLead(user.uid))}
                             title={isLead ? 'Remove Team Lead' : 'Mark as Team Lead'}
-                            className="flex-shrink-0 p-1 rounded-full hover:bg-amber-100 dark:hover:bg-amber-900/30"
+                            className="flex-shrink-0 p-1 rounded-full hover:bg-warning/15"
                           >
                             {isLead ? (
-                              <StarSolid className="w-4 h-4 text-amber-500" />
+                              <StarSolid className="w-4 h-4 text-warning" />
                             ) : (
-                              <StarOutline className="w-4 h-4 text-gray-400 hover:text-amber-500" />
+                              <StarOutline className="w-4 h-4 text-muted-foreground hover:text-warning" />
                             )}
                           </button>
                         )}
@@ -529,7 +529,7 @@ export function ProjectModal({
 
           {/* ── Client SPOC ──────────────────────────────────────────── */}
           <section>
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 border-b pb-2">
+            <h3 className="text-sm font-semibold text-foreground mb-3 border-b pb-2">
               Client SPOC (Single Point of Contact)
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -564,7 +564,7 @@ export function ProjectModal({
 
           {/* ── Invoice ─────────────────────────────────────────────── */}
           <section>
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 border-b pb-2">
+            <h3 className="text-sm font-semibold text-foreground mb-3 border-b pb-2">
               Invoice
             </h3>
 
@@ -573,15 +573,15 @@ export function ProjectModal({
                 type="checkbox"
                 {...register('invoiceRaised')}
                 disabled={isLoading}
-                className="rounded border-gray-300 dark:border-gray-600"
+                className="rounded border-border"
               />
-              <span className="text-sm text-gray-700 dark:text-gray-300">
+              <span className="text-sm text-foreground">
                 Invoice Raised
               </span>
             </label>
 
             {watchedInvoiceRaised && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pl-6 border-l-2 border-blue-200 dark:border-blue-800">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pl-6 border-l-2 border-border">
                 <Input
                   id="invoiceAmount"
                   type="number"
@@ -610,7 +610,7 @@ export function ProjectModal({
 
           {/* ── Progress ────────────────────────────────────────────── */}
           <section>
-            <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 border-b pb-2">
+            <h3 className="text-sm font-semibold text-foreground mb-3 border-b pb-2">
               Progress
             </h3>
 
@@ -627,11 +627,11 @@ export function ProjectModal({
                 max={100}
                 step={5}
                 {...register('progressPercentage', { valueAsNumber: true })}
-                className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer accent-ring"
                 disabled={isLoading}
               />
               {watchedMilestones && watchedMilestones.length > 0 && (
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   Auto-calculated from milestones ({watchedMilestones.filter((m) => m.completed).length}/{watchedMilestones.length} completed)
                 </p>
               )}
@@ -654,13 +654,13 @@ export function ProjectModal({
               </div>
 
               {milestones.length === 0 ? (
-                <p className="text-sm text-gray-500 italic">No milestones added yet.</p>
+                <p className="text-sm text-muted-foreground italic">No milestones added yet.</p>
               ) : (
                 <div className="space-y-2">
                   {milestones.map((milestone, index) => (
                     <div
                       key={milestone.id}
-                      className="flex items-center gap-2 p-2 border border-gray-200 dark:border-gray-700 rounded-md"
+                      className="flex items-center gap-2 p-2 border border-border rounded-md"
                     >
                       <button
                         type="button"
@@ -668,17 +668,17 @@ export function ProjectModal({
                         className="flex-shrink-0"
                       >
                         {watchedMilestones?.[index]?.completed ? (
-                          <CheckCircleSolid className="w-5 h-5 text-green-500" />
+                          <CheckCircleSolid className="w-5 h-5 text-success" />
                         ) : (
-                          <span className="w-5 h-5 rounded-full border-2 border-gray-400 inline-block" />
+                          <span className="w-5 h-5 rounded-full border-2 border-border inline-block" />
                         )}
                       </button>
                       <input
                         type="text"
                         {...register(`milestones.${index}.title` as const)}
                         placeholder="Milestone title"
-                        className={`flex-1 px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-dark focus:outline-none focus:ring-2 focus:ring-ring ${
-                          watchedMilestones?.[index]?.completed ? 'line-through text-gray-400' : ''
+                        className={`flex-1 px-2 py-1 text-sm border border-border rounded bg-input focus:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/45 ${
+                          watchedMilestones?.[index]?.completed ? 'line-through text-muted-foreground' : ''
                         }`}
                         disabled={isLoading}
                       />
@@ -693,7 +693,7 @@ export function ProjectModal({
                       <button
                         type="button"
                         onClick={() => removeMilestone(index)}
-                        className="flex-shrink-0 text-red-500 hover:text-red-700 p-1"
+                        className="flex-shrink-0 text-destructive hover:text-destructive p-1"
                       >
                         <XMarkIcon className="w-4 h-4" />
                       </button>
@@ -709,7 +709,7 @@ export function ProjectModal({
             <Button type="button" variant="outline" onClick={handleClose} disabled={isLoading}>
               Cancel
             </Button>
-            <Button type="submit" loading={isLoading} disabled={isLoading} className="text-white">
+            <Button type="submit" loading={isLoading} disabled={isLoading} className="">
               {project ? 'Update Project' : 'Create Project'}
             </Button>
           </DialogFooter>

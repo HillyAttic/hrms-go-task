@@ -1,6 +1,7 @@
 import React from 'react';
 import { FunnelIcon, XMarkIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import { Badge } from '@/components/ui/badge';
+import { Card } from '@/components/ui/card';
 
 export interface TeamFilterState {
   status: string;
@@ -15,8 +16,12 @@ interface TeamFilterProps {
 }
 
 /**
- * TeamFilter Component - Redesigned with modern styling
- * Provides status and department filter dropdowns for team management
+ * TeamFilter Component
+ * Provides status and department filter dropdowns for team management.
+ *
+ * The `Filter by status` / `Filter by department` aria-labels, the option
+ * values, the `Clear All` label and the `Remove … filter` button labels are
+ * asserted by src/__tests__/team-filter.test.tsx — keep them.
  */
 export function TeamFilter({
   filters,
@@ -40,20 +45,23 @@ export function TeamFilter({
 
   const hasActiveFilters = filters.status !== 'all' || filters.department !== 'all';
 
+  const selectClass =
+    'w-full appearance-none px-3 py-2.5 pr-10 text-sm border-2 border-border rounded-md bg-input text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/45 transition-colors';
+
   return (
-    <div className="bg-white dark:bg-gray-dark rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-5 shadow-sm">
+    <Card className="p-4 sm:p-5">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <div className="p-1.5 bg-gray-100 dark:bg-gray-800 rounded-lg">
-            <FunnelIcon className="w-4 h-4 text-gray-600 dark:text-gray-400" />
-          </div>
-          <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Filters</h3>
+          <span className="flex h-7 w-7 items-center justify-center rounded-md border-2 border-border bg-accent text-accent-foreground">
+            <FunnelIcon className="w-3.5 h-3.5" />
+          </span>
+          <h3 className="font-display text-sm font-semibold text-foreground">Filters</h3>
         </div>
 
         {hasActiveFilters && (
           <button
             onClick={onClearFilters}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+            className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
           >
             <XMarkIcon className="w-3.5 h-3.5" />
             Clear All
@@ -64,7 +72,7 @@ export function TeamFilter({
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {/* Status Filter */}
         <div>
-          <label htmlFor="status-filter" className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">
+          <label htmlFor="status-filter" className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1.5">
             Status
           </label>
           <div className="relative">
@@ -72,7 +80,7 @@ export function TeamFilter({
               id="status-filter"
               value={filters.status}
               onChange={handleStatusChange}
-              className="w-full appearance-none px-3 py-2.5 pr-10 text-sm border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-ring focus:ring-2 focus:ring-ring dark:focus:ring-ring bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all"
+              className={selectClass}
               aria-label="Filter by status"
             >
               <option value="all">All Statuses</option>
@@ -80,13 +88,13 @@ export function TeamFilter({
               <option value="inactive">Inactive</option>
               <option value="archived">Archived</option>
             </select>
-            <ChevronDownIcon className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+            <ChevronDownIcon className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
           </div>
         </div>
 
         {/* Department Filter */}
         <div>
-          <label htmlFor="department-filter" className="block text-xs font-medium text-gray-600 dark:text-gray-400 mb-1.5">
+          <label htmlFor="department-filter" className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1.5">
             Department
           </label>
           <div className="relative">
@@ -94,7 +102,7 @@ export function TeamFilter({
               id="department-filter"
               value={filters.department}
               onChange={handleDepartmentChange}
-              className="w-full appearance-none px-3 py-2.5 pr-10 text-sm border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-ring focus:ring-2 focus:ring-ring dark:focus:ring-ring bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all"
+              className={selectClass}
               aria-label="Filter by department"
             >
               <option value="all">All Departments</option>
@@ -117,21 +125,21 @@ export function TeamFilter({
                 </>
               )}
             </select>
-            <ChevronDownIcon className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+            <ChevronDownIcon className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
           </div>
         </div>
       </div>
 
       {/* Active Filter Indicators */}
       {hasActiveFilters && (
-        <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+        <div className="mt-4 pt-4 border-t-2 border-border">
           <div className="flex flex-wrap gap-2">
             {filters.status !== 'all' && (
               <Badge variant="info" className="gap-1">
                 Status: {filters.status.charAt(0).toUpperCase() + filters.status.slice(1)}
                 <button
                   onClick={() => onFilterChange({ ...filters, status: 'all' })}
-                  className="ml-0.5 hover:text-blue-200 transition-colors"
+                  className="ml-0.5 hover:opacity-70 transition-opacity"
                   aria-label="Remove status filter"
                 >
                   <XMarkIcon className="w-3 h-3" />
@@ -144,7 +152,7 @@ export function TeamFilter({
                 Department: {filters.department}
                 <button
                   onClick={() => onFilterChange({ ...filters, department: 'all' })}
-                  className="ml-0.5 hover:text-green-200 transition-colors"
+                  className="ml-0.5 hover:opacity-70 transition-opacity"
                   aria-label="Remove department filter"
                 >
                   <XMarkIcon className="w-3 h-3" />
@@ -154,6 +162,6 @@ export function TeamFilter({
           </div>
         </div>
       )}
-    </div>
+    </Card>
   );
 }

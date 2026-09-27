@@ -24,6 +24,10 @@ interface ProjectListProps {
   onToggleSelectAll?: () => void;
 }
 
+/** The one select style used by the toolbar and the pagination row. */
+const selectClass =
+  'h-10 px-3 text-sm border-2 border-border rounded-md bg-input text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/45 transition-colors';
+
 export function ProjectList({
   projects,
   onEdit,
@@ -88,11 +92,8 @@ export function ProjectList({
             />
           </div>
           <div className="flex items-center gap-2">
-            <FunnelIcon className="w-5 h-5 text-gray-400" />
-            <select
-              disabled
-              className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-dark opacity-50"
-            >
+            <FunnelIcon className="w-5 h-5 text-muted-foreground" />
+            <select disabled className={`${selectClass} opacity-50`}>
               <option>All Status</option>
             </select>
           </div>
@@ -107,7 +108,7 @@ export function ProjectList({
       {/* Search + Filter */}
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="flex-1 relative">
-          <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
           <Input
             type="text"
             placeholder="Search by project name, ID, client, team member..."
@@ -119,11 +120,11 @@ export function ProjectList({
         </div>
 
         <div className="flex items-center gap-2">
-          <FunnelIcon className="w-5 h-5 text-gray-400" />
+          <FunnelIcon className="w-5 h-5 text-muted-foreground" />
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as any)}
-            className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-dark"
+            className={selectClass}
             aria-label="Filter by status"
           >
             <option value="all">All Status</option>
@@ -135,22 +136,22 @@ export function ProjectList({
       </div>
 
       {/* Results Count */}
-      <div className="flex items-center justify-between">
-        <div className="text-sm text-gray-600 dark:text-gray-400">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div className="text-sm text-muted-foreground">
           Showing {Math.min(startIndex + 1, filteredProjects.length || 1)}-
           {Math.min(endIndex, filteredProjects.length)} of {filteredProjects.length} project
           {filteredProjects.length !== 1 ? 's' : ''}
           {searchQuery && ` matching "${searchQuery}"`}
         </div>
         <div className="flex items-center gap-2">
-          <label className="text-sm text-gray-600 dark:text-gray-400">Show:</label>
+          <label className="text-sm text-muted-foreground">Show:</label>
           <select
             value={itemsPerPage}
             onChange={(e) => {
               setItemsPerPage(Number(e.target.value));
               setCurrentPage(1);
             }}
-            className="px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-dark"
+            className={`${selectClass} w-auto`}
           >
             <option value={25}>25</option>
             <option value={50}>50</option>
@@ -158,7 +159,7 @@ export function ProjectList({
             <option value={200}>200</option>
             <option value={500}>All</option>
           </select>
-          <span className="text-sm text-gray-600 dark:text-gray-400">per page</span>
+          <span className="text-sm text-muted-foreground">per page</span>
         </div>
       </div>
 
@@ -198,8 +199,8 @@ export function ProjectList({
 
       {/* Pagination */}
       {showPagination && (
-        <div className="flex items-center justify-between border-t pt-4">
-          <div className="text-sm text-gray-600 dark:text-gray-400">
+        <div className="flex items-center justify-between border-t-2 border-border pt-4">
+          <div className="text-sm text-muted-foreground">
             Page {currentPage} of {totalPages}
           </div>
           <div className="flex items-center gap-2">

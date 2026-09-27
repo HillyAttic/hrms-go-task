@@ -1,32 +1,30 @@
 import React from 'react';
+import { Badge, type BadgeProps } from '@/components/ui/badge';
 
 interface ProjectStatusBadgeProps {
   status: 'wip' | 'completed' | 'pending_approval';
   size?: 'sm' | 'md';
 }
 
-const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
-  wip: {
-    label: 'WIP',
-    className: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
-  },
-  completed: {
-    label: 'Completed',
-    className: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400',
-  },
-  pending_approval: {
-    label: 'Pending Approval',
-    className: 'bg-amber-100 text-amber-800 dark:bg-amber-900/30 dark:text-amber-400',
-  },
+/**
+ * Thin wrapper over the shared Badge so project status uses the one badge system.
+ * `wip` maps to `info` (the semantic in-progress hue), not the old raw blue-100.
+ */
+const STATUS_CONFIG: Record<string, { label: string; variant: BadgeProps['variant'] }> = {
+  wip: { label: 'WIP', variant: 'info' },
+  completed: { label: 'Completed', variant: 'success' },
+  pending_approval: { label: 'Pending Approval', variant: 'warning' },
 };
 
 export function ProjectStatusBadge({ status, size = 'sm' }: ProjectStatusBadgeProps) {
   const config = STATUS_CONFIG[status] || STATUS_CONFIG.wip;
-  const sizeClass = size === 'sm' ? 'px-2 py-0.5 text-[10px]' : 'px-2.5 py-1 text-xs';
 
   return (
-    <span className={`inline-block font-medium rounded-full ${sizeClass} ${config.className}`}>
+    <Badge
+      variant={config.variant}
+      className={size === 'md' ? 'px-2.5 py-1 text-xs' : undefined}
+    >
       {config.label}
-    </span>
+    </Badge>
   );
 }

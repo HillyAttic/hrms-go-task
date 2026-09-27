@@ -22,9 +22,12 @@ interface TeamDetailPanelProps {
 
 /**
  * TeamDetailPanel Component
- * Displays full team information including complete member list with roles
- * and provides member management actions (add/remove members, update roles)
+ * Displays full team information including complete member list with roles.
  * Validates Requirements: 4.4, 4.5, 4.6
+ *
+ * The `Team Members (n)` heading, the member name/role text and the
+ * `No team members yet` / `Add members to build your team` empty state are
+ * asserted by src/__tests__/team-member-management.test.tsx — keep them.
  */
 export function TeamDetailPanel({ team, onTeamUpdate, onClose }: TeamDetailPanelProps) {
   const [currentTeam, setCurrentTeam] = useState<Team>(team);
@@ -88,13 +91,13 @@ export function TeamDetailPanel({ team, onTeamUpdate, onClose }: TeamDetailPanel
     <div className="space-y-6">
       {/* Error Display */}
       {error && (
-        <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-          <p className="text-red-700 text-sm">{error}</p>
+        <div className="rounded-md border-2 border-border bg-destructive/10 p-4">
+          <p className="text-sm text-destructive">{error}</p>
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setError(null)}
-            className="mt-2 text-red-600 hover:text-red-700"
+            className="mt-2 text-destructive hover:text-destructive"
           >
             Dismiss
           </Button>
@@ -103,15 +106,15 @@ export function TeamDetailPanel({ team, onTeamUpdate, onClose }: TeamDetailPanel
 
       {/* Team Overview - Requirement 4.4 */}
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between">
-          <div className="flex items-center gap-3">
-            <CardTitle className="text-xl">{currentTeam.name}</CardTitle>
+        <CardHeader className="flex flex-row items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <CardTitle className="truncate">{currentTeam.name}</CardTitle>
             <Badge variant={getStatusVariant(currentTeam.status)}>
               {currentTeam.status}
             </Badge>
           </div>
           {onClose && (
-            <Button variant="ghost" size="sm" onClick={onClose}>
+            <Button variant="ghost" size="icon" onClick={onClose} aria-label="Close panel">
               <XMarkIcon className="w-5 h-5" />
             </Button>
           )}
@@ -120,8 +123,8 @@ export function TeamDetailPanel({ team, onTeamUpdate, onClose }: TeamDetailPanel
           {/* Description */}
           {currentTeam.description && (
             <div>
-              <h4 className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Description</h4>
-              <p className="text-sm text-gray-600 dark:text-gray-400">{currentTeam.description}</p>
+              <h4 className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Description</h4>
+              <p className="text-sm text-muted-foreground">{currentTeam.description}</p>
             </div>
           )}
 
@@ -129,12 +132,12 @@ export function TeamDetailPanel({ team, onTeamUpdate, onClose }: TeamDetailPanel
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Member Count */}
             <div>
-              <h4 className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Team Size</h4>
+              <h4 className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Team Size</h4>
               <div className="flex items-center gap-2">
-                <UserGroupIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                <span className="text-gray-600 dark:text-gray-400">
+                <UserGroupIcon className="w-4 h-4 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">
                   {currentTeam.members.length + 1} {currentTeam.members.length === 0 ? 'member' : 'members'}
-                  <span className="text-sm text-gray-500 dark:text-gray-400 ml-1">(including leader)</span>
+                  <span className="text-xs text-muted-foreground ml-1">(including leader)</span>
                 </span>
               </div>
             </div>
@@ -142,8 +145,8 @@ export function TeamDetailPanel({ team, onTeamUpdate, onClose }: TeamDetailPanel
             {/* Created Date */}
             {currentTeam.createdAt && (
               <div>
-                <h4 className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-1">Created</h4>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <h4 className="text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Created</h4>
+                <p className="text-sm text-muted-foreground">
                   {new Date(currentTeam.createdAt).toLocaleDateString()}
                 </p>
               </div>
@@ -155,7 +158,7 @@ export function TeamDetailPanel({ team, onTeamUpdate, onClose }: TeamDetailPanel
       {/* Team Leader */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
+          <CardTitle className="flex items-center gap-2">
             <UserIcon className="w-4 h-4" />
             Team Leader
           </CardTitle>
@@ -168,8 +171,8 @@ export function TeamDetailPanel({ team, onTeamUpdate, onClose }: TeamDetailPanel
               size="sm"
             />
             <div>
-              <p className="font-medium text-gray-900 dark:text-white text-sm">{leaderInfo.name}</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Team Leader</p>
+              <p className="font-medium text-foreground text-sm">{leaderInfo.name}</p>
+              <p className="text-xs text-muted-foreground">Team Leader</p>
             </div>
           </div>
         </CardContent>
@@ -178,24 +181,24 @@ export function TeamDetailPanel({ team, onTeamUpdate, onClose }: TeamDetailPanel
       {/* Team Members - Requirement 4.4 (complete member list with roles) */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-lg">
+          <CardTitle className="flex items-center gap-2">
             <UserGroupIcon className="w-4 h-4" />
             Team Members ({currentTeam.members.length})
           </CardTitle>
         </CardHeader>
         <CardContent>
           {currentTeam.members.length === 0 ? (
-            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-              <UserGroupIcon className="w-12 h-12 mx-auto mb-3 text-gray-300" />
+            <div className="text-center py-8 text-muted-foreground">
+              <UserGroupIcon className="w-12 h-12 mx-auto mb-3 text-muted-foreground/40" />
               <p>No team members yet</p>
               <p className="text-sm">Add members to build your team</p>
             </div>
           ) : (
-            <div className="space-y-3">
+            <div className="space-y-2">
               {currentTeam.members.map((member) => (
                 <div
                   key={member.id}
-                  className="flex items-center gap-2 p-2 bg-gray-50 dark:bg-gray-800 rounded-md"
+                  className="flex items-center gap-2 p-2 rounded-md border-2 border-border bg-muted"
                 >
                   <Avatar
                     src={member.avatar}
@@ -204,8 +207,8 @@ export function TeamDetailPanel({ team, onTeamUpdate, onClose }: TeamDetailPanel
                     size="sm"
                   />
                   <div>
-                    <p className="font-medium text-gray-900 dark:text-white text-sm">{member.name}</p>
-                    <p className="text-xs text-gray-600 dark:text-gray-400">{member.role}</p>
+                    <p className="font-medium text-foreground text-sm">{member.name}</p>
+                    <p className="text-xs text-muted-foreground">{member.role}</p>
                   </div>
                 </div>
               ))}

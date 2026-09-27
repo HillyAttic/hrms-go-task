@@ -1,11 +1,22 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
-import { createPortal } from 'react-dom';
+import { useState, useEffect } from 'react';
 import { useEnhancedAuth } from '@/contexts/enhanced-auth.context';
 import { useRouter } from 'next/navigation';
-import { useModal } from '@/contexts/modal-context';
 import { rosterService, getTaskColor } from '@/services/roster.service';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { PageHeader } from '@/components/ui/page-header';
+import { ViewToggle } from '@/components/ui/view-toggle';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from '@/components/ui/dialog';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
 import { leaveService } from '@/services/leave.service';
 import { LeaveRequest } from '@/types/attendance.types';
 import { RosterEntry, MONTHS, getDaysInMonth, MonthlyRosterView } from '@/types/roster.types';
@@ -22,7 +33,6 @@ interface UserProfile {
 export default function ViewSchedulePage() {
   const { user, loading: authLoading, isAdmin, isManager } = useEnhancedAuth();
   const router = useRouter();
-  const { openModal, closeModal } = useModal();
   const [currentMonth, setCurrentMonth] = useState(new Date().getMonth() + 1);
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [entries, setEntries] = useState<RosterEntry[]>([]);
@@ -44,31 +54,42 @@ export default function ViewSchedulePage() {
 
   const canViewAllSchedules = isAdmin || isManager;
 
-  // Helper function to get color classes based on task duration
-  const getTaskColorClass = (task: RosterEntry): string => {
-    // Check if it's a leave task
-    if (task.taskDetail?.startsWith('OFF:')) {
-      return 'bg-purple-100 text-purple-800 border-purple-400 hover:bg-purple-200 dark:bg-purple-900/30 dark:text-purple-300 dark:border-purple-600 dark:hover:bg-purple-900/50';
-    }
+  /**
+   * Duration → status hue. These are data-encoding colours in a Gantt-style
+   * grid, so they stay a 4-way distinction, but mapped onto the semantic
+   * status tokens instead of raw palette classes so they invert with the theme.
+   *
+   * "No task assigned" was previously a loud emerald, which read as a positive
+   * status for what is really an absence of data — it is neutral now.
+   * Keep this map and the legend below in sync.
+   */
+  const TASK_CHIP_COLOR = {
+    none: 'bg-muted text-muted-foreground border-border',
+    short: 'bg-warning/15 text-warning border-warning/40',
+    long: 'bg-info/15 text-info border-info/40',
+    leave: 'bg-accent/30 text-foreground border-border',
+  } as const;
 
+  const TASK_BLOCK_COLOR = {
+    none: 'bg-muted hover:bg-muted/80',
+    short: 'bg-warning hover:bg-warning/90',
+    long: 'bg-info hover:bg-info/90',
+    leave: 'bg-accent hover:bg-accent/90',
+  } as const;
+
+  const getTaskKind = (task: RosterEntry): keyof typeof TASK_CHIP_COLOR => {
+    if (task.taskDetail?.startsWith('OFF:')) return 'leave';
     const color = getTaskColor(task);
-    if (color === 'green') return 'bg-emerald-100 text-emerald-800 border-emerald-400 hover:bg-emerald-200 dark:bg-emerald-900/30 dark:text-emerald-300 dark:border-emerald-600 dark:hover:bg-emerald-900/50';
-    if (color === 'yellow') return 'bg-amber-100 text-amber-800 border-amber-400 hover:bg-amber-200 dark:bg-amber-900/30 dark:text-amber-300 dark:border-amber-600 dark:hover:bg-amber-900/50';
-    return 'bg-orange-100 text-orange-800 border-orange-400 hover:bg-orange-200 dark:bg-orange-900/30 dark:text-orange-300 dark:border-orange-600 dark:hover:bg-orange-900/50';
+    if (color === 'green') return 'none';
+    if (color === 'yellow') return 'short';
+    return 'long';
   };
 
-  // Helper function to get Excel cell color classes
-  const getExcelCellColorClass = (task: RosterEntry): string => {
-    // Check if it's a leave task
-    if (task.taskDetail?.startsWith('OFF:')) {
-      return 'bg-purple-500 hover:bg-purple-600';
-    }
-    
-    const color = getTaskColor(task);
-    if (color === 'green') return 'bg-emerald-400 hover:bg-emerald-500';
-    if (color === 'yellow') return 'bg-amber-400 hover:bg-amber-500';
-    return 'bg-orange-600 hover:bg-orange-700';
-  };
+  const getTaskColorClass = (task: RosterEntry): string =>
+    TASK_CHIP_COLOR[getTaskKind(task)];
+
+  const getExcelCellColorClass = (task: RosterEntry): string =>
+    TASK_BLOCK_COLOR[getTaskKind(task)];
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -269,7 +290,6 @@ export default function ViewSchedulePage() {
       setSelectedDateTasks(tasksForDay);
       setSelectedUser({ id: userId, name: userName, email: '', role: '' });
       setShowDayTasksModal(true);
-      openModal();
     } catch (error) {
       console.error('Error loading tasks for day:', error);
     }
@@ -280,13 +300,11 @@ export default function ViewSchedulePage() {
     setSelectedDate(null);
     setSelectedDateTasks([]);
     setSelectedUser(null);
-    closeModal();
   };
 
   const handleCloseActivityModal = () => {
     setShowActivityModal(false);
     setSelectedActivity(null);
-    closeModal(); // Close modal context to show header again
   };
 
   const handleUserNameClick = async (user: UserProfile) => {
@@ -332,7 +350,6 @@ export default function ViewSchedulePage() {
       
       setUserCalendarEntries([...entries, ...leaveEntries]);
       setShowUserCalendarModal(true);
-      openModal(); // Open modal context to hide header
     } catch (error) {
       console.error('Error loading user calendar:', error);
     }
@@ -345,16 +362,6 @@ export default function ViewSchedulePage() {
     setSelectedDayInUserCalendar(null);
     setTasksForSelectedDay([]);
     setUserCalendarViewMode('calendar');
-    closeModal(); // Close modal context to show header again
-  };
-
-  // Helper function to check if two dates are the same day
-  const isSameDay = (date1: Date, date2: Date): boolean => {
-    return (
-      date1.getFullYear() === date2.getFullYear() &&
-      date1.getMonth() === date2.getMonth() &&
-      date1.getDate() === date2.getDate()
-    );
   };
 
   // Handle clicking on a task in the user calendar modal
@@ -433,18 +440,18 @@ export default function ViewSchedulePage() {
     return (
       <div className="grid grid-cols-7 gap-1">
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-          <div key={day} className="text-center font-semibold text-sm text-gray-600 dark:text-gray-400 py-2">
+          <div key={day} className="text-center text-[11px] font-bold uppercase tracking-wide text-muted-foreground py-2">
             {day}
           </div>
         ))}
         {days.map((calDay, index) => (
           <div
             key={index}
-            className={`min-h-[80px] border border-gray-200 dark:border-gray-700 p-1 ${
-              !calDay.isCurrentMonth ? 'bg-gray-50 dark:bg-gray-800' : 'bg-white dark:bg-gray-dark'
+            className={`min-h-[80px] border-2 border-border p-1 ${
+              !calDay.isCurrentMonth ? 'bg-muted/50' : 'bg-card'
             }`}
           >
-            <div className={`text-sm ${!calDay.isCurrentMonth ? 'text-gray-400' : 'text-gray-900 dark:text-gray-100'}`}>
+            <div className={`text-[13px] font-medium ${!calDay.isCurrentMonth ? 'text-muted-foreground' : 'text-foreground'}`}>
               {calDay.day}
             </div>
             <div className="mt-1 space-y-1">
@@ -455,7 +462,7 @@ export default function ViewSchedulePage() {
                 return (
                   <div
                     key={activity.id}
-                    className={`text-xs px-1 py-0.5 rounded truncate cursor-pointer border transition-colors ${getTaskColorClass(activity)}`}
+                    className={`text-[11px] px-1 py-0.5 rounded border-2 truncate cursor-pointer transition-colors ${getTaskColorClass(activity)}`}
                     title={displayName}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -521,18 +528,18 @@ export default function ViewSchedulePage() {
     return (
       <div className="grid grid-cols-7 gap-1">
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-          <div key={day} className="text-center font-semibold text-sm text-gray-600 dark:text-gray-400 py-2">
+          <div key={day} className="text-center text-[11px] font-bold uppercase tracking-wide text-muted-foreground py-2">
             {day}
           </div>
         ))}
         {days.map((calDay, index) => (
           <div
             key={index}
-            className={`min-h-[80px] border border-gray-200 p-1 ${
-              !calDay.isCurrentMonth ? 'bg-gray-50' : 'bg-white'
+            className={`min-h-[80px] border-2 border-border p-1 ${
+              !calDay.isCurrentMonth ? 'bg-muted/50' : 'bg-card'
             }`}
           >
-            <div className={`text-sm ${!calDay.isCurrentMonth ? 'text-gray-400' : 'text-gray-900'}`}>
+            <div className={`text-[13px] font-medium ${!calDay.isCurrentMonth ? 'text-muted-foreground' : 'text-foreground'}`}>
               {calDay.day}
             </div>
             <div className="mt-1 space-y-1">
@@ -543,7 +550,7 @@ export default function ViewSchedulePage() {
                 return (
                   <div
                     key={activity.id}
-                    className={`text-xs px-1 py-0.5 rounded truncate border ${getTaskColorClass(activity)}`}
+                    className={`text-[11px] px-1 py-0.5 rounded border-2 truncate ${getTaskColorClass(activity)}`}
                     title={displayName}
                   >
                     {displayName}
@@ -564,15 +571,15 @@ export default function ViewSchedulePage() {
     const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
 
     return (
-      <div className="w-full overflow-x-auto">
-        <table className="border-collapse border border-gray-300 dark:border-gray-600">
+      <div className="custom-scrollbar w-full overflow-x-auto">
+        <table className="border-collapse">
           <thead>
-            <tr className="bg-gray-100 dark:bg-gray-700">
-              <th className="border border-gray-300 dark:border-gray-600 px-2 py-2 text-left font-semibold bg-gray-100 dark:bg-gray-700 whitespace-nowrap" style={{ width: '150px', minWidth: '150px' }}>
+            <tr className="bg-muted">
+              <th className="border border-border px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wide text-muted-foreground bg-muted whitespace-nowrap" style={{ width: '150px', minWidth: '150px' }}>
                 EMP NAME
               </th>
               {days.map(day => (
-                <th key={day} className="border border-gray-300 dark:border-gray-600 text-center font-semibold text-xs" style={{ width: '40px', minWidth: '40px', maxWidth: '40px', height: '40px', padding: '0' }}>
+                <th key={day} className="border border-border text-center text-[11px] font-bold text-muted-foreground" style={{ width: '40px', minWidth: '40px', maxWidth: '40px', height: '40px', padding: '0' }}>
                   {day}
                 </th>
               ))}
@@ -584,9 +591,9 @@ export default function ViewSchedulePage() {
               const activities = employeeData?.activities || [];
 
               return (
-                <tr key={user.id} className="hover:bg-gray-50 dark:bg-gray-800" style={{ height: '40px' }}>
+                <tr key={user.id} className="hover:bg-muted transition-colors" style={{ height: '40px' }}>
                   <td 
-                    className="border border-gray-300 dark:border-gray-600 px-2 font-medium bg-white dark:bg-gray-dark whitespace-nowrap cursor-pointer hover:bg-blue-50 hover:text-blue-600 transition-colors text-sm"
+                    className="border border-border px-2 font-medium bg-card whitespace-nowrap cursor-pointer hover:bg-accent/40 hover:text-foreground transition-colors text-[13px]"
                     onClick={() => handleUserNameClick(user)}
                     title="Click to view full calendar"
                     style={{ width: '150px', minWidth: '150px', height: '40px' }}
@@ -643,7 +650,7 @@ export default function ViewSchedulePage() {
                       return (
                         <td 
                           key={day} 
-                          className="border border-gray-300 dark:border-gray-600 bg-emerald-400"
+                          className={`border border-border ${TASK_BLOCK_COLOR.none}`}
                           style={{ width: '40px', minWidth: '40px', maxWidth: '40px', height: '40px', padding: '0' }}
                         ></td>
                       );
@@ -661,7 +668,7 @@ export default function ViewSchedulePage() {
   if (authLoading || loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ring"></div>
       </div>
     );
   }
@@ -671,133 +678,346 @@ export default function ViewSchedulePage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">View Schedule</h1>
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">
-            {canViewAllSchedules
-              ? 'Organization-wide roster view'
-              : 'Your personal schedule'}
-          </p>
-        </div>
-      </div>
+      <PageHeader
+        eyebrow="Time"
+        title="View Schedule"
+        description={
+          canViewAllSchedules
+            ? 'Organization-wide roster view.'
+            : 'Your personal schedule.'
+        }
+      />
 
       {/* Month Navigation */}
-      <div className="bg-white dark:bg-gray-dark rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+      <Card className="p-4">
         <div className="flex items-center justify-between">
-          <button
+          <Button
+            variant="outline"
+            size="icon"
             onClick={handlePreviousMonth}
-            className="p-2 hover:bg-gray-100 dark:bg-gray-700 rounded-lg transition-colors"
+            aria-label="Previous month"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-          <h2 className="text-xl font-semibold">
+            <ChevronLeftIcon className="w-5 h-5" />
+          </Button>
+          <h2 className="font-display text-xl font-semibold text-foreground">
             Monthly ({MONTHS[currentMonth - 1]} {currentYear})
           </h2>
-          <button
+          <Button
+            variant="outline"
+            size="icon"
             onClick={handleNextMonth}
-            className="p-2 hover:bg-gray-100 dark:bg-gray-700 rounded-lg transition-colors"
+            aria-label="Next month"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
+            <ChevronRightIcon className="w-5 h-5" />
+          </Button>
         </div>
-      </div>
+      </Card>
 
       {/* Content */}
-      <div className="bg-white dark:bg-gray-dark rounded-xl border border-gray-200 dark:border-gray-700 p-4 md:p-6">
+      <Card className="p-4 md:p-6">
         {canViewAllSchedules ? renderExcelView() : renderUserCalendar()}
-      </div>
+      </Card>
 
       {/* Legend for Excel View */}
       {canViewAllSchedules && (
-        <div className="bg-white dark:bg-gray-dark rounded-xl border border-gray-200 dark:border-gray-700 p-4">
-          <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Task Duration Legend</h3>
-          <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
+        <Card className="p-4">
+          <h3 className="font-display text-sm font-semibold text-foreground mb-2">Task Duration Legend</h3>
+          <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-emerald-400 border border-emerald-500 rounded"></div>
+              <div className={`w-4 h-4 rounded border-2 border-border ${TASK_BLOCK_COLOR.none}`} />
               <span>No task assigned</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-amber-400 border border-amber-500 rounded"></div>
+              <div className={`w-4 h-4 rounded border-2 border-border ${TASK_BLOCK_COLOR.short}`} />
               <span>Task: Less than 8 hours</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="w-4 h-4 bg-orange-600 border border-orange-700 rounded"></div>
+              <div className={`w-4 h-4 rounded border-2 border-border ${TASK_BLOCK_COLOR.long}`} />
               <span>Task: 8 hours or more</span>
             </div>
+            <div className="flex items-center gap-2">
+              <div className={`w-4 h-4 rounded border-2 border-border ${TASK_BLOCK_COLOR.leave}`} />
+              <span>Approved leave</span>
+            </div>
           </div>
-        </div>
+        </Card>
       )}
 
       {/* Day Tasks Table Modal */}
-      {showDayTasksModal && selectedDate && selectedUser && createPortal(
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center z-[9999] p-4 pt-4 overflow-y-auto"
-          onClick={handleCloseDayTasksModal}
-        >
-          <div
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-5xl w-full max-h-[90vh] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="sticky top-0 bg-white dark:bg-gray-dark border-b border-gray-200 dark:border-gray-700 p-6 z-10">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
-                    {selectedUser.name}'s Tasks
-                  </h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                    {selectedDate.toLocaleDateString('en-US', { 
-                      weekday: 'long', 
-                      year: 'numeric', 
-                      month: 'long', 
-                      day: 'numeric' 
-                    })}
-                  </p>
-                </div>
-                <button
-                  onClick={handleCloseDayTasksModal}
-                  className="p-2 hover:bg-gray-100 dark:bg-gray-700 rounded-lg transition-colors"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
+      <Dialog
+        open={showDayTasksModal && !!selectedDate && !!selectedUser}
+        onOpenChange={(open) => !open && handleCloseDayTasksModal()}
+      >
+        <DialogContent size="xl" className="max-h-[90vh] overflow-y-auto p-0 gap-0">
+          <DialogHeader className="border-b-2 border-border p-6 sticky top-0 bg-card z-10">
+            <DialogTitle>{selectedUser?.name}'s Tasks</DialogTitle>
+            <DialogDescription>
+              {selectedDate?.toLocaleDateString('en-US', {
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+              })}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="p-6">
+            {selectedDateTasks.length === 0 ? (
+              <p className="py-12 text-center text-lg text-muted-foreground">
+                No tasks assigned for this day
+              </p>
+            ) : (
+              <div className="custom-scrollbar overflow-x-auto">
+                <table className="w-full border-collapse">
+                  <thead>
+                    <tr className="bg-muted border-b-2 border-border">
+                      <th className="border-b-2 border-border px-4 py-3 text-left text-[11px] font-bold uppercase tracking-wide text-muted-foreground whitespace-nowrap">Date</th>
+                      <th className="border-b-2 border-border px-4 py-3 text-left text-[11px] font-bold uppercase tracking-wide text-muted-foreground">Client Name</th>
+                      <th className="border-b-2 border-border px-4 py-3 text-left text-[11px] font-bold uppercase tracking-wide text-muted-foreground">Task Name</th>
+                      <th className="border-b-2 border-border px-4 py-3 text-left text-[11px] font-bold uppercase tracking-wide text-muted-foreground whitespace-nowrap">Start Time</th>
+                      <th className="border-b-2 border-border px-4 py-3 text-left text-[11px] font-bold uppercase tracking-wide text-muted-foreground whitespace-nowrap">End Time</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y-2 divide-border">
+                    {selectedDateTasks
+                      .sort((a, b) => {
+                        const aStart = a.timeStart || a.startDate;
+                        const bStart = b.timeStart || b.startDate;
+                        return (aStart?.getTime() || 0) - (bStart?.getTime() || 0);
+                      })
+                      .map((task, index) => {
+                        const start = task.timeStart || task.startDate;
+                        const end = task.timeEnd || task.endDate;
+                        const isMulti = task.taskType === 'multi';
+
+                        return (
+                          <tr key={task.id || index} className="hover:bg-muted transition-colors">
+                            <td className="px-4 py-3 text-[13px] text-foreground whitespace-nowrap">
+                              {start ? start.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}
+                            </td>
+                            <td className="px-4 py-3 text-[13px] text-foreground">{task.clientName || '—'}</td>
+                            <td className="px-4 py-3 text-[13px] text-foreground">{task.taskDetail || task.activityName || '—'}</td>
+                            <td className="px-4 py-3 text-[13px] text-foreground whitespace-nowrap">
+                              {isMulti ? '09:00 AM' : start ? start.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) : '—'}
+                            </td>
+                            <td className="px-4 py-3 text-[13px] text-foreground whitespace-nowrap">
+                              {isMulti ? '05:00 PM' : end ? end.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) : '—'}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+
+          <div className="sticky bottom-0 border-t-2 border-border bg-card p-6">
+            <Button onClick={handleCloseDayTasksModal} className="w-full">
+              Close
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      {/* Activity Detail Modal */}
+      <Dialog
+        open={showActivityModal && !!selectedActivity}
+        onOpenChange={(open) => !open && handleCloseActivityModal()}
+      >
+        <DialogContent size="md">
+          <DialogHeader>
+            <DialogTitle>Activity Details</DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            <div>
+              <label className="block text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Employee</label>
+              <p className="text-base font-medium text-foreground">{selectedActivity?.userName}</p>
+            </div>
+
+            <div>
+              <label className="block text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
+                {selectedActivity?.taskType === 'multi' ? 'Activity Name' : 'Client Name'}
+              </label>
+              <p className="text-base font-medium text-foreground">
+                {selectedActivity?.taskType === 'multi' ? selectedActivity?.activityName : selectedActivity?.clientName}
+              </p>
+            </div>
+
+            {selectedActivity?.taskType === 'single' && selectedActivity?.taskDetail && (
+              <div>
+                <label className="block text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Task Detail</label>
+                <p className="text-base text-foreground">{selectedActivity.taskDetail}</p>
+              </div>
+            )}
+
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
+                  {selectedActivity?.taskType === 'multi' ? 'Start Date' : 'Start Time'}
+                </label>
+                <p className="text-base text-foreground">
+                  {selectedActivity?.taskType === 'multi' && selectedActivity?.startDate
+                    ? new Date(selectedActivity.startDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                    : selectedActivity?.timeStart
+                    ? new Date(selectedActivity.timeStart).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+                    : 'N/A'}
+                </p>
+              </div>
+
+              <div>
+                <label className="block text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-1">
+                  {selectedActivity?.taskType === 'multi' ? 'End Date' : 'End Time'}
+                </label>
+                <p className="text-base text-foreground">
+                  {selectedActivity?.taskType === 'multi' && selectedActivity?.endDate
+                    ? new Date(selectedActivity.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                    : selectedActivity?.timeEnd
+                    ? new Date(selectedActivity.timeEnd).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' })
+                    : 'N/A'}
+                </p>
               </div>
             </div>
 
-            <div className="p-6">
-              {selectedDateTasks.length === 0 ? (
-                <div className="text-center py-12">
-                  <p className="text-gray-500 dark:text-gray-400 text-lg">No tasks assigned for this day</p>
-                </div>
+            {selectedActivity?.startDay && selectedActivity?.endDay && (
+              <div>
+                <label className="block text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Duration</label>
+                <p className="text-base text-foreground">
+                  {selectedActivity.endDay - selectedActivity.startDay + 1} day(s)
+                </p>
+              </div>
+            )}
+
+            {selectedActivity?.notes && (
+              <div>
+                <label className="block text-[11px] font-bold uppercase tracking-wider text-muted-foreground mb-1">Notes</label>
+                <p className="text-base text-foreground whitespace-pre-wrap">{selectedActivity.notes}</p>
+              </div>
+            )}
+          </div>
+
+          <DialogFooter>
+            <Button onClick={handleCloseActivityModal} className="w-full">
+              Close
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* User Calendar Modal */}
+      <Dialog
+        open={showUserCalendarModal && !!selectedUser}
+        onOpenChange={(open) => !open && handleCloseUserCalendarModal()}
+      >
+        <DialogContent size="xl" className="max-h-[calc(100vh-2rem)] overflow-y-auto p-0 gap-0">
+          <DialogHeader className="border-b-2 border-border p-6 sticky top-0 bg-card z-10">
+            <DialogTitle>{selectedUser?.name}'s Schedule</DialogTitle>
+            <DialogDescription>
+              {MONTHS[currentMonth - 1]} {currentYear}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="p-6">
+            {/* View Toggle */}
+            <div className="flex justify-center mb-6">
+              <ViewToggle
+                value={userCalendarViewMode}
+                onChange={setUserCalendarViewMode}
+                aria-label="Change schedule view"
+                options={[
+                  { value: 'calendar', label: 'Calendar View' },
+                  { value: 'table', label: 'Table View' },
+                ]}
+              />
+            </div>
+
+            {/* Calendar View - Desktop Only */}
+            {userCalendarViewMode === 'calendar' && (
+              <div className="hidden md:block">
+                {renderUserCalendarInModal()}
+
+                {/* Task Details Table - Shows below calendar when a day is selected */}
+                {selectedDayInUserCalendar !== null && tasksForSelectedDay.length > 0 && (
+                  <div className="mt-6 border-t-2 border-border pt-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <h4 className="font-display text-lg font-semibold text-foreground">
+                        Tasks for {MONTHS[currentMonth - 1]} {selectedDayInUserCalendar}, {currentYear}
+                      </h4>
+                      <button
+                        onClick={() => {
+                          setSelectedDayInUserCalendar(null);
+                          setTasksForSelectedDay([]);
+                        }}
+                        className="text-sm text-muted-foreground hover:text-foreground hover:underline"
+                      >
+                        Clear selection
+                      </button>
+                    </div>
+                    <div className="custom-scrollbar overflow-x-auto">
+                      <table className="w-full border-collapse">
+                        <thead>
+                          <tr className="bg-muted border-b-2 border-border">
+                            <th className="border-b-2 border-border px-4 py-3 text-left text-[11px] font-bold uppercase tracking-wide text-muted-foreground whitespace-nowrap">Date</th>
+                            <th className="border-b-2 border-border px-4 py-3 text-left text-[11px] font-bold uppercase tracking-wide text-muted-foreground">Client Name</th>
+                            <th className="border-b-2 border-border px-4 py-3 text-left text-[11px] font-bold uppercase tracking-wide text-muted-foreground">Task Name</th>
+                            <th className="border-b-2 border-border px-4 py-3 text-left text-[11px] font-bold uppercase tracking-wide text-muted-foreground whitespace-nowrap">Start Time</th>
+                            <th className="border-b-2 border-border px-4 py-3 text-left text-[11px] font-bold uppercase tracking-wide text-muted-foreground whitespace-nowrap">End Time</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y-2 divide-border">
+                          {tasksForSelectedDay
+                            .sort((a, b) => {
+                              const aStart = a.timeStart || a.startDate;
+                              const bStart = b.timeStart || b.startDate;
+                              return (aStart?.getTime() || 0) - (bStart?.getTime() || 0);
+                            })
+                            .map((task, index) => {
+                              const start = task.timeStart || task.startDate;
+                              const end = task.timeEnd || task.endDate;
+                              const isMulti = task.taskType === 'multi';
+
+                              return (
+                                <tr key={task.id || index} className="hover:bg-muted transition-colors">
+                                  <td className="px-4 py-3 text-[13px] text-foreground whitespace-nowrap">
+                                    {start ? start.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '—'}
+                                  </td>
+                                  <td className="px-4 py-3 text-[13px] text-foreground">{task.clientName || '—'}</td>
+                                  <td className="px-4 py-3 text-[13px] text-foreground">{task.taskDetail || task.activityName || '—'}</td>
+                                  <td className="px-4 py-3 text-[13px] text-foreground whitespace-nowrap">
+                                    {isMulti ? '09:00 AM' : start ? start.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) : '—'}
+                                  </td>
+                                  <td className="px-4 py-3 text-[13px] text-foreground whitespace-nowrap">
+                                    {isMulti ? '05:00 PM' : end ? end.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) : '—'}
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Table View - Always visible on mobile, toggle on desktop */}
+            <div className={userCalendarViewMode === 'calendar' ? 'md:hidden' : ''}>
+              {userCalendarEntries.length === 0 ? (
+                <p className="py-12 text-center text-lg text-muted-foreground">
+                  No tasks scheduled for this month
+                </p>
               ) : (
-                <div className="overflow-x-auto">
-                  <table className="w-full border-collapse border border-gray-300 dark:border-gray-600">
+                <div className="custom-scrollbar overflow-x-auto">
+                  <table className="w-full min-w-full border-collapse">
                     <thead>
-                      <tr className="bg-gray-100 dark:bg-gray-700">
-                        <th className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left font-semibold text-gray-700 dark:text-gray-300">
-                          Date
-                        </th>
-                        <th className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left font-semibold text-gray-700 dark:text-gray-300">
-                          Client Name
-                        </th>
-                        <th className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left font-semibold text-gray-700 dark:text-gray-300">
-                          Task Name
-                        </th>
-                        <th className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left font-semibold text-gray-700 dark:text-gray-300">
-                          Start Time
-                        </th>
-                        <th className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left font-semibold text-gray-700 dark:text-gray-300">
-                          End Time
-                        </th>
+                      <tr className="bg-muted border-b-2 border-border">
+                        <th className="border-b-2 border-border px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wide text-muted-foreground whitespace-nowrap">Date</th>
+                        <th className="border-b-2 border-border px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wide text-muted-foreground">Client Name</th>
+                        <th className="border-b-2 border-border px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wide text-muted-foreground">Task Name</th>
+                        <th className="border-b-2 border-border px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wide text-muted-foreground whitespace-nowrap">Start</th>
+                        <th className="border-b-2 border-border px-3 py-2.5 text-left text-[11px] font-bold uppercase tracking-wide text-muted-foreground whitespace-nowrap">End</th>
                       </tr>
                     </thead>
-                    <tbody>
-                      {selectedDateTasks
+                    <tbody className="divide-y-2 divide-border">
+                      {userCalendarEntries
                         .sort((a, b) => {
                           const aStart = a.timeStart || a.startDate;
                           const bStart = b.timeStart || b.startDate;
@@ -807,35 +1027,23 @@ export default function ViewSchedulePage() {
                           const start = task.timeStart || task.startDate;
                           const end = task.timeEnd || task.endDate;
                           const isMulti = task.taskType === 'multi';
-                          
+
                           return (
-                            <tr key={task.id || index} className="hover:bg-gray-50 dark:bg-gray-800">
-                              <td className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-white">
-                                {start ? start.toLocaleDateString('en-US', {
-                                  month: 'short',
-                                  day: 'numeric',
-                                  year: 'numeric'
-                                }) : '—'}
+                            <tr key={task.id || index} className="hover:bg-muted transition-colors">
+                              <td className="px-3 py-2.5 text-[13px] text-foreground whitespace-nowrap">
+                                {start ? start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '—'}
                               </td>
-                              <td className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-white">
-                                {task.clientName || '—'}
+                              <td className="px-3 py-2.5 text-[13px] text-foreground">
+                                <div className="max-w-[150px] truncate">{task.clientName || '—'}</div>
                               </td>
-                              <td className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-white">
-                                {task.taskDetail || task.activityName || '—'}
+                              <td className="px-3 py-2.5 text-[13px] text-foreground">
+                                <div className="max-w-[200px] truncate">{task.taskDetail || task.activityName || '—'}</div>
                               </td>
-                              <td className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-white">
-                                {isMulti ? '09:00 AM' : start ? start.toLocaleTimeString('en-US', {
-                                  hour: '2-digit',
-                                  minute: '2-digit',
-                                  hour12: true
-                                }) : '—'}
+                              <td className="px-3 py-2.5 text-[13px] text-foreground whitespace-nowrap">
+                                {isMulti ? '09:00 AM' : start ? start.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) : '—'}
                               </td>
-                              <td className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-white">
-                                {isMulti ? '05:00 PM' : end ? end.toLocaleTimeString('en-US', {
-                                  hour: '2-digit',
-                                  minute: '2-digit',
-                                  hour12: true
-                                }) : '—'}
+                              <td className="px-3 py-2.5 text-[13px] text-foreground whitespace-nowrap">
+                                {isMulti ? '05:00 PM' : end ? end.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) : '—'}
                               </td>
                             </tr>
                           );
@@ -845,411 +1053,15 @@ export default function ViewSchedulePage() {
                 </div>
               )}
             </div>
-
-            <div className="sticky bottom-0 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-6">
-              <button
-                onClick={handleCloseDayTasksModal}
-                className="w-full px-4 py-2 bg-foreground text-background rounded-lg hover:bg-foreground/90 transition-colors font-medium"
-              >
-                Close
-              </button>
-            </div>
           </div>
-        </div>,
-        document.body
-      )}
 
-      {/* Activity Detail Modal */}
-      {showActivityModal && selectedActivity && createPortal(
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4"
-          onClick={handleCloseActivityModal}
-        >
-          <div
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-md w-full p-6"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white">Activity Details</h3>
-              <button
-                onClick={handleCloseActivityModal}
-                className="p-2 hover:bg-gray-100 dark:bg-gray-700 rounded-lg transition-colors"
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
-                  Employee
-                </label>
-                <p className="text-base text-gray-900 dark:text-white font-medium">
-                  {selectedActivity.userName}
-                </p>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
-                  {selectedActivity.taskType === 'multi' ? 'Activity Name' : 'Client Name'}
-                </label>
-                <p className="text-base text-gray-900 dark:text-white font-medium">
-                  {selectedActivity.taskType === 'multi' ? selectedActivity.activityName : selectedActivity.clientName}
-                </p>
-              </div>
-
-              {selectedActivity.taskType === 'single' && selectedActivity.taskDetail && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
-                    Task Detail
-                  </label>
-                  <p className="text-base text-gray-900 dark:text-white">
-                    {selectedActivity.taskDetail}
-                  </p>
-                </div>
-              )}
-
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
-                    {selectedActivity.taskType === 'multi' ? 'Start Date' : 'Start Time'}
-                  </label>
-                  <p className="text-base text-gray-900 dark:text-white">
-                    {selectedActivity.taskType === 'multi' && selectedActivity.startDate
-                      ? new Date(selectedActivity.startDate).toLocaleDateString('en-US', {
-                          month: 'short',
-                          day: 'numeric',
-                          year: 'numeric'
-                        })
-                      : selectedActivity.timeStart
-                      ? new Date(selectedActivity.timeStart).toLocaleString('en-US', {
-                          month: 'short',
-                          day: 'numeric',
-                          year: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit'
-                        })
-                      : 'N/A'}
-                  </p>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
-                    {selectedActivity.taskType === 'multi' ? 'End Date' : 'End Time'}
-                  </label>
-                  <p className="text-base text-gray-900 dark:text-white">
-                    {selectedActivity.taskType === 'multi' && selectedActivity.endDate
-                      ? new Date(selectedActivity.endDate).toLocaleDateString('en-US', {
-                          month: 'short',
-                          day: 'numeric',
-                          year: 'numeric'
-                        })
-                      : selectedActivity.timeEnd
-                      ? new Date(selectedActivity.timeEnd).toLocaleString('en-US', {
-                          month: 'short',
-                          day: 'numeric',
-                          year: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit'
-                        })
-                      : 'N/A'}
-                  </p>
-                </div>
-              </div>
-
-              {selectedActivity.startDay && selectedActivity.endDay && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
-                    Duration
-                  </label>
-                  <p className="text-base text-gray-900 dark:text-white">
-                    {selectedActivity.endDay - selectedActivity.startDay + 1} day(s)
-                  </p>
-                </div>
-              )}
-
-              {selectedActivity.notes && (
-                <div>
-                  <label className="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">
-                    Notes
-                  </label>
-                  <p className="text-base text-gray-900 dark:text-white whitespace-pre-wrap">
-                    {selectedActivity.notes}
-                  </p>
-                </div>
-              )}
-            </div>
-
-            <div className="mt-6">
-              <button
-                onClick={handleCloseActivityModal}
-                className="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors font-medium"
-              >
-                Close
-              </button>
-            </div>
+          <div className="sticky bottom-0 border-t-2 border-border bg-card p-4">
+            <Button onClick={handleCloseUserCalendarModal} className="w-full">
+              Close
+            </Button>
           </div>
-        </div>,
-        document.body
-      )}
-
-      {/* User Calendar Modal */}
-      {showUserCalendarModal && selectedUser && createPortal(
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-start justify-center z-[9999] p-4 pt-4 overflow-y-auto"
-          onClick={handleCloseUserCalendarModal}
-        >
-          <div
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-4xl w-full max-h-[calc(100vh-2rem)] overflow-y-auto"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="sticky top-0 bg-white dark:bg-gray-dark border-b border-gray-200 dark:border-gray-700 p-6 z-10">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{selectedUser.name}'s Schedule</h3>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                    {MONTHS[currentMonth - 1]} {currentYear}
-                  </p>
-                </div>
-                <button
-                  onClick={handleCloseUserCalendarModal}
-                  className="p-2 hover:bg-gray-100 dark:bg-gray-700 rounded-lg transition-colors"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-6 h-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-
-            <div className="p-6">
-              {/* View Toggle - Desktop Only */}
-              <div className="hidden md:flex justify-center mb-6">
-                <div className="inline-flex rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-700 p-1">
-                  <button
-                    onClick={() => setUserCalendarViewMode('calendar')}
-                    className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                      userCalendarViewMode === 'calendar'
-                        ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-300 shadow-sm'
-                        : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
-                    }`}
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 inline-block mr-2">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-                    </svg>
-                    Calendar View
-                  </button>
-                  <button
-                    onClick={() => setUserCalendarViewMode('table')}
-                    className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                      userCalendarViewMode === 'table'
-                        ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-300 shadow-sm'
-                        : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
-                    }`}
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 inline-block mr-2">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M3.375 19.5h17.25m-17.25 0a1.125 1.125 0 01-1.125-1.125M3.375 19.5h7.5c.621 0 1.125-.504 1.125-1.125m-9.75 0V5.625m0 12.75v-1.5c0-.621.504-1.125 1.125-1.125m18.375 2.625V5.625m0 12.75c0 .621-.504 1.125-1.125 1.125m1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125m0 3.75h-7.5A1.125 1.125 0 0112 18.375m9.75-12.75c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125m19.5 0v1.5c0 .621-.504 1.125-1.125 1.125M2.25 5.625v1.5c0 .621.504 1.125 1.125 1.125m0 0h17.25m-17.25 0h7.5c.621 0 1.125.504 1.125 1.125M3.375 8.25c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125m17.25-3.75h-7.5c-.621 0-1.125.504-1.125 1.125m8.625-1.125c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125M12 10.875v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 10.875c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125M13.125 12h7.5m-7.5 0c-.621 0-1.125.504-1.125 1.125M20.625 12c.621 0 1.125.504 1.125 1.125v1.5c0 .621-.504 1.125-1.125 1.125m-17.25 0h7.5M12 14.625v-1.5m0 1.5c0 .621-.504 1.125-1.125 1.125M12 14.625c0 .621.504 1.125 1.125 1.125m-2.25 0c.621 0 1.125.504 1.125 1.125m0 1.5v-1.5m0 0c0-.621.504-1.125 1.125-1.125m0 0h7.5" />
-                    </svg>
-                    Table View
-                  </button>
-                </div>
-              </div>
-
-              {/* Calendar View - Desktop Only */}
-              {userCalendarViewMode === 'calendar' && (
-                <div className="hidden md:block">
-                  {renderUserCalendarInModal()}
-                  
-                  {/* Task Details Table - Shows below calendar when a day is selected */}
-                  {selectedDayInUserCalendar !== null && tasksForSelectedDay.length > 0 && (
-                    <div className="mt-6 border-t border-gray-200 dark:border-gray-700 pt-6">
-                      <div className="flex items-center justify-between mb-4">
-                        <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
-                          Tasks for {MONTHS[currentMonth - 1]} {selectedDayInUserCalendar}, {currentYear}
-                        </h4>
-                        <button
-                          onClick={() => {
-                            setSelectedDayInUserCalendar(null);
-                            setTasksForSelectedDay([]);
-                          }}
-                          className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white"
-                        >
-                          Clear selection
-                        </button>
-                      </div>
-                      <div className="overflow-x-auto">
-                        <table className="w-full border-collapse border border-gray-300 dark:border-gray-600">
-                          <thead>
-                            <tr className="bg-gray-100 dark:bg-gray-700">
-                              <th className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left font-semibold text-gray-700 dark:text-gray-300 whitespace-nowrap">
-                                Date
-                              </th>
-                              <th className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left font-semibold text-gray-700 dark:text-gray-300">
-                                Client Name
-                              </th>
-                              <th className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left font-semibold text-gray-700 dark:text-gray-300">
-                                Task Name
-                              </th>
-                              <th className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left font-semibold text-gray-700 dark:text-gray-300 whitespace-nowrap">
-                                Start Time
-                              </th>
-                              <th className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-left font-semibold text-gray-700 dark:text-gray-300 whitespace-nowrap">
-                                End Time
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {tasksForSelectedDay
-                              .sort((a, b) => {
-                                const aStart = a.timeStart || a.startDate;
-                                const bStart = b.timeStart || b.startDate;
-                                return (aStart?.getTime() || 0) - (bStart?.getTime() || 0);
-                              })
-                              .map((task, index) => {
-                                const start = task.timeStart || task.startDate;
-                                const end = task.timeEnd || task.endDate;
-                                const isMulti = task.taskType === 'multi';
-                                
-                                return (
-                                  <tr key={task.id || index} className="hover:bg-gray-50 dark:bg-gray-800">
-                                    <td className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-white text-xs whitespace-nowrap">
-                                      {start ? start.toLocaleDateString('en-US', {
-                                        month: 'short',
-                                        day: 'numeric',
-                                        year: 'numeric'
-                                      }) : '—'}
-                                    </td>
-                                    <td className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-white text-sm">
-                                      {task.clientName || '—'}
-                                    </td>
-                                    <td className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-white text-sm">
-                                      {task.taskDetail || task.activityName || '—'}
-                                    </td>
-                                    <td className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-white text-xs whitespace-nowrap">
-                                      {isMulti ? '09:00 AM' : start ? start.toLocaleTimeString('en-US', {
-                                        hour: '2-digit',
-                                        minute: '2-digit',
-                                        hour12: true
-                                      }) : '—'}
-                                    </td>
-                                    <td className="border border-gray-300 dark:border-gray-600 px-4 py-3 text-gray-900 dark:text-white text-xs whitespace-nowrap">
-                                      {isMulti ? '05:00 PM' : end ? end.toLocaleTimeString('en-US', {
-                                        hour: '2-digit',
-                                        minute: '2-digit',
-                                        hour12: true
-                                      }) : '—'}
-                                    </td>
-                                  </tr>
-                                );
-                              })}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Table View - Always visible on mobile, toggle on desktop */}
-              {(userCalendarViewMode === 'table' || true) && (
-                <div className={userCalendarViewMode === 'calendar' ? 'md:hidden' : ''}>
-                  {userCalendarEntries.length === 0 ? (
-                    <div className="text-center py-12">
-                      <p className="text-gray-500 dark:text-gray-400 text-lg">No tasks scheduled for this month</p>
-                    </div>
-                  ) : (
-                    <div className="overflow-x-auto -mx-6 md:mx-0">
-                      <div className="inline-block min-w-full align-middle">
-                        <table className="min-w-full border-collapse border border-gray-300 dark:border-gray-600">
-                          <thead>
-                            <tr className="bg-gray-100 dark:bg-gray-700">
-                              <th className="border border-gray-300 dark:border-gray-600 px-2 md:px-4 py-2 md:py-3 text-left font-semibold text-gray-700 dark:text-gray-300 text-xs md:text-sm whitespace-nowrap">
-                                Date
-                              </th>
-                              <th className="border border-gray-300 dark:border-gray-600 px-2 md:px-4 py-2 md:py-3 text-left font-semibold text-gray-700 dark:text-gray-300 text-xs md:text-sm">
-                                Client Name
-                              </th>
-                              <th className="border border-gray-300 dark:border-gray-600 px-2 md:px-4 py-2 md:py-3 text-left font-semibold text-gray-700 dark:text-gray-300 text-xs md:text-sm">
-                                Task Name
-                              </th>
-                              <th className="border border-gray-300 dark:border-gray-600 px-2 md:px-4 py-2 md:py-3 text-left font-semibold text-gray-700 dark:text-gray-300 text-xs md:text-sm whitespace-nowrap">
-                                Start
-                              </th>
-                              <th className="border border-gray-300 dark:border-gray-600 px-2 md:px-4 py-2 md:py-3 text-left font-semibold text-gray-700 dark:text-gray-300 text-xs md:text-sm whitespace-nowrap">
-                                End
-                              </th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {userCalendarEntries
-                              .sort((a, b) => {
-                                const aStart = a.timeStart || a.startDate;
-                                const bStart = b.timeStart || b.startDate;
-                                return (aStart?.getTime() || 0) - (bStart?.getTime() || 0);
-                              })
-                              .map((task, index) => {
-                                const start = task.timeStart || task.startDate;
-                                const end = task.timeEnd || task.endDate;
-                                const isMulti = task.taskType === 'multi';
-                                
-                                return (
-                                  <tr key={task.id || index} className="hover:bg-gray-50 dark:bg-gray-800">
-                                    <td className="border border-gray-300 dark:border-gray-600 px-2 md:px-4 py-2 md:py-3 text-gray-900 dark:text-white text-xs whitespace-nowrap">
-                                      {start ? start.toLocaleDateString('en-US', {
-                                        month: 'short',
-                                        day: 'numeric'
-                                      }) : '—'}
-                                    </td>
-                                    <td className="border border-gray-300 dark:border-gray-600 px-2 md:px-4 py-2 md:py-3 text-gray-900 dark:text-white text-xs md:text-sm">
-                                      <div className="max-w-[100px] md:max-w-[150px] truncate">
-                                        {task.clientName || '—'}
-                                      </div>
-                                    </td>
-                                    <td className="border border-gray-300 dark:border-gray-600 px-2 md:px-4 py-2 md:py-3 text-gray-900 dark:text-white text-xs md:text-sm">
-                                      <div className="max-w-[120px] md:max-w-[200px] truncate">
-                                        {task.taskDetail || task.activityName || '—'}
-                                      </div>
-                                    </td>
-                                    <td className="border border-gray-300 dark:border-gray-600 px-2 md:px-4 py-2 md:py-3 text-gray-900 dark:text-white text-xs whitespace-nowrap">
-                                      {isMulti ? '09:00 AM' : start ? start.toLocaleTimeString('en-US', {
-                                        hour: '2-digit',
-                                        minute: '2-digit',
-                                        hour12: true
-                                      }) : '—'}
-                                    </td>
-                                    <td className="border border-gray-300 dark:border-gray-600 px-2 md:px-4 py-2 md:py-3 text-gray-900 dark:text-white text-xs whitespace-nowrap">
-                                      {isMulti ? '05:00 PM' : end ? end.toLocaleTimeString('en-US', {
-                                        hour: '2-digit',
-                                        minute: '2-digit',
-                                        hour12: true
-                                      }) : '—'}
-                                    </td>
-                                  </tr>
-                                );
-                              })}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-
-            <div className="sticky bottom-0 bg-white dark:bg-gray-dark border-t border-gray-200 dark:border-gray-700 p-4">
-              <button
-                onClick={handleCloseUserCalendarModal}
-                className="w-full px-4 py-2 bg-foreground text-background rounded-lg hover:bg-foreground/90 transition-colors font-medium"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>,
-        document.body
-      )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -202,7 +202,7 @@ export function TeamModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[500px] max-h-[80vh] overflow-y-auto">
+      <DialogContent size="md" className="max-h-[80vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
             {team ? 'Edit Team' : 'Create New Team'}
@@ -235,7 +235,7 @@ export function TeamModal({
               className="mt-1"
             />
             {errors.description && (
-              <p className="text-sm text-red-600 mt-1">{errors.description.message}</p>
+              <p className="text-sm text-destructive mt-1">{errors.description.message}</p>
             )}
           </div>
 
@@ -256,19 +256,19 @@ export function TeamModal({
               ))}
             </Select>
             {errors.leaderId && (
-              <p className="text-sm text-red-600 mt-1">{errors.leaderId.message}</p>
+              <p className="text-sm text-destructive mt-1">{errors.leaderId.message}</p>
             )}
             {loadingEmployees && (
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Loading employees...</p>
+              <p className="text-sm text-muted-foreground mt-1">Loading employees...</p>
             )}
             {!loadingEmployees && employees.length === 0 && (
-              <div className="mt-2 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                <p className="text-sm text-yellow-800 mb-2">
+              <div className="mt-2 p-3 rounded-md border-2 border-border bg-warning/10">
+                <p className="text-sm text-foreground mb-2">
                   No employees found. You need to create employees first before assigning team leaders.
                 </p>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
+                <Button
+                  variant="outline"
+                  size="sm"
                   onClick={async () => {
                     try {
                       setLoadingEmployees(true);
@@ -302,16 +302,16 @@ export function TeamModal({
           {/* Team Members Multi-Select */}
           <div>
             <Label htmlFor="members">Team Members</Label>
-            
+
             {/* Selected Members Display */}
             {selectedMembers.length > 0 && (
-              <div className="mt-2 mb-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
-                <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">Selected Members ({selectedMembers.length})</p>
+              <div className="mt-2 mb-3 p-3 bg-muted rounded-md border-2 border-border">
+                <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Selected Members ({selectedMembers.length})</p>
                 <div className="flex flex-wrap gap-2">
                   {selectedMembers.map((member) => (
                     <div
                       key={member.id}
-                      className="flex items-center gap-2 bg-white dark:bg-gray-dark border border-gray-300 dark:border-gray-600 rounded-md px-2.5 py-1.5 shadow-sm hover:shadow-md transition-shadow"
+                      className="flex items-center gap-2 bg-card border-2 border-border rounded-md px-2.5 py-1.5"
                     >
                       <Avatar
                         alt={member.name}
@@ -319,13 +319,13 @@ export function TeamModal({
                         size="sm"
                       />
                       <div className="flex flex-col">
-                        <span className="text-sm font-medium text-gray-900 dark:text-white">{member.name}</span>
-                        <span className="text-xs text-gray-500 dark:text-gray-400">{member.role}</span>
+                        <span className="text-sm font-medium text-foreground">{member.name}</span>
+                        <span className="text-xs text-muted-foreground">{member.role}</span>
                       </div>
                       <button
                         type="button"
                         onClick={() => handleMemberRemove(member.id!)}
-                        className="text-red-500 hover:text-red-700 hover:bg-red-50 rounded p-1 ml-1 transition-colors"
+                        className="text-destructive hover:bg-destructive/10 rounded p-1 ml-1 transition-colors"
                         disabled={isLoading}
                         aria-label={`Remove ${member.name}`}
                       >
@@ -355,13 +355,13 @@ export function TeamModal({
                 </option>
               ))}
             </Select>
-            
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+
+            <p className="text-xs text-muted-foreground mt-1">
               Select employees to add to the team. The team leader will be automatically included.
             </p>
-            
+
             {errors.memberIds && (
-              <p className="text-sm text-red-600 mt-1">{errors.memberIds.message}</p>
+              <p className="text-sm text-destructive mt-1">{errors.memberIds.message}</p>
             )}
           </div>
 
@@ -379,26 +379,26 @@ export function TeamModal({
               <option value="archived">Archived</option>
             </Select>
             {errors.status && (
-              <p className="text-sm text-red-600 mt-1">{errors.status.message}</p>
+              <p className="text-sm text-destructive mt-1">{errors.status.message}</p>
             )}
           </div>
 
           {/* Team Summary */}
           {(leaderId || selectedMembers.length > 0) && (
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
-              <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Team Summary</h4>
-              <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+            <div className="bg-muted rounded-md p-4 border-2 border-border">
+              <h4 className="font-display text-sm font-semibold text-foreground mb-2">Team Summary</h4>
+              <div className="space-y-2 text-sm text-muted-foreground">
                 {leaderId && (
                   <div>
-                    <span className="font-medium">Leader:</span> {getLeaderName()}
+                    <span className="font-medium text-foreground">Leader:</span> {getLeaderName()}
                   </div>
                 )}
                 <div>
-                  <span className="font-medium">Members:</span> {selectedMembers.length} selected
+                  <span className="font-medium text-foreground">Members:</span> {selectedMembers.length} selected
                   {leaderId && ' (+ 1 leader)'}
                 </div>
                 <div>
-                  <span className="font-medium">Total Team Size:</span> {selectedMembers.length + (leaderId ? 1 : 0)}
+                  <span className="font-medium text-foreground">Total Team Size:</span> {selectedMembers.length + (leaderId ? 1 : 0)}
                 </div>
               </div>
             </div>
@@ -413,7 +413,7 @@ export function TeamModal({
             >
               Cancel
             </Button>
-            <Button type="submit" loading={isLoading} disabled={isLoading} className="text-white">
+            <Button type="submit" loading={isLoading} disabled={isLoading}>
               {team ? 'Update Team' : 'Create Team'}
             </Button>
           </DialogFooter>
