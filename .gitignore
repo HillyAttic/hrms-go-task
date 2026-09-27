@@ -50,3 +50,7 @@ next-env.d.ts
 
 # Jest transform cache
 .jest-cache/
+
+# Build artifacts
+*.tsbuildinfo
+crop.png
