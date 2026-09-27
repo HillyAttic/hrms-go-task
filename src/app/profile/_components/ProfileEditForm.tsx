@@ -246,12 +246,12 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
             {displayPhoto ? 'Change Photo' : 'Upload Photo'}
           </Button>
           {selectedFile && (
-            <span className="text-sm text-gray-600 dark:text-gray-400">
+            <span className="text-sm text-muted-foreground">
               {selectedFile.name}
             </span>
           )}
         </div>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
+        <p className="text-sm text-muted-foreground">
           Maximum file size: 5MB
         </p>
       </div>

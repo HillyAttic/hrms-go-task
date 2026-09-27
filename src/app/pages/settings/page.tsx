@@ -16,16 +16,16 @@ export default function SettingsPage() {
       <div className="grid grid-cols-1 xl:grid-cols-5 gap-4 md:gap-8">
         <div className="col-span-1 xl:col-span-3">
           {/* <PersonalInfoForm /> */}
-          <div className="bg-white dark:bg-gray-dark p-6 rounded-lg shadow">
+          <div className="bg-card p-6 rounded-lg shadow">
             <h3 className="text-xl font-semibold mb-4">Personal Information</h3>
-            <p className="text-gray-600 dark:text-gray-400">Personal info form component will be added here.</p>
+            <p className="text-muted-foreground">Personal info form component will be added here.</p>
           </div>
         </div>
         <div className="col-span-1 xl:col-span-2">
           {/* <UploadPhotoForm /> */}
-          <div className="bg-white dark:bg-gray-dark p-6 rounded-lg shadow">
+          <div className="bg-card p-6 rounded-lg shadow">
             <h3 className="text-xl font-semibold mb-4">Upload Photo</h3>
-            <p className="text-gray-600 dark:text-gray-400">Photo upload form component will be added here.</p>
+            <p className="text-muted-foreground">Photo upload form component will be added here.</p>
           </div>
         </div>
       </div>

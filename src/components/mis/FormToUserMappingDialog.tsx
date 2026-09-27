@@ -171,9 +171,9 @@ export function FormToUserMappingDialog({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="w-[95vw] max-w-[1100px] p-0 overflow-hidden max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="px-6 pt-6 pb-4 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
+        <div className="px-6 pt-6 pb-4 border-b border-border flex-shrink-0">
           <DialogTitle className="text-lg font-semibold">Form to User Assignment</DialogTitle>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Assign forms to users. Each user will see only their assigned forms on the dashboard.
           </p>
         </div>
@@ -182,7 +182,7 @@ export function FormToUserMappingDialog({
         <div className="flex flex-col md:flex-row flex-1 min-h-0 overflow-hidden">
 
           {/* LEFT — Selection controls */}
-          <div className="md:w-[45%] flex-shrink-0 flex flex-col border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-700 overflow-y-auto p-5 space-y-4">
+          <div className="md:w-[45%] flex-shrink-0 flex flex-col border-b md:border-b-0 md:border-r border-border overflow-y-auto p-5 space-y-4">
             {/* Form Selection */}
             <div>
               <Label htmlFor="form-select" className="flex items-center gap-2 mb-2">
@@ -211,7 +211,7 @@ export function FormToUserMappingDialog({
                   <UserIcon className="w-4 h-4" />
                   Select Users
                   {pendingUserIds.length > 0 && (
-                    <span className="ml-1 bg-blue-100 text-blue-700 text-xs font-semibold px-2 py-0.5 rounded-full">
+                    <span className="ml-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-semibold px-2 py-0.5 rounded-full">
                       {pendingUserIds.length} selected
                     </span>
                   )}
@@ -219,7 +219,7 @@ export function FormToUserMappingDialog({
 
                 {/* Search Input */}
                 <div className="relative mb-2">
-                  <MagnifyingGlassIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <MagnifyingGlassIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                   <input
                     type="text"
                     placeholder="Search users..."
@@ -231,7 +231,7 @@ export function FormToUserMappingDialog({
 
                 {/* Bulk action row */}
                 <div className="flex items-center justify-between mb-1 px-0.5">
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                  <span className="text-xs text-muted-foreground">
                     {filteredUsers.length} user{filteredUsers.length !== 1 ? 's' : ''} shown
                     {userSearch && ' (filtered)'}
                   </span>
@@ -248,7 +248,7 @@ export function FormToUserMappingDialog({
                       <button
                         type="button"
                         onClick={handleDeselectAll}
-                        className="text-xs text-gray-500 hover:underline"
+                        className="text-xs text-muted-foreground hover:underline"
                       >
                         Deselect All
                       </button>
@@ -257,9 +257,9 @@ export function FormToUserMappingDialog({
                 </div>
 
                 {/* User List */}
-                <div className="border border-gray-200 dark:border-gray-600 rounded-md overflow-y-auto flex-1 min-h-[200px] max-h-[300px] bg-white dark:bg-gray-dark">
+                <div className="border border-border rounded-md overflow-y-auto flex-1 min-h-[200px] max-h-[300px] bg-card">
                   {filteredUsers.length === 0 ? (
-                    <div className="flex items-center justify-center h-20 text-sm text-gray-500">
+                    <div className="flex items-center justify-center h-20 text-sm text-muted-foreground">
                       {userSearch ? 'No users match the search' : 'All users already assigned'}
                     </div>
                   ) : (
@@ -268,23 +268,23 @@ export function FormToUserMappingDialog({
                       return (
                         <label
                           key={user.uid}
-                          className={`flex items-center gap-2.5 px-3 py-2 cursor-pointer select-none border-b border-gray-100 dark:border-gray-700 last:border-b-0 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors ${isChecked ? 'bg-blue-50 dark:bg-blue-900/20' : ''}`}
+                          className={`flex items-center gap-2.5 px-3 py-2 cursor-pointer select-none border-b border-border last:border-b-0 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors ${isChecked ? 'bg-blue-50 dark:bg-blue-900/20' : ''}`}
                         >
                           <input
                             type="checkbox"
                             checked={isChecked}
                             onChange={() => handleUserCheckbox(user.uid)}
-                            className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-ring cursor-pointer"
+                            className="w-4 h-4 rounded border-border text-blue-600 focus:ring-ring cursor-pointer"
                           />
                           <div className="flex-1 min-w-0">
-                            <div className="text-sm text-gray-800 dark:text-gray-200 truncate">
+                            <div className="text-sm text-foreground truncate">
                               {user.displayName}
                             </div>
-                            <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                            <div className="text-xs text-muted-foreground truncate">
                               {user.email}
                             </div>
                           </div>
-                          <span className="text-[10px] bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300 rounded px-1.5 py-0.5 flex-shrink-0">
+                          <span className="text-[10px] bg-muted text-muted-foreground dark:text-muted-foreground rounded px-1.5 py-0.5 flex-shrink-0">
                             {user.role}
                           </span>
                         </label>
@@ -294,15 +294,15 @@ export function FormToUserMappingDialog({
                 </div>
 
                 {/* Clock-out Requirement Checkbox */}
-                <div className="mt-3 flex items-start gap-2 p-2 bg-gray-50 dark:bg-gray-800 rounded-md">
+                <div className="mt-3 flex items-start gap-2 p-2 bg-muted rounded-md">
                   <input
                     type="checkbox"
                     id="clockout-required"
                     checked={requiredForClockout}
                     onChange={(e) => setRequiredForClockout(e.target.checked)}
-                    className="mt-0.5 h-4 w-4 text-blue-600 focus:ring-ring border-gray-300 rounded"
+                    className="mt-0.5 h-4 w-4 text-blue-600 focus:ring-ring border-border rounded"
                   />
-                  <label htmlFor="clockout-required" className="text-xs text-gray-700 dark:text-gray-300 cursor-pointer">
+                  <label htmlFor="clockout-required" className="text-xs text-muted-foreground cursor-pointer">
                     Require this form submission before clock-out
                   </label>
                 </div>
@@ -321,7 +321,7 @@ export function FormToUserMappingDialog({
                 </div>
               </div>
             ) : (
-              <div className="flex items-center justify-center flex-1 text-sm text-gray-400 dark:text-gray-500 border border-dashed border-gray-200 dark:border-gray-700 rounded-lg py-10">
+              <div className="flex items-center justify-center flex-1 text-sm text-muted-foreground border border-dashed border-border rounded-lg py-10">
                 Select a form to assign users
               </div>
             )}
@@ -331,15 +331,15 @@ export function FormToUserMappingDialog({
           <div className="flex-1 flex flex-col min-h-0 overflow-hidden p-5">
             <Label className="mb-3 block flex-shrink-0">
               Current Mappings
-              <span className="ml-2 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs font-semibold px-2 py-0.5 rounded-full">
+              <span className="ml-2 bg-muted text-muted-foreground text-xs font-semibold px-2 py-0.5 rounded-full">
                 {mappings.length} form{mappings.length !== 1 ? 's' : ''}
               </span>
             </Label>
 
             <div className="flex-1 overflow-y-auto">
               {mappings.length === 0 ? (
-                <div className="flex flex-col items-center justify-center h-full text-gray-400 dark:text-gray-500 border border-dashed border-gray-200 dark:border-gray-700 rounded-lg py-12">
-                  <DocumentTextIcon className="w-10 h-10 mb-2 text-gray-300 dark:text-gray-600" />
+                <div className="flex flex-col items-center justify-center h-full text-muted-foreground border border-dashed border-border rounded-lg py-12">
+                  <DocumentTextIcon className="w-10 h-10 mb-2 text-muted-foreground dark:text-muted-foreground" />
                   <p className="text-sm">No form assignments yet</p>
                   <p className="text-xs mt-1">Assign users to a form to get started</p>
                 </div>
@@ -348,17 +348,17 @@ export function FormToUserMappingDialog({
                   {mappings.map((mapping) => (
                     <div
                       key={mapping.formId}
-                      className="p-3 bg-white dark:bg-gray-dark border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm"
+                      className="p-3 bg-card border border-border rounded-lg shadow-sm"
                     >
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex items-start gap-2 flex-1 min-w-0">
                           <DocumentTextIcon className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
                           <div className="flex-1 min-w-0">
-                            <h4 className="font-medium text-sm text-gray-900 dark:text-white leading-tight truncate">
+                            <h4 className="font-medium text-sm text-foreground leading-tight truncate">
                               {mapping.formTitle}
                             </h4>
                             <div className="flex items-center gap-2 mt-1">
-                              <p className="text-xs text-gray-500 dark:text-gray-400">
+                              <p className="text-xs text-muted-foreground">
                                 {mapping.assignedUserIds.length} user{mapping.assignedUserIds.length !== 1 ? 's' : ''} assigned
                               </p>
                               <button
@@ -367,7 +367,7 @@ export function FormToUserMappingDialog({
                                 className={`text-[10px] px-2 py-0.5 rounded-full font-medium transition-colors ${
                                   mapping.requiredForClockout
                                     ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 hover:bg-red-200'
-                                    : 'bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-400 hover:bg-gray-200'
+                                    : 'bg-muted text-muted-foreground dark:text-muted-foreground hover:bg-muted'
                                 }`}
                                 title="Toggle clock-out requirement"
                               >
@@ -392,7 +392,7 @@ export function FormToUserMappingDialog({
                             key={userId}
                             className="flex items-center gap-1.5 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded px-2 py-1"
                           >
-                            <span className="text-xs text-gray-800 dark:text-gray-200 leading-none">
+                            <span className="text-xs text-foreground leading-none">
                               {getUserName(userId)}
                             </span>
                             <button
@@ -415,7 +415,7 @@ export function FormToUserMappingDialog({
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-2 flex-shrink-0">
+        <div className="px-6 py-4 border-t border-border flex justify-end gap-2 flex-shrink-0">
           <Button type="button" variant="outline" onClick={onClose}>
             Cancel
           </Button>

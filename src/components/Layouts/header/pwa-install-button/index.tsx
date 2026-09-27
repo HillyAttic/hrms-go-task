@@ -210,16 +210,16 @@ export function PWAInstallButton() {
           onClick={closeInstructions}
         >
           <div
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-md w-full p-6"
+            className="bg-card rounded-lg shadow-xl max-w-md w-full p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-start mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-lg font-semibold text-foreground">
                 Install EdVentureHub Dashboard
               </h3>
               <button
                 onClick={closeInstructions}
-                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+                className="text-muted-foreground hover:text-muted-foreground dark:hover:text-muted-foreground"
                 aria-label="Close"
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -228,7 +228,7 @@ export function PWAInstallButton() {
               </button>
             </div>
 
-            <div className="space-y-4 text-sm text-gray-700 dark:text-gray-300">
+            <div className="space-y-4 text-sm text-muted-foreground">
               {isIOS ? (
                 <>
                   <p className="font-medium">Follow these steps to install on iOS:</p>
@@ -251,7 +251,7 @@ export function PWAInstallButton() {
                     <li>Confirm the installation when prompted</li>
                     <li>The app icon will appear on your home screen</li>
                   </ol>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-4">
+                  <p className="text-xs text-muted-foreground mt-4">
                     Note: If you don't see the install prompt, try accessing the page via HTTPS or check your browser settings.
                   </p>
                 </>

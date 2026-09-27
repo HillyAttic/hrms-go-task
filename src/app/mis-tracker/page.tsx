@@ -177,7 +177,7 @@ export default function MISTrackerPage() {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600 dark:text-gray-400">Loading...</p>
+          <p className="mt-4 text-muted-foreground">Loading...</p>
         </div>
       </div>
     );
@@ -189,7 +189,7 @@ export default function MISTrackerPage() {
         <div className="text-center max-w-md">
           <div className="mb-4">
             <svg
-              className="mx-auto h-16 w-16 text-gray-400"
+              className="mx-auto h-16 w-16 text-muted-foreground"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -202,10 +202,10 @@ export default function MISTrackerPage() {
               />
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+          <h1 className="text-2xl font-bold text-foreground mb-2">
             Access Denied
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
+          <p className="text-muted-foreground mb-6">
             You do not have permission to view the MIS Tracker. Please contact your administrator
             if you believe this is an error.
           </p>
@@ -225,10 +225,10 @@ export default function MISTrackerPage() {
       <div className="flex items-center justify-center min-h-screen px-4">
         <div className="text-center max-w-md">
           <div className="mb-4 text-6xl">📋</div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+          <h1 className="text-2xl font-bold text-foreground mb-2">
             No Forms Available
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
+          <p className="text-muted-foreground mb-6">
             No published forms found. Create and publish a form to get started.
           </p>
           <div className="flex gap-3 justify-center">
@@ -240,7 +240,7 @@ export default function MISTrackerPage() {
             </button>
             <button
               onClick={() => router.push('/dashboard')}
-              className="px-6 py-2 bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-900 dark:text-white font-medium rounded-lg transition-colors duration-200"
+              className="px-6 py-2 bg-muted hover:bg-muted dark:hover:bg-gray-600 text-foreground font-medium rounded-lg transition-colors duration-200"
             >
               Go to Dashboard
             </button>
@@ -251,12 +251,12 @@ export default function MISTrackerPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-3 sm:px-4 md:px-6 py-3 sm:py-4">
+    <div className="min-h-screen bg-muted">
+      <div className="bg-card border-b border-border px-3 sm:px-4 md:px-6 py-3 sm:py-4">
         <div className="flex flex-col gap-2 sm:gap-3 md:gap-4">
           <div>
-            <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white">MIS Tracker</h1>
-            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-0.5 sm:mt-1">
+            <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-foreground">MIS Tracker</h1>
+            <p className="text-xs sm:text-sm text-muted-foreground mt-0.5 sm:mt-1">
               View and manage form submissions
             </p>
           </div>
@@ -267,7 +267,7 @@ export default function MISTrackerPage() {
               <select
                 value={selectedFormId || ''}
                 onChange={(e) => handleFormChange(e.target.value)}
-                className="flex-1 sm:flex-none sm:min-w-[250px] px-3 sm:px-4 py-2 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-ring focus:border-transparent"
+                className="flex-1 sm:flex-none sm:min-w-[250px] px-3 sm:px-4 py-2 text-xs sm:text-sm border border-border rounded-lg bg-card text-foreground focus:ring-2 focus:ring-ring focus:border-transparent"
               >
                 {availableForms.map((form) => (
                   <option key={form.id} value={form.id}>
@@ -278,13 +278,13 @@ export default function MISTrackerPage() {
             )}
 
             {/* View Toggle */}
-            <div className="flex items-center space-x-1 bg-gray-100 dark:bg-gray-700 rounded-lg p-1 w-full sm:w-auto">
+            <div className="flex items-center space-x-1 bg-muted rounded-lg p-1 w-full sm:w-auto">
               <button
                 onClick={() => setViewMode('table')}
                 className={`flex-1 sm:flex-none px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-md transition-colors ${
                   viewMode === 'table'
-                    ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                    ? 'bg-card text-foreground shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground dark:hover:text-white'
                 }`}
               >
                 <div className="flex items-center justify-center space-x-1 sm:space-x-2">
@@ -298,8 +298,8 @@ export default function MISTrackerPage() {
                 onClick={() => setViewMode('spreadsheet')}
                 className={`flex-1 sm:flex-none px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-md transition-colors ${
                   viewMode === 'spreadsheet'
-                    ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm'
-                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                    ? 'bg-card text-foreground shadow-sm'
+                    : 'text-muted-foreground hover:text-foreground dark:hover:text-white'
                 }`}
               >
                 <div className="flex items-center justify-center space-x-1 sm:space-x-2">

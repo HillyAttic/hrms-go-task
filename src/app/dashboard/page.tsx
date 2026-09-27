@@ -13,6 +13,7 @@
 import React, { useState, useEffect, useMemo, Suspense } from 'react';
 import { createPortal } from 'react-dom';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import {
   PlusCircleIcon,
   ClockIcon,
@@ -803,13 +804,13 @@ export default function DashboardPage() {
       <>
         {/* Completion progress bar — task creator or admin/manager */}
         {hasViewReportButton && completionStats && (
-          <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+          <div className="mt-3 pt-3 border-t border-border">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-xs text-gray-600 dark:text-gray-400">
+              <span className="text-xs text-muted-foreground">
                 {completionStats.completed}/{completionStats.total} clients completed ({completionPct}%)
               </span>
             </div>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            <div className="w-full bg-muted rounded-full h-2">
               <div
                 className="bg-green-500 h-2 rounded-full transition-all"
                 style={{ width: `${completionPct}%` }}
@@ -818,7 +819,7 @@ export default function DashboardPage() {
           </div>
         )}
 
-      <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 flex flex-wrap gap-2">
+      <div className="mt-3 pt-3 border-t border-border flex flex-wrap gap-2">
         {/* Clients Button - Show client count for user's assigned clients */}
         {hasClientsButton && (
           <button
@@ -920,7 +921,7 @@ export default function DashboardPage() {
               e.stopPropagation();
               router.push('/reports');
             }}
-            className="px-3 py-1.5 text-xs font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 rounded-md transition-colors flex items-center gap-1 min-h-[35px]"
+            className="px-3 py-1.5 text-xs font-medium bg-muted text-muted-foreground hover:bg-muted dark:text-muted-foreground dark:hover:bg-gray-600 rounded-md transition-colors flex items-center gap-1 min-h-[35px]"
           >
             <ArrowRightIcon className="w-4 h-4" />
             Go to Reports
@@ -971,7 +972,7 @@ export default function DashboardPage() {
   if (tasksError) {
     return (
       <div className="p-6">
-        <div className="p-4 bg-red-50 text-red-800 rounded">
+        <div className="p-4 bg-red-50 dark:bg-red-900/30 text-red-800 dark:text-red-300 rounded">
           Error loading dashboard: {tasksError.message}
         </div>
       </div>
@@ -1059,9 +1060,9 @@ export default function DashboardPage() {
 
       {/* Kanban Board Section - Admin and Manager */}
       {canViewAllTasks && (
-        <div className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-dark p-4 sm:p-6">
+        <Card className="p-4 sm:p-6">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Kanban Board</h2>
+            <h2 className="font-display text-lg font-semibold text-foreground">Kanban Board</h2>
             <a
               href="/kanban"
               className="text-sm text-blue-600 hover:underline dark:text-blue-400 font-medium"
@@ -1081,14 +1082,14 @@ export default function DashboardPage() {
                     className={`px-3 py-1.5 text-sm rounded-full whitespace-nowrap transition-colors flex items-center gap-2 ${
                       selectedKanbanBusinessId === b.id
                         ? 'bg-foreground text-background'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+                        : 'bg-muted text-muted-foreground hover:text-foreground'
                     }`}
                   >
                     {b.name}
                     <span className={`inline-flex items-center px-1 sm:px-1.5 py-0.5 rounded-full text-[9px] sm:text-xs font-medium ${
                       selectedKanbanBusinessId === b.id
                         ? 'bg-white/20 text-white'
-                        : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
+                        : 'text-warning'
                     }`}>
                       {businessTaskCount}
                     </span>
@@ -1110,7 +1111,7 @@ export default function DashboardPage() {
               compact
             />
           )}
-        </div>
+        </Card>
       )}
 
       {/* ✅ OPTIMIZATION: Charts load progressively */}
@@ -1212,10 +1213,10 @@ export default function DashboardPage() {
           }}
         >
           <div 
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-md w-full p-6"
+            className="bg-card rounded-lg shadow-xl max-w-md w-full p-6"
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+            <h3 className="text-xl font-bold text-foreground mb-4">
               Choose Task Type
             </h3>
             <div className="space-y-3">
@@ -1225,10 +1226,10 @@ export default function DashboardPage() {
                   closeModal(); // Close modal context to show header
                   router.push('/tasks/non-recurring');
                 }}
-                className="w-full p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 transition-all text-left"
+                className="w-full p-4 border-2 border-border rounded-lg hover:border-blue-500 transition-all text-left"
               >
                 <h4 className="font-semibold">Non-Recurring Task</h4>
-                <p className="text-sm text-gray-600">One-time task with a single due date</p>
+                <p className="text-sm text-muted-foreground">One-time task with a single due date</p>
               </button>
               <button
                 onClick={() => {
@@ -1236,10 +1237,10 @@ export default function DashboardPage() {
                   closeModal(); // Close modal context to show header
                   router.push('/tasks/recurring');
                 }}
-                className="w-full p-4 border-2 border-gray-200 rounded-lg hover:border-green-500 transition-all text-left"
+                className="w-full p-4 border-2 border-border rounded-lg hover:border-green-500 transition-all text-left"
               >
                 <h4 className="font-semibold">Recurring Task</h4>
-                <p className="text-sm text-gray-600">Task that repeats on a schedule</p>
+                <p className="text-sm text-muted-foreground">Task that repeats on a schedule</p>
               </button>
             </div>
           </div>
@@ -1256,20 +1257,20 @@ export default function DashboardPage() {
           }}
         >
           <div 
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden"
+            className="bg-card rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-border">
               <div className="flex items-center justify-between gap-2 sm:gap-4">
                 <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
                   <div className="p-1.5 sm:p-2 bg-foreground rounded-lg flex-shrink-0">
                     <ClipboardDocumentListIcon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-base sm:text-xl font-bold text-gray-900 dark:text-white truncate">
+                    <h3 className="text-base sm:text-xl font-bold text-foreground truncate">
                       All Tasks
                     </h3>
-                    <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                    <p className="text-xs sm:text-sm text-muted-foreground">
                       <span className="hidden sm:inline">
                         {tasks.length} total tasks • {stats.completed} completed • {stats.inProgress} in progress • {stats.todo} pending
                       </span>
@@ -1284,10 +1285,10 @@ export default function DashboardPage() {
                     setShowAllTasksModal(false);
                     closeModal(); // Close modal context to show header
                   }}
-                  className="p-1.5 sm:p-2 hover:bg-gray-100 dark:bg-gray-700 rounded-lg transition-colors flex-shrink-0"
+                  className="p-1.5 sm:p-2 hover:bg-muted rounded-lg transition-colors flex-shrink-0"
                   aria-label="Close modal"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700 dark:text-gray-300">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 sm:w-6 sm:h-6 text-muted-foreground">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
@@ -1295,7 +1296,7 @@ export default function DashboardPage() {
             </div>
             <div className="flex-1 min-h-0 p-4 overflow-y-auto">
               {tasks.length === 0 ? (
-                <p className="text-center text-gray-500 dark:text-gray-400 py-8">
+                <p className="text-center text-muted-foreground py-8">
                   No tasks found
                 </p>
               ) : (
@@ -1318,10 +1319,10 @@ export default function DashboardPage() {
                     return (
                       <div
                         key={task.id}
-                        className={`p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-blue-300 ${
-                          task.status === 'pending' ? 'border-yellow-200 bg-yellow-50 dark:bg-yellow-900/10' :
-                          task.status === 'in-progress' ? 'border-orange-200 bg-orange-50 dark:bg-orange-900/10' :
-                          'border-green-200 bg-green-50 dark:bg-green-900/10'
+                        className={`p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-blue-300 dark:hover:border-blue-700 ${
+                          task.status === 'pending' ? 'border-yellow-200 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-900/10' :
+                          task.status === 'in-progress' ? 'border-orange-200 dark:border-orange-700 bg-orange-50 dark:bg-orange-900/10' :
+                          'border-green-200 dark:border-green-700 bg-green-50 dark:bg-green-900/10'
                         }`}
                         onClick={() => router.push(`/tasks/${task.isRecurring ? 'recurring' : 'non-recurring'}`)}
                       >
@@ -1329,7 +1330,7 @@ export default function DashboardPage() {
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between gap-2 mb-1 flex-wrap">
                               <div className="flex items-center gap-2">
-                                <h4 className="font-semibold text-gray-900 dark:text-white">{task.title}</h4>
+                                <h4 className="font-semibold text-foreground">{task.title}</h4>
                               </div>
                               {dueDate && task.status !== 'completed' && (
                                 <div className="flex items-center gap-2 flex-shrink-0">
@@ -1356,17 +1357,17 @@ export default function DashboardPage() {
                             </div>
                             <div className="flex flex-wrap items-center gap-2 text-xs">
                               <span className={`px-2 py-0.5 rounded-full font-medium ${
-                                task.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
-                                task.status === 'in-progress' ? 'bg-orange-100 text-orange-700' :
-                                'bg-green-100 text-green-700'
+                                task.status === 'pending' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300' :
+                                task.status === 'in-progress' ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300' :
+                                'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
                               }`}>
                                 {task.status === 'pending' ? 'Pending' : task.status === 'in-progress' ? 'In Progress' : 'Completed'}
                               </span>
-                              <span className="px-2 py-0.5 bg-white dark:bg-gray-dark rounded-full font-medium text-gray-600 dark:text-gray-400">
+                              <span className="px-2 py-0.5 bg-card rounded-full font-medium text-muted-foreground">
                                 {task.priority || 'medium'}
                               </span>
                               {dueDate && (
-                                <span className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
+                                <span className="flex items-center gap-1 text-muted-foreground">
                                   <ClockIcon className="w-3.5 h-3.5" />
                                   {dueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                                 </span>
@@ -1377,17 +1378,17 @@ export default function DashboardPage() {
                                 </span>
                               )}
                             </div>
-                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-muted-foreground mt-2 pt-2 border-t border-border">
                               {task.createdBy && (
                                 <span className="flex items-center gap-0.5 sm:gap-1 whitespace-nowrap overflow-hidden">
                                   <span className="font-medium flex-shrink-0">Created By:</span>
-                                  <span className="text-gray-900 dark:text-white truncate">{userNamesCache[task.createdBy] || 'Loading...'}</span>
+                                  <span className="text-foreground truncate">{userNamesCache[task.createdBy] || 'Loading...'}</span>
                                 </span>
                               )}
                               {task.assignedTo && task.assignedTo.length > 0 && renderAssignedTo(task) && (
                                 <span className="flex items-center gap-0.5 sm:gap-1 min-w-0 overflow-hidden whitespace-nowrap">
                                   <span className="font-medium flex-shrink-0">Assigned To:</span>
-                                  <span className="text-gray-900 dark:text-white truncate">
+                                  <span className="text-foreground truncate">
                                     {renderAssignedTo(task)}
                                   </span>
                                 </span>
@@ -1416,20 +1417,20 @@ export default function DashboardPage() {
           }}
         >
           <div 
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden"
+            className="bg-card rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-border">
               <div className="flex items-center justify-between gap-2 sm:gap-4">
                 <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
                   <div className="p-1.5 sm:p-2 bg-green-600 rounded-lg flex-shrink-0">
                     <CheckCircleIcon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="text-base sm:text-xl font-bold text-gray-900 dark:text-white truncate">
+                    <h3 className="text-base sm:text-xl font-bold text-foreground truncate">
                       Completed Tasks
                     </h3>
-                    <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                    <p className="text-xs sm:text-sm text-muted-foreground">
                       <span className="truncate block">
                         {completedTasks.length} completed {completedTasks.length === 1 ? 'task' : 'tasks'}
                       </span>
@@ -1441,10 +1442,10 @@ export default function DashboardPage() {
                     setShowCompletedModal(false);
                     closeModal();
                   }}
-                  className="p-1.5 sm:p-2 hover:bg-gray-100 dark:bg-gray-700 rounded-lg transition-colors flex-shrink-0"
+                  className="p-1.5 sm:p-2 hover:bg-muted rounded-lg transition-colors flex-shrink-0"
                   aria-label="Close modal"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700 dark:text-gray-300">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 sm:w-6 sm:h-6 text-muted-foreground">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
@@ -1452,7 +1453,7 @@ export default function DashboardPage() {
             </div>
             <div className="flex-1 min-h-0 p-4 overflow-y-auto">
               {completedTasks.length === 0 ? (
-                <p className="text-center text-gray-500 dark:text-gray-400 py-8">
+                <p className="text-center text-muted-foreground py-8">
                   No completed tasks
                 </p>
               ) : (
@@ -1463,25 +1464,25 @@ export default function DashboardPage() {
                     return (
                       <div
                         key={task.id}
-                        className="p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-blue-300 border-green-200 bg-green-50 dark:bg-green-900/10"
+                        className="p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-blue-300 dark:hover:border-blue-700 border-green-200 dark:border-green-700 bg-green-50 dark:bg-green-900/10"
                         onClick={() => router.push(`/tasks/${task.isRecurring ? 'recurring' : 'non-recurring'}`)}
                       >
                         <div className="flex items-start justify-between gap-3">
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between gap-2 mb-1 flex-wrap">
                               <div className="flex items-center gap-2">
-                                <h4 className="font-semibold text-gray-900 dark:text-white">{task.title}</h4>
+                                <h4 className="font-semibold text-foreground">{task.title}</h4>
                               </div>
                             </div>
                             <div className="flex flex-wrap items-center gap-2 text-xs">
-                              <span className="px-2 py-0.5 rounded-full font-medium bg-green-100 text-green-700">
+                              <span className="px-2 py-0.5 rounded-full font-medium bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300">
                                 Completed
                               </span>
-                              <span className="px-2 py-0.5 bg-white dark:bg-gray-dark rounded-full font-medium text-gray-600 dark:text-gray-400">
+                              <span className="px-2 py-0.5 bg-card rounded-full font-medium text-muted-foreground">
                                 {task.priority || 'medium'}
                               </span>
                               {dueDate && (
-                                <span className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
+                                <span className="flex items-center gap-1 text-muted-foreground">
                                   <ClockIcon className="w-3.5 h-3.5" />
                                   {dueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                                 </span>
@@ -1492,17 +1493,17 @@ export default function DashboardPage() {
                                 </span>
                               )}
                             </div>
-                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-muted-foreground mt-2 pt-2 border-t border-border">
                               {task.createdBy && (
                                 <span className="flex items-center gap-0.5 sm:gap-1 whitespace-nowrap overflow-hidden">
                                   <span className="font-medium flex-shrink-0">Created By:</span>
-                                  <span className="text-gray-900 dark:text-white truncate">{userNamesCache[task.createdBy] || 'Loading...'}</span>
+                                  <span className="text-foreground truncate">{userNamesCache[task.createdBy] || 'Loading...'}</span>
                                 </span>
                               )}
                               {task.assignedTo && task.assignedTo.length > 0 && renderAssignedTo(task) && (
                                 <span className="flex items-center gap-0.5 sm:gap-1 min-w-0 overflow-hidden whitespace-nowrap">
                                   <span className="font-medium flex-shrink-0">Assigned To:</span>
-                                  <span className="text-gray-900 dark:text-white truncate">
+                                  <span className="text-foreground truncate">
                                     {renderAssignedTo(task)}
                                   </span>
                                 </span>
@@ -1531,12 +1532,12 @@ export default function DashboardPage() {
           }}
         >
           <div 
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden"
+            className="bg-card rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-border">
               <div className="flex items-center justify-between">
-                <h3 className="text-base sm:text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                <h3 className="text-base sm:text-xl font-bold text-foreground flex items-center gap-2">
                   <ClockIcon className="w-5 h-5 sm:w-6 sm:h-6 text-orange-600" />
                   In Progress Tasks ({inProgressTasks.length})
                 </h3>
@@ -1545,7 +1546,7 @@ export default function DashboardPage() {
                     setShowInProgressModal(false);
                     closeModal();
                   }}
-                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                  className="text-muted-foreground hover:text-muted-foreground dark:text-muted-foreground dark:hover:text-gray-200"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -1555,7 +1556,7 @@ export default function DashboardPage() {
             </div>
             <div className="flex-1 min-h-0 p-4 overflow-y-auto">
               {inProgressTasks.length === 0 ? (
-                <p className="text-center text-gray-500 dark:text-gray-400 py-8">
+                <p className="text-center text-muted-foreground py-8">
                   No tasks in progress
                 </p>
               ) : (
@@ -1569,14 +1570,14 @@ export default function DashboardPage() {
                     return (
                       <div
                         key={task.id}
-                        className="p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-blue-300 border-orange-200 bg-orange-50 dark:bg-orange-900/10"
+                        className="p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-blue-300 dark:hover:border-blue-700 border-orange-200 dark:border-orange-700 bg-orange-50 dark:bg-orange-900/10"
                         onClick={() => router.push(`/tasks/${task.isRecurring ? 'recurring' : 'non-recurring'}`)}
                       >
                         <div className="flex items-start justify-between gap-3">
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between gap-2 mb-1 flex-wrap">
                               <div className="flex items-center gap-2">
-                                <h4 className="font-semibold text-gray-900 dark:text-white">{task.title}</h4>
+                                <h4 className="font-semibold text-foreground">{task.title}</h4>
                               </div>
                               {dueDate && (
                                 <div className="flex items-center gap-2 flex-shrink-0">
@@ -1595,14 +1596,14 @@ export default function DashboardPage() {
                               )}
                             </div>
                             <div className="flex flex-wrap items-center gap-2 text-xs">
-                              <span className="px-2 py-0.5 rounded-full font-medium bg-orange-100 text-orange-700">
+                              <span className="px-2 py-0.5 rounded-full font-medium bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300">
                                 In Progress
                               </span>
-                              <span className="px-2 py-0.5 bg-white dark:bg-gray-dark rounded-full font-medium text-gray-600 dark:text-gray-400">
+                              <span className="px-2 py-0.5 bg-card rounded-full font-medium text-muted-foreground">
                                 {task.priority || 'medium'}
                               </span>
                               {dueDate && (
-                                <span className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
+                                <span className="flex items-center gap-1 text-muted-foreground">
                                   <ClockIcon className="w-3.5 h-3.5" />
                                   {dueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                                 </span>
@@ -1613,17 +1614,17 @@ export default function DashboardPage() {
                                 </span>
                               )}
                             </div>
-                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-muted-foreground mt-2 pt-2 border-t border-border">
                               {task.createdBy && (
                                 <span className="flex items-center gap-0.5 sm:gap-1 whitespace-nowrap overflow-hidden">
                                   <span className="font-medium flex-shrink-0">Created By:</span>
-                                  <span className="text-gray-900 dark:text-white truncate">{userNamesCache[task.createdBy] || 'Loading...'}</span>
+                                  <span className="text-foreground truncate">{userNamesCache[task.createdBy] || 'Loading...'}</span>
                                 </span>
                               )}
                               {task.assignedTo && task.assignedTo.length > 0 && renderAssignedTo(task) && (
                                 <span className="flex items-center gap-0.5 sm:gap-1 min-w-0 overflow-hidden whitespace-nowrap">
                                   <span className="font-medium flex-shrink-0">Assigned To:</span>
-                                  <span className="text-gray-900 dark:text-white truncate">
+                                  <span className="text-foreground truncate">
                                     {renderAssignedTo(task)}
                                   </span>
                                 </span>
@@ -1652,12 +1653,12 @@ export default function DashboardPage() {
           }}
         >
           <div 
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden"
+            className="bg-card rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-border">
               <div className="flex items-center justify-between">
-                <h3 className="text-base sm:text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                <h3 className="text-base sm:text-xl font-bold text-foreground flex items-center gap-2">
                   <PlusCircleIcon className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
                   To Do Tasks ({todoTasks.length})
                 </h3>
@@ -1666,7 +1667,7 @@ export default function DashboardPage() {
                     setShowTodoModal(false);
                     closeModal();
                   }}
-                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                  className="text-muted-foreground hover:text-muted-foreground dark:text-muted-foreground dark:hover:text-gray-200"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -1676,7 +1677,7 @@ export default function DashboardPage() {
             </div>
             <div className="flex-1 min-h-0 p-4 overflow-y-auto">
               {todoTasks.length === 0 ? (
-                <p className="text-center text-gray-500 dark:text-gray-400 py-8">
+                <p className="text-center text-muted-foreground py-8">
                   No pending tasks
                 </p>
               ) : (
@@ -1690,14 +1691,14 @@ export default function DashboardPage() {
                     return (
                       <div
                         key={task.id}
-                        className="p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-blue-300 border-yellow-200 bg-yellow-50 dark:bg-yellow-900/10"
+                        className="p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-blue-300 dark:hover:border-blue-700 border-yellow-200 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-900/10"
                         onClick={() => router.push(`/tasks/${task.isRecurring ? 'recurring' : 'non-recurring'}`)}
                       >
                         <div className="flex items-start justify-between gap-3">
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between gap-2 mb-1 flex-wrap">
                               <div className="flex items-center gap-2">
-                                <h4 className="font-semibold text-gray-900 dark:text-white">{task.title}</h4>
+                                <h4 className="font-semibold text-foreground">{task.title}</h4>
                               </div>
                               {dueDate && (
                                 <div className="flex items-center gap-2 flex-shrink-0">
@@ -1716,14 +1717,14 @@ export default function DashboardPage() {
                               )}
                             </div>
                             <div className="flex flex-wrap items-center gap-2 text-xs">
-                              <span className="px-2 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-700">
+                              <span className="px-2 py-0.5 rounded-full font-medium bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300">
                                 Pending
                               </span>
-                              <span className="px-2 py-0.5 bg-white dark:bg-gray-dark rounded-full font-medium text-gray-600 dark:text-gray-400">
+                              <span className="px-2 py-0.5 bg-card rounded-full font-medium text-muted-foreground">
                                 {task.priority || 'medium'}
                               </span>
                               {dueDate && (
-                                <span className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
+                                <span className="flex items-center gap-1 text-muted-foreground">
                                   <ClockIcon className="w-3.5 h-3.5" />
                                   {dueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                                 </span>
@@ -1734,17 +1735,17 @@ export default function DashboardPage() {
                                 </span>
                               )}
                             </div>
-                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-muted-foreground mt-2 pt-2 border-t border-border">
                               {task.createdBy && (
                                 <span className="flex items-center gap-0.5 sm:gap-1 whitespace-nowrap overflow-hidden">
                                   <span className="font-medium flex-shrink-0">Created By:</span>
-                                  <span className="text-gray-900 dark:text-white truncate">{userNamesCache[task.createdBy] || 'Loading...'}</span>
+                                  <span className="text-foreground truncate">{userNamesCache[task.createdBy] || 'Loading...'}</span>
                                 </span>
                               )}
                               {task.assignedTo && task.assignedTo.length > 0 && renderAssignedTo(task) && (
                                 <span className="flex items-center gap-0.5 sm:gap-1 min-w-0 overflow-hidden whitespace-nowrap">
                                   <span className="font-medium flex-shrink-0">Assigned To:</span>
-                                  <span className="text-gray-900 dark:text-white truncate">
+                                  <span className="text-foreground truncate">
                                     {renderAssignedTo(task)}
                                   </span>
                                 </span>
@@ -1773,14 +1774,14 @@ export default function DashboardPage() {
           }}
         >
           <div 
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden"
+            className="bg-card rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden"
             onClick={(e) => {
               e.stopPropagation();
             }}
           >
-            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-border">
               <div className="flex items-center justify-between">
-                <h3 className="text-base sm:text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                <h3 className="text-base sm:text-xl font-bold text-foreground flex items-center gap-2">
                   <ExclamationTriangleIcon className="w-5 h-5 sm:w-6 sm:h-6 text-red-600" />
                   Overdue Tasks ({overdueTasks.length})
                 </h3>
@@ -1789,7 +1790,7 @@ export default function DashboardPage() {
                     setShowOverdueModal(false);
                     closeModal();
                   }}
-                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                  className="text-muted-foreground hover:text-muted-foreground dark:text-muted-foreground dark:hover:text-gray-200"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -1799,7 +1800,7 @@ export default function DashboardPage() {
             </div>
             <div className="flex-1 min-h-0 p-4 overflow-y-auto">
               {overdueTasks.length === 0 ? (
-                <p className="text-center text-gray-500 dark:text-gray-400 py-8">
+                <p className="text-center text-muted-foreground py-8">
                   No overdue tasks
                 </p>
               ) : (
@@ -1812,14 +1813,14 @@ export default function DashboardPage() {
                     return (
                       <div
                         key={task.id}
-                        className="p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-blue-300 border-red-200 bg-red-50 dark:bg-red-900/10"
+                        className="p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-blue-300 dark:hover:border-blue-700 border-red-200 dark:border-red-700 bg-red-50 dark:bg-red-900/10"
                         onClick={() => router.push(`/tasks/${task.isRecurring ? 'recurring' : 'non-recurring'}`)}
                       >
                         <div className="flex items-start justify-between gap-3">
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between gap-2 mb-1 flex-wrap">
                               <div className="flex items-center gap-2">
-                                <h4 className="font-semibold text-gray-900 dark:text-white">{task.title}</h4>
+                                <h4 className="font-semibold text-foreground">{task.title}</h4>
                               </div>
                               <div className="flex items-center gap-2 flex-shrink-0">
                                 <div className="px-2 sm:px-3 py-0.5 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-semibold whitespace-nowrap bg-red-600 text-white">
@@ -1829,16 +1830,16 @@ export default function DashboardPage() {
                             </div>
                             <div className="flex flex-wrap items-center gap-2 text-xs">
                               <span className={`px-2 py-0.5 rounded-full font-medium ${
-                                task.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
-                                'bg-orange-100 text-orange-700'
+                                task.status === 'pending' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300' :
+                                'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300'
                               }`}>
                                 {task.status === 'pending' ? 'Pending' : 'In Progress'}
                               </span>
-                              <span className="px-2 py-0.5 bg-white dark:bg-gray-dark rounded-full font-medium text-gray-600 dark:text-gray-400">
+                              <span className="px-2 py-0.5 bg-card rounded-full font-medium text-muted-foreground">
                                 {task.priority || 'medium'}
                               </span>
                               {dueDate && (
-                                <span className="flex items-center gap-1 text-gray-500 dark:text-gray-400">
+                                <span className="flex items-center gap-1 text-muted-foreground">
                                   <ClockIcon className="w-3.5 h-3.5" />
                                   {dueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                                 </span>
@@ -1849,17 +1850,17 @@ export default function DashboardPage() {
                                 </span>
                               )}
                             </div>
-                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-muted-foreground mt-2 pt-2 border-t border-border">
                               {task.createdBy && (
                                 <span className="flex items-center gap-0.5 sm:gap-1 whitespace-nowrap overflow-hidden">
                                   <span className="font-medium flex-shrink-0">Created By:</span>
-                                  <span className="text-gray-900 dark:text-white truncate">{userNamesCache[task.createdBy] || 'Loading...'}</span>
+                                  <span className="text-foreground truncate">{userNamesCache[task.createdBy] || 'Loading...'}</span>
                                 </span>
                               )}
                               {task.assignedTo && task.assignedTo.length > 0 && renderAssignedTo(task) && (
                                 <span className="flex items-center gap-0.5 sm:gap-1 min-w-0 overflow-hidden whitespace-nowrap">
                                   <span className="font-medium flex-shrink-0">Assigned To:</span>
-                                  <span className="text-gray-900 dark:text-white truncate">
+                                  <span className="text-foreground truncate">
                                     {renderAssignedTo(task)}
                                   </span>
                                 </span>
@@ -1989,9 +1990,9 @@ export default function DashboardPage() {
       {showDashboardReportModal && selectedTaskForReport && createPortal(
         reportModalLoading ? (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white dark:bg-gray-dark rounded-lg p-8 flex flex-col items-center gap-3">
+            <div className="bg-card rounded-lg p-8 flex flex-col items-center gap-3">
               <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-cyan-600" />
-              <span className="text-sm text-gray-600 dark:text-gray-400">Loading report...</span>
+              <span className="text-sm text-muted-foreground">Loading report...</span>
             </div>
           </div>
         ) : (

@@ -339,7 +339,7 @@ export function GoogleFormsBuilder({
                 className={`px-6 py-3 text-sm font-medium capitalize border-b-2 transition-colors ${
                   activeTab === tab
                     ? 'border-[#673ab7] text-[#673ab7]'
-                    : 'border-transparent text-gray-600 hover:text-gray-800'
+                    : 'border-transparent text-gray-600 hover:text-gray-800 dark:hover:text-gray-300'
                 }`}
               >
                 {tab === 'responses' ? `Responses (${responseCount})` : tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -425,11 +425,11 @@ export function GoogleFormsBuilder({
         )}
 
         {activeTab === 'settings' && (
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 dark:border-gray-700">
             <div className="px-6 py-6 space-y-6">
               {/* Submit Button Text */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Submit button text
                 </label>
                 <input
@@ -439,14 +439,14 @@ export function GoogleFormsBuilder({
                     ...prev,
                     settings: { ...prev.settings, submitButtonText: e.target.value }
                   }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
                   placeholder="Submit"
                 />
               </div>
 
               {/* Success Message */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Success message
                 </label>
                 <textarea
@@ -455,7 +455,7 @@ export function GoogleFormsBuilder({
                     ...prev,
                     settings: { ...prev.settings, successMessage: e.target.value }
                   }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm resize-none"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm resize-none"
                   placeholder="Thank you for your response"
                   rows={3}
                 />
@@ -473,13 +473,13 @@ export function GoogleFormsBuilder({
                   }))}
                   className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500"
                 />
-                <label htmlFor="allowMultiple" className="text-sm font-medium text-gray-700">
+                <label htmlFor="allowMultiple" className="text-sm font-medium text-gray-700 dark:text-gray-300">
                   Allow multiple submissions
                 </label>
               </div>
 
               {/* Divider */}
-              <div className="border-t border-gray-200" />
+              <div className="border-t border-gray-200 dark:border-gray-700" />
 
               {/* Access Control */}
               <div>
@@ -487,7 +487,7 @@ export function GoogleFormsBuilder({
 
                 <div className="space-y-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       Who can access this form?
                     </label>
                     <select
@@ -496,7 +496,7 @@ export function GoogleFormsBuilder({
                         ...prev,
                         accessControl: { ...prev.accessControl, type: e.target.value as any }
                       }))}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm"
                     >
                       <option value="public">Public</option>
                       <option value="authenticated">Authenticated users only</option>

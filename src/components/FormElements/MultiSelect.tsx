@@ -184,7 +184,7 @@ const MultiSelect: React.FC<DropdownProps> = ({ id }) => {
               </div>
               <div className="w-full px-4">
                 <div
-                  className={`max-h-select absolute left-0 top-full z-40 w-full overflow-y-auto rounded bg-white shadow-1 dark:bg-dark-2 dark:shadow-card ${
+                  className={`max-h-select absolute left-0 top-full z-40 w-full overflow-y-auto rounded border-2 border-border bg-card shadow-hard ${
                     isOpen() ? "" : "hidden"
                   }`}
                   ref={dropdownRef}

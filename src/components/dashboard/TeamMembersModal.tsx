@@ -76,26 +76,26 @@ export function TeamMembersModal({
     <div className="fixed inset-0 z-50 overflow-y-auto">
       <div className="flex items-center justify-center min-h-screen px-4 py-4 sm:py-8">
         <div 
-          className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" 
+          className="fixed inset-0 transition-opacity bg-muted bg-opacity-75" 
           onClick={onClose}
         ></div>
 
-        <div className="inline-block w-full max-w-2xl overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-gray-dark rounded-lg shadow-xl relative z-10 max-h-[85vh] flex flex-col">
+        <div className="inline-block w-full max-w-2xl overflow-hidden text-left align-middle transition-all transform bg-card rounded-lg shadow-xl relative z-10 max-h-[85vh] flex flex-col">
           {/* Header - Fixed */}
-          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
+          <div className="px-6 py-4 border-b border-border flex-shrink-0">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
                   <UserGroupIcon className="w-6 h-6 text-purple-600" />
                   {hasTeamId ? 'Team Information' : 'Team Members'}
                 </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                <p className="text-sm text-muted-foreground mt-1">
                   {taskTitle}
                 </p>
               </div>
               <button
                 onClick={onClose}
-                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                className="text-muted-foreground hover:text-muted-foreground dark:hover:text-muted-foreground transition-colors"
                 aria-label="Close modal"
               >
                 <XMarkIcon className="w-6 h-6" />
@@ -115,7 +115,7 @@ export function TeamMembersModal({
                 {teamMembers.map((member) => (
                   <div
                     key={member.userId}
-                    className="p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-purple-300 dark:hover:border-purple-600 transition-colors bg-white dark:bg-gray-800"
+                    className="p-4 border-2 border-border rounded-lg hover:border-purple-300 dark:hover:border-purple-600 transition-colors bg-card"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -127,10 +127,10 @@ export function TeamMembersModal({
                           </div>
                         </div>
                         <div className="flex-1 min-w-0">
-                          <h4 className="font-semibold text-gray-900 dark:text-white truncate">
+                          <h4 className="font-semibold text-foreground truncate">
                             {member.userName}
                           </h4>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                          <p className="text-sm text-muted-foreground">
                             {member.clientIds.length} client{member.clientIds.length !== 1 ? 's' : ''} assigned
                           </p>
                         </div>
@@ -148,17 +148,17 @@ export function TeamMembersModal({
               // Show team information
               <div className="space-y-4">
                 <div className="p-4 border-2 border-purple-200 dark:border-purple-700 rounded-lg bg-purple-50 dark:bg-purple-900/10">
-                  <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+                  <h4 className="font-semibold text-foreground mb-2">
                     {team.name}
                   </h4>
                   {team.description && (
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                    <p className="text-sm text-muted-foreground mb-3">
                       {team.description}
                     </p>
                   )}
                   {team.leaderName && (
                     <div className="flex items-center gap-2 text-sm">
-                      <span className="font-medium text-gray-700 dark:text-gray-300">Team Leader:</span>
+                      <span className="font-medium text-muted-foreground">Team Leader:</span>
                       <span className="text-purple-600 dark:text-purple-400">{team.leaderName}</span>
                     </div>
                   )}
@@ -166,14 +166,14 @@ export function TeamMembersModal({
 
                 {team.members && team.members.length > 0 && (
                   <div>
-                    <h5 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                    <h5 className="text-sm font-medium text-muted-foreground mb-3">
                       Team Members ({team.members.length})
                     </h5>
                     <div className="space-y-2">
                       {team.members.map((member) => (
                         <div
                           key={member.id}
-                          className="p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-purple-300 dark:hover:border-purple-600 transition-colors bg-white dark:bg-gray-800"
+                          className="p-3 border border-border rounded-lg hover:border-purple-300 dark:hover:border-purple-600 transition-colors bg-card"
                         >
                           <div className="flex items-center gap-3">
                             <div className="flex-shrink-0">
@@ -184,10 +184,10 @@ export function TeamMembersModal({
                               </div>
                             </div>
                             <div className="flex-1 min-w-0">
-                              <h6 className="font-medium text-gray-900 dark:text-white truncate">
+                              <h6 className="font-medium text-foreground truncate">
                                 {member.name}
                               </h6>
-                              <p className="text-xs text-gray-500 dark:text-gray-400">
+                              <p className="text-xs text-muted-foreground">
                                 {member.role}
                               </p>
                             </div>
@@ -200,25 +200,25 @@ export function TeamMembersModal({
               </div>
             ) : (
               <div className="text-center py-12">
-                <UserGroupIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-500 dark:text-gray-400">No team information available</p>
+                <UserGroupIcon className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground">No team information available</p>
               </div>
             )}
           </div>
 
           {/* Footer - Fixed */}
-          <div className="px-6 py-3 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 flex-shrink-0">
+          <div className="px-6 py-3 border-t border-border bg-muted flex-shrink-0">
             <div className="flex items-center justify-between">
-              <div className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="text-sm text-muted-foreground">
                 {hasTeamMemberMappings ? (
                   <>
-                    <span className="font-semibold text-gray-900 dark:text-white">{teamMembers.length}</span> team member{teamMembers.length !== 1 ? 's' : ''}
+                    <span className="font-semibold text-foreground">{teamMembers.length}</span> team member{teamMembers.length !== 1 ? 's' : ''}
                     <span className="mx-2">•</span>
-                    <span className="font-semibold text-gray-900 dark:text-white">{totalClients}</span> total client{totalClients !== 1 ? 's' : ''}
+                    <span className="font-semibold text-foreground">{totalClients}</span> total client{totalClients !== 1 ? 's' : ''}
                   </>
                 ) : hasTeamId ? (
                   <>
-                    <span className="font-semibold text-gray-900 dark:text-white">{team?.members?.length || 0}</span> team member{(team?.members?.length || 0) !== 1 ? 's' : ''}
+                    <span className="font-semibold text-foreground">{team?.members?.length || 0}</span> team member{(team?.members?.length || 0) !== 1 ? 's' : ''}
                   </>
                 ) : (
                   <span>No team data</span>
@@ -226,7 +226,7 @@ export function TeamMembersModal({
               </div>
               <button
                 onClick={onClose}
-                className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors text-sm font-medium"
+                className="px-4 py-2 bg-muted text-muted-foreground rounded-lg hover:bg-muted dark:hover:bg-gray-600 transition-colors text-sm font-medium"
               >
                 Close
               </button>

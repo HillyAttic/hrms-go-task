@@ -303,20 +303,20 @@ export function ScheduleTaskModal({
             <CalendarDaysIcon className="w-4 h-4 sm:w-5 sm:h-5 text-teal-600" />
             Schedule Task
           </DialogTitle>
-          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1 sm:mt-2">
+          <p className="text-xs sm:text-sm text-muted-foreground mt-1 sm:mt-2">
             Schedule &quot;{taskTitle}&quot; for team members
           </p>
         </DialogHeader>
 
         <div className="space-y-4 sm:space-y-6 mt-3 sm:mt-4">
           {loading ? (
-            <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+            <div className="text-center py-8 text-muted-foreground">
               Loading scheduling data...
             </div>
           ) : (
             <>
               {/* Add Schedule Form */}
-              <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-3 sm:p-4 bg-gray-50 dark:bg-gray-800">
+              <div className="border border-border rounded-lg p-3 sm:p-4 bg-muted">
                 <Label className="mb-2 sm:mb-3 block font-semibold text-sm sm:text-base">Add Schedule Entry</Label>
 
                 {/* Two-column equal grid on md+: form fields left, calendar right. Single column on mobile. */}
@@ -367,7 +367,7 @@ export function ScheduleTaskModal({
                         ))}
                       </Select>
                       {selectedEmployee && (
-                        <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        <p className="text-xs text-muted-foreground mt-1">
                           {availableClients.length} client{availableClients.length !== 1 ? 's' : ''} available
                         </p>
                       )}
@@ -384,7 +384,7 @@ export function ScheduleTaskModal({
                           id="schedStartTime"
                           value={startTime}
                           onChange={(e) => setStartTime(e.target.value)}
-                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring dark:bg-gray-800 dark:text-white text-sm"
+                          className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring text-sm"
                         />
                       </div>
                       <div>
@@ -396,7 +396,7 @@ export function ScheduleTaskModal({
                           id="schedEndTime"
                           value={endTime}
                           onChange={(e) => setEndTime(e.target.value)}
-                          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring dark:bg-gray-800 dark:text-white text-sm"
+                          className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring text-sm"
                         />
                       </div>
                     </div>
@@ -477,25 +477,25 @@ export function ScheduleTaskModal({
                           ({group.items.length} {group.items.length === 1 ? 'entry' : 'entries'})
                         </span>
                       </div>
-                      <div className="bg-white dark:bg-gray-dark overflow-x-auto">
+                      <div className="bg-card overflow-x-auto">
                         <table className="w-full min-w-[320px]">
-                          <thead className="bg-gray-50 dark:bg-gray-800">
+                          <thead className="bg-muted">
                             <tr>
-                              <th className="px-2 sm:px-3 py-2 text-left text-xs font-medium text-gray-600 dark:text-gray-400 uppercase">
+                              <th className="px-2 sm:px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase">
                                 Client
                               </th>
-                              <th className="px-2 sm:px-3 py-2 text-left text-xs font-medium text-gray-600 dark:text-gray-400 uppercase">
+                              <th className="px-2 sm:px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase">
                                 Date
                               </th>
-                              <th className="px-2 sm:px-3 py-2 text-left text-xs font-medium text-gray-600 dark:text-gray-400 uppercase hidden sm:table-cell">
+                              <th className="px-2 sm:px-3 py-2 text-left text-xs font-medium text-muted-foreground uppercase hidden sm:table-cell">
                                 Time
                               </th>
-                              <th className="px-2 sm:px-3 py-2 text-center text-xs font-medium text-gray-600 dark:text-gray-400 uppercase">
+                              <th className="px-2 sm:px-3 py-2 text-center text-xs font-medium text-muted-foreground uppercase">
                                 Del
                               </th>
                             </tr>
                           </thead>
-                          <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+                          <tbody className="divide-y divide-border">
                             {group.items.map((entry, idx) => {
                               const globalIdx = entries.findIndex(
                                 e =>
@@ -505,21 +505,21 @@ export function ScheduleTaskModal({
                                   e.startTime === entry.startTime
                               );
                               return (
-                                <tr key={idx} className="hover:bg-gray-50 dark:hover:bg-gray-800">
-                                  <td className="px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-900 dark:text-white max-w-[100px] truncate">
+                                <tr key={idx} className="hover:bg-muted/50">
+                                  <td className="px-2 sm:px-3 py-2 text-xs sm:text-sm text-foreground max-w-[100px] truncate">
                                     {entry.clientName}
                                   </td>
-                                  <td className="px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-900 dark:text-white whitespace-nowrap">
+                                  <td className="px-2 sm:px-3 py-2 text-xs sm:text-sm text-foreground whitespace-nowrap">
                                     {formatDate(entry.scheduleDate)}
                                   </td>
-                                  <td className="px-2 sm:px-3 py-2 text-xs sm:text-sm text-gray-900 dark:text-white whitespace-nowrap hidden sm:table-cell">
+                                  <td className="px-2 sm:px-3 py-2 text-xs sm:text-sm text-foreground whitespace-nowrap hidden sm:table-cell">
                                     {formatTime(entry.startTime)} - {formatTime(entry.endTime)}
                                   </td>
                                   <td className="px-2 sm:px-3 py-2 text-center">
                                     <button
                                       type="button"
                                       onClick={() => handleRemoveEntry(globalIdx)}
-                                      className="text-red-600 hover:text-red-800"
+                                      className="text-red-600 hover:text-red-800 dark:hover:text-red-300"
                                     >
                                       <XMarkIcon className="w-4 h-4" />
                                     </button>
@@ -553,7 +553,7 @@ export function ScheduleTaskModal({
         </div>
 
         {/* Footer Actions */}
-        <div className="flex items-center justify-end gap-2 sm:gap-3 pt-3 sm:pt-4 border-t border-gray-200 dark:border-gray-700 mt-3 sm:mt-4">
+        <div className="flex items-center justify-end gap-2 sm:gap-3 pt-3 sm:pt-4 border-t border-border mt-3 sm:mt-4">
           <Button type="button" variant="outline" onClick={onClose} disabled={saving} className="text-sm h-9 sm:h-10">
             {entries.length > 0 ? 'Cancel' : 'Close'}
           </Button>

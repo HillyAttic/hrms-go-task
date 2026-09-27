@@ -119,9 +119,9 @@ export default function NotificationTestPage() {
     <div className="p-8 max-w-4xl mx-auto">
       <h1 className="text-3xl font-bold mb-6">Notification Test</h1>
 
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg mb-6">
+      <div className="bg-card p-6 rounded-lg mb-6">
         <h2 className="text-xl font-bold mb-4">Quick Test</h2>
-        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+        <p className="text-sm text-muted-foreground mb-4">
           This page will help you verify that push notifications are working correctly.
         </p>
 
@@ -144,7 +144,7 @@ export default function NotificationTestPage() {
         </div>
 
         {status && (
-          <div className="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+          <div className="bg-muted p-4 rounded-lg">
             <pre className="text-sm whitespace-pre-wrap font-mono">{status}</pre>
           </div>
         )}

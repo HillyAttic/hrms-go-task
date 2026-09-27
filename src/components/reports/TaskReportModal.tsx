@@ -152,23 +152,23 @@ function ExportDialog({ task, clients, completions, isTeamMemberView, teamMember
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black bg-opacity-50">
-      <div className="bg-white dark:bg-gray-dark rounded-xl shadow-2xl p-6 w-full max-w-sm border border-gray-200 dark:border-gray-700">
+      <div className="bg-card rounded-xl shadow-2xl p-6 w-full max-w-sm border border-border">
         <div className="flex items-center justify-between mb-5">
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Export Report</h3>
-          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
+          <h3 className="text-lg font-semibold text-foreground">Export Report</h3>
+          <button onClick={onClose} className="text-muted-foreground hover:text-muted-foreground transition-colors">
             <XMarkIcon className="w-5 h-5" />
           </button>
         </div>
 
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-muted-foreground mb-1">
               Financial Year
             </label>
             <select
               value={exportYear}
               onChange={e => setExportYear(e.target.value)}
-              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ring"
+              className="w-full border border-border rounded-lg px-3 py-2 text-sm bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
             >
               <option value="all">All Years</option>
               {financialYears.map(fy => (
@@ -178,13 +178,13 @@ function ExportDialog({ task, clients, completions, isTeamMemberView, teamMember
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            <label className="block text-sm font-medium text-muted-foreground mb-1">
               Month
             </label>
             <select
               value={exportMonth}
               onChange={e => setExportMonth(e.target.value)}
-              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ring"
+              className="w-full border border-border rounded-lg px-3 py-2 text-sm bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
             >
               <option value="all">All Months</option>
               {MONTH_NAMES.map(m => (
@@ -211,7 +211,7 @@ function ExportDialog({ task, clients, completions, isTeamMemberView, teamMember
           </button>
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors text-sm"
+            className="px-4 py-2 bg-muted text-muted-foreground rounded-lg hover:bg-muted dark:hover:bg-gray-600 transition-colors text-sm"
           >
             Cancel
           </button>
@@ -225,15 +225,15 @@ function ExportDialog({ task, clients, completions, isTeamMemberView, teamMember
 
 function StatusFilterTabs({ value, onChange }: { value: StatusFilter; onChange: (v: StatusFilter) => void }) {
   return (
-    <div className="flex items-center gap-1 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+    <div className="flex items-center gap-1 bg-muted rounded-lg p-1">
       {(['all', 'filed', 'not_filed'] as StatusFilter[]).map(f => (
         <button
           key={f}
           onClick={() => onChange(f)}
           className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${
             value === f
-              ? 'bg-white dark:bg-gray-dark text-gray-900 dark:text-white shadow-sm'
-              : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
+              ? 'bg-card text-foreground shadow-sm'
+              : 'text-muted-foreground hover:text-muted-foreground dark:hover:text-gray-200'
           }`}
         >
           {f === 'all' ? 'All' : f === 'filed' ? 'Filed' : 'Not Filed'}
@@ -264,27 +264,27 @@ function ReportTable({
 
   return (
     <>
-    <table className="min-w-full divide-y divide-gray-200">
-      <thead className="bg-gray-50 dark:bg-gray-800">
+    <table className="min-w-full divide-y divide-border">
+      <thead className="bg-muted">
         <tr>
-          <th className="px-3 sm:px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider sticky left-0 bg-gray-50 dark:bg-gray-800 z-10">
+          <th className="px-3 sm:px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider sticky left-0 bg-muted z-10">
             Client Name
           </th>
           {months.map(month => (
             <th
               key={month.key}
-              className="px-2 sm:px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+              className="px-2 sm:px-4 py-3 text-center text-xs font-medium text-muted-foreground uppercase tracking-wider"
             >
               <div>{month.monthName}</div>
-              <div className="text-xs font-normal text-gray-400">{month.year}</div>
+              <div className="text-xs font-normal text-muted-foreground">{month.year}</div>
             </th>
           ))}
         </tr>
       </thead>
-      <tbody className="bg-white dark:bg-gray-dark divide-y divide-gray-200">
+      <tbody className="bg-card divide-y divide-border">
         {clients.map(client => (
-          <tr key={client.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
-            <td className="px-3 sm:px-4 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium text-gray-900 dark:text-white sticky left-0 bg-white dark:bg-gray-dark">
+          <tr key={client.id} className="hover:bg-muted/50">
+            <td className="px-3 sm:px-4 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium text-foreground sticky left-0 bg-card">
               {client.clientName}
             </td>
             {months.map(month => {
@@ -296,7 +296,7 @@ function ReportTable({
                     <div className="flex items-center gap-1">
                       {status === 'completed' && <CheckIcon className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />}
                       {status === 'incomplete' && <XCircleIcon className="w-4 h-4 sm:w-5 sm:h-5 text-red-600" />}
-                      {status === 'future' && <span className="text-gray-400 text-xs">-</span>}
+                      {status === 'future' && <span className="text-muted-foreground text-xs">-</span>}
                     </div>
                     {remark && (
                       <div
@@ -309,7 +309,7 @@ function ReportTable({
                             {remark.remark}
                           </span>
                         </div>
-                        <span className="text-[9px] text-gray-400">— {remark.remarkBy}</span>
+                        <span className="text-[9px] text-muted-foreground">— {remark.remarkBy}</span>
                       </div>
                     )}
                   </div>
@@ -324,20 +324,20 @@ function ReportTable({
     {/* Remark View Dialog */}
     {viewingRemark && (
       <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black bg-opacity-50" onClick={() => setViewingRemark(null)}>
-        <div className="bg-white dark:bg-gray-dark rounded-xl shadow-2xl p-6 w-full max-w-md border border-gray-200 dark:border-gray-700" onClick={e => e.stopPropagation()}>
+        <div className="bg-card rounded-xl shadow-2xl p-6 w-full max-w-md border border-border" onClick={e => e.stopPropagation()}>
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Remark</h3>
-            <button onClick={() => setViewingRemark(null)} className="text-gray-400 hover:text-gray-600 transition-colors">
+            <h3 className="text-lg font-semibold text-foreground">Remark</h3>
+            <button onClick={() => setViewingRemark(null)} className="text-muted-foreground hover:text-muted-foreground transition-colors">
               <XMarkIcon className="w-5 h-5" />
             </button>
           </div>
           <div className="mb-3">
-            <span className="text-xs text-gray-500 dark:text-gray-400">{viewingRemark.clientName} — {viewingRemark.monthName}</span>
+            <span className="text-xs text-muted-foreground">{viewingRemark.clientName} — {viewingRemark.monthName}</span>
           </div>
-          <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 mb-3">
-            <p className="text-sm text-gray-800 dark:text-gray-200 whitespace-pre-wrap">{viewingRemark.remark}</p>
+          <div className="bg-muted rounded-lg p-3 mb-3">
+            <p className="text-sm text-foreground whitespace-pre-wrap">{viewingRemark.remark}</p>
           </div>
-          <div className="text-xs text-gray-500 dark:text-gray-400">
+          <div className="text-xs text-muted-foreground">
             By: {viewingRemark.remarkBy}
           </div>
         </div>
@@ -354,8 +354,8 @@ function ModalShell({ onClose, onFullscreenToggle, isFullscreen, children }: { o
   useEffect(() => { openModal(); return () => closeModal(); }, [openModal, closeModal]);
   return (
     <div className={`fixed inset-0 z-50 flex flex-col ${isFullscreen ? 'items-stretch justify-stretch p-0' : 'sm:items-center sm:justify-center sm:p-4'}`}>
-      <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" onClick={onClose} />
-      <div className={`relative ${isFullscreen ? 'w-full h-full' : 'w-full h-full sm:h-auto sm:max-h-[90vh] sm:max-w-6xl'} flex flex-col bg-white dark:bg-gray-dark sm:rounded-lg shadow-xl overflow-hidden`}>
+      <div className="fixed inset-0 transition-opacity bg-muted bg-opacity-75" onClick={onClose} />
+      <div className={`relative ${isFullscreen ? 'w-full h-full' : 'w-full h-full sm:h-auto sm:max-h-[90vh] sm:max-w-6xl'} flex flex-col bg-card sm:rounded-lg shadow-xl overflow-hidden`}>
         {children}
       </div>
     </div>
@@ -366,22 +366,22 @@ function ModalShell({ onClose, onFullscreenToggle, isFullscreen, children }: { o
 
 function LegendFooter() {
   return (
-    <div className="flex-shrink-0 bg-gray-50 dark:bg-gray-800 px-4 sm:px-6 py-3 flex flex-wrap items-center gap-3 sm:gap-6 text-xs sm:text-sm border-t border-gray-200 dark:border-gray-700">
+    <div className="flex-shrink-0 bg-muted px-4 sm:px-6 py-3 flex flex-wrap items-center gap-3 sm:gap-6 text-xs sm:text-sm border-t border-border">
       <div className="flex items-center">
         <CheckIcon className="w-4 h-4 text-green-600 mr-2" />
-        <span className="text-gray-700 dark:text-gray-300">Completed</span>
+        <span className="text-muted-foreground">Completed</span>
       </div>
       <div className="flex items-center">
         <XCircleIcon className="w-4 h-4 text-red-600 mr-2" />
-        <span className="text-gray-700 dark:text-gray-300">Incomplete</span>
+        <span className="text-muted-foreground">Incomplete</span>
       </div>
       <div className="flex items-center">
-        <span className="text-gray-400 mr-2">-</span>
-        <span className="text-gray-700 dark:text-gray-300">Future</span>
+        <span className="text-muted-foreground mr-2">-</span>
+        <span className="text-muted-foreground">Future</span>
       </div>
       <div className="flex items-center">
         <ChatBubbleLeftIcon className="w-4 h-4 text-amber-500 mr-2" />
-        <span className="text-gray-700 dark:text-gray-300">Remark</span>
+        <span className="text-muted-foreground">Remark</span>
       </div>
     </div>
   );
@@ -501,12 +501,12 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
     <>
       <ModalShell onClose={onClose} onFullscreenToggle={() => setIsFullscreen(!isFullscreen)} isFullscreen={isFullscreen}>
         {/* Header */}
-        <div className="flex-shrink-0 border-b border-gray-200 dark:border-gray-700 px-4 sm:px-6 py-4">
+        <div className="flex-shrink-0 border-b border-border px-4 sm:px-6 py-4">
           {/* Title row */}
           <div className="flex items-start justify-between gap-3 mb-4">
             <div className="min-w-0">
-              <h2 className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white break-words">{task.title}</h2>
-              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1">
+              <h2 className="text-lg sm:text-2xl font-bold text-foreground break-words">{task.title}</h2>
+              <p className="text-xs sm:text-sm text-muted-foreground mt-1">
                 Team Member Reports • {task.recurrencePattern} recurrence
                 {unassignedClients.length > 0 && (
                   <span className="text-orange-600 dark:text-orange-400"> • {unassignedClients.length} unassigned</span>
@@ -516,7 +516,7 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
             <div className="flex items-center gap-2 flex-shrink-0">
               <button
                 onClick={() => setIsFullscreen(!isFullscreen)}
-                className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                className="p-2 text-muted-foreground hover:text-muted-foreground dark:hover:text-muted-foreground transition-colors rounded-lg hover:bg-muted/50"
                 title={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
                 aria-label={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
               >
@@ -531,7 +531,7 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
               </button>
               <button
                 onClick={onClose}
-                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors p-1"
+                className="text-muted-foreground hover:text-muted-foreground dark:hover:text-muted-foreground transition-colors p-1"
                 aria-label="Close modal"
               >
                 <XMarkIcon className="w-6 h-6" />
@@ -541,12 +541,12 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
 
           {/* Filter row */}
           <div className="flex flex-wrap items-center gap-3 mb-4">
-            <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">Filter:</span>
+            <span className="text-xs text-muted-foreground font-medium">Filter:</span>
             <StatusFilterTabs value={statusFilter} onChange={setStatusFilter} />
             <select
               value={selectedFY}
               onChange={e => { setSelectedFY(e.target.value); setSelectedMonth('all'); }}
-              className="border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-1 text-xs bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ring"
+              className="border border-border rounded-lg px-2 py-1 text-xs bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
             >
               {financialYears.map(fy => (
                 <option key={fy} value={fy}>FY {fy}</option>
@@ -555,7 +555,7 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
             <select
               value={selectedMonth}
               onChange={e => setSelectedMonth(e.target.value)}
-              className="border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-1 text-xs bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ring"
+              className="border border-border rounded-lg px-2 py-1 text-xs bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
             >
               <option value="all">All Months</option>
               {months.length > 1 && MONTH_NAMES.map(m => (
@@ -573,29 +573,29 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
                 className={`p-2.5 sm:p-4 rounded-lg border-2 transition-all text-left ${
                   selectedMemberId === report.userId
                     ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                    : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-dark hover:border-blue-300'
+                    : 'border-border bg-card hover:border-blue-300 dark:hover:border-blue-700'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1.5">
                   <div className="flex items-center gap-1.5 min-w-0">
-                    <UserGroupIcon className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-gray-600 dark:text-gray-400 flex-shrink-0" />
-                    <span className="font-semibold text-xs sm:text-base text-gray-900 dark:text-white truncate">{report.userName}</span>
+                    <UserGroupIcon className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-muted-foreground flex-shrink-0" />
+                    <span className="font-semibold text-xs sm:text-base text-foreground truncate">{report.userName}</span>
                   </div>
                   {selectedMemberId === report.userId && (
                     <span className="text-[10px] sm:text-xs font-medium text-blue-600 whitespace-nowrap ml-1">✓</span>
                   )}
                 </div>
-                <div className="text-[10px] sm:text-sm text-gray-600 dark:text-gray-400 mb-1">
+                <div className="text-[10px] sm:text-sm text-muted-foreground mb-1">
                   {report.clients.length} client{report.clients.length !== 1 ? 's' : ''}
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <div className="flex-1 min-w-0 bg-gray-200 rounded-full h-1.5">
+                  <div className="flex-1 min-w-0 bg-muted rounded-full h-1.5">
                     <div
                       className="bg-green-600 h-1.5 rounded-full transition-all"
                       style={{ width: `${report.completionRate}%` }}
                     />
                   </div>
-                  <span className="text-[10px] sm:text-sm font-medium text-gray-700 dark:text-gray-300 whitespace-nowrap">{report.completionRate}%</span>
+                  <span className="text-[10px] sm:text-sm font-medium text-muted-foreground whitespace-nowrap">{report.completionRate}%</span>
                 </div>
               </button>
             ))}
@@ -607,7 +607,7 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
                 className={`p-2.5 sm:p-4 rounded-lg border-2 transition-all text-left ${
                   selectedMemberId === UNASSIGNED_KEY
                     ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20'
-                    : 'border-orange-200 dark:border-orange-800 bg-white dark:bg-gray-dark hover:border-orange-300'
+                    : 'border-orange-200 dark:border-orange-800 bg-card hover:border-orange-300'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1.5">
@@ -623,7 +623,7 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
                   {unassignedClients.length} client{unassignedClients.length !== 1 ? 's' : ''}
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <div className="flex-1 min-w-0 bg-gray-200 rounded-full h-1.5">
+                  <div className="flex-1 min-w-0 bg-muted rounded-full h-1.5">
                     <div
                       className="bg-orange-500 h-1.5 rounded-full transition-all"
                       style={{ width: `${unassignedReport.completionRate}%` }}
@@ -659,7 +659,7 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
           </div>
           {filteredClients.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-500 dark:text-gray-400">
+              <p className="text-muted-foreground">
                 {statusFilter !== 'all'
                   ? `No clients with "${statusFilter === 'filed' ? 'Filed' : 'Not Filed'}" status`
                   : selectedMember
@@ -752,19 +752,19 @@ function RegularTaskReportModal({ task, clients, completions, onClose }: TaskRep
     <>
       <ModalShell onClose={onClose} onFullscreenToggle={() => setIsFullscreen(!isFullscreen)} isFullscreen={isFullscreen}>
         {/* Header */}
-        <div className="flex-shrink-0 border-b border-gray-200 dark:border-gray-700 px-4 sm:px-6 py-4">
+        <div className="flex-shrink-0 border-b border-border px-4 sm:px-6 py-4">
           {/* Title + actions row */}
           <div className="flex items-start justify-between gap-3 mb-3">
             <div className="min-w-0">
-              <h2 className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white break-words">{task.title}</h2>
-              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1">
+              <h2 className="text-lg sm:text-2xl font-bold text-foreground break-words">{task.title}</h2>
+              <p className="text-xs sm:text-sm text-muted-foreground mt-1">
                 Track completion for {clients.length} clients • {task.recurrencePattern} recurrence
               </p>
             </div>
             <div className="flex items-center gap-2 flex-shrink-0">
               <button
                 onClick={() => setIsFullscreen(!isFullscreen)}
-                className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                className="p-2 text-muted-foreground hover:text-muted-foreground dark:hover:text-muted-foreground transition-colors rounded-lg hover:bg-muted/50"
                 title={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
                 aria-label={isFullscreen ? 'Exit fullscreen' : 'Fullscreen'}
               >
@@ -779,7 +779,7 @@ function RegularTaskReportModal({ task, clients, completions, onClose }: TaskRep
               </button>
               <button
                 onClick={onClose}
-                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors p-1"
+                className="text-muted-foreground hover:text-muted-foreground dark:hover:text-muted-foreground transition-colors p-1"
                 aria-label="Close modal"
               >
                 <XMarkIcon className="w-6 h-6" />
@@ -789,12 +789,12 @@ function RegularTaskReportModal({ task, clients, completions, onClose }: TaskRep
 
           {/* Filter row */}
           <div className="flex flex-wrap items-center gap-3">
-            <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">Filter:</span>
+            <span className="text-xs text-muted-foreground font-medium">Filter:</span>
             <StatusFilterTabs value={statusFilter} onChange={setStatusFilter} />
             <select
               value={selectedFY}
               onChange={e => { setSelectedFY(e.target.value); setSelectedMonth('all'); }}
-              className="border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-1 text-xs bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ring"
+              className="border border-border rounded-lg px-2 py-1 text-xs bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
             >
               {financialYears.map(fy => (
                 <option key={fy} value={fy}>FY {fy}</option>
@@ -803,7 +803,7 @@ function RegularTaskReportModal({ task, clients, completions, onClose }: TaskRep
             <select
               value={selectedMonth}
               onChange={e => setSelectedMonth(e.target.value)}
-              className="border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-1 text-xs bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ring"
+              className="border border-border rounded-lg px-2 py-1 text-xs bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
             >
               <option value="all">All Months</option>
               {months.length > 1 && MONTH_NAMES.map(m => (
@@ -811,7 +811,7 @@ function RegularTaskReportModal({ task, clients, completions, onClose }: TaskRep
               ))}
             </select>
             {statusFilter !== 'all' && (
-              <span className="text-xs text-gray-500 dark:text-gray-400">
+              <span className="text-xs text-muted-foreground">
                 {filteredClients.length} of {clients.length} clients
               </span>
             )}
@@ -825,7 +825,7 @@ function RegularTaskReportModal({ task, clients, completions, onClose }: TaskRep
           </div>
           {filteredClients.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-500 dark:text-gray-400">
+              <p className="text-muted-foreground">
                 No clients with &ldquo;{statusFilter === 'filed' ? 'Filed' : 'Not Filed'}&rdquo; status
               </p>
             </div>

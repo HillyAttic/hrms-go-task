@@ -83,10 +83,10 @@ interface EditSalarySlipModalProps {
 }
 
 const inputClass =
-  'w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ring';
-const labelClass = 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1';
+  'w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring';
+const labelClass = 'block text-sm font-medium text-muted-foreground mb-1';
 const errorClass = 'mt-1 text-xs text-red-500';
-const sectionTitleClass = 'text-base font-semibold text-gray-900 dark:text-white';
+const sectionTitleClass = 'text-base font-semibold text-foreground';
 
 export function EditSalarySlipModal({
   isOpen,
@@ -233,7 +233,7 @@ export function EditSalarySlipModal({
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-[950px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-gray-900 dark:text-white">
+          <DialogTitle className="text-foreground">
             Edit Salary Slip — {slip?.name ?? ''}
             {slip ? ` (${MONTH_NAMES[slip.month]} ${slip.year})` : ''}
           </DialogTitle>
@@ -316,21 +316,21 @@ export function EditSalarySlipModal({
             )}
           </div>
 
-          <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 grid grid-cols-3 gap-4 text-sm">
+          <div className="bg-muted border border-border rounded-lg p-4 grid grid-cols-3 gap-4 text-sm">
             <div>
-              <p className="text-gray-500 dark:text-gray-400">Total Earnings</p>
+              <p className="text-muted-foreground">Total Earnings</p>
               <p className="font-bold text-green-600 dark:text-green-400">
                 ₹{totalEarnings.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
               </p>
             </div>
             <div>
-              <p className="text-gray-500 dark:text-gray-400">Total Deductions</p>
+              <p className="text-muted-foreground">Total Deductions</p>
               <p className="font-bold text-red-600 dark:text-red-400">
                 ₹{totalDeductions.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
               </p>
             </div>
             <div>
-              <p className="text-gray-500 dark:text-gray-400">Net Salary</p>
+              <p className="text-muted-foreground">Net Salary</p>
               <p className="text-lg font-bold text-blue-600 dark:text-blue-400">
                 ₹{netSalary.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
               </p>

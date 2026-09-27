@@ -76,7 +76,7 @@ export function InstallPrompt() {
 
   return (
     <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-4 md:max-w-sm z-[9999]">
-      <div className="bg-white dark:bg-gray-dark border border-stroke dark:border-stroke-dark rounded-lg shadow-card-2 p-4">
+      <div className="bg-card border border-stroke dark:border-stroke-dark rounded-lg shadow-hard-2 p-4">
         <div className="flex items-start space-x-3">
           <div className="flex-shrink-0">
             <svg

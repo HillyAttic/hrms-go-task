@@ -31,7 +31,7 @@ export function QuestionMenu({
         onClick={() => setIsOpen(!isOpen)}
         className="
           p-2 text-gray-600 hover:text-purple-600
-          hover:bg-purple-50 rounded-full transition-colors
+          hover:bg-purple-50 dark:hover:bg-purple-900/30 rounded-full transition-colors
         "
         title="More options"
       >
@@ -40,15 +40,15 @@ export function QuestionMenu({
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute right-0 top-10 bg-white shadow-lg rounded-md border border-gray-200 py-2 z-[9999] min-w-[160px]">
+        <div className="absolute right-0 top-10 bg-white shadow-lg rounded-md border border-gray-200 dark:border-gray-700 py-2 z-[9999] min-w-[160px]">
           <button
             onClick={() => {
               onDuplicate();
               setIsOpen(false);
             }}
             className="
-              w-full px-4 py-2 text-left text-sm text-gray-700
-              hover:bg-purple-50 hover:text-purple-900
+              w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300
+              hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-900
               transition-colors flex items-center space-x-2
             "
           >
@@ -59,8 +59,8 @@ export function QuestionMenu({
           <button
             onClick={onToggleRequired}
             className="
-              w-full px-4 py-2 text-left text-sm text-gray-700
-              hover:bg-purple-50 hover:text-purple-900
+              w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300
+              hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-900
               transition-colors flex items-center justify-between
             "
           >
@@ -73,13 +73,13 @@ export function QuestionMenu({
             />
           </button>
 
-          <div className="border-t border-gray-200 my-1" />
+          <div className="border-t border-gray-200 dark:border-gray-700 my-1" />
 
           <button
             onClick={handleDelete}
             className="
               w-full px-4 py-2 text-left text-sm text-red-600
-              hover:bg-red-50 hover:text-red-900
+              hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-900
               transition-colors flex items-center space-x-2
             "
           >

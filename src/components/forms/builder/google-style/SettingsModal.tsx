@@ -54,7 +54,7 @@ export function SettingsModal({
       {/* Drawer */}
       <div className="absolute inset-y-0 right-0 w-full max-w-md bg-white shadow-xl overflow-y-auto z-[101]">
         {/* Header */}
-        <div className="sticky top-0 px-6 py-4 border-b border-gray-200 bg-white flex items-center justify-between z-[102]">
+        <div className="sticky top-0 px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-white flex items-center justify-between z-[102]">
           <h2 className="text-lg font-semibold text-gray-900">Form settings</h2>
           <button
             onClick={onClose}
@@ -68,7 +68,7 @@ export function SettingsModal({
         <div className="px-6 py-6 space-y-6">
           {/* Submit Button Text */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Submit button text
             </label>
             <input
@@ -76,7 +76,7 @@ export function SettingsModal({
               value={localSettings.submitButtonText}
               onChange={(e) => handleSettingChange('submitButtonText', e.target.value)}
               className="
-                w-full px-3 py-2 border border-gray-300 rounded-md
+                w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md
                 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent
                 text-sm
               "
@@ -86,14 +86,14 @@ export function SettingsModal({
 
           {/* Success Message */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Success message
             </label>
             <textarea
               value={localSettings.successMessage}
               onChange={(e) => handleSettingChange('successMessage', e.target.value)}
               className="
-                w-full px-3 py-2 border border-gray-300 rounded-md
+                w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md
                 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent
                 text-sm resize-none
               "
@@ -111,13 +111,13 @@ export function SettingsModal({
               onChange={(e) => handleSettingChange('allowMultipleSubmissions', e.target.checked)}
               className="w-4 h-4 text-purple-600 rounded focus:ring-purple-500"
             />
-            <label htmlFor="allowMultiple" className="text-sm font-medium text-gray-700">
+            <label htmlFor="allowMultiple" className="text-sm font-medium text-gray-700 dark:text-gray-300">
               Allow multiple submissions
             </label>
           </div>
 
           {/* Divider */}
-          <div className="border-t border-gray-200" />
+          <div className="border-t border-gray-200 dark:border-gray-700" />
 
           {/* Access Control */}
           <div>
@@ -125,14 +125,14 @@ export function SettingsModal({
 
             <div className="space-y-3">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Who can access this form?
                 </label>
                 <select
                   value={localAccessControl.type}
                   onChange={(e) => handleAccessControlChange('type', e.target.value)}
                   className="
-                    w-full px-3 py-2 border border-gray-300 rounded-md
+                    w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md
                     focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent
                     text-sm
                   "
@@ -146,7 +146,7 @@ export function SettingsModal({
               {localAccessControl.type === 'restricted' && (
                 <>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       Allowed roles (comma-separated)
                     </label>
                     <input
@@ -159,7 +159,7 @@ export function SettingsModal({
                         )
                       }
                       className="
-                        w-full px-3 py-2 border border-gray-300 rounded-md
+                        w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md
                         focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent
                         text-sm
                       "
@@ -168,7 +168,7 @@ export function SettingsModal({
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       Allowed user IDs (comma-separated)
                     </label>
                     <textarea
@@ -180,7 +180,7 @@ export function SettingsModal({
                         )
                       }
                       className="
-                        w-full px-3 py-2 border border-gray-300 rounded-md
+                        w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-md
                         focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent
                         text-sm resize-none
                       "

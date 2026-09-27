@@ -72,7 +72,7 @@ export function SectionCard({
         bg-white rounded-lg border transition-all duration-150
         ${isSelected
           ? 'border-blue-400 shadow-md border-l-4 border-l-[#673ab7]'
-          : 'border-gray-200 hover:border-gray-300 shadow-sm'
+          : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-700 shadow-sm'
         }
         ${isDragging ? 'opacity-50' : ''}
       `}
@@ -115,7 +115,7 @@ export function SectionCard({
               className="flex-1 text-lg font-semibold border-b-2 border-blue-500 focus:outline-none bg-transparent py-1"
             />
           ) : (
-            <span className="flex-1 text-lg font-semibold text-gray-800">
+            <span className="flex-1 text-lg font-semibold text-gray-800 dark:text-gray-300">
               {field.label || 'Section title'}
             </span>
           )}
@@ -129,7 +129,7 @@ export function SectionCard({
             onChange={(e) => onUpdate({ description: e.target.value })}
             onClick={(e) => e.stopPropagation()}
             placeholder="Section description (optional)"
-            className="mt-2 w-full border-b border-gray-300 focus:border-ring outline-none text-sm py-0.5 bg-transparent text-gray-500"
+            className="mt-2 w-full border-b border-gray-300 dark:border-gray-700 focus:border-ring outline-none text-sm py-0.5 bg-transparent text-gray-500"
           />
         )}
         {!isSelected && field.description && (
@@ -176,7 +176,7 @@ export function SectionCard({
                       e.stopPropagation();
                       setShowAddMenu(!showAddMenu);
                     }}
-                    className="w-full py-2 px-3 rounded border-2 border-dashed border-gray-300 hover:border-[#673ab7] text-gray-600 hover:text-[#673ab7] transition-colors flex items-center justify-center gap-2 text-sm font-medium"
+                    className="w-full py-2 px-3 rounded border-2 border-dashed border-gray-300 dark:border-gray-700 hover:border-[#673ab7] text-gray-600 hover:text-[#673ab7] transition-colors flex items-center justify-center gap-2 text-sm font-medium"
                   >
                     <Plus size={18} />
                     Add question to section
@@ -184,7 +184,7 @@ export function SectionCard({
 
                   {/* Question Type Menu */}
                   {showAddMenu && (
-                    <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-xl z-[10001] p-2">
+                    <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 dark:border-gray-700 rounded-lg shadow-xl z-[10001] p-2">
                       {(['text', 'textarea', 'email', 'phone', 'number', 'date', 'time', 'select', 'radio', 'checkbox', 'multiselect', 'file'] as FormFieldType[]).map((type) => (
                         <button
                           key={type}
@@ -193,7 +193,7 @@ export function SectionCard({
                             onAddNestedField(field.id, type);
                             setShowAddMenu(false);
                           }}
-                          className="w-full text-left px-3 py-2 hover:bg-gray-100 rounded text-sm text-gray-700 capitalize"
+                          className="w-full text-left px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-900/30 rounded text-sm text-gray-700 dark:text-gray-300 capitalize"
                         >
                           {type}
                         </button>
@@ -222,7 +222,7 @@ export function SectionCard({
                 e.stopPropagation();
                 onDuplicate();
               }}
-              className="p-2 rounded-full hover:bg-gray-100 text-gray-600 transition-colors"
+              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-900/30 text-gray-600 transition-colors"
               title="Duplicate"
             >
               <Copy size={20} />
@@ -232,7 +232,7 @@ export function SectionCard({
                 e.stopPropagation();
                 handleDelete();
               }}
-              className="p-2 rounded-full hover:bg-gray-100 text-gray-600 transition-colors"
+              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-900/30 text-gray-600 transition-colors"
               title="Delete"
             >
               <Trash2 size={20} />

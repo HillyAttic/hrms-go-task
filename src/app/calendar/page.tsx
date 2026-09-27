@@ -198,18 +198,18 @@ export default function CalendarPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Compliance Calendar</h1>
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1 sm:mt-2">View your recurring compliance tasks</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Compliance Calendar</h1>
+          <p className="text-sm sm:text-base text-muted-foreground mt-1 sm:mt-2">View your recurring compliance tasks</p>
         </div>
         
         {/* View Toggle */}
-        <div className="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+        <div className="flex items-center space-x-2 bg-muted rounded-lg p-1">
           <button
             onClick={() => setViewMode('desktop')}
             className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
               viewMode === 'desktop'
-                ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                ? 'bg-card text-foreground shadow-sm'
+                : 'text-muted-foreground hover:text-foreground dark:hover:text-white'
             }`}
           >
             <ComputerDesktopIcon className="w-4 h-4" />
@@ -219,8 +219,8 @@ export default function CalendarPage() {
             onClick={() => setViewMode('mobile')}
             className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
               viewMode === 'mobile'
-                ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                ? 'bg-card text-foreground shadow-sm'
+                : 'text-muted-foreground hover:text-foreground dark:hover:text-white'
             }`}
           >
             <DevicePhoneMobileIcon className="w-4 h-4" />

@@ -115,21 +115,21 @@ export function SubmissionsTable({
             placeholder="Search by name or email..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+            className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
           />
           <input
             type="date"
             placeholder="Start date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            className="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+            className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
           />
           <input
             type="date"
             placeholder="End date"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            className="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+            className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
           />
         </div>
       </div>
@@ -146,7 +146,7 @@ export function SubmissionsTable({
                   setStartDate('');
                   setEndDate('');
                 }}
-                className="mt-2 text-blue-600 hover:text-blue-700"
+                className="mt-2 text-blue-600 hover:text-blue-700 dark:hover:text-blue-300"
               >
                 Clear filters
               </button>
@@ -161,11 +161,11 @@ export function SubmissionsTable({
               return (
               <div key={dayLabel}>
                 {/* Day Header */}
-                <div className="bg-blue-100 border border-blue-200 rounded-lg px-3 sm:px-4 py-2 sm:py-3 mb-3">
+                <div className="bg-blue-100 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg px-3 sm:px-4 py-2 sm:py-3 mb-3">
                   <div className="flex items-start justify-between gap-3">
                     <div>
                       <h3 className="text-base sm:text-lg font-semibold text-blue-900">{dayLabel}</h3>
-                      <p className="text-xs sm:text-sm text-blue-700">{daySubs.length} submission(s)</p>
+                      <p className="text-xs sm:text-sm text-blue-700 dark:text-blue-300">{daySubs.length} submission(s)</p>
                     </div>
                     <div className="flex items-center gap-2">
                       <div className="flex flex-wrap justify-end gap-2 text-xs sm:text-sm font-semibold text-blue-900">
@@ -191,9 +191,9 @@ export function SubmissionsTable({
                 {isExpanded && (
                   <>
                 {/* Desktop Table View */}
-                <div className="hidden md:block border border-gray-200 rounded-lg overflow-hidden">
+                <div className="hidden md:block border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
                   <table className="w-full">
-                    <thead className="bg-gray-50">
+                    <thead className="bg-gray-50 dark:bg-gray-900/30">
                       <tr>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                           Submitter
@@ -214,7 +214,7 @@ export function SubmissionsTable({
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
                       {daySubs.map((submission) => (
-                        <tr key={submission.id} className="hover:bg-gray-50">
+                        <tr key={submission.id} className="hover:bg-gray-50 dark:hover:bg-gray-900/30">
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="text-sm font-medium text-gray-900">
                               {submission.submitterName || 'Anonymous'}
@@ -230,7 +230,7 @@ export function SubmissionsTable({
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             {submission.files && submission.files.length > 0 ? (
-                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                              <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
                                 {submission.files.length} file(s)
                               </span>
                             ) : (
@@ -240,7 +240,7 @@ export function SubmissionsTable({
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center space-x-2">
                               {!submission.isRead && (
-                                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                                <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300">
                                   New
                                 </span>
                               )}
@@ -272,9 +272,9 @@ export function SubmissionsTable({
                 </div>
 
                 {/* Mobile Card View */}
-                <div className="md:hidden divide-y divide-gray-200 border border-gray-200 rounded-lg overflow-hidden">
+                <div className="md:hidden divide-y divide-gray-200 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
                   {daySubs.map((submission) => (
-                    <div key={submission.id} className="p-4 hover:bg-gray-50 bg-white">
+                    <div key={submission.id} className="p-4 hover:bg-gray-50 dark:hover:bg-gray-900/30 bg-white">
                       <div className="flex items-start justify-between mb-3">
                         <div className="flex-1">
                           <div className="text-sm font-medium text-gray-900">
@@ -286,7 +286,7 @@ export function SubmissionsTable({
                         </div>
                         <div className="flex items-center space-x-2 ml-2">
                           {!submission.isRead && (
-                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                            <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300">
                               New
                             </span>
                           )}

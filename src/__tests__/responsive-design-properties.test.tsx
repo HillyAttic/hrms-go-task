@@ -386,7 +386,7 @@ describe('Responsive Design Properties', () => {
       const button = container.querySelector('button');
       
       // Desktop buttons should have hover effects
-      expect(button?.className).toContain('hover:shadow-md');
+      expect(button?.className).toContain('hover:shadow-hard');
       
       return true;
     }), { numRuns: 30 });

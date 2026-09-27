@@ -72,7 +72,7 @@ export function PWAStatus() {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 w-80 bg-white dark:bg-gray-dark border border-stroke dark:border-stroke-dark rounded-lg shadow-card-2 p-4 z-50 max-h-[80vh] overflow-y-auto">
+    <div className="fixed bottom-4 right-4 w-80 bg-card border border-stroke dark:border-stroke-dark rounded-lg shadow-hard-2 p-4 z-50 max-h-[80vh] overflow-y-auto">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold text-dark dark:text-white">PWA Status</h3>
         <button
@@ -88,9 +88,9 @@ export function PWAStatus() {
 
       <div className="space-y-3">
         {/* Installation Status */}
-        <div className="flex items-center justify-between p-3 bg-gray-2 dark:bg-gray-dark rounded-lg">
+        <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
           <div className="flex items-center space-x-2">
-            <div className={`w-2 h-2 rounded-full ${isInstalled ? 'bg-green-500' : 'bg-gray-400'}`} />
+            <div className={`w-2 h-2 rounded-full ${isInstalled ? 'bg-green-500' : 'bg-muted'}`} />
             <span className="text-sm text-dark dark:text-white">Installed</span>
           </div>
           {isInstallable && !isInstalled && (
@@ -104,7 +104,7 @@ export function PWAStatus() {
         </div>
 
         {/* Online Status */}
-        <div className="flex items-center justify-between p-3 bg-gray-2 dark:bg-gray-dark rounded-lg">
+        <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
           <div className="flex items-center space-x-2">
             <div className={`w-2 h-2 rounded-full ${isOnline ? 'bg-green-500' : 'bg-red-500'}`} />
             <span className="text-sm text-dark dark:text-white">
@@ -114,16 +114,16 @@ export function PWAStatus() {
         </div>
 
         {/* Service Worker Status */}
-        <div className="flex items-center justify-between p-3 bg-gray-2 dark:bg-gray-dark rounded-lg">
+        <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
           <div className="flex items-center space-x-2">
-            <div className={`w-2 h-2 rounded-full ${isRegistered ? 'bg-green-500' : 'bg-gray-400'}`} />
+            <div className={`w-2 h-2 rounded-full ${isRegistered ? 'bg-green-500' : 'bg-muted'}`} />
             <span className="text-sm text-dark dark:text-white">Service Worker</span>
           </div>
         </div>
 
         {/* Cache Info */}
         {cacheInfo && (
-          <div className="p-3 bg-gray-2 dark:bg-gray-dark rounded-lg">
+          <div className="p-3 bg-muted rounded-lg">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-dark dark:text-white">Cache Storage</span>
               <button
@@ -138,7 +138,7 @@ export function PWAStatus() {
                 <span>Used: {formatBytes(cacheInfo.used)}</span>
                 <span>{cacheInfo.percentage}%</span>
               </div>
-              <div className="w-full bg-gray-300 dark:bg-gray-700 rounded-full h-2">
+              <div className="w-full bg-muted rounded-full h-2">
                 <div
                   className="bg-foreground h-2 rounded-full transition-all"
                   style={{ width: `${Math.min(cacheInfo.percentage, 100)}%` }}
@@ -153,7 +153,7 @@ export function PWAStatus() {
 
         {/* Background Sync */}
         {syncSupported && (
-          <div className="p-3 bg-gray-2 dark:bg-gray-dark rounded-lg">
+          <div className="p-3 bg-muted rounded-lg">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm text-dark dark:text-white">Background Sync</span>
               <div className="w-2 h-2 rounded-full bg-green-500" />
@@ -174,7 +174,7 @@ export function PWAStatus() {
         )}
 
         {/* Display Mode */}
-        <div className="p-3 bg-gray-2 dark:bg-gray-dark rounded-lg">
+        <div className="p-3 bg-muted rounded-lg">
           <div className="text-sm text-dark dark:text-white mb-1">Display Mode</div>
           <div className="text-xs text-dark-4 dark:text-dark-6">
             {isInstalled ? 'Standalone' : 'Browser'}

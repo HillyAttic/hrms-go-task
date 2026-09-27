@@ -65,7 +65,7 @@ export default function Page() {
     return (
       <div className="mx-auto w-full max-w-[700px]">
         <Breadcrumb pageName="Edit Profile" />
-        <div className="rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-dark">
+        <div className="rounded-2xl bg-card p-8 shadow-xl">
           <ProfileEditForm
             initialData={{
               displayName: data.name,
@@ -86,7 +86,7 @@ export default function Page() {
     <div className="mx-auto w-full max-w-[1000px]">
       <Breadcrumb pageName="Profile" />
 
-      <div className="overflow-hidden rounded-2xl bg-white shadow-xl dark:bg-gray-dark dark:shadow-2xl transition-all duration-300 hover:shadow-2xl">
+      <div className="overflow-hidden rounded-2xl bg-card shadow-xl dark:shadow-2xl transition-all duration-300 hover:shadow-hard">
         {/* Cover Photo Section */}
         <div className="relative h-48 md:h-64 overflow-hidden">
           <Image
@@ -135,31 +135,31 @@ export default function Page() {
           {/* User Details Grid */}
           <div className="max-w-2xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-gray-50 dark:bg-dark-2 rounded-xl p-5 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-dark-3 transition-colors duration-200">
+              <div className="bg-muted rounded-xl p-5 hover:bg-muted dark:hover:bg-dark-3 transition-colors duration-200">
                 <div className="flex items-center mb-2">
                   <div className="w-3 h-3 rounded-full bg-blue-500 mr-2"></div>
                   <h4 className="font-semibold text-dark dark:text-white">Email</h4>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300 truncate">{data.email}</p>
+                <p className="text-muted-foreground truncate">{data.email}</p>
               </div>
 
-              <div className="bg-gray-50 dark:bg-dark-2 rounded-xl p-5 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-dark-3 transition-colors duration-200">
+              <div className="bg-muted rounded-xl p-5 hover:bg-muted dark:hover:bg-dark-3 transition-colors duration-200">
                 <div className="flex items-center mb-2">
                   <div className="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
                   <h4 className="font-semibold text-dark dark:text-white">Role</h4>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300 capitalize">{data.role}</p>
+                <p className="text-muted-foreground capitalize">{data.role}</p>
               </div>
 
-              <div className="bg-gray-50 dark:bg-dark-2 rounded-xl p-5 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-dark-3 transition-colors duration-200">
+              <div className="bg-muted rounded-xl p-5 hover:bg-muted dark:hover:bg-dark-3 transition-colors duration-200">
                 <div className="flex items-center mb-2">
                   <div className="w-3 h-3 rounded-full bg-purple-500 mr-2"></div>
                   <h4 className="font-semibold text-dark dark:text-white">Department</h4>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300">{data.department || 'Not specified'}</p>
+                <p className="text-muted-foreground">{data.department || 'Not specified'}</p>
               </div>
 
-              <div className="bg-gray-50 dark:bg-dark-2 rounded-xl p-5 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-dark-3 transition-colors duration-200">
+              <div className="bg-muted rounded-xl p-5 hover:bg-muted dark:hover:bg-dark-3 transition-colors duration-200">
                 <div className="flex items-center mb-2">
                   <div className="w-3 h-3 rounded-full bg-emerald-500 mr-2"></div>
                   <h4 className="font-semibold text-dark dark:text-white">Status</h4>

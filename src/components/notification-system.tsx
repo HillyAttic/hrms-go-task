@@ -102,11 +102,11 @@ export function NotificationSystem() {
 
   const getTypeColor = (type: string) => {
     switch (type) {
-      case 'success': return 'bg-green-100 text-green-800';
-      case 'error': return 'bg-red-100 text-red-800';
-      case 'warning': return 'bg-yellow-100 text-yellow-800';
+      case 'success': return 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300';
+      case 'error': return 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300';
+      case 'warning': return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300';
       case 'info': return 'bg-foreground text-background';
-      default: return 'bg-gray-100 text-gray-800';
+      default: return 'bg-muted text-foreground';
     }
   };
 
@@ -138,7 +138,7 @@ export function NotificationSystem() {
       {/* Notification Bell */}
       <button
         onClick={() => setShowNotifications(!showNotifications)}
-        className="relative p-2 text-gray-500 hover:text-gray-700 dark:text-gray-300 focus:outline-none"
+        className="relative p-2 text-muted-foreground hover:text-muted-foreground focus:outline-none"
       >
         <BellAlertIcon className="w-6 h-6" />
         {unreadCount > 0 && (
@@ -150,36 +150,36 @@ export function NotificationSystem() {
 
       {/* Notification Dropdown */}
       {showNotifications && (
-        <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-dark rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50">
+        <div className="absolute right-0 mt-2 w-80 bg-card rounded-lg shadow-lg border border-border z-50">
           {/* Header */}
-          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+          <div className="p-4 border-b border-border">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Notifications</h3>
+              <h3 className="text-lg font-semibold text-foreground">Notifications</h3>
               <div className="flex space-x-2">
                 {unreadCount > 0 && (
                   <button
                     onClick={markAllAsRead}
-                    className="text-sm text-blue-600 hover:text-blue-800"
+                    className="text-sm text-blue-600 hover:text-blue-800 dark:hover:text-blue-300"
                   >
                     Mark all as read
                   </button>
                 )}
                 <button
                   onClick={clearAll}
-                  className="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-300"
+                  className="text-sm text-muted-foreground hover:text-muted-foreground"
                 >
                   Clear all
                 </button>
                 <button
                   onClick={() => setShowNotifications(false)}
-                  className="text-gray-500 hover:text-gray-700 dark:text-gray-300"
+                  className="text-muted-foreground hover:text-muted-foreground"
                 >
                   <XMarkIcon className="w-5 h-5" />
                 </button>
               </div>
             </div>
             {unreadCount > 0 && (
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+              <p className="text-sm text-muted-foreground mt-1">
                 {unreadCount} unread notification{unreadCount !== 1 ? 's' : ''}
               </p>
             )}
@@ -189,15 +189,15 @@ export function NotificationSystem() {
           <div className="max-h-96 overflow-y-auto">
             {notifications.length === 0 ? (
               <div className="p-8 text-center">
-                <BellAlertIcon className="w-12 h-12 mx-auto text-gray-300 mb-2" />
-                <p className="text-gray-500 dark:text-gray-400">No notifications</p>
+                <BellAlertIcon className="w-12 h-12 mx-auto text-muted-foreground mb-2" />
+                <p className="text-muted-foreground">No notifications</p>
               </div>
             ) : (
               notifications.map((notification) => (
                 <div
                   key={notification.id}
-                  className={`p-4 border-b border-gray-100 hover:bg-gray-50 cursor-pointer ${
-                    !notification.read ? 'bg-blue-50' : ''
+                  className={`p-4 border-b border-border hover:bg-muted cursor-pointer ${
+                    !notification.read ? 'bg-blue-50 dark:bg-blue-900/30' : ''
                   }`}
                   onClick={() => markAsRead(notification.id)}
                 >
@@ -206,13 +206,13 @@ export function NotificationSystem() {
                       <span className="text-sm font-bold">{getTypeIcon(notification.type)}</span>
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">
+                      <p className="text-sm font-medium text-foreground">
                         {notification.title}
                       </p>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                      <p className="text-sm text-muted-foreground mt-1">
                         {notification.message}
                       </p>
-                      <p className="text-xs text-gray-400 mt-2">
+                      <p className="text-xs text-muted-foreground mt-2">
                         {formatTime(notification.timestamp)}
                       </p>
                     </div>
@@ -223,8 +223,8 @@ export function NotificationSystem() {
           </div>
 
           {/* Footer */}
-          <div className="p-3 border-t border-gray-200 dark:border-gray-700 text-center">
-            <button className="text-sm text-blue-600 hover:text-blue-800">
+          <div className="p-3 border-t border-border text-center">
+            <button className="text-sm text-blue-600 hover:text-blue-800 dark:hover:text-blue-300">
               View all notifications
             </button>
           </div>

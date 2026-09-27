@@ -35,7 +35,7 @@ export function AddQuestionButton({
 }: AddQuestionButtonProps) {
   return (
     <>
-      <div className="bg-white rounded-full shadow-lg border border-gray-200 flex items-center gap-1 px-3 py-2">
+      <div className="bg-white rounded-full shadow-lg border border-gray-200 dark:border-gray-700 flex items-center gap-1 px-3 py-2">
         <div className="relative">
           <button
             onClick={onToggleAddMenu}
@@ -47,7 +47,7 @@ export function AddQuestionButton({
 
           {/* Dropdown Menu */}
           {showAddMenu && (
-            <div className="absolute bottom-full left-0 mb-2 bg-white rounded-xl shadow-2xl border border-gray-200 p-2 z-[10000] w-80">
+            <div className="absolute bottom-full left-0 mb-2 bg-white rounded-xl shadow-2xl border border-gray-200 dark:border-gray-700 p-2 z-[10000] w-80">
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5 px-1">Question Type</p>
               <div className="grid grid-cols-3 gap-0.5">
                 {QUESTION_TYPES.map(({ type, label }) => (
@@ -56,7 +56,7 @@ export function AddQuestionButton({
                     onClick={() => {
                       onAddField(type);
                     }}
-                    className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-xs text-gray-700 hover:bg-purple-50 hover:text-[#673ab7] transition-colors text-left"
+                    className="flex items-center gap-1.5 px-2 py-1.5 rounded-lg text-xs text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-[#673ab7] transition-colors text-left"
                   >
                     {label}
                   </button>
@@ -70,7 +70,7 @@ export function AddQuestionButton({
 
         <button
           onClick={onPreview}
-          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-gray-600 hover:bg-gray-100 transition-colors text-sm"
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-900/30 transition-colors text-sm"
           title="Preview"
         >
           <Eye size={16} />

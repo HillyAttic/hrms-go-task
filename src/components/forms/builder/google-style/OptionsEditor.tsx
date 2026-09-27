@@ -59,7 +59,7 @@ export function OptionsEditor({
             value={typeof option === 'string' ? option : option.label || option.value}
             onChange={(e) => updateOption(idx, e.target.value)}
             className="
-              flex-1 px-2 py-1 text-sm border-b border-gray-200
+              flex-1 px-2 py-1 text-sm border-b border-gray-200 dark:border-gray-700
               focus:border-purple-600 focus:outline-none
               placeholder-gray-400
             "
@@ -84,7 +84,7 @@ export function OptionsEditor({
       <button
         onClick={addOption}
         className="
-          text-sm text-purple-600 hover:text-purple-700
+          text-sm text-purple-600 hover:text-purple-700 dark:hover:text-purple-300
           flex items-center space-x-1 mt-2 transition-colors
         "
       >

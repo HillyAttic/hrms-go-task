@@ -226,13 +226,19 @@ const nextConfig = {
         ],
       },
       // Static assets - cache with revalidation
-      // Changed from immutable to allow updates when environment variables change
+      // Prod filenames are content-hashed, so a year is safe. Dev filenames are
+      // NOT (the hash is the directory, not the content), so a one-year max-age
+      // pins the browser to the first copy it ever saw and code edits stop
+      // appearing until a manual hard reload.
       {
         source: '/_next/static/:path*',
         headers: [
           {
             key: 'Cache-Control',
-            value: 'public, max-age=31536000, stale-while-revalidate=86400',
+            value:
+              process.env.NODE_ENV === 'production'
+                ? 'public, max-age=31536000, stale-while-revalidate=86400'
+                : 'no-store, must-revalidate',
           },
         ],
       },

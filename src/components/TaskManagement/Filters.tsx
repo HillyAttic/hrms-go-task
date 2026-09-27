@@ -35,7 +35,7 @@ export const Filters: React.FC<FiltersProps> = ({ onFilterChange }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-card rounded-lg border border-stroke dark:border-border p-4 mb-6">
+    <div className="bg-card rounded-lg border border-stroke dark:border-border p-4 mb-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         {/* Status Filter */}
         <div>
@@ -109,7 +109,7 @@ export const Filters: React.FC<FiltersProps> = ({ onFilterChange }) => {
           </button>
           <button
             onClick={handleResetFilters}
-            className="w-full bg-gray-200 dark:bg-muted text-black dark:text-white py-2 px-4 rounded-lg hover:bg-gray-300 dark:hover:bg-card transition"
+            className="w-full bg-muted text-black py-2 px-4 rounded-lg hover:bg-muted dark:hover:bg-card transition"
           >
             Reset
           </button>

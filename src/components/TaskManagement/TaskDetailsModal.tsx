@@ -124,31 +124,31 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
       case TaskStatus.TODO:
         return 'bg-foreground text-background';
       case TaskStatus.IN_PROGRESS:
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300';
       case TaskStatus.COMPLETED:
-        return 'bg-green-100 text-green-800';
+        return 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-muted text-foreground';
     }
   };
 
   const getPriorityColor = (priority: TaskPriority) => {
     switch (priority) {
       case TaskPriority.HIGH:
-        return 'bg-red-100 text-red-800';
+        return 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300';
       case TaskPriority.MEDIUM:
-        return 'bg-orange-100 text-orange-800';
+        return 'bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300';
       case TaskPriority.LOW:
-        return 'bg-green-100 text-green-800';
+        return 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-muted text-foreground';
     }
   };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div 
-        className="bg-white dark:bg-card rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+        className="bg-card rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-6">
@@ -160,7 +160,7 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
                   type="text"
                   value={editedTask.title}
                   onChange={(e) => setEditedTask({...editedTask, title: e.target.value})}
-                  className="w-full bg-transparent border-b border-gray-300 dark:border-border text-black dark:text-white focus:outline-none"
+                  className="w-full bg-transparent border-b border-border dark:border-border text-black focus:outline-none"
                 />
               ) : (
                 task.title
@@ -168,7 +168,7 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
             </h2>
             <button
               onClick={onClose}
-              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              className="text-muted-foreground hover:text-muted-foreground dark:text-muted-foreground dark:hover:text-gray-200"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -198,10 +198,10 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
               <textarea
                 value={editedTask.description}
                 onChange={(e) => setEditedTask({...editedTask, description: e.target.value})}
-                className="w-full h-32 p-3 bg-gray-50 dark:bg-muted border border-stroke dark:border-border rounded-lg text-black dark:text-white"
+                className="w-full h-32 p-3 bg-muted border border-stroke dark:border-border rounded-lg text-black"
               />
             ) : (
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-muted-foreground">
                 {task.description || 'No description provided.'}
               </p>
             )}
@@ -219,10 +219,10 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
                     ...editedTask, 
                     dueDate: e.target.value ? new Date(e.target.value) : new Date()
                   })}
-                  className="w-full p-2 bg-gray-50 dark:bg-muted border border-stroke dark:border-border rounded-lg text-black dark:text-white"
+                  className="w-full p-2 bg-muted border border-stroke dark:border-border rounded-lg text-black"
                 />
               ) : (
-                <p className="text-gray-600 dark:text-gray-300">
+                <p className="text-muted-foreground">
                   {task.dueDate ? formatDate(task.dueDate) : 'No due date'}
                 </p>
               )}
@@ -232,7 +232,7 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
               <h3 className="text-lg font-semibold text-black dark:text-white mb-2">Assigned To</h3>
               <div className="flex items-center space-x-2">
                 <UserAvatar users={task.assignedTo} size="md" />
-                <span className="text-gray-600 dark:text-gray-300">
+                <span className="text-muted-foreground">
                   {task.assignedTo.join(', ')}
                 </span>
               </div>
@@ -250,24 +250,24 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
             ) : (
               <div className="space-y-4 max-h-60 overflow-y-auto pr-2">
                 {comments.map((comment) => (
-                  <div key={comment.id} className="bg-gray-50 dark:bg-muted p-4 rounded-lg">
+                  <div key={comment.id} className="bg-muted p-4 rounded-lg">
                     <div className="flex items-start">
                       <UserAvatar users={[comment.author]} size="sm" />
                       <div className="ml-3 flex-1">
                         <div className="flex justify-between">
                           <h4 className="font-medium text-black dark:text-white">{comment.author}</h4>
-                          <span className="text-xs text-gray-500 dark:text-gray-400">
+                          <span className="text-xs text-muted-foreground">
                             {formatDate(comment.createdAt)}
                           </span>
                         </div>
-                        <p className="mt-1 text-gray-600 dark:text-gray-300">{comment.content}</p>
+                        <p className="mt-1 text-muted-foreground">{comment.content}</p>
                       </div>
                     </div>
                   </div>
                 ))}
                 
                 {comments.length === 0 && (
-                  <p className="text-gray-500 dark:text-gray-400 text-center py-4">No comments yet</p>
+                  <p className="text-muted-foreground text-center py-4">No comments yet</p>
                 )}
               </div>
             )}
@@ -278,7 +278,7 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
                 placeholder="Add a comment..."
-                className="flex-1 p-3 bg-gray-50 dark:bg-muted border border-stroke dark:border-border rounded-l-lg text-black dark:text-white focus:outline-none"
+                className="flex-1 p-3 bg-muted border border-stroke dark:border-border rounded-l-lg text-black focus:outline-none"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
@@ -308,7 +308,7 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
               )}
               <button
                 onClick={handleDelete}
-                className="text-red-500 hover:text-red-700"
+                className="text-red-500 hover:text-red-700 dark:hover:text-red-300"
               >
                 Delete
               </button>
@@ -318,7 +318,7 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
               <div>
                 <button
                   onClick={() => setIsEditing(false)}
-                  className="mr-2 px-4 py-2 bg-gray-200 dark:bg-muted text-black dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-card"
+                  className="mr-2 px-4 py-2 bg-muted text-black rounded-lg hover:bg-muted dark:hover:bg-card"
                 >
                   Cancel
                 </button>

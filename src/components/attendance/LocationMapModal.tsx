@@ -47,20 +47,20 @@ export function LocationMapModal({
 
   const modalContent = (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-[99999] flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+      <div className="bg-card rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between p-4 border-b border-border">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
+            <h3 className="text-lg font-semibold text-foreground">
               {title}
             </h3>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+            <p className="text-sm text-muted-foreground mt-1">
               {latitude.toFixed(6)}, {longitude.toFixed(6)}
             </p>
           </div>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300 transition-colors"
+            className="text-muted-foreground hover:text-muted-foreground dark:hover:text-muted-foreground transition-colors"
             aria-label="Close modal"
           >
             <X className="w-6 h-6" />
@@ -83,7 +83,7 @@ export function LocationMapModal({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+        <div className="flex items-center justify-between p-4 border-t border-border bg-muted">
           <a
             href={`https://www.google.com/maps?q=${latitude},${longitude}`}
             target="_blank"

@@ -12,7 +12,7 @@ const getNotificationStyle = (type: string) => {
     case 'info':
       return 'bg-blue-500 text-white';
     default:
-      return 'bg-gray-500 text-white';
+      return 'bg-muted text-white';
   }
 };
 

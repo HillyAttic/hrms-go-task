@@ -8,11 +8,11 @@ export function CategorySkeleton() {
         <Card key={i} className="animate-pulse">
           <CardContent className="p-6">
             <div className="flex items-start gap-4">
-              <div className="w-12 h-12 bg-gray-200 rounded-lg"></div>
+              <div className="w-12 h-12 bg-muted rounded-lg"></div>
               <div className="flex-1 space-y-3">
-                <div className="h-5 bg-gray-200 rounded w-3/4"></div>
-                <div className="h-4 bg-gray-200 rounded w-full"></div>
-                <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+                <div className="h-5 bg-muted rounded w-3/4"></div>
+                <div className="h-4 bg-muted rounded w-full"></div>
+                <div className="h-4 bg-muted rounded w-2/3"></div>
               </div>
             </div>
           </CardContent>

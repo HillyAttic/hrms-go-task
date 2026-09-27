@@ -35,14 +35,14 @@ export function KanbanColumn({
 }: KanbanColumnProps) {
   return (
     <div
-      className={`${color} rounded-lg p-4 ${compact ? 'min-h-[250px] max-h-[400px] overflow-y-auto' : 'min-h-[600px]'} w-full transition-all`}
+      className={`${color} rounded-lg border-2 border-border p-4 ${compact ? 'min-h-[250px] max-h-[400px] overflow-y-auto' : 'min-h-[600px]'} w-full transition-all`}
       onDragOver={onDragOver}
       onDrop={(e) => onDrop(e, id)}
     >
       {/* Column Header */}
-      <div className="flex items-center justify-between mb-4 pb-3 border-b border-gray-300 dark:border-gray-600">
-        <h3 className="font-bold text-lg text-gray-800">{title}</h3>
-        <span className="bg-white dark:bg-gray-dark bg-opacity-70 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 dark:text-gray-300">
+      <div className="flex items-center justify-between mb-4 pb-3 border-b-2 border-border">
+        <h3 className="text-lg font-bold text-foreground">{title}</h3>
+        <span className="rounded-full border border-border bg-card px-3 py-1 text-sm font-semibold text-foreground">
           {tasks.length}
         </span>
       </div>
@@ -50,7 +50,7 @@ export function KanbanColumn({
       {/* Tasks */}
       <div className="space-y-3">
         {tasks.length === 0 ? (
-          <div className="text-center py-12 text-gray-400">
+          <div className="text-center py-12 text-muted-foreground">
             <svg
               className="w-12 h-12 mx-auto mb-3 opacity-50"
               fill="none"

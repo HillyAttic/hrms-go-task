@@ -67,20 +67,20 @@ export function ClientListModal({
     <div className="fixed inset-0 z-50 overflow-y-auto">
       <div className="flex items-center justify-center min-h-screen px-4 py-4 sm:py-8">
         <div 
-          className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" 
+          className="fixed inset-0 transition-opacity bg-muted bg-opacity-75" 
           onClick={onClose}
         ></div>
 
-        <div className="inline-block w-full max-w-4xl overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-gray-dark rounded-lg shadow-xl relative z-10 max-h-[85vh] flex flex-col">
+        <div className="inline-block w-full max-w-4xl overflow-hidden text-left align-middle transition-all transform bg-card rounded-lg shadow-xl relative z-10 max-h-[85vh] flex flex-col">
           {/* Header - Fixed */}
-          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
+          <div className="px-6 py-4 border-b border-border flex-shrink-0">
             <div className="flex items-center justify-between">
               <div>
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
                   <UserGroupIcon className="w-6 h-6 text-indigo-600" />
                   Assigned Clients
                 </h3>
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                <p className="text-sm text-muted-foreground mt-1">
                   {taskTitle}
                   {isTeamMemberMapping && teamMemberName && (
                     <span className="ml-2 text-indigo-600">• Assigned to: {teamMemberName}</span>
@@ -89,7 +89,7 @@ export function ClientListModal({
               </div>
               <button
                 onClick={onClose}
-                className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                className="text-muted-foreground hover:text-muted-foreground dark:hover:text-muted-foreground transition-colors"
                 aria-label="Close modal"
               >
                 <XMarkIcon className="w-6 h-6" />
@@ -105,15 +105,15 @@ export function ClientListModal({
               </div>
             ) : clients.length === 0 ? (
               <div className="text-center py-12">
-                <UserGroupIcon className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                <p className="text-gray-500 dark:text-gray-400">No clients assigned to this task</p>
+                <UserGroupIcon className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+                <p className="text-muted-foreground">No clients assigned to this task</p>
               </div>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                 {clients.map((client) => (
                   <div
                     key={client.id}
-                    className="p-3 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-indigo-300 dark:hover:border-indigo-600 transition-colors bg-white dark:bg-gray-800"
+                    className="p-3 border-2 border-border rounded-lg hover:border-indigo-300 dark:hover:border-indigo-600 transition-colors bg-card"
                   >
                     <div className="flex items-start gap-2">
                       <div className="flex-shrink-0">
@@ -124,21 +124,21 @@ export function ClientListModal({
                         </div>
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-semibold text-sm text-gray-900 dark:text-white truncate">
+                        <h4 className="font-semibold text-sm text-foreground truncate">
                           {client.clientName}
                         </h4>
                         {client.businessName && (
-                          <p className="text-xs text-gray-600 dark:text-gray-400 truncate">
+                          <p className="text-xs text-muted-foreground truncate">
                             {client.businessName}
                           </p>
                         )}
                         {client.contact?.email && (
-                          <p className="text-xs text-gray-500 dark:text-gray-500 truncate mt-0.5">
+                          <p className="text-xs text-muted-foreground dark:text-muted-foreground truncate mt-0.5">
                             {client.contact.email}
                           </p>
                         )}
                         {client.contact?.phone && (
-                          <p className="text-xs text-gray-500 dark:text-gray-500 truncate">
+                          <p className="text-xs text-muted-foreground dark:text-muted-foreground truncate">
                             {client.contact.phone}
                           </p>
                         )}
@@ -151,14 +151,14 @@ export function ClientListModal({
           </div>
 
           {/* Footer - Fixed */}
-          <div className="px-6 py-3 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 flex-shrink-0">
+          <div className="px-6 py-3 border-t border-border bg-muted flex-shrink-0">
             <div className="flex items-center justify-between">
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                Total: <span className="font-semibold text-gray-900 dark:text-white">{clients.length}</span> client{clients.length !== 1 ? 's' : ''}
+              <p className="text-sm text-muted-foreground">
+                Total: <span className="font-semibold text-foreground">{clients.length}</span> client{clients.length !== 1 ? 's' : ''}
               </p>
               <button
                 onClick={onClose}
-                className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors text-sm font-medium"
+                className="px-4 py-2 bg-muted text-muted-foreground rounded-lg hover:bg-muted dark:hover:bg-gray-600 transition-colors text-sm font-medium"
               >
                 Close
               </button>

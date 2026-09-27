@@ -208,18 +208,18 @@ export default function DiagnosticPage() {
       )}
 
       {/* Detailed Checks */}
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg mb-6">
+      <div className="bg-card p-6 rounded-lg mb-6">
         <h3 className="text-lg font-bold mb-4">Detailed Check Results</h3>
         <div className="space-y-3">
           {results.checks.map((check: any, i: number) => (
-            <div key={i} className="flex items-start justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded">
+            <div key={i} className="flex items-start justify-between p-3 bg-muted rounded">
               <div className="flex-1">
                 <div className="font-medium">{check.name}</div>
-                <div className="text-sm text-gray-600 dark:text-gray-400">{check.details}</div>
+                <div className="text-sm text-muted-foreground">{check.details}</div>
               </div>
-              <div className={`px-3 py-1 rounded text-sm font-medium ${check.status === 'PASS' ? 'bg-green-100 text-green-700' :
-                  check.status === 'FAIL' ? 'bg-red-100 text-red-700' :
-                    'bg-yellow-100 text-yellow-700'
+              <div className={`px-3 py-1 rounded text-sm font-medium ${check.status === 'PASS' ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300' :
+                  check.status === 'FAIL' ? 'bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-300' :
+                    'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300'
                 }`}>
                 {check.status}
               </div>

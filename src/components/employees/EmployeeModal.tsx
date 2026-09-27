@@ -488,15 +488,15 @@ export function EmployeeModal({
     const progress = uploadProgress[field] || 0;
 
     return (
-      <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
+      <div className="border border-border rounded-lg p-3">
         <Label className="text-sm font-medium mb-2 block">{displayLabel}</Label>
 
         {/* Existing file display */}
         {url && (
-          <div className="flex items-center justify-between bg-gray-50 dark:bg-gray-800 rounded-md px-3 py-2 mb-2">
+          <div className="flex items-center justify-between bg-muted rounded-md px-3 py-2 mb-2">
             <div className="flex items-center gap-2 min-w-0 flex-1">
               <DocumentIcon className="w-5 h-5 text-blue-500 flex-shrink-0" />
-              <span className="text-sm text-gray-700 dark:text-gray-300 truncate">
+              <span className="text-sm text-muted-foreground truncate">
                 {name || 'Uploaded document'}
               </span>
             </div>
@@ -504,7 +504,7 @@ export function EmployeeModal({
               <button
                 type="button"
                 onClick={() => viewDocument(url)}
-                className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded transition-colors"
+                className="p-1.5 text-muted-foreground hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded transition-colors"
                 title="View document"
               >
                 <EyeIcon className="w-4 h-4" />
@@ -512,7 +512,7 @@ export function EmployeeModal({
               <button
                 type="button"
                 onClick={() => handleDeleteDocument(field)}
-                className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 rounded transition-colors"
+                className="p-1.5 text-muted-foreground hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 rounded transition-colors"
                 title="Delete document"
               >
                 <TrashIcon className="w-4 h-4" />
@@ -524,13 +524,13 @@ export function EmployeeModal({
         {/* Upload progress bar */}
         {isUploading && (
           <div className="mb-2">
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            <div className="w-full bg-muted rounded-full h-2">
               <div
                 className="bg-foreground h-2 rounded-full transition-all duration-300"
                 style={{ width: `${progress}%` }}
               />
             </div>
-            <p className="text-xs text-gray-500 mt-1">{progress}% uploaded</p>
+            <p className="text-xs text-muted-foreground mt-1">{progress}% uploaded</p>
           </div>
         )}
 
@@ -538,7 +538,7 @@ export function EmployeeModal({
         <div className="flex items-center gap-2">
           <label className={`flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md cursor-pointer transition-colors ${
             isUploading
-              ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+              ? 'bg-muted text-muted-foreground cursor-not-allowed'
               : 'bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50'
           }`}>
             <ArrowUpTrayIcon className="w-4 h-4" />
@@ -568,16 +568,16 @@ export function EmployeeModal({
     const progress = uploadProgress[fieldName] || 0;
 
     return (
-      <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg p-3 mb-2">
+      <div key={index} className="border border-border rounded-lg p-3 mb-2">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          <span className="text-sm font-medium text-muted-foreground">
             Salary Slip #{index + 1}
           </span>
           {salarySlipUrls.length > 1 && (
             <button
               type="button"
               onClick={() => handleDeleteSalarySlip(index)}
-              className="p-1 text-gray-400 hover:text-red-500 transition-colors"
+              className="p-1 text-muted-foreground hover:text-red-500 transition-colors"
               title="Remove this slip"
             >
               <XMarkIcon className="w-4 h-4" />
@@ -587,10 +587,10 @@ export function EmployeeModal({
 
         {/* Show uploaded file if exists */}
         {url ? (
-          <div className="flex items-center justify-between bg-gray-50 dark:bg-gray-800 rounded-md px-3 py-2 mb-2">
+          <div className="flex items-center justify-between bg-muted rounded-md px-3 py-2 mb-2">
             <div className="flex items-center gap-2 min-w-0 flex-1">
               <DocumentIcon className="w-5 h-5 text-blue-500 flex-shrink-0" />
-              <span className="text-sm text-gray-700 dark:text-gray-300 truncate">
+              <span className="text-sm text-muted-foreground truncate">
                 {name || `Salary Slip ${index + 1}`}
               </span>
             </div>
@@ -598,7 +598,7 @@ export function EmployeeModal({
               <button
                 type="button"
                 onClick={() => viewDocument(url)}
-                className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded transition-colors"
+                className="p-1.5 text-muted-foreground hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded transition-colors"
                 title="View"
               >
                 <EyeIcon className="w-4 h-4" />
@@ -612,7 +612,7 @@ export function EmployeeModal({
               value={typeof slip === 'string' ? slip : ''}
               onChange={(e) => updateSalarySlipUrl(index, e.target.value)}
               placeholder={`Salary slip ${index + 1} URL (optional)`}
-              className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100 text-sm"
+              className="flex-1 px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card text-foreground text-sm"
               disabled={isUploading || isLoading}
             />
           </div>
@@ -621,20 +621,20 @@ export function EmployeeModal({
         {/* Upload progress */}
         {isUploading && (
           <div className="mb-2">
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+            <div className="w-full bg-muted rounded-full h-2">
               <div
                 className="bg-foreground h-2 rounded-full transition-all duration-300"
                 style={{ width: `${progress}%` }}
               />
             </div>
-            <p className="text-xs text-gray-500 mt-1">{progress}% uploaded</p>
+            <p className="text-xs text-muted-foreground mt-1">{progress}% uploaded</p>
           </div>
         )}
 
         {/* Upload button */}
         <label className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md cursor-pointer transition-colors ${
           isUploading
-            ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+            ? 'bg-muted text-muted-foreground cursor-not-allowed'
             : 'bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50'
         }`}>
           <ArrowUpTrayIcon className="w-4 h-4" />
@@ -658,7 +658,7 @@ export function EmployeeModal({
     `px-4 py-2 text-sm font-medium rounded-md transition-colors ${
       activeTab === tab
         ? 'bg-foreground text-background'
-        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+        : 'bg-muted text-muted-foreground hover:bg-muted dark:hover:bg-gray-600'
     }`;
 
   return (
@@ -673,7 +673,7 @@ export function EmployeeModal({
         <form onSubmit={handleSubmit(handleFormSubmit, handleInvalidSubmit)} className="space-y-4">
           {/* Avatar Display */}
           <div className="flex flex-col items-center gap-2">
-            <div className="w-20 h-20 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden">
+            <div className="w-20 h-20 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center overflow-hidden">
               {employee?.photoURL ? (
                 <img
                   src={employee.photoURL}
@@ -689,14 +689,14 @@ export function EmployeeModal({
               )}
             </div>
             {displayName && (
-              <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
+              <span className="text-sm font-medium text-muted-foreground">
                 {displayName}
               </span>
             )}
           </div>
 
           {/* Tab Navigation */}
-          <div className="flex flex-wrap gap-2 border-b border-gray-200 dark:border-gray-700 pb-3">
+          <div className="flex flex-wrap gap-2 border-b border-border pb-3">
             <button type="button" onClick={() => setActiveTab('personal')} className={tabClass('personal')}>
               Personal Info
             </button>
@@ -714,7 +714,7 @@ export function EmployeeModal({
           {/* Tab: Personal Info */}
           {activeTab === 'personal' && (
             <div className="space-y-4">
-              <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">Personal Information</h3>
+              <h3 className="text-md font-semibold text-foreground">Personal Information</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <Input
@@ -788,7 +788,7 @@ export function EmployeeModal({
           {/* Tab: Employment */}
           {activeTab === 'employment' && (
             <div className="space-y-4">
-              <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">Employment Details</h3>
+              <h3 className="text-md font-semibold text-foreground">Employment Details</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <Input
@@ -837,7 +837,7 @@ export function EmployeeModal({
                   <select
                     id="role"
                     {...register('role')}
-                    className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100"
+                    className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed bg-card text-foreground"
                     disabled={isLoading}
                   >
                     <option value="Employee">Employee</option>
@@ -855,7 +855,7 @@ export function EmployeeModal({
                   <select
                     id="status"
                     {...register('status')}
-                    className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100"
+                    className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed bg-card text-foreground"
                     disabled={isLoading}
                   >
                     <option value="active">Active</option>
@@ -869,15 +869,15 @@ export function EmployeeModal({
               </div>
 
               {/* Manager Assignment */}
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
-                <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Manager Assignment</h4>
+              <div className="border-t border-border pt-4 mt-4">
+                <h4 className="text-sm font-semibold text-muted-foreground mb-3">Manager Assignment</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="managerId">Manager (if applicable)</Label>
                     <select
                       id="managerId"
                       {...register('managerId')}
-                      className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100"
+                      className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed bg-card text-foreground"
                       disabled={isLoading}
                       onChange={(e) => {
                         const selectedManager = managers.find(m => m.id === e.target.value);
@@ -899,14 +899,14 @@ export function EmployeeModal({
               </div>
 
               {/* Attendance Settings — Location Tracking Toggle */}
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
-                <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Attendance Settings</h4>
-                <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+              <div className="border-t border-border pt-4 mt-4">
+                <h4 className="text-sm font-semibold text-muted-foreground mb-3">Attendance Settings</h4>
+                <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
                   <div className="flex-1">
                     <Label htmlFor="requireLocationTracking" className="text-sm font-medium cursor-pointer">
                       Require GPS Location for Clock In/Out
                     </Label>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    <p className="text-xs text-muted-foreground mt-1">
                       When enabled, the employee must allow GPS access to clock in/out.
                       When disabled, clock in/out works without requiring location permission.
                     </p>
@@ -921,7 +921,7 @@ export function EmployeeModal({
                     />
                     <label
                       htmlFor="requireLocationTracking"
-                      className="relative block h-6 w-11 cursor-pointer rounded-full bg-gray-300 dark:bg-muted transition-colors peer-checked:bg-ring peer-focus:ring-2 peer-focus:ring-ring peer-checked:[&>span]:translate-x-5"
+                      className="relative block h-6 w-11 cursor-pointer rounded-full bg-muted transition-colors peer-checked:bg-ring peer-focus:ring-2 peer-focus:ring-ring peer-checked:[&>span]:translate-x-5"
                     >
                       <span className="absolute left-0.5 top-0.5 size-5 rounded-full bg-white transition-transform" />
                     </label>
@@ -931,17 +931,17 @@ export function EmployeeModal({
 
               {/* Reportees Section — shown when role is Manager */}
               {watch('role') === 'Manager' && (
-                <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
-                  <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                <div className="border-t border-border pt-4 mt-4">
+                  <h4 className="text-sm font-semibold text-muted-foreground mb-2">
                     Employees Reporting to this Manager
                   </h4>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-3">
+                  <p className="text-xs text-muted-foreground mb-3">
                     Reportees are managed through the employee assignment. This is displayed for reference.
                   </p>
                   {employee?.reportees && employee.reportees.length > 0 && (
                     <ul className="space-y-1">
                       {employee.reportees.map((rep, idx) => (
-                        <li key={idx} className="text-sm text-gray-600 dark:text-gray-400 flex items-center gap-2">
+                        <li key={idx} className="text-sm text-muted-foreground flex items-center gap-2">
                           <span className="w-2 h-2 rounded-full bg-blue-400" />
                           {rep.name} ({rep.employeeId})
                         </li>
@@ -952,8 +952,8 @@ export function EmployeeModal({
               )}
 
               {/* Password fields */}
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
-                <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+              <div className="border-t border-border pt-4 mt-4">
+                <h4 className="text-sm font-semibold text-muted-foreground mb-3">
                   {employee ? 'Change Password (optional)' : 'Set Password'}
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -968,7 +968,7 @@ export function EmployeeModal({
                         error={errors.currentPassword?.message}
                         disabled={isLoading}
                       />
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      <p className="text-xs text-muted-foreground mt-1">
                         Required only if you want to change the password
                       </p>
                     </div>
@@ -985,7 +985,7 @@ export function EmployeeModal({
                       disabled={isLoading}
                     />
                     {employee && (
-                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                      <p className="text-xs text-muted-foreground mt-1">
                         Leave blank to keep current password
                       </p>
                     )}
@@ -1010,7 +1010,7 @@ export function EmployeeModal({
           {/* Tab: Probation & Promotion */}
           {activeTab === 'probation' && (
             <div className="space-y-4">
-              <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">Probation Details</h3>
+              <h3 className="text-md font-semibold text-foreground">Probation Details</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                   <Input
@@ -1034,8 +1034,8 @@ export function EmployeeModal({
               </div>
 
               {/* Promotion */}
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
-                <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">Promotion Details</h3>
+              <div className="border-t border-border pt-4 mt-4">
+                <h3 className="text-md font-semibold text-foreground">Promotion Details</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
                   <div>
                     <Input
@@ -1059,9 +1059,9 @@ export function EmployeeModal({
               </div>
 
               {/* Salary Changes */}
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
+              <div className="border-t border-border pt-4 mt-4">
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">Salary Changes</h3>
+                  <h3 className="text-md font-semibold text-foreground">Salary Changes</h3>
                   <Button
                     type="button"
                     variant="outline"
@@ -1075,21 +1075,21 @@ export function EmployeeModal({
                 </div>
 
                 {salaryChanges.length === 0 && (
-                  <p className="text-sm text-gray-500 dark:text-gray-400 italic">
+                  <p className="text-sm text-muted-foreground italic">
                     No salary changes recorded. Click "Add Change" to add one.
                   </p>
                 )}
 
                 {salaryChanges.map((change, index) => (
-                  <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 mb-3 relative">
+                  <div key={index} className="border border-border rounded-lg p-4 mb-3 relative">
                     <button
                       type="button"
                       onClick={() => removeSalaryChange(index)}
-                      className="absolute top-2 right-2 text-gray-400 hover:text-red-500"
+                      className="absolute top-2 right-2 text-muted-foreground hover:text-red-500"
                     >
                       <XMarkIcon className="w-5 h-5" />
                     </button>
-                    <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Change #{index + 1}</h4>
+                    <h4 className="text-sm font-medium text-muted-foreground mb-3">Change #{index + 1}</h4>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       <div>
                         <Label>Date</Label>
@@ -1097,7 +1097,7 @@ export function EmployeeModal({
                           type="date"
                           value={change.date}
                           onChange={(e) => updateSalaryChange(index, 'date', e.target.value)}
-                          className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100 text-sm"
+                          className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card text-foreground text-sm"
                         />
                       </div>
                       <div>
@@ -1105,7 +1105,7 @@ export function EmployeeModal({
                         <select
                           value={change.reason}
                           onChange={(e) => updateSalaryChange(index, 'reason', e.target.value)}
-                          className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100 text-sm"
+                          className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card text-foreground text-sm"
                         >
                           <option value="probation">After Probation</option>
                           <option value="promotion">Promotion</option>
@@ -1118,7 +1118,7 @@ export function EmployeeModal({
                           type="number"
                           value={change.oldSalary}
                           onChange={(e) => updateSalaryChange(index, 'oldSalary', parseFloat(e.target.value) || 0)}
-                          className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100 text-sm"
+                          className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card text-foreground text-sm"
                         />
                       </div>
                       <div>
@@ -1127,7 +1127,7 @@ export function EmployeeModal({
                           type="number"
                           value={change.newSalary}
                           onChange={(e) => updateSalaryChange(index, 'newSalary', parseFloat(e.target.value) || 0)}
-                          className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100 text-sm"
+                          className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card text-foreground text-sm"
                         />
                       </div>
                       <div className="md:col-span-2">
@@ -1137,7 +1137,7 @@ export function EmployeeModal({
                           value={change.notes || ''}
                           onChange={(e) => updateSalaryChange(index, 'notes', e.target.value)}
                           placeholder="Reason or details about this change"
-                          className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100 text-sm"
+                          className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card text-foreground text-sm"
                         />
                       </div>
                     </div>
@@ -1151,14 +1151,14 @@ export function EmployeeModal({
           {activeTab === 'documents' && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">Employee Documents</h3>
+                <h3 className="text-md font-semibold text-foreground">Employee Documents</h3>
                 {!employee?.id && (
                   <span className="text-xs text-amber-600 bg-amber-50 dark:bg-amber-900/30 px-3 py-1 rounded-md">
                     Save the employee first to enable document uploads
                   </span>
                 )}
               </div>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
+              <p className="text-xs text-muted-foreground">
                 Upload documents from your computer (JPG, PNG, PDF — max 10MB each). You can also enter a URL manually if the file is hosted externally.
               </p>
 
@@ -1169,7 +1169,7 @@ export function EmployeeModal({
                   <button
                     type="button"
                     onClick={() => setUploadError(null)}
-                    className="text-red-500 hover:text-red-700"
+                    className="text-red-500 hover:text-red-700 dark:hover:text-red-300"
                   >
                     <XMarkIcon className="w-4 h-4" />
                   </button>
@@ -1188,9 +1188,9 @@ export function EmployeeModal({
               </div>
 
               {/* Salary Slips (last 3 months) */}
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-2">
+              <div className="border-t border-border pt-4 mt-2">
                 <div className="flex items-center justify-between mb-3">
-                  <Label className="text-md font-semibold text-gray-800 dark:text-gray-200">
+                  <Label className="text-md font-semibold text-foreground">
                     Salary Slips (Last 3 months)
                   </Label>
                   <Button

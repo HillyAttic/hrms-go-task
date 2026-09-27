@@ -166,16 +166,16 @@ export function RosterMobileCalendarView({
   }, [calendarDays]);
 
   return (
-    <div className="bg-white dark:bg-card rounded-2xl shadow-lg max-w-md mx-auto overflow-hidden border border-gray-200 dark:border-gray-800">
+    <div className="bg-card rounded-2xl shadow-lg max-w-md mx-auto overflow-hidden border border-border">
       {/* Mobile Header - Google Calendar Style */}
-      <div className="flex items-center justify-between px-4 py-3 bg-white dark:bg-card">
+      <div className="flex items-center justify-between px-4 py-3 bg-card">
         <div className="flex items-center gap-3">
-          <Bars3Icon className="w-6 h-6 text-gray-500 dark:text-gray-400" />
+          <Bars3Icon className="w-6 h-6 text-muted-foreground" />
           <div className="flex items-center gap-1">
-            <h1 className="text-lg font-medium text-gray-900 dark:text-white">
+            <h1 className="text-lg font-medium text-foreground">
               {MONTHS[currentMonth - 1]}
             </h1>
-            <ChevronRightIcon className="w-4 h-4 text-gray-400 dark:text-gray-500 rotate-90" />
+            <ChevronRightIcon className="w-4 h-4 text-muted-foreground rotate-90" />
           </div>
         </div>
         <div className="flex items-center gap-3">
@@ -191,8 +191,8 @@ export function RosterMobileCalendarView({
           >
             {new Date().getDate()}
           </button>
-          <CalendarIcon className="w-5 h-5 text-gray-500 dark:text-gray-400" />
-          <EllipsisVerticalIcon className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+          <CalendarIcon className="w-5 h-5 text-muted-foreground" />
+          <EllipsisVerticalIcon className="w-5 h-5 text-muted-foreground" />
         </div>
       </div>
 
@@ -204,7 +204,7 @@ export function RosterMobileCalendarView({
             className={`py-2 text-center text-xs font-semibold tracking-wide ${
               isTodayWeekday(index)
                 ? 'text-blue-600 dark:text-blue-400'
-                : 'text-gray-500 dark:text-gray-500'
+                : 'text-muted-foreground dark:text-muted-foreground'
             }`}
           >
             {day}
@@ -216,28 +216,28 @@ export function RosterMobileCalendarView({
       </div>
 
       {/* Month Navigation - Compact */}
-      <div className="flex items-center justify-between px-4 py-2 bg-gray-50 dark:bg-muted">
+      <div className="flex items-center justify-between px-4 py-2 bg-muted">
         <button
           onClick={onPreviousMonth}
-          className="p-1.5 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+          className="p-1.5 rounded-full hover:bg-muted dark:hover:bg-gray-700 transition-colors"
         >
-          <ChevronLeftIcon className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+          <ChevronLeftIcon className="w-4 h-4 text-muted-foreground" />
         </button>
-        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+        <span className="text-sm font-medium text-muted-foreground">
           {MONTHS[currentMonth - 1]} {currentYear}
         </span>
         <button
           onClick={onNextMonth}
-          className="p-1.5 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
+          className="p-1.5 rounded-full hover:bg-muted dark:hover:bg-gray-700 transition-colors"
         >
-          <ChevronRightIcon className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+          <ChevronRightIcon className="w-4 h-4 text-muted-foreground" />
         </button>
       </div>
 
       {/* Calendar Grid - Google Calendar Monthly View Style */}
       <div>
         {calendarRows.map((row, rowIndex) => (
-          <div key={rowIndex} className="grid grid-cols-7 border-t border-gray-100 dark:border-gray-800/60">
+          <div key={rowIndex} className="grid grid-cols-7 border-t border-border/60">
             {row.map((calDay, colIndex) => {
               const todayHighlight = calDay.isCurrentMonth && isToday(calDay.date);
               const allTasks = [...calDay.tasks, ...calDay.nonRecurringTasks];
@@ -251,7 +251,7 @@ export function RosterMobileCalendarView({
                   key={colIndex}
                   className={`min-h-[80px] py-1.5 px-0.5 relative cursor-pointer transition-colors
                     ${!calDay.isCurrentMonth ? 'opacity-40' : ''}
-                    ${isSelected ? 'bg-blue-50 dark:bg-blue-900/15' : 'hover:bg-gray-50 dark:hover:bg-white/5'}
+                    ${isSelected ? 'bg-blue-50 dark:bg-blue-900/15' : 'hover:bg-muted dark:hover:bg-white/5'}
                   `}
                   onClick={() => handleDateClick(calDay)}
                 >
@@ -261,8 +261,8 @@ export function RosterMobileCalendarView({
                       todayHighlight
                         ? 'bg-foreground text-background shadow-sm shadow-blue-600/30'
                         : calDay.isCurrentMonth
-                          ? 'text-gray-800 dark:text-gray-200'
-                          : 'text-gray-400 dark:text-gray-600'
+                          ? 'text-foreground'
+                          : 'text-muted-foreground dark:text-muted-foreground'
                     }`}>
                       {calDay.day}
                     </div>
@@ -350,19 +350,19 @@ export function RosterMobileCalendarView({
             onClick={() => { setShowBottomSheet(false); closeModal(); }}
           />
           {/* Sheet */}
-          <div className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-card rounded-t-2xl shadow-2xl max-h-[60vh] animate-slide-up">
+          <div className="fixed bottom-0 left-0 right-0 z-50 bg-card rounded-t-2xl shadow-2xl max-h-[60vh] animate-slide-up">
             {/* Handle */}
             <div className="flex justify-center pt-3 pb-1">
-              <div className="w-10 h-1 rounded-full bg-gray-300 dark:bg-gray-600" />
+              <div className="w-10 h-1 rounded-full bg-muted dark:bg-gray-600" />
             </div>
 
             {/* Header */}
-            <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100 dark:border-gray-800">
+            <div className="flex items-center justify-between px-5 py-3 border-b border-border">
               <div>
-                <h3 className="text-base font-semibold text-gray-900 dark:text-white">
+                <h3 className="text-base font-semibold text-foreground">
                   Tasks for {formatDate(selectedDate)}
                 </h3>
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                <p className="text-xs text-muted-foreground mt-0.5">
                   {getSelectedDayTasks().length} task{getSelectedDayTasks().length !== 1 ? 's' : ''} scheduled
                 </p>
               </div>
@@ -381,9 +381,9 @@ export function RosterMobileCalendarView({
                 </button>
                 <button
                   onClick={() => { setShowBottomSheet(false); closeModal(); }}
-                  className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
+                  className="p-2 hover:bg-muted/50 rounded-full transition-colors"
                 >
-                  <XMarkIcon className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                  <XMarkIcon className="w-5 h-5 text-muted-foreground" />
                 </button>
               </div>
             </div>
@@ -399,8 +399,8 @@ export function RosterMobileCalendarView({
                     return (
                       <div
                         key={task.id}
-                        className={`flex items-start gap-3 p-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-gray-700/50 transition-all active:scale-[0.98] ${
-                          isLeave ? 'cursor-default' : 'cursor-pointer hover:bg-gray-100 dark:hover:bg-white/10'
+                        className={`flex items-start gap-3 p-3 rounded-xl bg-muted dark:bg-white/5 border border-border/50 transition-all active:scale-[0.98] ${
+                          isLeave ? 'cursor-default' : 'cursor-pointer hover:bg-muted dark:hover:bg-white/10'
                         }`}
                         onClick={(e) => {
                           if (!isLeave && !isNonRecurring) {
@@ -415,12 +415,12 @@ export function RosterMobileCalendarView({
 
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2">
-                            <h4 className="font-medium text-sm text-gray-900 dark:text-white truncate">
+                            <h4 className="font-medium text-sm text-foreground truncate">
                               {isNonRecurring ? task.taskDetail : (task as RosterEntry).clientName || (task as RosterEntry).taskDetail}
                             </h4>
                           </div>
                           {!isNonRecurring && (task as RosterEntry).timeStart && (task as RosterEntry).timeEnd && (
-                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                            <p className="text-xs text-muted-foreground mt-1">
                               {new Date((task as RosterEntry).timeStart!).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })} - {new Date((task as RosterEntry).timeEnd!).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
                             </p>
                           )}
@@ -438,7 +438,7 @@ export function RosterMobileCalendarView({
                         </div>
 
                         {!isLeave && (
-                          <ChevronRightIcon className="w-4 h-4 text-gray-400 dark:text-gray-500 flex-shrink-0 mt-1" />
+                          <ChevronRightIcon className="w-4 h-4 text-muted-foreground flex-shrink-0 mt-1" />
                         )}
                       </div>
                     );
@@ -446,8 +446,8 @@ export function RosterMobileCalendarView({
                 </div>
               ) : (
                 <div className="text-center py-10">
-                  <CalendarIcon className="w-10 h-10 text-gray-300 dark:text-gray-600 mx-auto mb-3" />
-                  <p className="text-sm text-gray-500 dark:text-gray-400">No tasks scheduled for this day</p>
+                  <CalendarIcon className="w-10 h-10 text-muted-foreground dark:text-muted-foreground mx-auto mb-3" />
+                  <p className="text-sm text-muted-foreground">No tasks scheduled for this day</p>
                 </div>
               )}
             </div>

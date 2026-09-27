@@ -303,10 +303,10 @@ export default function ClientsPage() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-3xl font-bold text-foreground">
             Client Master
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">
+          <p className="text-muted-foreground mt-2">
             Manage your client information and contacts
           </p>
         </div>
@@ -355,7 +355,7 @@ export default function ClientsPage() {
 
       {/* Error Display */}
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+        <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 text-red-700 dark:text-red-300 px-4 py-3 rounded-lg">
           <p className="font-medium">Error loading clients</p>
           <p className="text-sm">{error.message}</p>
         </div>

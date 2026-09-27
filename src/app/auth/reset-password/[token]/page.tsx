@@ -106,7 +106,7 @@ const ResetPasswordPage = () => {
   };
 
   return (
-    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-border dark:bg-card">
+    <div className="rounded-sm border border-stroke bg-card shadow-hard dark:border-border">
       <div className="flex flex-wrap items-center">
         <div className="hidden xl:block xl:w-1/2">
           <div className="px-26 py-17.5 text-center">

@@ -88,7 +88,7 @@ export function RecurringTaskCard({
   // Get custom color classes for high priority (orange)
   const getPriorityClasses = (priority: string): string => {
     if (priority === 'high') {
-      return 'border-transparent bg-orange-100 text-orange-800 hover:bg-orange-200';
+      return 'border-transparent bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300 hover:bg-orange-200';
     }
     return '';
   };
@@ -168,7 +168,7 @@ export function RecurringTaskCard({
   const completionRate = calculateCompletionRate();
 
   return (
-    <Card className={`group hover:shadow-lg transition-all duration-200 ${isOverdue ? 'border-red-300 bg-red-50/30' : ''} ${task.isPaused ? 'opacity-75' : ''} ${selected ? 'ring-2 ring-ring' : ''}`}>
+    <Card className={`group hover:shadow-lg transition-all duration-200 ${isOverdue ? 'border-red-300 dark:border-red-700 bg-red-50/30' : ''} ${task.isPaused ? 'opacity-75' : ''} ${selected ? 'ring-2 ring-ring' : ''}`}>
       <CardContent className="p-6">
         {/* Selection Checkbox */}
         {onSelect && (
@@ -177,7 +177,7 @@ export function RecurringTaskCard({
               type="checkbox"
               checked={selected}
               onChange={(e) => task.id && onSelect(task.id, e.target.checked)}
-              className="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-ring cursor-pointer"
+              className="w-5 h-5 rounded border-border text-blue-600 focus:ring-ring cursor-pointer"
               aria-label={`Select ${task.title}`}
             />
           </div>
@@ -187,7 +187,7 @@ export function RecurringTaskCard({
         <div className={`flex items-start justify-between mb-3 ${onSelect ? 'ml-8' : ''}`}>
           <div className="flex-1 min-w-0 pr-4">
             <div className="flex items-center gap-2 mb-2 flex-wrap">
-              <h3 className={`text-lg font-semibold truncate ${isCompleted ? 'text-gray-500 line-through' : 'text-gray-900'}`}>
+              <h3 className={`text-lg font-semibold truncate ${isCompleted ? 'text-muted-foreground line-through' : 'text-foreground'}`}>
                 {task.title}
               </h3>
               {/* Priority Badge */}
@@ -226,7 +226,7 @@ export function RecurringTaskCard({
               size="sm"
               variant="ghost"
               onClick={() => onEdit(task)}
-              className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+              className="text-blue-600 hover:text-blue-700 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/30"
               aria-label={`Edit ${task.title}`}
             >
               <PencilSquareIcon className="w-4 h-4" />
@@ -235,7 +235,7 @@ export function RecurringTaskCard({
               size="sm"
               variant="ghost"
               onClick={() => onDelete(task.id!)}
-              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+              className="text-red-600 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30"
               aria-label={`Delete ${task.title}`}
             >
               <TrashIcon className="w-4 h-4" />
@@ -245,7 +245,7 @@ export function RecurringTaskCard({
 
         {/* Description */}
         {task.description && (
-          <p className={`text-sm mb-4 line-clamp-2 ${isCompleted ? 'text-gray-500' : 'text-gray-600'}`}>
+          <p className={`text-sm mb-4 line-clamp-2 ${isCompleted ? 'text-muted-foreground' : 'text-muted-foreground'}`}>
             {task.description}
           </p>
         )}
@@ -253,7 +253,7 @@ export function RecurringTaskCard({
         {/* Task Details */}
         <div className="space-y-3 mb-4">
           {/* Next Occurrence Date - Requirement 3.3 */}
-          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <CalendarIcon className="w-4 h-4 flex-shrink-0" />
             <span className={isOverdue && !task.isPaused ? 'text-red-600 font-medium' : ''}>
               Next: {formatDate(task.dueDate)}
@@ -261,7 +261,7 @@ export function RecurringTaskCard({
           </div>
 
           {/* Recurrence Period */}
-          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <ArrowPathIcon className="w-4 h-4 flex-shrink-0" />
             <span>
               {formatDate(task.startDate)}
@@ -270,7 +270,7 @@ export function RecurringTaskCard({
 
           {/* Status Badge */}
           <div className="flex items-center gap-2 text-sm">
-            <ClockIcon className="w-4 h-4 flex-shrink-0 text-gray-600 dark:text-gray-400" />
+            <ClockIcon className="w-4 h-4 flex-shrink-0 text-muted-foreground" />
             <Badge variant={isCompleted ? 'success' : 'info'}>
               {task.status.split('-').map(word => 
                 word.charAt(0).toUpperCase() + word.slice(1)
@@ -281,7 +281,7 @@ export function RecurringTaskCard({
           {/* Assigned Contacts */}
           {task.contactIds && task.contactIds.length > 0 && (
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600 dark:text-gray-400">Assigned to:</span>
+              <span className="text-sm text-muted-foreground">Assigned to:</span>
               <div className="flex -space-x-2">
                 {task.contactIds.slice(0, 3).map((contactId) => (
                   <Avatar
@@ -292,7 +292,7 @@ export function RecurringTaskCard({
                   />
                 ))}
                 {task.contactIds.length > 3 && (
-                  <div className="h-8 w-8 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center text-xs font-medium text-gray-600 dark:text-gray-400">
+                  <div className="h-8 w-8 rounded-full bg-muted border-2 border-white flex items-center justify-center text-xs font-medium text-muted-foreground">
                     +{task.contactIds.length - 3}
                   </div>
                 )}
@@ -315,27 +315,27 @@ export function RecurringTaskCard({
               style={{ width: `${completionRate}%` }}
             />
           </div>
-          <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+          <div className="text-xs text-muted-foreground mt-1">
             {task.completionHistory.length} of {calculateTotalCycles(task.startDate, task.dueDate, task.recurrencePattern)} cycles completed
           </div>
         </div>
 
         {/* Completion History Section - Requirement 3.6 */}
         {task.completionHistory.length > 0 && (
-          <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+          <div className="mb-4 p-3 bg-muted rounded-lg">
             <div className="flex items-center gap-2 mb-2">
               <CheckCircleSolidIcon className="w-4 h-4 text-green-600" />
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Recent Completions</span>
+              <span className="text-sm font-medium text-muted-foreground">Recent Completions</span>
             </div>
             <div className="space-y-1">
               {task.completionHistory.slice(-3).reverse().map((record, index) => (
-                <div key={index} className="flex items-center justify-between text-xs text-gray-600 dark:text-gray-400">
+                <div key={index} className="flex items-center justify-between text-xs text-muted-foreground">
                   <span>{formatDate(record.date)}</span>
-                  <span className="text-gray-500 dark:text-gray-400">by {record.completedBy}</span>
+                  <span className="text-muted-foreground">by {record.completedBy}</span>
                 </div>
               ))}
               {task.completionHistory.length > 3 && (
-                <div className="text-xs text-gray-500 dark:text-gray-400 italic">
+                <div className="text-xs text-muted-foreground italic">
                   +{task.completionHistory.length - 3} more
                 </div>
               )}
@@ -389,7 +389,7 @@ export function RecurringTaskCard({
           const hasGoToReportsButton = isManager;
           if (!hasClientsButton && !hasTeamButton && !hasPlanButton && !hasDelegateButton && !hasScheduleButton && !hasViewReportButton && !hasGoToReportsButton) return null;
           return (
-            <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 flex flex-wrap gap-2">
+            <div className="mt-3 pt-3 border-t border-border flex flex-wrap gap-2">
               {hasClientsButton && onClientsClick && (
                 <button onClick={() => onClientsClick(task)} className="px-3 py-1.5 text-xs font-medium bg-indigo-100 text-indigo-700 hover:bg-indigo-200 dark:bg-indigo-900/30 dark:text-indigo-300 dark:hover:bg-indigo-900/50 rounded-md transition-colors flex items-center gap-1 min-h-[35px]">
                   <UserGroupIcon className="w-4 h-4" />Clients ({clientCount})
@@ -421,7 +421,7 @@ export function RecurringTaskCard({
                 </button>
               )}
               {hasGoToReportsButton && onGoToReportsClick && (
-                <button onClick={() => onGoToReportsClick(task)} className="px-3 py-1.5 text-xs font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 rounded-md transition-colors flex items-center gap-1 min-h-[35px]">
+                <button onClick={() => onGoToReportsClick(task)} className="px-3 py-1.5 text-xs font-medium bg-muted text-muted-foreground hover:bg-muted dark:text-muted-foreground dark:hover:bg-gray-600 rounded-md transition-colors flex items-center gap-1 min-h-[35px]">
                   <ArrowRightIcon className="w-4 h-4" />Go to Reports
                 </button>
               )}
@@ -431,7 +431,7 @@ export function RecurringTaskCard({
 
         {/* Footer with creation date */}
         {task.createdAt && (
-          <div className="mt-4 text-xs text-gray-500 dark:text-gray-400">
+          <div className="mt-4 text-xs text-muted-foreground">
             Created {new Date(task.createdAt).toLocaleDateString()}
           </div>
         )}

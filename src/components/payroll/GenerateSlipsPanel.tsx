@@ -41,11 +41,11 @@ const currency = new Intl.NumberFormat('en-IN', {
 });
 
 const cardClass =
-  'bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700';
+  'bg-card rounded-xl shadow-sm border border-border';
 const inputClass =
-  'w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ring';
+  'w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring';
 const thClass =
-  'px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider';
+  'px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider';
 
 interface GenerateSlipsPanelProps {
   settings: PayrollSettings | null;
@@ -278,14 +278,14 @@ export function GenerateSlipsPanel({
       )}
 
       <div className={cardClass}>
-        <div className="p-5 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+        <div className="p-5 border-b border-border">
+          <h2 className="text-base font-semibold text-foreground flex items-center gap-2">
             Select Period
           </h2>
         </div>
         <div className="flex flex-wrap gap-4 items-end p-5">
           <div className="w-48">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Month</label>
+            <label className="block text-sm font-medium text-muted-foreground mb-1">Month</label>
             <Select value={String(month)} onChange={(event) => setMonth(Number(event.target.value))} className={inputClass}>
               {MONTH_NAMES.map((name, index) => (
                 <option key={name} value={index}>
@@ -295,7 +295,7 @@ export function GenerateSlipsPanel({
             </Select>
           </div>
           <div className="w-32">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Year</label>
+            <label className="block text-sm font-medium text-muted-foreground mb-1">Year</label>
             <Select value={String(year)} onChange={(event) => setYear(Number(event.target.value))} className={inputClass}>
               {YEARS.map((option) => (
                 <option key={option} value={option}>
@@ -314,12 +314,12 @@ export function GenerateSlipsPanel({
         <div className={cn(cardClass, 'p-5')}>
           <div className="flex items-center gap-3">
             <div className="h-5 w-5 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
-            <p className="text-sm font-medium text-gray-900 dark:text-white">Calculating salaries…</p>
-            <span className="ml-auto text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm font-medium text-foreground">Calculating salaries…</p>
+            <span className="ml-auto text-sm text-muted-foreground">
               {progress.current} / {progress.total}
             </span>
           </div>
-          <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
+          <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-muted">
             <div
               className="h-full rounded-full transition-all"
               style={{ width: `${percent}%`, background: 'linear-gradient(90deg, #3b82f6, #2563eb)' }}
@@ -327,17 +327,17 @@ export function GenerateSlipsPanel({
           </div>
           <div className="mt-2 flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <span className="text-xs text-gray-500 dark:text-gray-400">✓ {progress.success} success</span>
+              <span className="text-xs text-muted-foreground">✓ {progress.success} success</span>
               <span className="text-xs text-red-600 dark:text-red-400">✗ {progress.failed} failed</span>
             </div>
-            <span className="text-xs text-gray-500 dark:text-gray-400">{percent}%</span>
+            <span className="text-xs text-muted-foreground">{percent}%</span>
           </div>
         </div>
       )}
 
       <div className={cardClass}>
-        <div className="flex items-center justify-between gap-4 p-5 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+        <div className="flex items-center justify-between gap-4 p-5 border-b border-border">
+          <h2 className="text-base font-semibold text-foreground flex items-center gap-2">
             Employees ({employees.length})
           </h2>
           <Button variant="outline" size="sm" onClick={() => void setAllAccess(!allEnabled)}>
@@ -347,7 +347,7 @@ export function GenerateSlipsPanel({
 
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50 dark:bg-gray-700/50">
+            <thead className="bg-muted/50">
               <tr>
                 <th className={thClass}>#</th>
                 <th className={thClass}>Access</th>
@@ -360,7 +360,7 @@ export function GenerateSlipsPanel({
                 <th className={thClass}>Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
+            <tbody className="divide-y divide-border">
               {employees.map((employee, index) => {
                 const slip = slips[employee.id];
                 const result = results[employee.id];
@@ -372,11 +372,11 @@ export function GenerateSlipsPanel({
                     key={employee.id}
                     onClick={() => setSelectedEmployeeId(employee.id)}
                     className={cn(
-                      'cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50',
+                      'cursor-pointer hover:bg-muted/50',
                       selectedEmployeeId === employee.id && 'bg-blue-50 dark:bg-blue-900/20'
                     )}
                   >
-                    <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{index + 1}</td>
+                    <td className="px-4 py-3 text-sm text-muted-foreground">{index + 1}</td>
                     <td className="px-4 py-3">
                       <button
                         type="button"
@@ -389,7 +389,7 @@ export function GenerateSlipsPanel({
                         }}
                         className={cn(
                           'relative w-10 h-6 rounded-full transition-colors',
-                          granted ? 'bg-green-500' : 'bg-gray-300 dark:bg-gray-600'
+                          granted ? 'bg-green-500' : 'bg-muted'
                         )}
                       >
                         <span
@@ -412,19 +412,19 @@ export function GenerateSlipsPanel({
                         {employee.name}
                       </button>
                     </td>
-                    <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
+                    <td className="px-4 py-3 text-sm text-muted-foreground">
                       {employee.employeeId || '-'}
                     </td>
-                    <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
+                    <td className="px-4 py-3 text-sm text-muted-foreground">
                       {employee.department || '-'}
                     </td>
-                    <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
+                    <td className="px-4 py-3 text-sm text-muted-foreground">
                       {currency.format(employee.grossSalary || 0)}
                     </td>
-                    <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
+                    <td className="px-4 py-3 text-sm text-muted-foreground">
                       {netSalary === undefined ? '-' : currency.format(netSalary)}
                     </td>
-                    <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
+                    <td className="px-4 py-3 text-sm text-muted-foreground">
                       {paidDays === undefined ? '-' : paidDays}
                     </td>
                     <td className="px-4 py-3">
@@ -468,7 +468,7 @@ export function GenerateSlipsPanel({
                           size="sm"
                           disabled={!slip}
                           className={cn(
-                            !slip && 'text-gray-400 border-gray-200 dark:text-gray-500 dark:border-gray-700'
+                            !slip && 'text-muted-foreground border-border dark:text-muted-foreground'
                           )}
                           onClick={(event) => {
                             event.stopPropagation();
@@ -484,7 +484,7 @@ export function GenerateSlipsPanel({
               })}
               {employees.length === 0 && (
                 <tr>
-                  <td colSpan={9} className="px-4 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
+                  <td colSpan={9} className="px-4 py-8 text-center text-sm text-muted-foreground">
                     No active employees found.
                   </td>
                 </tr>
@@ -514,11 +514,11 @@ export function GenerateSlipsPanel({
       <Dialog open={Boolean(previewSlip)} onOpenChange={(open) => !open && setPreviewSlip(null)}>
         <DialogContent className="max-w-full sm:max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-gray-900 dark:text-white">Salary Slip Preview</DialogTitle>
+            <DialogTitle className="text-foreground">Salary Slip Preview</DialogTitle>
           </DialogHeader>
 
           <div className="flex items-center gap-2">
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Slip Template:</label>
+            <label className="text-sm font-medium text-muted-foreground">Slip Template:</label>
             <Select value={templateId} onChange={(event) => setTemplateId(event.target.value)} className={inputClass}>
               <option value="">Default (all sections)</option>
               {templates.map((template) => (
@@ -534,7 +534,7 @@ export function GenerateSlipsPanel({
               <SalarySlipPreview slip={previewSlip} settings={settings} template={selectedTemplate} />
             </div>
           ) : (
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-muted-foreground">
               Payroll settings must be configured before a slip can be rendered.
             </p>
           )}

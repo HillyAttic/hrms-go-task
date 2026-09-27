@@ -43,7 +43,7 @@ export function FormTopBar({
         {/* Back Button */}
         <button
           onClick={onClose}
-          className="p-2 rounded-full hover:bg-gray-100 text-gray-600 transition-colors flex-shrink-0"
+          className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-900/30 text-gray-600 transition-colors flex-shrink-0"
           title="Back to forms"
         >
           <ArrowLeft size={20} />
@@ -59,7 +59,7 @@ export function FormTopBar({
             <rect x="15" y="32" width="10" height="2" rx="1" fill="white"/>
           </svg>
           <div className="flex flex-col min-w-0">
-            <div className="font-medium text-gray-800 text-sm sm:text-base leading-tight truncate">
+            <div className="font-medium text-gray-800 dark:text-gray-300 text-sm sm:text-base leading-tight truncate">
               {title || 'Untitled form'}
             </div>
             <div className="flex items-center gap-1 mt-0.5">
@@ -76,7 +76,7 @@ export function FormTopBar({
         <div className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
           <button
             onClick={onPreviewClick}
-            className="p-2 rounded-full hover:bg-gray-100 text-gray-600 transition-colors"
+            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-900/30 text-gray-600 transition-colors"
             title="Preview"
           >
             <Eye size={18} />
@@ -84,7 +84,7 @@ export function FormTopBar({
 
           <button
             onClick={onSettingsClick}
-            className="p-2 rounded-full hover:bg-gray-100 text-gray-600 transition-colors"
+            className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-900/30 text-gray-600 transition-colors"
             title="Settings"
           >
             <Settings size={18} />
@@ -93,7 +93,7 @@ export function FormTopBar({
           {onToggleStyle && (
             <button
               onClick={onToggleStyle}
-              className="px-2.5 sm:px-4 py-2 rounded-lg font-medium text-xs sm:text-sm transition-colors border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 whitespace-nowrap"
+              className="px-2.5 sm:px-4 py-2 rounded-lg font-medium text-xs sm:text-sm transition-colors border border-gray-300 dark:border-gray-700 bg-white text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-900/30 whitespace-nowrap"
               title="Switch to classic builder"
             >
               Classic Style
@@ -105,7 +105,7 @@ export function FormTopBar({
               onClick={onPublishClick}
               className={`px-2.5 sm:px-4 py-2 rounded-lg font-medium text-xs sm:text-sm transition-colors flex items-center gap-1.5 sm:gap-2 whitespace-nowrap ${
                 isPublished
-                  ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                  ? 'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 hover:bg-green-200'
                   : 'bg-purple-600 text-white hover:bg-purple-700'
               }`}
               title={isPublished ? 'Form published' : 'Publish form'}

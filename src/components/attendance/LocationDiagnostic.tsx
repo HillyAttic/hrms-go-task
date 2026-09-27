@@ -56,7 +56,7 @@ export function LocationDiagnostic() {
   return (
     <Card className="w-full max-w-4xl mx-auto mt-4 border-2 border-yellow-400">
       <CardHeader>
-        <CardTitle className="text-yellow-700">🔍 Location Diagnostic Tool</CardTitle>
+        <CardTitle className="text-yellow-700 dark:text-yellow-300">🔍 Location Diagnostic Tool</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <Button onClick={runDiagnostic} disabled={loading}>
@@ -64,7 +64,7 @@ export function LocationDiagnostic() {
         </Button>
         
         {diagnosticData && (
-          <div className="bg-gray-100 dark:bg-gray-700 p-4 rounded-md overflow-auto max-h-96">
+          <div className="bg-muted p-4 rounded-md overflow-auto max-h-96">
             <pre className="text-xs">
               {JSON.stringify(diagnosticData, null, 2)}
             </pre>

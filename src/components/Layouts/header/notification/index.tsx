@@ -61,7 +61,7 @@ const getNotificationIcon = (type: string) => {
     case 'leave_rejected':
       return <XCircleIcon className="w-5 h-5 text-red-500" />;
     default:
-      return <BellAlertIcon className="w-5 h-5 text-gray-600 dark:text-gray-400" />;
+      return <BellAlertIcon className="w-5 h-5 text-muted-foreground" />;
   }
 };
 
@@ -128,7 +128,7 @@ export function Notification() {
       setIsOpen={setIsOpen}
     >
       <DropdownTrigger
-        className="grid size-12 place-items-center rounded-full border border-gray-100 bg-surface text-dark outline-none hover:text-foreground focus-visible:border-primary focus-visible:text-foreground dark:border-dark-4 dark:bg-dark-3 dark:text-white dark:focus-visible:border-primary"
+        className="grid size-12 place-items-center rounded-full border border-border bg-surface text-dark outline-none hover:text-foreground focus-visible:border-primary focus-visible:text-foreground dark:border-accent dark:bg-accent dark:text-accent-foreground dark:focus-visible:border-accent dark:focus-visible:text-accent-foreground"
         aria-label="View Notifications"
       >
         <span className="relative">
@@ -136,7 +136,7 @@ export function Notification() {
 
           {unreadCount > 0 && (
             <span
-              className="absolute -top-1 -right-1 flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-bold text-white bg-red-500 rounded-full border-2 border-gray-2 dark:border-dark-3"
+              className="absolute -top-1 -right-1 flex items-center justify-center min-w-[18px] h-[18px] px-1 text-[10px] font-bold text-white bg-destructive rounded-full border-2 border-gray-2 dark:border-accent"
               aria-label={`${unreadCount} unread notifications`}
             >
               {unreadCount > 99 ? "99+" : unreadCount}
@@ -147,7 +147,7 @@ export function Notification() {
 
       <DropdownContent
         align={isMobile ? "end" : "center"}
-        className="border border-stroke bg-white px-3.5 py-3 shadow-md dark:border-dark-3 dark:bg-gray-dark min-[350px]:min-w-[24rem]"
+        className="border border-stroke bg-card px-3.5 py-3 shadow-md dark:border-dark-3 min-[350px]:min-w-[24rem]"
       >
         <div className="mb-1 flex items-center justify-between px-2 py-1.5">
           <span className="text-lg font-medium text-dark dark:text-white">
@@ -178,7 +178,7 @@ export function Notification() {
         ) : notifications.length === 0 ? (
           <div className="py-8 text-center">
             <BellIcon className="mx-auto mb-2 opacity-50" />
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-muted-foreground">
               No notifications yet
             </p>
           </div>
@@ -216,7 +216,7 @@ export function Notification() {
                         {notification.body || notification.message}
                       </p>
 
-                      <span className="text-xs text-gray-500 dark:text-gray-400 mt-1 block">
+                      <span className="text-xs text-muted-foreground mt-1 block">
                         {timeAgo(notification.createdAt)}
                       </span>
                     </div>

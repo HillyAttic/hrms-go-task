@@ -154,7 +154,7 @@ export function TaskListView({
       case 'low':
         return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400';
       default:
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+        return 'bg-muted text-foreground dark:text-muted-foreground';
     }
   };
 
@@ -165,9 +165,9 @@ export function TaskListView({
       case 'in-progress':
         return 'bg-foreground text-background dark:bg-foreground dark:text-background';
       case 'pending':
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+        return 'bg-muted text-foreground dark:text-muted-foreground';
       default:
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+        return 'bg-muted text-foreground dark:text-muted-foreground';
     }
   };
 
@@ -237,9 +237,9 @@ export function TaskListView({
   return (
     <>
       {/* Desktop Table View - Hidden on mobile */}
-      <div className="hidden md:block bg-white dark:bg-gray-dark rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="hidden md:block bg-card rounded-lg border border-border overflow-hidden">
         {/* Table Header */}
-        <div className="grid grid-cols-12 gap-2 px-3 py-2.5 bg-gray-50 dark:bg-gray-800 text-[11px] font-medium text-gray-700 dark:text-gray-300 border-b border-gray-200 dark:border-gray-700">
+        <div className="grid grid-cols-12 gap-2 px-3 py-2.5 bg-muted text-[11px] font-medium text-muted-foreground border-b border-border">
           <div className="col-span-2">Title</div>
           <div className="col-span-2">Client</div>
           <div className="col-span-1">Category</div>
@@ -253,29 +253,29 @@ export function TaskListView({
         </div>
 
         {/* Table Body */}
-        <div className="divide-y divide-gray-200 dark:divide-gray-700">
+        <div className="divide-y divide-border">
           {tasks.map((task) => (
             <div
               key={task.id}
-              className={`grid grid-cols-12 gap-2 px-3 py-2.5 text-[11px] transition-colors hover:bg-gray-50 dark:hover:bg-gray-800 border-l-2 ${
+              className={`grid grid-cols-12 gap-2 px-3 py-2.5 text-[11px] transition-colors hover:bg-muted/50 border-l-2 ${
                 (task.commentCount != null && task.commentCount > 0) || (task.attachments && task.attachments.length > 0)
                   ? 'border-l-blue-400 bg-blue-50/30 dark:bg-blue-900/10'
-                  : 'border-l-transparent bg-white dark:bg-gray-dark'
+                  : 'border-l-transparent bg-card'
               }`}
             >
               {/* Title */}
               <div className="col-span-2">
-                <div className="font-medium text-gray-900 dark:text-white truncate" title={task.title}>
+                <div className="font-medium text-foreground truncate" title={task.title}>
                   {task.title}
                 </div>
                 {task.description && (
-                  <div className="text-gray-500 dark:text-gray-400 text-[10px] mt-0.5 truncate" title={task.description}>
+                  <div className="text-muted-foreground text-[10px] mt-0.5 truncate" title={task.description}>
                     {task.description}
                   </div>
                 )}
                 <div className="flex items-center gap-1.5 mt-0.5">
                   {task.attachments && task.attachments.length > 0 && (
-                    <span className="inline-flex items-center gap-0.5 text-[10px] text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 rounded px-1 py-0.5">
+                    <span className="inline-flex items-center gap-0.5 text-[10px] text-muted-foreground bg-muted rounded px-1 py-0.5">
                       <PaperClipIcon className="w-3 h-3" />
                       {task.attachments.length}
                     </span>
@@ -290,14 +290,14 @@ export function TaskListView({
               </div>
 
               {/* Client */}
-              <div className="col-span-2 text-gray-700 dark:text-gray-300 flex items-center">
+              <div className="col-span-2 text-muted-foreground flex items-center">
                 <span className="truncate" title={getClientName(task.contactId)}>
                   {getClientName(task.contactId)}
                 </span>
               </div>
 
               {/* Category */}
-              <div className="col-span-1 text-gray-700 dark:text-gray-300 flex items-center">
+              <div className="col-span-1 text-muted-foreground flex items-center">
                 <span className="truncate" title={getCategoryName(task.category)}>
                   {getCategoryName(task.category)}
                 </span>
@@ -318,14 +318,14 @@ export function TaskListView({
               </div>
 
               {/* Due Date */}
-              <div className="col-span-2 text-gray-700 dark:text-gray-300 flex items-center">
+              <div className="col-span-2 text-muted-foreground flex items-center">
                 <span className="truncate" title={formatDate(task.dueDate)}>
                   {formatDate(task.dueDate)}
                 </span>
               </div>
 
               {/* Assigned To / Assigned By */}
-              <div className="col-span-2 text-gray-700 dark:text-gray-300 flex items-center">
+              <div className="col-span-2 text-muted-foreground flex items-center">
                 {isAdminOrManager ? (
                   <span className="truncate" title={getAssignedNames(task.assignedTo)}>
                     {getAssignedNames(task.assignedTo)}
@@ -354,7 +354,7 @@ export function TaskListView({
                   className={`p-1 ${
                     task.status === 'completed'
                       ? 'text-green-600 hover:text-green-900 dark:text-green-400'
-                      : 'text-gray-400 hover:text-gray-600 dark:text-gray-500'
+                      : 'text-muted-foreground hover:text-muted-foreground dark:text-muted-foreground'
                   }`}
                   aria-label="Toggle complete"
                   title="Toggle complete"
@@ -393,16 +393,16 @@ export function TaskListView({
             className={`rounded-lg border p-3 space-y-2.5 ${
               (task.commentCount != null && task.commentCount > 0) || (task.attachments && task.attachments.length > 0)
                 ? 'border-blue-300 dark:border-blue-700 bg-blue-50/40 dark:bg-blue-900/10'
-                : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-dark'
+                : 'border-border bg-card'
             }`}
           >
             {/* Title and Description */}
             <div>
-              <h3 className="font-semibold text-gray-900 dark:text-white text-sm leading-tight">
+              <h3 className="font-semibold text-foreground text-sm leading-tight">
                 {task.title}
               </h3>
               {task.description && (
-                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">
+                <p className="text-xs text-muted-foreground mt-1 line-clamp-2">
                   {task.description}
                 </p>
               )}
@@ -422,31 +422,31 @@ export function TaskListView({
             <div className="space-y-1.5 text-xs">
               {task.contactId && (
                 <div className="flex justify-between gap-2">
-                  <span className="text-gray-500 dark:text-gray-400 flex-shrink-0">Client:</span>
-                  <span className="text-gray-900 dark:text-white font-medium text-right break-words">
+                  <span className="text-muted-foreground flex-shrink-0">Client:</span>
+                  <span className="text-foreground font-medium text-right break-words">
                     {getClientName(task.contactId)}
                   </span>
                 </div>
               )}
               {(task.category) && (
                 <div className="flex justify-between gap-2">
-                  <span className="text-gray-500 dark:text-gray-400 flex-shrink-0">Category:</span>
-                  <span className="text-gray-900 dark:text-white font-medium text-right break-words">
+                  <span className="text-muted-foreground flex-shrink-0">Category:</span>
+                  <span className="text-foreground font-medium text-right break-words">
                     {getCategoryName(task.category)}
                   </span>
                 </div>
               )}
               <div className="flex justify-between gap-2">
-                <span className="text-gray-500 dark:text-gray-400 flex-shrink-0">Due Date:</span>
-                <span className="text-gray-900 dark:text-white font-medium text-right">
+                <span className="text-muted-foreground flex-shrink-0">Due Date:</span>
+                <span className="text-foreground font-medium text-right">
                   {formatDate(task.dueDate)}
                 </span>
               </div>
               <div className="flex justify-between gap-2">
-                <span className="text-gray-500 dark:text-gray-400 flex-shrink-0">
+                <span className="text-muted-foreground flex-shrink-0">
                   {isAdminOrManager ? 'Assigned To:' : 'Assigned By:'}
                 </span>
-                <span className="text-gray-900 dark:text-white font-medium text-right break-words max-w-[60%]">
+                <span className="text-foreground font-medium text-right break-words max-w-[60%]">
                   {isAdminOrManager
                     ? getAssignedNames(task.assignedTo)
                     : getCreatorName(task.createdBy)
@@ -455,7 +455,7 @@ export function TaskListView({
               </div>
               <div className="flex items-center gap-2 flex-wrap">
                 {task.attachments && task.attachments.length > 0 && (
-                  <span className="inline-flex items-center gap-1 text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 rounded px-1.5 py-0.5 text-[11px]">
+                  <span className="inline-flex items-center gap-1 text-muted-foreground bg-muted rounded px-1.5 py-0.5 text-[11px]">
                     <PaperClipIcon className="w-3.5 h-3.5" />
                     {task.attachments.length} attachment{task.attachments.length !== 1 ? 's' : ''}
                   </span>
@@ -470,7 +470,7 @@ export function TaskListView({
             </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex gap-2 pt-2 border-t border-border">
               {onView && (
                 <button
                   onClick={() => onView(task)}
@@ -486,7 +486,7 @@ export function TaskListView({
                 className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg font-medium transition-colors min-h-[40px] ${
                   task.status === 'completed'
                     ? 'bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400 dark:hover:bg-green-900/50'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
+                    : 'bg-muted text-muted-foreground hover:bg-muted dark:text-muted-foreground dark:hover:bg-gray-600'
                 }`}
                 aria-label="Toggle complete"
               >

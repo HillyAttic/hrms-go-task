@@ -43,7 +43,7 @@ export function BulkDeleteDialog({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-100">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30">
               <ExclamationTriangleIcon className="h-6 w-6 text-red-600" />
             </div>
             <DialogTitle>Confirm Bulk Delete</DialogTitle>

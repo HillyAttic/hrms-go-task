@@ -17,7 +17,7 @@ export async function TopChannels({ className }: { className?: string }) {
   return (
     <div
       className={cn(
-        "grid rounded-[10px] bg-white px-7.5 pb-4 pt-7.5 shadow-1 dark:bg-gray-dark dark:shadow-card",
+        "grid rounded-[10px] bg-card px-7.5 pb-4 pt-7.5 shadow-hard",
         className,
       )}
     >

@@ -314,25 +314,25 @@ export default function SalarySlipPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Salary Slips</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+        <h1 className="text-2xl font-bold text-foreground">Salary Slips</h1>
+        <p className="text-sm text-muted-foreground mt-0.5">
           View and download your salary slips
         </p>
       </div>
 
       {loading ? (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-10 text-center">
+        <div className="bg-card rounded-xl shadow-sm border border-border p-10 text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4" />
-          <p className="text-sm text-gray-500 dark:text-gray-400">Loading your information...</p>
+          <p className="text-sm text-muted-foreground">Loading your information...</p>
         </div>
       ) : (
         <>
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-5">
+          <div className="bg-card rounded-xl shadow-sm border border-border p-5">
             <div className="flex gap-4 items-end flex-wrap">
               <div>
                 <label
                   htmlFor="salary-slip-month"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  className="block text-sm font-medium text-muted-foreground mb-1"
                 >
                   Month
                 </label>
@@ -356,7 +356,7 @@ export default function SalarySlipPage() {
               <div>
                 <label
                   htmlFor="salary-slip-year"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+                  className="block text-sm font-medium text-muted-foreground mb-1"
                 >
                   Year
                 </label>
@@ -396,11 +396,11 @@ export default function SalarySlipPage() {
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="bg-card rounded-xl shadow-sm border border-border overflow-hidden">
             {slips.length === 0 ? (
               <div className="p-10 text-center">
                 <svg
-                  className="mx-auto w-16 h-16 text-gray-400 dark:text-gray-600"
+                  className="mx-auto w-16 h-16 text-muted-foreground dark:text-muted-foreground"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -412,22 +412,22 @@ export default function SalarySlipPage() {
                     d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                   />
                 </svg>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mt-4">
+                <h2 className="text-lg font-semibold text-foreground mt-4">
                   No Salary Slips Available
                 </h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                <p className="text-sm text-muted-foreground mt-2">
                   Your salary slips will appear here once they are generated and access is granted
                   by your administrator.
                 </p>
               </div>
             ) : visibleSlips.length === 0 ? (
-              <div className="p-8 text-center text-gray-500 dark:text-gray-400">
+              <div className="p-8 text-center text-muted-foreground">
                 No salary slips for the selected period
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-gray-50 dark:bg-gray-700/50">
+                  <thead className="bg-muted/50">
                     <tr>
                       {[
                         'Slip Number',
@@ -439,32 +439,32 @@ export default function SalarySlipPage() {
                       ].map((heading) => (
                         <th
                           key={heading}
-                          className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider"
+                          className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider"
                         >
                           {heading}
                         </th>
                       ))}
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
+                  <tbody className="divide-y divide-border">
                     {visibleSlips.map((slip) => (
                       <tr
                         key={slip.id ?? slip.slipNumber}
-                        className="hover:bg-gray-50 dark:hover:bg-gray-700/50"
+                        className="hover:bg-muted/50"
                       >
-                        <td className="px-4 py-3 text-sm font-mono text-gray-900 dark:text-white">
+                        <td className="px-4 py-3 text-sm font-mono text-foreground">
                           {slip.slipNumber}
                         </td>
-                        <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">
+                        <td className="px-4 py-3 text-sm text-foreground">
                           {slip.name}
                         </td>
-                        <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
+                        <td className="px-4 py-3 text-sm text-muted-foreground">
                           {MONTH_NAMES[slip.month]} {slip.year}
                         </td>
-                        <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
+                        <td className="px-4 py-3 text-sm text-muted-foreground">
                           {slip.paidDays}
                         </td>
-                        <td className="px-4 py-3 text-sm font-semibold text-gray-900 dark:text-white">
+                        <td className="px-4 py-3 text-sm font-semibold text-foreground">
                           {formatCurrency(slip.salaryBreakup?.netSalary)}
                         </td>
                         <td className="px-4 py-3">
@@ -506,7 +506,7 @@ export default function SalarySlipPage() {
             <div className="flex items-center gap-2">
               <label
                 htmlFor="salary-slip-template"
-                className="text-sm font-medium text-gray-700 dark:text-gray-300"
+                className="text-sm font-medium text-muted-foreground"
               >
                 Slip Template:
               </label>
@@ -536,7 +536,7 @@ export default function SalarySlipPage() {
                 />
               </div>
             ) : (
-              <p className="text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-sm text-muted-foreground">
                 Payroll settings are still loading. Please try again in a moment.
               </p>
             ))}
@@ -569,7 +569,7 @@ export default function SalarySlipPage() {
           <div>
             <label
               htmlFor="salary-slip-pan"
-              className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+              className="block text-sm font-medium text-muted-foreground mb-1"
             >
               PAN Number
             </label>
@@ -584,7 +584,7 @@ export default function SalarySlipPage() {
                 setPanValue(event.target.value.toUpperCase());
                 setPanError('');
               }}
-              className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm font-mono uppercase text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-ring"
+              className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-mono uppercase text-foreground placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-ring"
             />
             {panError && <p className="text-xs mt-1 text-red-600 dark:text-red-400">{panError}</p>}
           </div>

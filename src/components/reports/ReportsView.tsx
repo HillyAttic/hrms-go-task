@@ -176,8 +176,8 @@ export function ReportsView() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Reports</h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">Track task completion status across all clients</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Reports</h1>
+          <p className="text-muted-foreground mt-1">Track task completion status across all clients</p>
         </div>
         <div className="flex flex-wrap items-center gap-2">
           <div className="relative group">
@@ -189,16 +189,16 @@ export function ReportsView() {
               <span className="hidden sm:inline">Export Summary</span>
               <span className="sm:hidden">Export</span>
             </button>
-            <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
+            <div className="absolute right-0 mt-2 w-48 bg-card rounded-lg shadow-lg border border-border opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
               <button
                 onClick={() => exportSummaryToPDF(tasks, clients, completions)}
-                className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-white rounded-t-lg transition-colors"
+                className="w-full text-left px-4 py-2 hover:bg-muted/50 text-foreground rounded-t-lg transition-colors"
               >
                 Export as PDF
               </button>
               <button
                 onClick={() => exportSummaryToExcel(tasks, clients, completions)}
-                className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-white rounded-b-lg transition-colors"
+                className="w-full text-left px-4 py-2 hover:bg-muted/50 text-foreground rounded-b-lg transition-colors"
               >
                 Export as Excel
               </button>
@@ -218,13 +218,13 @@ export function ReportsView() {
       </div>
 
       {tasks.length === 0 ? (
-        <div className="bg-white dark:bg-gray-dark rounded-lg shadow p-12 text-center">
+        <div className="bg-card rounded-lg shadow p-12 text-center">
           <div className="flex flex-col items-center justify-center">
-            <svg className="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-16 h-16 text-muted-foreground mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">No Recurring Tasks Found</h3>
-            <p className="text-gray-600 dark:text-gray-400 mb-4">
+            <h3 className="text-lg font-medium text-foreground mb-2">No Recurring Tasks Found</h3>
+            <p className="text-muted-foreground mb-4">
               Create recurring tasks to track completion reports across your clients.
             </p>
             <button
@@ -238,12 +238,12 @@ export function ReportsView() {
       ) : (
         <>
           {/* Period Filter */}
-          <div className="bg-white dark:bg-gray-dark rounded-lg shadow px-4 sm:px-6 py-3 flex flex-wrap items-center gap-3">
-            <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">Filter:</span>
+          <div className="bg-card rounded-lg shadow px-4 sm:px-6 py-3 flex flex-wrap items-center gap-3">
+            <span className="text-xs text-muted-foreground font-medium">Filter:</span>
             <select
               value={selectedFY}
               onChange={e => { setSelectedFY(e.target.value); setSelectedMonth('all'); }}
-              className="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1.5 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ring"
+              className="border border-border rounded-lg px-3 py-1.5 text-sm bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
             >
               {financialYears.map(fy => (
                 <option key={fy} value={fy}>FY {fy}</option>
@@ -252,7 +252,7 @@ export function ReportsView() {
             <select
               value={selectedMonth}
               onChange={e => setSelectedMonth(e.target.value)}
-              className="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1.5 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ring"
+              className="border border-border rounded-lg px-3 py-1.5 text-sm bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
             >
               <option value="all">All Months</option>
               {MONTH_NAMES.map(m => (
@@ -260,35 +260,35 @@ export function ReportsView() {
               ))}
             </select>
             {selectedMonth !== 'all' && (
-              <span className="text-xs text-gray-500 dark:text-gray-400">
+              <span className="text-xs text-muted-foreground">
                 {selectedMonth} {selectedFY.split('-')[0]}
               </span>
             )}
           </div>
 
-          <div className="bg-white dark:bg-gray-dark rounded-lg shadow overflow-hidden">
+          <div className="bg-card rounded-lg shadow overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50 dark:bg-gray-800">
+            <table className="min-w-full divide-y divide-border">
+              <thead className="bg-muted">
                 <tr>
-                  <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Task Name
                   </th>
-                  <th className="hidden md:table-cell px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  <th className="hidden md:table-cell px-3 sm:px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Recurrence
                   </th>
-                  <th className="hidden lg:table-cell px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  <th className="hidden lg:table-cell px-3 sm:px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Total Clients
                   </th>
-                  <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Completion
                   </th>
-                  <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                  <th className="px-3 sm:px-6 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white dark:bg-gray-dark divide-y divide-gray-200">
+              <tbody className="bg-card divide-y divide-border">
                 {tasks.map((task) => {
                 const hasTeamMemberMapping = task.teamMemberMappings && task.teamMemberMappings.length > 0;
 
@@ -335,20 +335,20 @@ export function ReportsView() {
                   : 0;
 
                 return (
-                  <tr key={task.id} className="hover:bg-gray-50 dark:bg-gray-800">
+                  <tr key={task.id} className="hover:bg-muted">
                     <td className="px-3 sm:px-6 py-4">
                       <div className="flex flex-col gap-2">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <div className="text-sm font-medium text-gray-900 dark:text-white break-words">{task.title}</div>
+                          <div className="text-sm font-medium text-foreground break-words">{task.title}</div>
                           {hasTeamMemberMapping && (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 whitespace-nowrap" title="Assigned via Team Member Mapping">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 whitespace-nowrap" title="Assigned via Team Member Mapping">
                               <UserGroupIcon className="w-3 h-3" />
                               <span className="hidden sm:inline">Team Mapped</span>
                               <span className="sm:hidden">Mapped</span>
                             </span>
                           )}
                           {unassignedCount > 0 && (
-                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800 whitespace-nowrap" title={`${unassignedCount} clients not assigned to any team member`}>
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300 whitespace-nowrap" title={`${unassignedCount} clients not assigned to any team member`}>
                               <span className="hidden sm:inline">{unassignedCount} unassigned</span>
                               <span className="sm:hidden">{unassignedCount} unasgn.</span>
                             </span>
@@ -359,7 +359,7 @@ export function ReportsView() {
                           <span className="px-2 py-0.5 rounded-full bg-foreground text-background font-semibold">
                             {task.recurrencePattern}
                           </span>
-                          <span className="text-gray-500 dark:text-gray-400">
+                          <span className="text-muted-foreground">
                             {hasTeamMemberMapping ? (
                               <span>{mappedCount} mapped{unassignedCount > 0 ? ` + ${unassignedCount} unasn.` : ''}</span>
                             ) : (
@@ -374,7 +374,7 @@ export function ReportsView() {
                         {task.recurrencePattern}
                       </span>
                     </td>
-                    <td className="hidden lg:table-cell px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                    <td className="hidden lg:table-cell px-3 sm:px-6 py-4 whitespace-nowrap text-sm text-muted-foreground">
                       {hasTeamMemberMapping ? (
                         <span title={`${task.teamMemberMappings!.length} team member(s) assigned${unassignedCount > 0 ? `, ${unassignedCount} unassigned` : ''}`}>
                           {mappedCount} (mapped){unassignedCount > 0 ? ` + ${unassignedCount} (unassigned)` : ''}
@@ -385,13 +385,13 @@ export function ReportsView() {
                     </td>
                     <td className="px-3 sm:px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-2">
-                        <div className="flex-1 min-w-0 bg-gray-200 rounded-full h-2">
+                        <div className="flex-1 min-w-0 bg-muted rounded-full h-2">
                           <div
                             className="bg-green-600 h-2 rounded-full"
                             style={{ width: `${completionRate}%` }}
                           ></div>
                         </div>
-                        <span className="text-xs sm:text-sm text-gray-700 dark:text-gray-300 whitespace-nowrap">{completionRate}%</span>
+                        <span className="text-xs sm:text-sm text-muted-foreground whitespace-nowrap">{completionRate}%</span>
                       </div>
                     </td>
                     <td className="px-3 sm:px-6 py-4 whitespace-nowrap text-sm font-medium">

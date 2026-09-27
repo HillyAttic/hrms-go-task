@@ -64,9 +64,9 @@ export default function SigninWithPassword() {
   return (
     <form onSubmit={handleSubmit}>
       {successMessage && (
-        <div className="mb-4 rounded-lg bg-green-50 border border-green-200 p-4">
+        <div className="mb-4 rounded-lg bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-700 p-4">
           <div className="flex">
-            <div className="text-green-800 text-sm">
+            <div className="text-green-800 dark:text-green-300 text-sm">
               {successMessage}
             </div>
           </div>
@@ -74,9 +74,9 @@ export default function SigninWithPassword() {
       )}
 
       {error && (
-        <div className="mb-4 rounded-lg bg-red-50 border border-red-200 p-4">
+        <div className="mb-4 rounded-lg bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 p-4">
           <div className="flex">
-            <div className="text-red-800 text-sm">
+            <div className="text-red-800 dark:text-red-300 text-sm">
               {error}
             </div>
           </div>
@@ -109,7 +109,7 @@ export default function SigninWithPassword() {
         <button
           type="button"
           onClick={() => setShowPassword(!showPassword)}
-          className="absolute right-4 top-[46px] text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+          className="absolute right-4 top-[46px] text-muted-foreground hover:text-muted-foreground dark:text-muted-foreground dark:hover:text-gray-200"
           aria-label={showPassword ? "Hide password" : "Show password"}
         >
           <svg width="22" height="22" viewBox="0 0 22 22" fill="currentColor">

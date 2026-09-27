@@ -158,7 +158,7 @@ export default function TasksPage() {
           className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 border ${
             dateFilter === 'all'
               ? 'bg-foreground text-background border-blue-600 shadow-md shadow-blue-500/25 scale-105'
-              : 'bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500'
+              : 'bg-muted text-muted-foreground border-border hover:bg-muted/50 hover:border-border dark:hover:border-gray-500'
           }`}
         >
           All Tasks
@@ -168,7 +168,7 @@ export default function TasksPage() {
           className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 border ${
             dateFilter === 'today'
               ? 'bg-foreground text-background border-blue-600 shadow-md shadow-blue-500/25 scale-105'
-              : 'bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500'
+              : 'bg-muted text-muted-foreground border-border hover:bg-muted/50 hover:border-border dark:hover:border-gray-500'
           }`}
         >
           Today
@@ -178,7 +178,7 @@ export default function TasksPage() {
           className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 border ${
             dateFilter === 'yesterday'
               ? 'bg-foreground text-background border-blue-600 shadow-md shadow-blue-500/25 scale-105'
-              : 'bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500'
+              : 'bg-muted text-muted-foreground border-border hover:bg-muted/50 hover:border-border dark:hover:border-gray-500'
           }`}
         >
           Yesterday
@@ -188,7 +188,7 @@ export default function TasksPage() {
           className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 border ${
             dateFilter === 'thisWeek'
               ? 'bg-foreground text-background border-blue-600 shadow-md shadow-blue-500/25 scale-105'
-              : 'bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500'
+              : 'bg-muted text-muted-foreground border-border hover:bg-muted/50 hover:border-border dark:hover:border-gray-500'
           }`}
         >
           This Week
@@ -198,7 +198,7 @@ export default function TasksPage() {
           className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 border ${
             dateFilter === 'lastWeek'
               ? 'bg-foreground text-background border-blue-600 shadow-md shadow-blue-500/25 scale-105'
-              : 'bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500'
+              : 'bg-muted text-muted-foreground border-border hover:bg-muted/50 hover:border-border dark:hover:border-gray-500'
           }`}
         >
           Last Week
@@ -208,7 +208,7 @@ export default function TasksPage() {
           className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 border ${
             dateFilter === 'thisMonth'
               ? 'bg-foreground text-background border-blue-600 shadow-md shadow-blue-500/25 scale-105'
-              : 'bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500'
+              : 'bg-muted text-muted-foreground border-border hover:bg-muted/50 hover:border-border dark:hover:border-gray-500'
           }`}
         >
           This Month
@@ -218,7 +218,7 @@ export default function TasksPage() {
           className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 border ${
             dateFilter === 'lastMonth'
               ? 'bg-foreground text-background border-blue-600 shadow-md shadow-blue-500/25 scale-105'
-              : 'bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500'
+              : 'bg-muted text-muted-foreground border-border hover:bg-muted/50 hover:border-border dark:hover:border-gray-500'
           }`}
         >
           Last Month
@@ -228,7 +228,7 @@ export default function TasksPage() {
           className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 border ${
             dateFilter === 'older'
               ? 'bg-foreground text-background border-blue-600 shadow-md shadow-blue-500/25 scale-105'
-              : 'bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500'
+              : 'bg-muted text-muted-foreground border-border hover:bg-muted/50 hover:border-border dark:hover:border-gray-500'
           }`}
         >
           Older
@@ -243,7 +243,7 @@ export default function TasksPage() {
       />
 
       {/* Task List */}
-      <div className="bg-white dark:bg-gray-dark rounded-lg shadow border border-gray-200 dark:border-gray-700">
+      <div className="bg-card rounded-lg shadow border border-border">
         <div className="p-6">
           {loading ? (
             <div className="flex items-center justify-center h-64">

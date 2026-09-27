@@ -91,7 +91,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleComplete, onView, sel
               type="checkbox"
               checked={selected}
               onChange={(e) => onSelect(task.id, e.target.checked)}
-              className="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-ring cursor-pointer"
+              className="w-5 h-5 rounded border-border text-blue-600 focus:ring-ring cursor-pointer"
               aria-label={`Select ${task.title}`}
             />
           </div>
@@ -101,7 +101,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleComplete, onView, sel
         <div className={`flex items-start justify-between mb-3 ${onSelect ? 'ml-8' : ''}`}>
           <div className="flex-1 min-w-0 pr-4">
             <div className="flex items-center gap-2 mb-2">
-              <h3 className={`text-lg font-semibold truncate ${isCompleted ? 'text-gray-500 line-through' : 'text-gray-900'}`}>
+              <h3 className={`text-lg font-semibold truncate ${isCompleted ? 'text-muted-foreground line-through' : 'text-foreground'}`}>
                 {task.title}
               </h3>
               {/* Priority Badge - Requirement 2.9 */}
@@ -129,7 +129,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleComplete, onView, sel
                 size="sm"
                 variant="ghost"
                 onClick={() => onView(task)}
-                className="text-purple-600 hover:text-purple-700 hover:bg-purple-50"
+                className="text-purple-600 hover:text-purple-700 dark:hover:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/30"
                 aria-label={`View details for ${task.title}`}
                 title="View details, comments & attachments"
               >
@@ -140,7 +140,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleComplete, onView, sel
               size="sm"
               variant="ghost"
               onClick={() => onEdit(task)}
-              className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+              className="text-blue-600 hover:text-blue-700 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/30"
               aria-label={`Edit ${task.title}`}
             >
               <PencilSquareIcon className="w-4 h-4" />
@@ -149,7 +149,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleComplete, onView, sel
               size="sm"
               variant="ghost"
               onClick={() => onDelete(task.id)}
-              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+              className="text-red-600 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30"
               aria-label={`Delete ${task.title}`}
             >
               <TrashIcon className="w-4 h-4" />
@@ -159,7 +159,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleComplete, onView, sel
 
         {/* Description - Requirement 2.4 */}
         {task.description && (
-          <p className={`text-sm mb-4 line-clamp-2 ${isCompleted ? 'text-gray-500' : 'text-gray-600'}`}>
+          <p className={`text-sm mb-4 line-clamp-2 ${isCompleted ? 'text-muted-foreground' : 'text-muted-foreground'}`}>
             {task.description}
           </p>
         )}
@@ -167,7 +167,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleComplete, onView, sel
         {/* Task Details */}
         <div className="space-y-3 mb-4">
           {/* Due Date - Requirement 2.4 */}
-          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <CalendarIcon className="w-4 h-4 flex-shrink-0" />
             <span className={isOverdue ? 'text-red-600 font-medium' : ''}>
               Due: {formatDate(task.dueDate)}
@@ -176,7 +176,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleComplete, onView, sel
 
           {/* Status Badge */}
           <div className="flex items-center gap-2 text-sm">
-            <ClockIcon className="w-4 h-4 flex-shrink-0 text-gray-600 dark:text-gray-400" />
+            <ClockIcon className="w-4 h-4 flex-shrink-0 text-muted-foreground" />
             <Badge variant={isCompleted ? 'success' : 'info'}>
               {task.status.split('-').map(word => 
                 word.charAt(0).toUpperCase() + word.slice(1)
@@ -187,7 +187,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleComplete, onView, sel
           {/* Assigned Users - Requirement 2.4 */}
           {task.assignedTo && task.assignedTo.length > 0 && (
             <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600 dark:text-gray-400">Assigned to:</span>
+              <span className="text-sm text-muted-foreground">Assigned to:</span>
               <div className="flex -space-x-2">
                 {task.assignedTo.slice(0, 3).map((userId, index) => (
                   <Avatar
@@ -198,7 +198,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleComplete, onView, sel
                   />
                 ))}
                 {task.assignedTo.length > 3 && (
-                  <div className="h-8 w-8 rounded-full bg-gray-200 border-2 border-white flex items-center justify-center text-xs font-medium text-gray-600 dark:text-gray-400">
+                  <div className="h-8 w-8 rounded-full bg-muted border-2 border-white flex items-center justify-center text-xs font-medium text-muted-foreground">
                     +{task.assignedTo.length - 3}
                   </div>
                 )}
@@ -210,7 +210,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleComplete, onView, sel
           {((task.attachments && task.attachments.length > 0) || (task.commentCount != null && task.commentCount > 0)) && (
             <div className="flex items-center gap-2 flex-wrap">
               {task.attachments && task.attachments.length > 0 && (
-                <span className="inline-flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 rounded-full px-2 py-0.5">
+                <span className="inline-flex items-center gap-1 text-sm text-muted-foreground bg-muted rounded-full px-2 py-0.5">
                   <PaperClipIcon className="w-3.5 h-3.5 flex-shrink-0" />
                   {task.attachments.length} attachment{task.attachments.length !== 1 ? 's' : ''}
                 </span>
@@ -232,7 +232,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleComplete, onView, sel
               variant="outline"
               size="sm"
               onClick={() => onView(task)}
-              className="flex-shrink-0 text-purple-600 border-purple-200 hover:bg-purple-50"
+              className="flex-shrink-0 text-purple-600 border-purple-200 dark:border-purple-700 hover:bg-purple-50 dark:hover:bg-purple-900/30"
               aria-label={`View details for ${task.title}`}
               title="View details, comments & attachments"
             >
@@ -263,7 +263,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleComplete, onView, sel
 
         {/* Footer with creation date */}
         {task.createdAt && (
-          <div className="mt-4 text-xs text-gray-500 dark:text-gray-400">
+          <div className="mt-4 text-xs text-muted-foreground">
             Created {new Date(task.createdAt).toLocaleDateString()}
           </div>
         )}

@@ -22,7 +22,7 @@ export function FormSettingsPanel({
 
       {/* Submit Button Text */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           Submit Button Text
         </label>
         <input
@@ -31,14 +31,14 @@ export function FormSettingsPanel({
           onChange={(e) =>
             onUpdateSettings({ ...settings, submitButtonText: e.target.value })
           }
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
           placeholder="Submit"
         />
       </div>
 
       {/* Success Message */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
           Success Message
         </label>
         <textarea
@@ -47,7 +47,7 @@ export function FormSettingsPanel({
             onUpdateSettings({ ...settings, successMessage: e.target.value })
           }
           rows={3}
-          className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+          className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
           placeholder="Thank you for your submission!"
         />
       </div>
@@ -66,7 +66,7 @@ export function FormSettingsPanel({
           }
           className="w-4 h-4 text-blue-600 rounded focus:ring-ring"
         />
-        <label htmlFor="allowMultiple" className="ml-2 text-sm text-gray-700">
+        <label htmlFor="allowMultiple" className="ml-2 text-sm text-gray-700 dark:text-gray-300">
           Allow multiple submissions per user
         </label>
       </div>
@@ -78,7 +78,7 @@ export function FormSettingsPanel({
         <div className="space-y-4">
           {/* Access Type */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Who can submit this form?
             </label>
             <select
@@ -89,7 +89,7 @@ export function FormSettingsPanel({
                   type: e.target.value as any,
                 })
               }
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
             >
               <option value="public">Anyone (Public)</option>
               <option value="authenticated">Any logged-in user</option>
@@ -101,7 +101,7 @@ export function FormSettingsPanel({
           {accessControl.type === 'restricted' && (
             <div className="space-y-4 pl-4 border-l-2 border-blue-500">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Allowed Roles
                 </label>
                 <div className="space-y-2">
@@ -126,7 +126,7 @@ export function FormSettingsPanel({
                         }}
                         className="w-4 h-4 text-blue-600 rounded focus:ring-ring"
                       />
-                      <span className="ml-2 text-sm text-gray-700 capitalize">
+                      <span className="ml-2 text-sm text-gray-700 dark:text-gray-300 capitalize">
                         {role}
                       </span>
                     </label>
@@ -135,7 +135,7 @@ export function FormSettingsPanel({
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Allowed User IDs
                 </label>
                 <textarea
@@ -150,7 +150,7 @@ export function FormSettingsPanel({
                     })
                   }
                   rows={4}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent font-mono text-sm"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent font-mono text-sm"
                   placeholder="Enter user IDs (one per line)"
                 />
                 <p className="text-xs text-gray-500 mt-1">

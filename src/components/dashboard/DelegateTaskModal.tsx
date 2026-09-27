@@ -232,7 +232,7 @@ export function DelegateTaskModal({
             <ArrowRightIcon className="w-5 h-5 text-orange-600" />
             Delegate Task
           </DialogTitle>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+          <p className="text-sm text-muted-foreground mt-2">
             Delegate &quot;{taskTitle}&quot; to another team member
           </p>
         </DialogHeader>
@@ -264,12 +264,12 @@ export function DelegateTaskModal({
               )}
             </div>
             {loading ? (
-              <div className="text-center py-4 text-gray-500 dark:text-gray-400">
+              <div className="text-center py-4 text-muted-foreground">
                 Loading available users...
               </div>
             ) : availableUsers.length === 0 ? (
-              <div className="text-center py-4 text-gray-500 dark:text-gray-400">
-                <UserGroupIcon className="w-8 h-8 mx-auto mb-2 text-gray-400" />
+              <div className="text-center py-4 text-muted-foreground">
+                <UserGroupIcon className="w-8 h-8 mx-auto mb-2 text-muted-foreground" />
                 <p>No users available for delegation</p>
                 <p className="text-xs mt-1">
                   {currentUserRole === 'manager'
@@ -278,25 +278,25 @@ export function DelegateTaskModal({
                 </p>
               </div>
             ) : (
-              <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-                <div className="sticky top-0 z-10 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 px-3 py-2 flex items-center gap-2">
-                  <MagnifyingGlassIcon className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
+              <div className="border border-border rounded-lg overflow-hidden">
+                <div className="sticky top-0 z-10 bg-card border-b border-border px-3 py-2 flex items-center gap-2">
+                  <MagnifyingGlassIcon className="w-3.5 h-3.5 text-muted-foreground flex-shrink-0" />
                   <input
                     type="text"
                     value={userSearch}
                     onChange={e => setUserSearch(e.target.value)}
                     placeholder="Search users..."
-                    className="w-full text-xs bg-transparent outline-none text-gray-700 dark:text-gray-300 placeholder-gray-400"
+                    className="w-full text-xs bg-transparent outline-none text-muted-foreground placeholder-gray-400"
                   />
                 </div>
-                <div className="divide-y divide-gray-100 dark:divide-gray-700 max-h-[200px] overflow-y-auto">
+                <div className="divide-y divide-border max-h-[200px] overflow-y-auto">
                   {filteredUsers.length === 0 ? (
-                    <p className="px-3 py-3 text-xs text-gray-400 text-center">No users match your search</p>
+                    <p className="px-3 py-3 text-xs text-muted-foreground text-center">No users match your search</p>
                   ) : (
                     filteredUsers.map(user => (
                       <label
                         key={user.id}
-                        className="flex items-center gap-3 px-3 py-2.5 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                        className="flex items-center gap-3 px-3 py-2.5 cursor-pointer hover:bg-muted/50"
                       >
                         <input
                           type="checkbox"
@@ -305,10 +305,10 @@ export function DelegateTaskModal({
                           className="w-4 h-4 accent-orange-500 flex-shrink-0"
                         />
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                          <p className="text-sm font-medium text-foreground truncate">
                             {user.name}
                           </p>
-                          <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                          <p className="text-xs text-muted-foreground truncate">
                             {user.role} · {user.email}
                           </p>
                         </div>
@@ -318,7 +318,7 @@ export function DelegateTaskModal({
                 </div>
               </div>
             )}
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               {currentUserRole === 'manager'
                 ? 'Select one or more employees assigned under you'
                 : 'Select one or more admins or managers'}
@@ -340,25 +340,25 @@ export function DelegateTaskModal({
                   {selectedClientIds.length === clientList.length ? 'Deselect All' : 'Select All'}
                 </button>
               </div>
-              <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-                <div className="sticky top-0 z-10 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 px-3 py-2 flex items-center gap-2">
-                  <MagnifyingGlassIcon className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
+              <div className="border border-border rounded-lg overflow-hidden">
+                <div className="sticky top-0 z-10 bg-card border-b border-border px-3 py-2 flex items-center gap-2">
+                  <MagnifyingGlassIcon className="w-3.5 h-3.5 text-muted-foreground flex-shrink-0" />
                   <input
                     type="text"
                     value={clientSearch}
                     onChange={e => setClientSearch(e.target.value)}
                     placeholder="Search clients..."
-                    className="w-full text-xs bg-transparent outline-none text-gray-700 dark:text-gray-300 placeholder-gray-400"
+                    className="w-full text-xs bg-transparent outline-none text-muted-foreground placeholder-gray-400"
                   />
                 </div>
-                <div className="divide-y divide-gray-100 dark:divide-gray-700 max-h-[200px] overflow-y-auto">
+                <div className="divide-y divide-border max-h-[200px] overflow-y-auto">
                   {filteredClients.length === 0 ? (
-                    <p className="px-3 py-3 text-xs text-gray-400 text-center">No clients match your search</p>
+                    <p className="px-3 py-3 text-xs text-muted-foreground text-center">No clients match your search</p>
                   ) : (
                     filteredClients.map(client => (
                       <label
                         key={client.id}
-                        className="flex items-center gap-3 px-3 py-2.5 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                        className="flex items-center gap-3 px-3 py-2.5 cursor-pointer hover:bg-muted/50"
                       >
                         <input
                           type="checkbox"
@@ -366,7 +366,7 @@ export function DelegateTaskModal({
                           onChange={() => toggleClient(client.id)}
                           className="w-4 h-4 accent-orange-500 flex-shrink-0"
                         />
-                        <span className="text-sm text-gray-900 dark:text-white">
+                        <span className="text-sm text-foreground">
                           {client.name}
                         </span>
                       </label>
@@ -374,7 +374,7 @@ export function DelegateTaskModal({
                   )}
                 </div>
               </div>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              <p className="text-xs text-muted-foreground mt-1">
                 {selectedClientIds.length} of {clientList.length} client
                 {clientList.length !== 1 ? 's' : ''} selected
               </p>
@@ -396,7 +396,7 @@ export function DelegateTaskModal({
         </div>
 
         {/* Footer Actions */}
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700 mt-4">
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-border mt-4">
           <Button type="button" variant="outline" onClick={onClose} disabled={saving}>
             Cancel
           </Button>

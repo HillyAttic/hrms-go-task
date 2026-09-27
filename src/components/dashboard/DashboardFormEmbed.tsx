@@ -363,12 +363,12 @@ export default function DashboardFormEmbed() {
               return (
                 <div
                   key={form.formId}
-                  className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden"
+                  className="border border-border rounded-lg overflow-hidden"
                 >
                   {/* Accordion Header */}
                   <button
                     onClick={() => toggleForm(form.formId)}
-                    className="w-full flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-750 transition-colors"
+                    className="w-full flex items-center justify-between p-4 bg-muted hover:bg-muted transition-colors"
                   >
                     <div className="flex items-center gap-3">
                       <svg
@@ -382,7 +382,7 @@ export default function DashboardFormEmbed() {
                         <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
                       </svg>
                       <div className="text-left">
-                        <h3 className="font-medium text-gray-900 dark:text-white">
+                        <h3 className="font-medium text-foreground">
                           {form.formTitle}
                         </h3>
                         <div className="flex items-center gap-2 mt-1">
@@ -394,7 +394,7 @@ export default function DashboardFormEmbed() {
                               Submitted
                             </span>
                           ) : (
-                            <span className="text-xs text-gray-500 dark:text-gray-400">
+                            <span className="text-xs text-muted-foreground">
                               Pending
                             </span>
                           )}
@@ -410,7 +410,7 @@ export default function DashboardFormEmbed() {
 
                   {/* Accordion Content */}
                   {isExpanded && form.template && (
-                    <div className="p-4 bg-white dark:bg-gray-dark">
+                    <div className="p-4 bg-card">
                       {form.isSubmitted ? (
                         <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-md border border-green-200 dark:border-green-800">
                           <svg

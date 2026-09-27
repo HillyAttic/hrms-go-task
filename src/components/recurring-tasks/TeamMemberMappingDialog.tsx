@@ -218,9 +218,9 @@ export function TeamMemberMappingDialog({
       {/* Wide landscape dialog: w-[95vw] on desktop, capped at 1100px */}
       <DialogContent className="w-[95vw] max-w-[1100px] p-0 overflow-hidden max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="px-6 pt-6 pb-4 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
+        <div className="px-6 pt-6 pb-4 border-b border-border flex-shrink-0">
           <DialogTitle className="text-lg font-semibold">Team Member Mapping</DialogTitle>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+          <p className="text-sm text-muted-foreground mt-1">
             Assign specific clients to team members. Each member will only see tasks for their assigned clients.
           </p>
         </div>
@@ -229,7 +229,7 @@ export function TeamMemberMappingDialog({
         <div className="flex flex-col md:flex-row flex-1 min-h-0 overflow-hidden">
 
           {/* LEFT — Selection controls */}
-          <div className="md:w-[45%] flex-shrink-0 flex flex-col border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-700 overflow-y-auto p-5 space-y-4">
+          <div className="md:w-[45%] flex-shrink-0 flex flex-col border-b md:border-b-0 md:border-r border-border overflow-y-auto p-5 space-y-4">
             {/* Team Member Selection */}
             <div>
               <Label htmlFor="user-select" className="flex items-center gap-2 mb-2">
@@ -251,7 +251,7 @@ export function TeamMemberMappingDialog({
                 ))}
               </Select>
               {loadingUsers && (
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Loading users...</p>
+                <p className="text-xs text-muted-foreground mt-1">Loading users...</p>
               )}
             </div>
 
@@ -262,7 +262,7 @@ export function TeamMemberMappingDialog({
                   <BuildingOfficeIcon className="w-4 h-4" />
                   Select Clients
                   {pendingClientIds.length > 0 && (
-                    <span className="ml-1 bg-blue-100 text-blue-700 text-xs font-semibold px-2 py-0.5 rounded-full">
+                    <span className="ml-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-semibold px-2 py-0.5 rounded-full">
                       {pendingClientIds.length} selected
                     </span>
                   )}
@@ -271,7 +271,7 @@ export function TeamMemberMappingDialog({
                 {/* Filters Row */}
                 <div className="flex gap-2 mb-2">
                   <div className="relative flex-1">
-                    <MagnifyingGlassIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <MagnifyingGlassIcon className="absolute left-2.5 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                     <input
                       type="text"
                       placeholder="Search clients..."
@@ -293,7 +293,7 @@ export function TeamMemberMappingDialog({
 
                 {/* Bulk action row */}
                 <div className="flex items-center justify-between mb-1 px-0.5">
-                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                  <span className="text-xs text-muted-foreground">
                     {filteredClients.length} client{filteredClients.length !== 1 ? 's' : ''} shown
                     {(() => {
                       const assignedCount = filteredClients.filter(c => getClientMapping(c.id!)).length;
@@ -318,7 +318,7 @@ export function TeamMemberMappingDialog({
                       <button
                         type="button"
                         onClick={handleDeselectAll}
-                        className="text-xs text-gray-500 hover:underline"
+                        className="text-xs text-muted-foreground hover:underline"
                       >
                         Deselect All
                       </button>
@@ -327,11 +327,11 @@ export function TeamMemberMappingDialog({
                 </div>
 
                 {/* Client List */}
-                <div className="border border-gray-200 dark:border-gray-600 rounded-md overflow-y-auto flex-1 min-h-[200px] max-h-[340px] bg-white dark:bg-gray-dark">
+                <div className="border border-border rounded-md overflow-y-auto flex-1 min-h-[200px] max-h-[340px] bg-card">
                   {loadingClients ? (
-                    <div className="flex items-center justify-center h-20 text-sm text-gray-500">Loading clients...</div>
+                    <div className="flex items-center justify-center h-20 text-sm text-muted-foreground">Loading clients...</div>
                   ) : filteredClients.length === 0 ? (
-                    <div className="flex items-center justify-center h-20 text-sm text-gray-500">No clients match the filter</div>
+                    <div className="flex items-center justify-center h-20 text-sm text-muted-foreground">No clients match the filter</div>
                   ) : (
                     filteredClients.map((client, index) => {
                       const isChecked = pendingClientIds.includes(client.id!);
@@ -342,14 +342,14 @@ export function TeamMemberMappingDialog({
                       return (
                         <label
                           key={client.id}
-                          className={`flex items-center gap-2.5 px-3 py-2 cursor-pointer select-none border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors ${
+                          className={`flex items-center gap-2.5 px-3 py-2 cursor-pointer select-none border-b border-border last:border-b-0 transition-colors ${
                             isAssignedToSelectedUser
                               ? 'bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30'
                               : isAssignedToOther
                               ? 'bg-orange-50 dark:bg-orange-900/20 hover:bg-orange-100 dark:hover:bg-orange-900/30'
                               : isChecked
                               ? 'bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-50 dark:hover:bg-gray-700'
-                              : 'hover:bg-blue-50 dark:hover:bg-gray-700'
+                              : 'hover:bg-blue-50 dark:hover:bg-blue-900/30 dark:hover:bg-gray-700'
                           }`}
                           title={
                             isAssignedToSelectedUser
@@ -370,7 +370,7 @@ export function TeamMemberMappingDialog({
                                 handleClientCheckbox(client.id!, index, e.ctrlKey || e.metaKey);
                               }
                             }}
-                            className={`w-4 h-4 rounded border-gray-300 focus:ring-ring ${
+                            className={`w-4 h-4 rounded border-border focus:ring-ring ${
                               isAssignedToSelectedUser
                                 ? 'text-red-600 border-red-400 cursor-not-allowed opacity-60'
                                 : 'text-blue-600 cursor-pointer'
@@ -381,7 +381,7 @@ export function TeamMemberMappingDialog({
                               ? 'text-red-700 dark:text-red-400 font-medium'
                               : isAssignedToOther
                               ? 'text-orange-700 dark:text-orange-400'
-                              : 'text-gray-800 dark:text-gray-200'
+                              : 'text-foreground'
                           }`}>
                             {client.clientName}
                           </span>
@@ -398,9 +398,9 @@ export function TeamMemberMappingDialog({
                             )}
                           </div>
                           <div className="flex gap-1 flex-shrink-0">
-                            {client.compliance?.gstr1 && <span className="text-[10px] bg-green-100 text-green-700 rounded px-1">G1</span>}
-                            {client.compliance?.itr && <span className="text-[10px] bg-purple-100 text-purple-700 rounded px-1">ITR</span>}
-                            {client.compliance?.tds && <span className="text-[10px] bg-yellow-100 text-yellow-700 rounded px-1">TDS</span>}
+                            {client.compliance?.gstr1 && <span className="text-[10px] bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded px-1">G1</span>}
+                            {client.compliance?.itr && <span className="text-[10px] bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded px-1">ITR</span>}
+                            {client.compliance?.tds && <span className="text-[10px] bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 rounded px-1">TDS</span>}
                           </div>
                         </label>
                       );
@@ -422,7 +422,7 @@ export function TeamMemberMappingDialog({
                 </div>
               </div>
             ) : (
-              <div className="flex items-center justify-center flex-1 text-sm text-gray-400 dark:text-gray-500 border border-dashed border-gray-200 dark:border-gray-700 rounded-lg py-10">
+              <div className="flex items-center justify-center flex-1 text-sm text-muted-foreground border border-dashed border-border rounded-lg py-10">
                 Select a team member to assign clients
               </div>
             )}
@@ -432,15 +432,15 @@ export function TeamMemberMappingDialog({
           <div className="flex-1 flex flex-col min-h-0 overflow-hidden p-5">
             <Label className="mb-3 block flex-shrink-0">
               Current Mappings
-              <span className="ml-2 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-xs font-semibold px-2 py-0.5 rounded-full">
+              <span className="ml-2 bg-muted text-muted-foreground text-xs font-semibold px-2 py-0.5 rounded-full">
                 {mappings.length} member{mappings.length !== 1 ? 's' : ''}
               </span>
             </Label>
 
             <div className="flex-1 overflow-y-auto">
               {mappings.length === 0 ? (
-                <div className="flex flex-col items-center justify-center h-full text-gray-400 dark:text-gray-500 border border-dashed border-gray-200 dark:border-gray-700 rounded-lg py-12">
-                  <UserIcon className="w-10 h-10 mb-2 text-gray-300 dark:text-gray-600" />
+                <div className="flex flex-col items-center justify-center h-full text-muted-foreground border border-dashed border-border rounded-lg py-12">
+                  <UserIcon className="w-10 h-10 mb-2 text-muted-foreground dark:text-muted-foreground" />
                   <p className="text-sm">No mappings yet</p>
                   <p className="text-xs mt-1">Assign clients to a team member to get started</p>
                 </div>
@@ -449,14 +449,14 @@ export function TeamMemberMappingDialog({
                   {mappings.map((mapping) => (
                     <div
                       key={mapping.userId}
-                      className="p-3 bg-white dark:bg-gray-dark border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm"
+                      className="p-3 bg-card border border-border rounded-lg shadow-sm"
                     >
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex items-center gap-2">
                           <UserIcon className="w-4 h-4 text-blue-600 flex-shrink-0" />
                           <div>
-                            <h4 className="font-medium text-sm text-gray-900 dark:text-white leading-tight">{mapping.userName}</h4>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                            <h4 className="font-medium text-sm text-foreground leading-tight">{mapping.userName}</h4>
+                            <p className="text-xs text-muted-foreground">
                               {mapping.clientIds.length} client{mapping.clientIds.length !== 1 ? 's' : ''} assigned
                             </p>
                           </div>
@@ -477,7 +477,7 @@ export function TeamMemberMappingDialog({
                             key={clientId}
                             className="flex items-center gap-1.5 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded px-2 py-1"
                           >
-                            <span className="text-xs text-gray-800 dark:text-gray-200 leading-none">{getClientName(clientId)}</span>
+                            <span className="text-xs text-foreground leading-none">{getClientName(clientId)}</span>
                             <button
                               type="button"
                               onClick={() => handleRemoveClient(mapping.userId, clientId)}
@@ -498,7 +498,7 @@ export function TeamMemberMappingDialog({
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-2 flex-shrink-0">
+        <div className="px-6 py-4 border-t border-border flex justify-end gap-2 flex-shrink-0">
           <Button type="button" variant="outline" onClick={onClose}>
             Cancel
           </Button>

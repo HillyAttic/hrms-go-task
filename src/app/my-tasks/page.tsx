@@ -135,7 +135,7 @@ export default function MyTasksPage() {
             <div className="flex items-center justify-center min-h-[60vh]">
                 <div className="text-center space-y-3">
                     <div className="w-10 h-10 rounded-full border-2 border-primary border-t-transparent animate-spin mx-auto" />
-                    <p className="text-sm text-gray-400">Loading your tasks…</p>
+                    <p className="text-sm text-muted-foreground">Loading your tasks…</p>
                 </div>
             </div>
         );
@@ -160,7 +160,7 @@ export default function MyTasksPage() {
         <div className="max-w-2xl mx-auto px-4 pb-32 md:pb-10 pt-2">
             {/* Page header */}
             <div className="flex items-center justify-between mb-6">
-                <h1 className="text-[28px] font-bold tracking-tight text-gray-900 dark:text-white">My Tasks</h1>
+                <h1 className="text-[28px] font-bold tracking-tight text-foreground">My Tasks</h1>
                 <button
                     onClick={() => setShowCreateListModal(true)}
                     className="flex items-center gap-1.5 px-3.5 py-2 bg-foreground text-background rounded-md border-2 border-border text-sm font-semibold active:scale-95 transition-transform"
@@ -196,7 +196,7 @@ export default function MyTasksPage() {
                                     <Check className="w-4 h-4 text-white" strokeWidth={3} />
                                 </div>
                                 <p className="text-[22px] font-bold leading-none mb-1" style={{ color: list.color }}>{count}</p>
-                                <p className="text-[13px] font-semibold text-gray-700 dark:text-gray-200 truncate">{list.name}</p>
+                                <p className="text-[13px] font-semibold text-muted-foreground truncate">{list.name}</p>
                             </button>
                         );
                     })}
@@ -205,13 +205,13 @@ export default function MyTasksPage() {
 
             {/* Selected list content */}
             {selectedList ? (
-                <div className="bg-white dark:bg-card rounded-2xl shadow-sm overflow-hidden">
+                <div className="bg-card rounded-2xl shadow-sm overflow-hidden">
                     {/* List header */}
                     <div className="flex items-center justify-between px-4 pt-4 pb-2">
                         <div className="flex items-center gap-2">
                             <div className="w-3 h-3 rounded-full" style={{ backgroundColor: selectedList.color }} />
-                            <span className="text-[15px] font-semibold text-gray-800 dark:text-white">{selectedList.name}</span>
-                            <span className="text-[12px] text-gray-400">{activeTasks.length} remaining</span>
+                            <span className="text-[15px] font-semibold text-foreground">{selectedList.name}</span>
+                            <span className="text-[12px] text-muted-foreground">{activeTasks.length} remaining</span>
                         </div>
                         <button
                             onClick={() => handleDeleteList(selectedList.id)}
@@ -240,7 +240,7 @@ export default function MyTasksPage() {
                     )}
 
                     {/* Add task row */}
-                    <div className="flex items-center gap-3 px-4 py-3 border-t border-gray-100 dark:border-white/[0.06]">
+                    <div className="flex items-center gap-3 px-4 py-3 border-t border-border dark:border-white/[0.06]">
                         <div className="w-6 h-6 rounded-full border-2 border-dashed flex-shrink-0"
                             style={{ borderColor: selectedList.color + '80' }} />
                         <input
@@ -250,7 +250,7 @@ export default function MyTasksPage() {
                             onChange={(e) => setNewTaskTitle(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && handleAddTask()}
                             placeholder="Add a task…"
-                            className="flex-1 bg-transparent text-[15px] text-gray-800 dark:text-white placeholder-gray-400 focus:outline-none"
+                            className="flex-1 bg-transparent text-[15px] text-foreground placeholder-gray-400 focus:outline-none"
                         />
                         {newTaskTitle.trim() && (
                             <button
@@ -265,17 +265,17 @@ export default function MyTasksPage() {
 
                     {/* Completed section */}
                     {completedTasks.length > 0 && (
-                        <div className="border-t border-gray-100 dark:border-white/[0.06]">
+                        <div className="border-t border-border dark:border-white/[0.06]">
                             <button
                                 onClick={() => setShowCompleted(v => !v)}
                                 className="flex items-center justify-between w-full px-4 py-3 text-left"
                             >
-                                <span className="text-[11px] font-semibold uppercase tracking-widest text-gray-400">
+                                <span className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground">
                                     Completed ({completedTasks.length})
                                 </span>
                                 {showCompleted
-                                    ? <ChevronUp className="w-4 h-4 text-gray-400" />
-                                    : <ChevronDown className="w-4 h-4 text-gray-400" />}
+                                    ? <ChevronUp className="w-4 h-4 text-muted-foreground" />
+                                    : <ChevronDown className="w-4 h-4 text-muted-foreground" />}
                             </button>
                             {showCompleted && (
                                 <ul>
@@ -299,17 +299,17 @@ export default function MyTasksPage() {
                     {/* Empty state */}
                     {activeTasks.length === 0 && completedTasks.length === 0 && (
                         <div className="px-4 py-10 text-center">
-                            <p className="text-[14px] text-gray-400">No tasks yet — add one above</p>
+                            <p className="text-[14px] text-muted-foreground">No tasks yet — add one above</p>
                         </div>
                     )}
                 </div>
             ) : (
                 /* No lists state */
                 <div className="text-center py-20 space-y-4">
-                    <div className="w-16 h-16 bg-gray-100 dark:bg-white/[0.06] rounded-2xl flex items-center justify-center mx-auto">
-                        <Check className="w-8 h-8 text-gray-300" />
+                    <div className="w-16 h-16 bg-muted dark:bg-white/[0.06] rounded-2xl flex items-center justify-center mx-auto">
+                        <Check className="w-8 h-8 text-muted-foreground" />
                     </div>
-                    <p className="text-[15px] text-gray-500 dark:text-gray-400">No lists yet</p>
+                    <p className="text-[15px] text-muted-foreground">No lists yet</p>
                     <button
                         onClick={() => setShowCreateListModal(true)}
                         className="px-5 py-2.5 bg-foreground text-background rounded-md border-2 border-border text-sm font-semibold"
@@ -346,8 +346,8 @@ function TaskRow({ task, color, isToggling, onToggle, onDelete, showDivider, com
         <li
             className={cn(
                 "flex items-center gap-3 px-4 py-3 cursor-pointer select-none",
-                "active:bg-gray-50 dark:active:bg-white/[0.04] transition-colors",
-                showDivider && "border-b border-gray-100 dark:border-white/[0.05]",
+                "active:bg-muted dark:active:bg-white/[0.04] transition-colors",
+                showDivider && "border-b border-border dark:border-white/[0.05]",
                 completed && "opacity-50"
             )}
             onClick={onToggle}
@@ -369,8 +369,8 @@ function TaskRow({ task, color, isToggling, onToggle, onDelete, showDivider, com
 
             {/* Title */}
             <span className={cn(
-                "flex-1 text-[15px] leading-snug text-gray-800 dark:text-white",
-                completed && "line-through text-gray-400 dark:text-gray-500"
+                "flex-1 text-[15px] leading-snug text-foreground",
+                completed && "line-through text-muted-foreground"
             )}>
                 {task.title}
             </span>
@@ -378,7 +378,7 @@ function TaskRow({ task, color, isToggling, onToggle, onDelete, showDivider, com
             {/* Delete — tap area */}
             <button
                 onClick={onDelete}
-                className="p-1.5 -mr-1 text-gray-300 hover:text-red-400 dark:text-gray-600 dark:hover:text-red-400 rounded-lg transition-colors active:scale-90"
+                className="p-1.5 -mr-1 text-muted-foreground hover:text-red-400 dark:text-muted-foreground dark:hover:text-red-400 rounded-lg transition-colors active:scale-90"
                 aria-label="Delete task"
             >
                 <X className="w-4 h-4" />
@@ -407,12 +407,12 @@ function CreateListModal({ onClose, onCreate }: CreateListModalProps) {
 
             {/* Sheet */}
             <div
-                className="relative bg-white dark:bg-card rounded-2xl shadow-2xl w-full max-w-md p-6 sm:p-6"
+                className="relative bg-card rounded-2xl shadow-2xl w-full max-w-md p-6 sm:p-6"
                 onClick={e => e.stopPropagation()}
             >
                 <div className="flex items-center justify-between mb-5">
-                    <h3 className="text-[17px] font-semibold text-gray-900 dark:text-white">New List</h3>
-                    <button onClick={onClose} className="w-7 h-7 flex items-center justify-center rounded-full bg-gray-100 dark:bg-white/[0.08] text-gray-500 dark:text-gray-400">
+                    <h3 className="text-[17px] font-semibold text-foreground">New List</h3>
+                    <button onClick={onClose} className="w-7 h-7 flex items-center justify-center rounded-full bg-muted dark:bg-white/[0.08] text-muted-foreground">
                         <X className="w-4 h-4" />
                     </button>
                 </div>
@@ -424,10 +424,10 @@ function CreateListModal({ onClose, onCreate }: CreateListModalProps) {
                     onKeyDown={e => e.key === 'Enter' && name.trim() && onCreate(name.trim(), color)}
                     placeholder="List name"
                     autoFocus
-                    className="w-full px-4 py-3 bg-gray-100 dark:bg-white/[0.06] rounded-xl text-[15px] text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary mb-5"
+                    className="w-full px-4 py-3 bg-muted dark:bg-white/[0.06] rounded-xl text-[15px] text-foreground placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary mb-5"
                 />
 
-                <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-400 mb-3">Colour</p>
+                <p className="text-[11px] font-semibold uppercase tracking-widest text-muted-foreground mb-3">Colour</p>
                 <div className="flex flex-wrap gap-3 mb-6">
                     {TASK_LIST_COLORS.map(c => (
                         <button
@@ -446,7 +446,7 @@ function CreateListModal({ onClose, onCreate }: CreateListModalProps) {
                 <div className="flex gap-3">
                     <button
                         onClick={onClose}
-                        className="flex-1 py-3 rounded-xl border border-gray-200 dark:border-white/[0.1] text-[15px] font-medium text-gray-600 dark:text-gray-300"
+                        className="flex-1 py-3 rounded-xl border border-border dark:border-white/[0.1] text-[15px] font-medium text-muted-foreground"
                     >
                         Cancel
                     </button>

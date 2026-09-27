@@ -201,7 +201,7 @@ function DraggableFieldItem({
       animate={{ opacity: 1, x: 0 }}
       whileHover={{ y: -2, scale: 1.01 }}
       whileTap={{ scale: 0.98 }}
-      className={`group relative overflow-hidden border border-gray-200 rounded-lg bg-white transition-all hover:border-gray-300 hover:shadow-md ${
+      className={`group relative overflow-hidden border border-gray-200 dark:border-gray-700 rounded-lg bg-white transition-all hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-md ${
         isDragging ? 'opacity-50 shadow-lg' : ''
       }`}
     >
@@ -222,7 +222,7 @@ function DraggableFieldItem({
 
         <button
           onClick={handlePlusClick}
-          className="flex-shrink-0 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded p-1 transition-colors"
+          className="flex-shrink-0 text-gray-400 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded p-1 transition-colors"
           title={selectedSectionId ? "Add to selected section" : "Add to form"}
         >
           <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -239,7 +239,7 @@ export function FieldPalette({ onAddField, selectedSectionId, onAddFieldToSectio
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm lg:sticky lg:top-4"
+      className="bg-white border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden shadow-sm lg:sticky lg:top-4"
     >
       <div className="bg-orange-500 px-4 sm:px-6 py-3 sm:py-4 border-b border-orange-600">
         <h3 className="text-lg sm:text-xl font-semibold text-white flex items-center">
@@ -272,7 +272,7 @@ export function FieldPalette({ onAddField, selectedSectionId, onAddFieldToSectio
             </div>
             <button
               onClick={() => onAddField(field.type)}
-              className="sm:hidden w-full group relative overflow-hidden border border-gray-200 rounded-lg bg-white active:bg-gray-50 transition-all hover:border-gray-300 hover:shadow-md p-2"
+              className="sm:hidden w-full group relative overflow-hidden border border-gray-200 dark:border-gray-700 rounded-lg bg-white active:bg-gray-50 dark:active:bg-gray-900/30 transition-all hover:border-gray-300 dark:hover:border-gray-700 hover:shadow-md p-2"
             >
               <div className="flex flex-col items-center space-y-1">
                 <div
@@ -288,7 +288,7 @@ export function FieldPalette({ onAddField, selectedSectionId, onAddFieldToSectio
         ))}
       </div>
 
-      <div className="px-4 sm:px-6 py-2 sm:py-3 bg-blue-50 border-t border-gray-200 hidden sm:block">
+      <div className="px-4 sm:px-6 py-2 sm:py-3 bg-blue-50 dark:bg-blue-900/30 border-t border-gray-200 dark:border-gray-700 hidden sm:block">
         <div className="flex items-center space-x-2 text-xs text-gray-600">
           <svg className="w-4 h-4 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />

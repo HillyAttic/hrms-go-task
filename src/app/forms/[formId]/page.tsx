@@ -59,7 +59,7 @@ export default function FormPage({ params }: { params: Promise<{ formId: string 
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900/30">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
           <p className="mt-4 text-gray-600 dark:text-gray-400">Loading form...</p>
@@ -70,7 +70,7 @@ export default function FormPage({ params }: { params: Promise<{ formId: string 
 
   if (error || !template) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900/30">
         <div className="text-center max-w-md">
           <div className="text-red-600 text-5xl mb-4">⚠️</div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -92,7 +92,7 @@ export default function FormPage({ params }: { params: Promise<{ formId: string 
 
   if (template.status !== 'published') {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900/30">
         <div className="text-center max-w-md">
           <div className="text-yellow-600 text-5xl mb-4">📝</div>
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
@@ -113,7 +113,7 @@ export default function FormPage({ params }: { params: Promise<{ formId: string 
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900/30 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-8">
         <FormRenderer template={template} onSuccess={handleSuccess} />
       </div>

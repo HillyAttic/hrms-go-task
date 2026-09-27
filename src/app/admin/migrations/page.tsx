@@ -47,17 +47,17 @@ export default function MigrationToolPage() {
     <div className="space-y-6">
       {/* Page Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-3xl font-bold text-foreground">
           Database Migration Tools
         </h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-2">
+        <p className="text-muted-foreground mt-2">
           Admin-only tools for database migrations
         </p>
       </div>
 
       {/* Migration Card */}
-      <div className="bg-white dark:bg-gray-dark rounded-lg border border-gray-200 dark:border-gray-700 p-6">
-        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
+      <div className="bg-card rounded-lg border border-border p-6">
+        <h2 className="text-xl font-semibold text-foreground mb-4">
           Add Serial Numbers to Clients
         </h2>
 

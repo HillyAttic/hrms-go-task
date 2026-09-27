@@ -230,14 +230,14 @@ export default function NotificationsPage() {
       <div className="flex flex-col items-center justify-center min-h-[60vh] p-4 sm:p-6">
         <div className="text-center space-y-4 max-w-md">
           <div className="flex justify-center">
-            <div className="p-3 sm:p-4 bg-gray-100 dark:bg-gray-800 rounded-full">
-              <Bell className="w-10 h-10 sm:w-12 sm:h-12 text-gray-400" />
+            <div className="p-3 sm:p-4 bg-muted rounded-full">
+              <Bell className="w-10 h-10 sm:w-12 sm:h-12 text-muted-foreground" />
             </div>
           </div>
-          <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+          <h1 className="text-xl sm:text-2xl font-bold text-foreground">
             Notifications
           </h1>
-          <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400">
+          <p className="text-sm sm:text-base text-muted-foreground">
             Please log in to view notifications
           </p>
         </div>
@@ -248,33 +248,33 @@ export default function NotificationsPage() {
   return (
     <div className="p-4 sm:p-6 max-w-4xl mx-auto pb-20 sm:pb-6">
       <div className="mb-4 sm:mb-6">
-        <h1 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">
+        <h1 className="text-xl sm:text-2xl font-bold text-foreground mb-2">
           Notifications
         </h1>
-        <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400">
+        <p className="text-sm sm:text-base text-muted-foreground">
           Manage your push notifications and view recent alerts
         </p>
       </div>
 
       {/* Notification Permission Card */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 sm:p-6 mb-4 sm:mb-6">
+      <div className="bg-card rounded-lg shadow p-4 sm:p-6 mb-4 sm:mb-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center space-x-3 sm:space-x-4">
             <div className={`p-2 sm:p-3 rounded-full flex-shrink-0 ${notificationPermission === 'granted'
               ? 'bg-green-100 dark:bg-green-900'
-              : 'bg-gray-100 dark:bg-gray-700'
+              : 'bg-muted'
               }`}>
               {notificationPermission === 'granted' ? (
                 <Bell className="w-5 h-5 sm:w-6 sm:h-6 text-green-600 dark:text-green-400" />
               ) : (
-                <BellOff className="w-5 h-5 sm:w-6 sm:h-6 text-gray-400" />
+                <BellOff className="w-5 h-5 sm:w-6 sm:h-6 text-muted-foreground" />
               )}
             </div>
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">
+              <h3 className="font-semibold text-foreground text-sm sm:text-base">
                 Push Notifications
               </h3>
-              <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 {notificationPermission === 'granted' && fcmToken
                   ? 'Notifications are enabled'
                   : 'Notifications are not enabled'}
@@ -392,20 +392,20 @@ export default function NotificationsPage() {
       )}
 
       {/* Notifications List */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
-        <div className="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700">
-          <h2 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">
+      <div className="bg-card rounded-lg shadow overflow-hidden">
+        <div className="p-3 sm:p-4 border-b border-border">
+          <h2 className="font-semibold text-foreground text-sm sm:text-base">
             Recent Notifications
           </h2>
         </div>
 
-        <div className="divide-y divide-gray-200 dark:divide-gray-700">
+        <div className="divide-y divide-border">
           {loading ? (
-            <div className="p-6 sm:p-8 text-center text-gray-500 dark:text-gray-400 text-sm sm:text-base">
+            <div className="p-6 sm:p-8 text-center text-muted-foreground text-sm sm:text-base">
               Loading notifications...
             </div>
           ) : notifications.length === 0 ? (
-            <div className="p-6 sm:p-8 text-center text-gray-500 dark:text-gray-400 text-sm sm:text-base">
+            <div className="p-6 sm:p-8 text-center text-muted-foreground text-sm sm:text-base">
               No notifications yet
             </div>
           ) : (
@@ -413,13 +413,13 @@ export default function NotificationsPage() {
               <div
                 key={notification.id}
                 onClick={() => handleNotificationClick(notification)}
-                className={`p-3 sm:p-4 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors ${!notification.read ? 'bg-blue-50 dark:bg-blue-900/20' : ''
+                className={`p-3 sm:p-4 hover:bg-muted/50 cursor-pointer transition-colors ${!notification.read ? 'bg-blue-50 dark:bg-blue-900/20' : ''
                   }`}
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center space-x-2 mb-1">
-                      <h3 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base truncate">
+                      <h3 className="font-semibold text-foreground text-sm sm:text-base truncate">
                         {notification.title}
                       </h3>
                       {!notification.read && (
@@ -429,10 +429,10 @@ export default function NotificationsPage() {
                         </span>
                       )}
                     </div>
-                    <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300 mb-2 line-clamp-2">
+                    <p className="text-xs sm:text-sm text-muted-foreground mb-2 line-clamp-2">
                       {notification.body}
                     </p>
-                    <p className="text-xs text-gray-400 dark:text-gray-500 dark:text-gray-400">
+                    <p className="text-xs text-muted-foreground dark:text-muted-foreground">
                       {notification.createdAt ? new Date(notification.createdAt).toLocaleString() : 'Just now'}
                     </p>
                   </div>
@@ -443,7 +443,7 @@ export default function NotificationsPage() {
                         e.stopPropagation();
                         markNotificationRead(notification.id);
                       }}
-                      className="flex-shrink-0 p-2 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 rounded-lg transition-colors"
+                      className="flex-shrink-0 p-2 text-muted-foreground hover:text-muted-foreground dark:hover:text-muted-foreground hover:bg-muted dark:hover:bg-gray-600 rounded-lg transition-colors"
                       title="Mark as read"
                     >
                       <Check className="w-4 h-4 sm:w-5 sm:h-5" />

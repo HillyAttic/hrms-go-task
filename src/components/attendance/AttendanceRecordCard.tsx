@@ -39,12 +39,12 @@ export function AttendanceRecordCard({
       case 'edited':
         return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300';
       default:
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300';
+        return 'bg-muted text-foreground dark:text-muted-foreground';
     }
   };
 
   return (
-    <Card className="p-4 hover:shadow-md transition-shadow">
+    <Card className="p-4 hover:shadow-hard transition-shadow">
       <div className="space-y-3">
         {/* Header */}
         <div className="flex items-start justify-between">

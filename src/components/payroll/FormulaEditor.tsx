@@ -158,39 +158,39 @@ export function FormulaEditor({ settings, onSaveSuccess }: FormulaEditorProps) {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
-      <div className="p-5 border-b border-gray-200 dark:border-gray-700">
-        <h2 className="text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+    <div className="bg-card rounded-xl shadow-sm border border-border">
+      <div className="p-5 border-b border-border">
+        <h2 className="text-base font-semibold text-foreground flex items-center gap-2">
           <FunctionSquare className="h-5 w-5 text-blue-600 dark:text-blue-400" />
           Salary Calculation Logic
         </h2>
-        <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+        <p className="text-sm text-muted-foreground mt-0.5">
           Define how each component is calculated
         </p>
       </div>
 
       <div className="p-5 space-y-4">
-        <div className="rounded-lg border border-gray-200 dark:border-gray-700">
+        <div className="rounded-lg border border-border">
           <button
             type="button"
             onClick={() => setShowReference((open) => !open)}
             className="flex w-full items-center justify-between px-4 py-3 text-left"
           >
-            <span className="flex items-center gap-2 text-sm font-medium text-gray-900 dark:text-white">
+            <span className="flex items-center gap-2 text-sm font-medium text-foreground">
               <Plus className="h-4 w-4" />
               Quick-Insert Reference
             </span>
             {showReference ? (
-              <ChevronUp className="h-4 w-4 text-gray-400" />
+              <ChevronUp className="h-4 w-4 text-muted-foreground" />
             ) : (
-              <ChevronDown className="h-4 w-4 text-gray-400" />
+              <ChevronDown className="h-4 w-4 text-muted-foreground" />
             )}
           </button>
 
           {showReference && (
-            <div className="space-y-4 border-t border-gray-200 px-4 py-4 dark:border-gray-700">
+            <div className="space-y-4 border-t border-border px-4 py-4">
               <div>
-                <p className="mb-2 text-xs font-semibold uppercase text-gray-500 dark:text-gray-400">Variables</p>
+                <p className="mb-2 text-xs font-semibold uppercase text-muted-foreground">Variables</p>
                 <div className="flex flex-wrap gap-2">
                   {INPUT_KEYS.map((key) => (
                     <button key={key} type="button" onClick={() => insertAtCursor(key)} className={CHIP_VARIABLE}>
@@ -201,7 +201,7 @@ export function FormulaEditor({ settings, onSaveSuccess }: FormulaEditorProps) {
               </div>
 
               <div>
-                <p className="mb-2 text-xs font-semibold uppercase text-gray-500 dark:text-gray-400">Components</p>
+                <p className="mb-2 text-xs font-semibold uppercase text-muted-foreground">Components</p>
                 <div className="flex flex-wrap gap-2">
                   {COMPONENT_KEYS.map((key) => (
                     <button key={key} type="button" onClick={() => insertAtCursor(key)} className={CHIP_COMPONENT}>
@@ -212,7 +212,7 @@ export function FormulaEditor({ settings, onSaveSuccess }: FormulaEditorProps) {
               </div>
 
               <div>
-                <p className="mb-2 text-xs font-semibold uppercase text-gray-500 dark:text-gray-400">
+                <p className="mb-2 text-xs font-semibold uppercase text-muted-foreground">
                   Operators &amp; Brackets
                 </p>
                 <div className="flex flex-wrap items-center gap-2">
@@ -255,11 +255,11 @@ export function FormulaEditor({ settings, onSaveSuccess }: FormulaEditorProps) {
               </div>
 
               <div>
-                <p className="mb-2 text-xs font-semibold uppercase text-gray-500 dark:text-gray-400">Functions</p>
+                <p className="mb-2 text-xs font-semibold uppercase text-muted-foreground">Functions</p>
                 <div className="space-y-3">
                   {FUNCTION_GROUPS.map(({ group, functions }) => (
                     <div key={group}>
-                      <p className="mb-1.5 text-xs text-gray-500 dark:text-gray-400">{group}</p>
+                      <p className="mb-1.5 text-xs text-muted-foreground">{group}</p>
                       <div className="flex flex-wrap gap-2">
                         {functions.map((fn) => (
                           <button
@@ -280,48 +280,48 @@ export function FormulaEditor({ settings, onSaveSuccess }: FormulaEditorProps) {
           )}
         </div>
 
-        <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
+        <div className="overflow-x-auto rounded-lg border border-border">
           <table className="w-full table-fixed min-w-[700px]">
             <colgroup>
               <col style={{ width: 180 }} />
               <col style={{ width: '70%' }} />
               <col style={{ width: 80 }} />
             </colgroup>
-            <thead className="bg-gray-50 dark:bg-gray-700/50">
+            <thead className="bg-muted/50">
               <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Field
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Expression
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
+            <tbody className="divide-y divide-border">
               {FORMULA_LINES.map((line) => {
                 const value = expressions[line.key] ?? '';
                 const isFocused = focusedKey === line.key;
                 return (
                   <tr
                     key={line.key}
-                    className={cn('hover:bg-gray-50 dark:hover:bg-gray-700/50', isFocused && 'bg-blue-50 dark:bg-blue-900/20')}
+                    className={cn('hover:bg-muted/50', isFocused && 'bg-blue-50 dark:bg-blue-900/20')}
                   >
                     <td className="px-4 py-3 align-top">
-                      <p className="text-sm font-semibold text-gray-900 dark:text-white">{line.label}</p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">{line.description}</p>
+                      <p className="text-sm font-semibold text-foreground">{line.label}</p>
+                      <p className="text-xs text-muted-foreground">{line.description}</p>
                     </td>
                     <td className="px-4 py-3 align-top">
                       <div className="flex items-center gap-1">
-                        <span className="shrink-0 font-mono text-xs text-gray-400 dark:text-gray-500">
+                        <span className="shrink-0 font-mono text-xs text-muted-foreground">
                           {line.key} =
                         </span>
                         <div className="relative flex-1">
                           <div className="pointer-events-none absolute inset-0 flex items-center overflow-hidden whitespace-pre font-mono text-sm">
                             <span className="invisible">{value.slice(0, caret)}</span>
-                            {isFocused && <span className="text-gray-300 dark:text-gray-600">{ghost}</span>}
+                            {isFocused && <span className="text-muted-foreground dark:text-muted-foreground">{ghost}</span>}
                           </div>
                           <input
                             ref={(element) => {
@@ -346,7 +346,7 @@ export function FormulaEditor({ settings, onSaveSuccess }: FormulaEditorProps) {
                             }}
                             onKeyDown={(event) => handleKeyDown(event, value)}
                             placeholder="expression"
-                            className="relative w-full bg-transparent border-0 p-0 font-mono text-sm text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-0 dark:text-white dark:placeholder:text-gray-500"
+                            className="relative w-full bg-transparent border-0 p-0 font-mono text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-0 dark:placeholder:text-muted-foreground"
                           />
                           {isFocused && suggestions.length > 1 && (
                             <FormulaAutocomplete
@@ -365,7 +365,7 @@ export function FormulaEditor({ settings, onSaveSuccess }: FormulaEditorProps) {
                         type="button"
                         aria-label={`Clear ${line.label}`}
                         onClick={() => setExpression(line.key, '')}
-                        className="h-8 w-8 text-gray-400 hover:text-red-500 dark:text-gray-500 dark:hover:text-red-400"
+                        className="h-8 w-8 text-muted-foreground hover:text-red-500 dark:text-muted-foreground dark:hover:text-red-400"
                       >
                         <X className="h-4 w-4" />
                       </Button>
@@ -392,7 +392,7 @@ export function FormulaEditor({ settings, onSaveSuccess }: FormulaEditorProps) {
           </Button>
         </div>
         {!settings && (
-          <p className="text-xs text-gray-500 dark:text-gray-400">
+          <p className="text-xs text-muted-foreground">
             Save your payroll settings first — the formula is stored alongside them.
           </p>
         )}

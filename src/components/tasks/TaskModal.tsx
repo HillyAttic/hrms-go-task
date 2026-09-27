@@ -382,10 +382,10 @@ export function TaskModal({
               {/* File input trigger */}
               <div
                 onClick={() => !isLoading && fileInputRef.current?.click()}
-                className="flex items-center justify-center gap-2 w-full px-4 py-3 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-md cursor-pointer hover:border-blue-400 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-colors"
+                className="flex items-center justify-center gap-2 w-full px-4 py-3 border-2 border-dashed border-border rounded-md cursor-pointer hover:border-blue-400 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-colors"
               >
-                <PaperClipIcon className="w-5 h-5 text-gray-400" />
-                <span className="text-sm text-gray-500 dark:text-gray-400">
+                <PaperClipIcon className="w-5 h-5 text-muted-foreground" />
+                <span className="text-sm text-muted-foreground">
                   Click to attach files (PNG, JPG, PDF, Excel, Word) - Max 10MB each
                 </span>
               </div>
@@ -407,21 +407,21 @@ export function TaskModal({
               {/* Existing attachments (edit mode) */}
               {existingAttachments.length > 0 && (
                 <div className="space-y-1">
-                  <p className="text-xs font-medium text-gray-500 dark:text-gray-400">Existing attachments</p>
+                  <p className="text-xs font-medium text-muted-foreground">Existing attachments</p>
                   {existingAttachments.map((attachment) => (
                     <div
                       key={attachment.storagePath}
-                      className="flex items-center justify-between gap-2 px-3 py-2 bg-gray-50 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700"
+                      className="flex items-center justify-between gap-2 px-3 py-2 bg-muted rounded-md border border-border"
                     >
                       <div className="flex items-center gap-2 min-w-0">
-                        <DocumentIcon className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                        <span className="text-sm text-gray-700 dark:text-gray-300 truncate">{attachment.name}</span>
-                        <span className="text-xs text-gray-400 flex-shrink-0">{formatFileSize(attachment.size)}</span>
+                        <DocumentIcon className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                        <span className="text-sm text-muted-foreground truncate">{attachment.name}</span>
+                        <span className="text-xs text-muted-foreground flex-shrink-0">{formatFileSize(attachment.size)}</span>
                       </div>
                       <button
                         type="button"
                         onClick={() => handleRemoveExistingAttachment(attachment)}
-                        className="text-red-500 hover:text-red-700 p-1 rounded hover:bg-red-50 transition-colors flex-shrink-0"
+                        className="text-red-500 hover:text-red-700 dark:hover:text-red-300 p-1 rounded hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors flex-shrink-0"
                         disabled={isLoading}
                         aria-label={`Remove ${attachment.name}`}
                       >
@@ -435,7 +435,7 @@ export function TaskModal({
               {/* Pending files (new uploads) */}
               {pendingFiles.length > 0 && (
                 <div className="space-y-1">
-                  <p className="text-xs font-medium text-gray-500 dark:text-gray-400">New files to upload</p>
+                  <p className="text-xs font-medium text-muted-foreground">New files to upload</p>
                   {pendingFiles.map((file, index) => (
                     <div
                       key={`${file.name}-${index}`}
@@ -443,13 +443,13 @@ export function TaskModal({
                     >
                       <div className="flex items-center gap-2 min-w-0">
                         <DocumentIcon className="w-4 h-4 text-blue-400 flex-shrink-0" />
-                        <span className="text-sm text-gray-700 dark:text-gray-300 truncate">{file.name}</span>
-                        <span className="text-xs text-gray-400 flex-shrink-0">{formatFileSize(file.size)}</span>
+                        <span className="text-sm text-muted-foreground truncate">{file.name}</span>
+                        <span className="text-xs text-muted-foreground flex-shrink-0">{formatFileSize(file.size)}</span>
                       </div>
                       <button
                         type="button"
                         onClick={() => handleRemovePendingFile(index)}
-                        className="text-red-500 hover:text-red-700 p-1 rounded hover:bg-red-50 transition-colors flex-shrink-0"
+                        className="text-red-500 hover:text-red-700 dark:hover:text-red-300 p-1 rounded hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors flex-shrink-0"
                         disabled={isLoading}
                         aria-label={`Remove ${file.name}`}
                       >
@@ -462,7 +462,7 @@ export function TaskModal({
 
               {/* File count */}
               {(existingAttachments.length > 0 || pendingFiles.length > 0) && (
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-muted-foreground">
                   {existingAttachments.length + pendingFiles.length}/{MAX_FILES_PER_TASK} files
                 </p>
               )}
@@ -477,7 +477,7 @@ export function TaskModal({
               type="date"
               {...register('dueDate')}
               min={getMinDate()}
-              className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
+              className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isLoading}
               required
             />
@@ -492,7 +492,7 @@ export function TaskModal({
             <select
               id="priority"
               {...register('priority')}
-              className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
+              className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isLoading}
             >
               <option value="low">Low</option>
@@ -511,7 +511,7 @@ export function TaskModal({
             <select
               id="status"
               {...register('status')}
-              className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
+              className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isLoading}
             >
               <option value="pending">Pending</option>
@@ -535,18 +535,18 @@ export function TaskModal({
                 placeholder="Search employees..."
                 value={employeeSearch}
                 onChange={(e) => setEmployeeSearch(e.target.value)}
-                className="w-full px-3 py-2 mb-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring dark:bg-gray-800 dark:text-white"
+                className="w-full px-3 py-2 mb-1 text-sm border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
                 disabled={isLoading || loadingEmployees}
               />
-              <div className="border border-gray-300 dark:border-gray-600 rounded-md max-h-48 overflow-y-auto">
+              <div className="border border-border rounded-md max-h-48 overflow-y-auto">
                 {loadingEmployees ? (
-                  <div className="p-4 text-center text-gray-500 dark:text-gray-400">Loading employees...</div>
+                  <div className="p-4 text-center text-muted-foreground">Loading employees...</div>
                 ) : employees.filter(emp => !selectedEmployees.some(sel => sel.id === emp.id) && (
                     !employeeSearch ||
                     emp.name.toLowerCase().includes(employeeSearch.toLowerCase()) ||
                     emp.email.toLowerCase().includes(employeeSearch.toLowerCase())
                   )).length === 0 ? (
-                  <div className="p-4 text-center text-gray-500 dark:text-gray-400">
+                  <div className="p-4 text-center text-muted-foreground">
                     {employeeSearch
                       ? 'No employees match your search'
                       : selectedEmployees.length > 0
@@ -554,7 +554,7 @@ export function TaskModal({
                       : 'No employees available'}
                   </div>
                 ) : (
-                  <div className="divide-y divide-gray-200">
+                  <div className="divide-y divide-border">
                     {employees.filter(emp => !selectedEmployees.some(sel => sel.id === emp.id) && (
                         !employeeSearch ||
                         emp.name.toLowerCase().includes(employeeSearch.toLowerCase()) ||
@@ -564,12 +564,12 @@ export function TaskModal({
                         key={employee.id}
                         type="button"
                         onClick={() => handleEmployeeSelect(employee.id!)}
-                        className="w-full text-left px-3 py-2 hover:bg-blue-50 transition-colors focus:bg-blue-100 focus:outline-none"
+                        className="w-full text-left px-3 py-2 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors focus:bg-blue-100 dark:focus:bg-blue-900/30 focus:outline-none"
                         disabled={isLoading}
                       >
                         <div className="flex flex-col">
-                          <span className="text-sm font-medium text-gray-900 dark:text-white">{employee.name}</span>
-                          <span className="text-xs text-gray-600 dark:text-gray-400">
+                          <span className="text-sm font-medium text-foreground">{employee.name}</span>
+                          <span className="text-xs text-muted-foreground">
                             {employee.email} • {employee.role}
                           </span>
                         </div>
@@ -582,9 +582,9 @@ export function TaskModal({
 
             {/* Selected Employees Display */}
             {selectedEmployees.length > 0 && (
-              <div className="mt-2 mb-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+              <div className="mt-2 mb-3 p-3 bg-muted rounded-lg border border-border">
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-xs font-medium text-gray-600 dark:text-gray-400">Selected Employees ({selectedEmployees.length})</p>
+                  <p className="text-xs font-medium text-muted-foreground">Selected Employees ({selectedEmployees.length})</p>
                   <Button
                     type="button"
                     variant="ghost"
@@ -594,7 +594,7 @@ export function TaskModal({
                       setValue('assignedTo', '');
                     }}
                     disabled={isLoading}
-                    className="text-xs text-red-600 hover:text-red-700 hover:bg-red-50"
+                    className="text-xs text-red-600 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30"
                   >
                     Clear All
                   </Button>
@@ -603,16 +603,16 @@ export function TaskModal({
                   {selectedEmployees.map((employee) => (
                     <div
                       key={employee.id}
-                      className="flex items-center gap-2 bg-white dark:bg-gray-dark border border-gray-300 dark:border-gray-600 rounded-md px-2.5 py-1.5 shadow-sm"
+                      className="flex items-center gap-2 bg-card border border-border rounded-md px-2.5 py-1.5 shadow-sm"
                     >
                       <div className="flex flex-col">
-                        <span className="text-sm font-medium text-gray-900 dark:text-white">{employee.name}</span>
-                        <span className="text-xs text-gray-500 dark:text-gray-400">{employee.role}</span>
+                        <span className="text-sm font-medium text-foreground">{employee.name}</span>
+                        <span className="text-xs text-muted-foreground">{employee.role}</span>
                       </div>
                       <button
                         type="button"
                         onClick={() => handleEmployeeRemove(employee.id!)}
-                        className="text-red-500 hover:text-red-700 hover:bg-red-50 rounded p-1 ml-1 transition-colors"
+                        className="text-red-500 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30 rounded p-1 ml-1 transition-colors"
                         disabled={isLoading}
                         aria-label={`Remove ${employee.name}`}
                       >
@@ -652,10 +652,10 @@ export function TaskModal({
               <p className="text-sm text-red-600 mt-1">{errors.categoryId.message}</p>
             )}
             {loadingCategories && (
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Loading categories...</p>
+              <p className="text-sm text-muted-foreground mt-1">Loading categories...</p>
             )}
             {!loadingCategories && categories.length === 0 && (
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">No categories available</p>
+              <p className="text-sm text-muted-foreground mt-1">No categories available</p>
             )}
           </div>
 
@@ -670,13 +670,13 @@ export function TaskModal({
               value={projectSearch}
               onChange={(e) => setProjectSearch(e.target.value)}
               disabled={isLoading || loadingProjects}
-              className="w-full px-3 py-2 mb-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring dark:bg-gray-800 dark:text-white disabled:cursor-not-allowed disabled:opacity-50"
+              className="w-full px-3 py-2 mb-1 text-sm border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
             />
 
             {/* Project list */}
-            <div className="border border-gray-300 dark:border-gray-600 rounded-md max-h-48 overflow-y-auto">
+            <div className="border border-border rounded-md max-h-48 overflow-y-auto">
               {loadingProjects ? (
-                <div className="p-4 text-center text-gray-500 dark:text-gray-400">Loading projects...</div>
+                <div className="p-4 text-center text-muted-foreground">Loading projects...</div>
               ) : projects.filter(
                   p =>
                     !selectedProjects.some(sel => sel.id === p.id) &&
@@ -684,7 +684,7 @@ export function TaskModal({
                       p.projectName.toLowerCase().includes(projectSearch.toLowerCase()) ||
                       p.projectNumber?.toLowerCase().includes(projectSearch.toLowerCase()))
                 ).length === 0 ? (
-                <div className="p-4 text-center text-gray-500 dark:text-gray-400">
+                <div className="p-4 text-center text-muted-foreground">
                   {projectSearch
                     ? 'No projects match your search'
                     : selectedProjects.length > 0
@@ -692,7 +692,7 @@ export function TaskModal({
                     : 'No projects available'}
                 </div>
               ) : (
-                <div className="divide-y divide-gray-200">
+                <div className="divide-y divide-border">
                   {projects.filter(
                     p =>
                       !selectedProjects.some(sel => sel.id === p.id) &&
@@ -704,14 +704,14 @@ export function TaskModal({
                       key={project.id}
                       type="button"
                       onClick={() => handleProjectSelect(project.id!)}
-                      className="w-full text-left px-3 py-2 hover:bg-blue-50 transition-colors focus:bg-blue-100 focus:outline-none"
+                      className="w-full text-left px-3 py-2 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors focus:bg-blue-100 dark:focus:bg-blue-900/30 focus:outline-none"
                       disabled={isLoading}
                     >
                       <div className="flex flex-col">
-                        <span className="text-sm font-medium text-gray-900 dark:text-white">
+                        <span className="text-sm font-medium text-foreground">
                           {project.projectName}
                         </span>
-                        <span className="text-xs text-gray-600 dark:text-gray-400">
+                        <span className="text-xs text-muted-foreground">
                           {project.projectNumber}
                           {project.status ? ` • ${project.status.replace('_', ' ')}` : ''}
                         </span>
@@ -724,9 +724,9 @@ export function TaskModal({
 
             {/* Selected Projects Display */}
             {selectedProjects.length > 0 && (
-              <div className="mt-2 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+              <div className="mt-2 p-3 bg-muted rounded-lg border border-border">
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-xs font-medium text-gray-600 dark:text-gray-400">Selected Projects ({selectedProjects.length})</p>
+                  <p className="text-xs font-medium text-muted-foreground">Selected Projects ({selectedProjects.length})</p>
                   <Button
                     type="button"
                     variant="ghost"
@@ -736,7 +736,7 @@ export function TaskModal({
                       setValue('contactId', '');
                     }}
                     disabled={isLoading}
-                    className="text-xs text-red-600 hover:text-red-700 hover:bg-red-50"
+                    className="text-xs text-red-600 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30"
                   >
                     Clear All
                   </Button>
@@ -745,16 +745,16 @@ export function TaskModal({
                   {selectedProjects.map((project) => (
                     <div
                       key={project.id}
-                      className="flex items-center gap-2 bg-white dark:bg-gray-dark border border-gray-300 dark:border-gray-600 rounded-md px-2.5 py-1.5 shadow-sm"
+                      className="flex items-center gap-2 bg-card border border-border rounded-md px-2.5 py-1.5 shadow-sm"
                     >
                       <div className="flex flex-col">
-                        <span className="text-sm font-medium text-gray-900 dark:text-white">{project.projectName}</span>
-                        <span className="text-xs text-gray-500 dark:text-gray-400">{project.projectNumber}</span>
+                        <span className="text-sm font-medium text-foreground">{project.projectName}</span>
+                        <span className="text-xs text-muted-foreground">{project.projectNumber}</span>
                       </div>
                       <button
                         type="button"
                         onClick={() => handleProjectRemove(project.id!)}
-                        className="text-red-500 hover:text-red-700 hover:bg-red-50 rounded p-1 ml-1 transition-colors"
+                        className="text-red-500 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30 rounded p-1 ml-1 transition-colors"
                         disabled={isLoading}
                         aria-label={`Remove ${project.projectName}`}
                       >

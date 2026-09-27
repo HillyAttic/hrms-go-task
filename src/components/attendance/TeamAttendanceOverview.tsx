@@ -28,19 +28,19 @@ export function TeamAttendanceOverview({
       case 'absent':
         return <AlertCircle className="h-4 w-4 text-red-600" />;
       default:
-        return <Clock className="h-4 w-4 text-gray-400" />;
+        return <Clock className="h-4 w-4 text-muted-foreground" />;
     }
   };
 
   const getStatusBadge = (status: string) => {
     const colors = {
-      'clocked-in': 'bg-green-100 text-green-800',
-      'clocked-out': 'bg-gray-100 text-gray-800',
-      'on-break': 'bg-yellow-100 text-yellow-800',
+      'clocked-in': 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300',
+      'clocked-out': 'bg-muted text-foreground',
+      'on-break': 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300',
       'on-leave': 'bg-foreground text-background',
-      'absent': 'bg-red-100 text-red-800',
+      'absent': 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300',
     };
-    return colors[status as keyof typeof colors] || 'bg-gray-100 text-gray-800';
+    return colors[status as keyof typeof colors] || 'bg-muted text-foreground';
   };
 
   if (loading) {
@@ -48,7 +48,7 @@ export function TeamAttendanceOverview({
       <Card className="p-6">
         <div className="animate-pulse space-y-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="h-16 bg-gray-200 rounded"></div>
+            <div key={i} className="h-16 bg-muted rounded"></div>
           ))}
         </div>
       </Card>
@@ -63,7 +63,7 @@ export function TeamAttendanceOverview({
           <div
             key={member.employeeId}
             onClick={() => onEmployeeClick(member.employeeId)}
-            className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:bg-gray-800 cursor-pointer transition-colors"
+            className="flex items-center justify-between p-3 rounded-lg hover:bg-muted cursor-pointer transition-colors"
           >
             <div className="flex items-center gap-3">
               {getStatusIcon(member.status)}
@@ -74,10 +74,10 @@ export function TeamAttendanceOverview({
                     {member.status.replace('-', ' ')}
                   </Badge>
                   {member.isLate && (
-                    <Badge className="bg-orange-100 text-orange-800">Late</Badge>
+                    <Badge className="bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300">Late</Badge>
                   )}
                   {member.isEarlyDeparture && (
-                    <Badge className="bg-orange-100 text-orange-800">Early</Badge>
+                    <Badge className="bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300">Early</Badge>
                   )}
                 </div>
               </div>

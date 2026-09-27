@@ -93,14 +93,14 @@ export function AddTaskModal({ isOpen, onClose, onSave, editTask }: AddTaskModal
         <form onSubmit={handleSubmit} className="space-y-4 mt-4">
           {/* Title */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-muted-foreground mb-2">
               Title <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+              className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
               placeholder="Enter task title"
               required
             />
@@ -108,13 +108,13 @@ export function AddTaskModal({ isOpen, onClose, onSave, editTask }: AddTaskModal
 
           {/* Description */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-muted-foreground mb-2">
               Description <span className="text-red-500">*</span>
             </label>
             <textarea
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+              className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
               placeholder="Enter task description"
               rows={3}
               required
@@ -124,13 +124,13 @@ export function AddTaskModal({ isOpen, onClose, onSave, editTask }: AddTaskModal
           {/* Status and Priority */}
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-muted-foreground mb-2">
                 Status
               </label>
               <select
                 value={formData.status}
                 onChange={(e) => setFormData({ ...formData, status: e.target.value as KanbanStatus })}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
               >
                 <option value="todo">To Do</option>
                 <option value="in-progress">In Progress</option>
@@ -139,13 +139,13 @@ export function AddTaskModal({ isOpen, onClose, onSave, editTask }: AddTaskModal
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-muted-foreground mb-2">
                 Priority
               </label>
               <select
                 value={formData.priority}
                 onChange={(e) => setFormData({ ...formData, priority: e.target.value as any })}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
               >
                 <option value="low">Low</option>
                 <option value="medium">Medium</option>
@@ -156,14 +156,14 @@ export function AddTaskModal({ isOpen, onClose, onSave, editTask }: AddTaskModal
 
           {/* Due Date */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-muted-foreground mb-2">
               Due Date
             </label>
             <input
               type="date"
               value={formData.dueDate}
               onChange={(e) => setFormData({ ...formData, dueDate: e.target.value })}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+              className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
             />
           </div>
 

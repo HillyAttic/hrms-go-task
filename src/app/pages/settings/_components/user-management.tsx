@@ -36,11 +36,11 @@ export function UserManagementForm() {
 
   if (!canManageUsers()) {
     return (
-      <div className="rounded-lg border border-stroke bg-white p-6 shadow-default dark:border-border dark:bg-card">
+      <div className="rounded-lg border border-stroke bg-card p-6 shadow-hard dark:border-border">
         <h2 className="mb-4 text-title-md2 font-semibold text-black dark:text-white">
           User Management
         </h2>
-        <p className="text-gray-600 dark:text-gray-400">
+        <p className="text-muted-foreground">
           You don't have permission to manage users. Only administrators can create new users.
         </p>
       </div>
@@ -115,13 +115,13 @@ export function UserManagementForm() {
   };
 
   return (
-    <div className="rounded-lg border border-stroke bg-white p-6 shadow-default dark:border-border dark:bg-card">
+    <div className="rounded-lg border border-stroke bg-card p-6 shadow-hard dark:border-border">
       <h2 className="mb-4 text-title-md2 font-semibold text-black dark:text-white">
         User Management
       </h2>
       
       {message && (
-        <div className={`mb-4 p-3 rounded-lg ${message.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+        <div className={`mb-4 p-3 rounded-lg ${message.type === 'success' ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300' : 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300'}`}>
           {message.text}
         </div>
       )}

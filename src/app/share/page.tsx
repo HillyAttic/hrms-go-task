@@ -63,7 +63,7 @@ export default function SharePage() {
 
   return (
     <div className="flex items-center justify-center min-h-screen p-4">
-      <div className="max-w-md w-full bg-white dark:bg-gray-dark border border-stroke dark:border-stroke-dark rounded-lg shadow-card p-6">
+      <div className="max-w-md w-full bg-card border border-stroke dark:border-stroke-dark rounded-lg shadow-hard p-6">
         <h1 className="text-2xl font-bold text-dark dark:text-white mb-4">
           Shared Content
         </h1>
@@ -120,7 +120,7 @@ export default function SharePage() {
 
           <button
             onClick={handleCreateNote}
-            className="w-full flex items-center justify-between p-4 bg-white dark:bg-gray-dark border border-stroke dark:border-stroke-dark rounded-lg hover:bg-gray-2 dark:hover:bg-gray-700 transition-colors"
+            className="w-full flex items-center justify-between p-4 bg-card border border-stroke dark:border-stroke-dark rounded-lg hover:bg-gray-2 transition-colors"
           >
             <div className="flex items-center space-x-3 text-dark dark:text-white">
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">

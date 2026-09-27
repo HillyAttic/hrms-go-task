@@ -358,8 +358,8 @@ export default function RecurringTasksPage() {
         {/* Page Header with Add Button */}
         <div className="flex flex-col gap-4">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Recurring Tasks</h1>
-            <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 mt-1 md:mt-2">
+            <h1 className="text-2xl md:text-3xl font-bold text-foreground">Recurring Tasks</h1>
+            <p className="text-sm md:text-base text-muted-foreground mt-1 md:mt-2">
               Manage tasks that repeat on a schedule
             </p>
           </div>
@@ -375,7 +375,7 @@ export default function RecurringTasksPage() {
 
         {/* Error Display */}
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+          <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 text-red-700 dark:text-red-300 px-4 py-3 rounded-lg">
             <p className="font-medium">Error loading recurring tasks</p>
             <p className="text-sm">{error.message}</p>
           </div>
@@ -447,7 +447,7 @@ export default function RecurringTasksPage() {
 
         {/* Task Count */}
         {tasks.length > 0 && (
-          <div className="text-sm text-gray-600 dark:text-gray-400 text-center">
+          <div className="text-sm text-muted-foreground text-center">
             Showing {tasks.length} recurring {tasks.length === 1 ? 'task' : 'tasks'}
           </div>
         )}
@@ -488,11 +488,11 @@ export default function RecurringTasksPage() {
         {/* Delete Confirmation Dialog */}
         {deleteConfirmId && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white dark:bg-gray-dark rounded-lg p-6 max-w-md w-full mx-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <div className="bg-card rounded-lg p-6 max-w-md w-full mx-4">
+              <h3 className="text-lg font-semibold text-foreground mb-4">
                 Delete Recurring Task
               </h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">
+              <p className="text-muted-foreground mb-6">
                 How would you like to handle this recurring task?
               </p>
               <div className="space-y-3">

@@ -203,14 +203,14 @@ export default function PasswordManagerPage() {
     <div className="p-6">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Password Manager</h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">
+        <h1 className="text-2xl font-bold text-foreground">Password Manager</h1>
+        <p className="text-muted-foreground mt-1">
           Manage portal credentials and control user access
         </p>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 mb-6 border-b border-gray-200 dark:border-gray-700">
+      <div className="flex gap-1 mb-6 border-b border-border">
         {ALL_TABS.map((tab) => (
           <button
             key={tab.value}
@@ -220,7 +220,7 @@ export default function PasswordManagerPage() {
                 ? tab.value === 'access-control'
                   ? 'border-purple-600 text-purple-600 dark:text-purple-400 dark:border-purple-400'
                   : 'border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400'
-                : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                : 'border-transparent text-muted-foreground hover:text-foreground dark:hover:text-white'
             }`}
           >
             {tab.label}
@@ -232,49 +232,49 @@ export default function PasswordManagerPage() {
       {activeTab === 'access-control' && (
         <div>
           <div className="mb-4">
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-muted-foreground">
               Grant users access to credential categories. Users with access can view and manage all
               records in that category from their Access Vault.
             </p>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="bg-card rounded-lg shadow border border-border overflow-hidden">
             {accessLoading ? (
               <div className="p-8 text-center">
                 <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-purple-600 mx-auto" />
               </div>
             ) : users.length === 0 ? (
-              <div className="p-10 text-center text-gray-500 dark:text-gray-400">
+              <div className="p-10 text-center text-muted-foreground">
                 No users found.
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-gray-50 dark:bg-gray-700">
+                  <thead className="bg-muted">
                     <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
                         User
                       </th>
-                      <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
+                      <th className="px-4 py-3 text-center text-xs font-medium text-muted-foreground uppercase">
                         GST
                       </th>
-                      <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
+                      <th className="px-4 py-3 text-center text-xs font-medium text-muted-foreground uppercase">
                         Income Tax
                       </th>
-                      <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
+                      <th className="px-4 py-3 text-center text-xs font-medium text-muted-foreground uppercase">
                         MCA
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+                  <tbody className="divide-y divide-border">
                     {users.map((user) => (
-                      <tr key={user.uid} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                      <tr key={user.uid} className="hover:bg-muted/50">
                         <td className="px-4 py-3">
-                          <p className="text-sm font-medium text-gray-900 dark:text-white">
+                          <p className="text-sm font-medium text-foreground">
                             {user.displayName}
                           </p>
                           {user.email && (
-                            <p className="text-xs text-gray-500 dark:text-gray-400">{user.email}</p>
+                            <p className="text-xs text-muted-foreground">{user.email}</p>
                           )}
                         </td>
                         {CATEGORIES.map((cat) => (
@@ -285,7 +285,7 @@ export default function PasswordManagerPage() {
                               className={`w-10 h-6 rounded-full transition-colors relative ${
                                 user.categories.includes(cat)
                                   ? 'bg-green-500'
-                                  : 'bg-gray-300 dark:bg-gray-600'
+                                  : 'bg-muted'
                               } disabled:opacity-60`}
                               title={
                                 user.categories.includes(cat)
@@ -316,13 +316,13 @@ export default function PasswordManagerPage() {
         <>
           {/* Action Bar */}
           <div className="flex justify-between items-center mb-4">
-            <p className="text-sm text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-muted-foreground">
               {loading ? 'Loading...' : `${records.length} record${records.length !== 1 ? 's' : ''}`}
             </p>
             <div className="flex gap-2">
               <button
                 onClick={() => setShowBulkImport(true)}
-                className="px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center gap-1.5"
+                className="px-3 py-2 text-sm rounded-lg border border-border text-muted-foreground hover:bg-muted/50 flex items-center gap-1.5"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -350,15 +350,15 @@ export default function PasswordManagerPage() {
           </div>
 
           {/* Table */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="bg-card rounded-lg shadow border border-border overflow-hidden">
             {loading ? (
               <div className="p-8 text-center">
                 <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mx-auto" />
               </div>
             ) : records.length === 0 ? (
-              <div className="p-10 text-center text-gray-500 dark:text-gray-400">
+              <div className="p-10 text-center text-muted-foreground">
                 <svg
-                  className="mx-auto h-10 w-10 text-gray-300 dark:text-gray-600 mb-3"
+                  className="mx-auto h-10 w-10 text-muted-foreground dark:text-muted-foreground mb-3"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -375,50 +375,50 @@ export default function PasswordManagerPage() {
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full">
-                  <thead className="bg-gray-50 dark:bg-gray-700">
+                  <thead className="bg-muted">
                     <tr>
                       {columns.map((col) => (
                         <th
                           key={col}
-                          className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"
+                          className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider"
                         >
                           {col}
                         </th>
                       ))}
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+                  <tbody className="divide-y divide-border">
                     {records.map((record) => (
-                      <tr key={record.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                      <tr key={record.id} className="hover:bg-muted/50">
                         {(activeTab === 'gst' || activeTab === 'mca') && (
-                          <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
+                          <td className="px-4 py-3 text-sm text-muted-foreground">
                             {record.serialNumber || '-'}
                           </td>
                         )}
-                        <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">
+                        <td className="px-4 py-3 text-sm font-medium text-foreground">
                           {record.clientName}
                         </td>
                         {activeTab === 'gst' && (
-                          <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
+                          <td className="px-4 py-3 text-sm text-muted-foreground">
                             {record.gstNumber || '-'}
                           </td>
                         )}
                         {activeTab === 'income-tax' && (
-                          <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
+                          <td className="px-4 py-3 text-sm text-muted-foreground">
                             {record.dateOfBirth || '-'}
                           </td>
                         )}
                         {activeTab === 'income-tax' && (
-                          <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
+                          <td className="px-4 py-3 text-sm text-muted-foreground">
                             {record.panNumber || '-'}
                           </td>
                         )}
                         {activeTab === 'mca' && (
-                          <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
+                          <td className="px-4 py-3 text-sm text-muted-foreground">
                             {record.membershipDin || '-'}
                           </td>
                         )}
-                        <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
+                        <td className="px-4 py-3 text-sm text-muted-foreground">
                           {record.username}
                         </td>
                         <td className="px-4 py-3">

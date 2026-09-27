@@ -3,11 +3,13 @@
 import { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { useModal } from '@/contexts/modal-context';
+import { Card } from '@/components/ui/card';
+import { PageHeader } from '@/components/ui/page-header';
 import dynamic from 'next/dynamic';
 
 // Lazy load the HolidayManagementModal
 const HolidayManagementModal = dynamic(() => import('@/components/attendance/HolidayManagementModal').then(mod => ({ default: mod.HolidayManagementModal })), {
-  loading: () => <div className="flex items-center justify-center p-8"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div></div>,
+  loading: () => <div className="flex items-center justify-center p-8"><div className="h-8 w-8 animate-spin rounded-full border-b-2 border-foreground"></div></div>,
   ssr: false
 });
 
@@ -258,10 +260,10 @@ export default function AttendanceRosterPage() {
       case 'approved-leave': return 'bg-purple-500';
       case 'unapproved-leave': return 'bg-red-500';
       case 'half-day': return 'bg-orange-500';
-      case 'holiday': return 'bg-blue-500';
-      case 'pending': return 'bg-gray-300';
-      case 'wfh': return 'bg-black';
-      default: return 'bg-gray-300';
+      case 'holiday': return 'bg-info';
+      case 'pending': return 'bg-muted';
+      case 'wfh': return 'bg-foreground';
+      default: return 'bg-muted';
     }
   };
 
@@ -291,146 +293,132 @@ export default function AttendanceRosterPage() {
   };
 
   return (
-    <div className="p-6">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Attendance Sheet</h1>
-        <p className="text-gray-600 dark:text-gray-400">Monthly attendance overview for all employees</p>
-      </div>
+    <div className="space-y-6">
+      <PageHeader
+        eyebrow="Admin"
+        title="Attendance Sheet"
+        description="Monthly attendance overview for all employees."
+        actions={
+          <>
+            <select
+              value={month}
+              onChange={(e) => setMonth(parseInt(e.target.value))}
+              aria-label="Month"
+              className="h-11 rounded-lg border-2 border-border bg-card px-4 py-2 text-foreground"
+            >
+              {monthNames.map((name, idx) => (
+                <option key={idx} value={idx}>{name}</option>
+              ))}
+            </select>
+            <select
+              value={year}
+              onChange={(e) => setYear(parseInt(e.target.value))}
+              aria-label="Year"
+              className="h-11 rounded-lg border-2 border-border bg-card px-4 py-2 text-foreground"
+            >
+              {[2024, 2025, 2026].map((y) => (
+                <option key={y} value={y}>{y}</option>
+              ))}
+            </select>
+            <button
+              onClick={fetchAttendanceData}
+              className="rounded-lg border-2 border-border bg-card px-4 py-2 text-foreground transition-colors hover:bg-muted"
+            >
+              Refresh
+            </button>
+            <button
+              onClick={() => setShowHolidayModal(true)}
+              className="rounded-lg border-2 border-border bg-card px-4 py-2 text-foreground transition-colors hover:bg-muted"
+            >
+              Manage Holidays
+            </button>
+            <button
+              onClick={() => setShowExportModal(true)}
+              disabled={loading || employees.length === 0}
+              className="flex items-center gap-2 rounded-lg border-2 border-border bg-foreground px-4 py-2 text-background transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Export Excel
+            </button>
+          </>
+        }
+      />
 
-      {/* Month/Year Selector */}
-      <div className="mb-6 flex flex-wrap gap-4 items-center">
-        <select
-          value={month}
-          onChange={(e) => setMonth(parseInt(e.target.value))}
-          className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-        >
-          {monthNames.map((name, idx) => (
-            <option key={idx} value={idx}>{name}</option>
-          ))}
-        </select>
-        <select
-          value={year}
-          onChange={(e) => setYear(parseInt(e.target.value))}
-          className="px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-        >
-          {[2024, 2025, 2026].map((y) => (
-            <option key={y} value={y}>{y}</option>
-          ))}
-        </select>
-        <button
-          onClick={fetchAttendanceData}
-          className="px-4 py-2 bg-foreground text-background rounded-lg hover:bg-foreground/90"
-        >
-          Refresh
-        </button>
-        <button
-          onClick={() => setShowHolidayModal(true)}
-          className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
-        >
-          Manage Holidays
-        </button>
-        <button
-          onClick={() => setShowExportModal(true)}
-          disabled={loading || employees.length === 0}
-          className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-          </svg>
-          Export Excel
-        </button>
-      </div>
-
-      {/* Legend */}
-      <div className="mb-6 flex flex-wrap gap-4 items-center bg-white dark:bg-gray-800 p-4 rounded-lg">
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-green-500 rounded"></div>
-          <span className="text-sm text-gray-700 dark:text-gray-300">Present</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-red-500 rounded"></div>
-          <span className="text-sm text-gray-700 dark:text-gray-300">Absent</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-purple-500 rounded"></div>
-          <span className="text-sm text-gray-700 dark:text-gray-300">Approved Leave</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-orange-500 rounded"></div>
-          <span className="text-sm text-gray-700 dark:text-gray-300">Half Day</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-red-500 rounded"></div>
-          <span className="text-sm text-gray-700 dark:text-gray-300">Unapproved Leave</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-blue-500 rounded"></div>
-          <span className="text-sm text-gray-700 dark:text-gray-300">Sunday/Holiday</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-black rounded"></div>
-          <span className="text-sm text-gray-700 dark:text-gray-300">WFH</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-gray-300 rounded"></div>
-          <span className="text-sm text-gray-700 dark:text-gray-300">Pending/Future</span>
-        </div>
-      </div>
+      {/* Legend — swatches come from getStatusColor so the key can't drift from the grid */}
+      <Card className="mb-6 flex flex-wrap items-center gap-4 p-4">
+        {[
+          { label: 'Present', status: 'present' },
+          { label: 'Absent', status: 'absent' },
+          { label: 'Approved Leave', status: 'approved-leave' },
+          { label: 'Half Day', status: 'half-day' },
+          { label: 'Unapproved Leave', status: 'unapproved-leave' },
+          { label: 'Sunday/Holiday', status: 'holiday' },
+          { label: 'WFH', status: 'wfh' },
+          { label: 'Pending/Future', status: 'pending' },
+        ].map(({ label, status }) => (
+          <div key={label} className="flex items-center gap-2">
+            <div className={`h-4 w-4 rounded border border-border ${getStatusColor(status)}`} />
+            <span className="text-sm text-foreground">{label}</span>
+          </div>
+        ))}
+      </Card>
 
       {/* Attendance Table */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
+      <Card className="overflow-hidden">
         {loading ? (
           <div className="p-8 text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+            <div className="mx-auto h-12 w-12 animate-spin rounded-full border-b-2 border-foreground"></div>
           </div>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gray-50 dark:bg-gray-700">
+              <thead className="bg-muted">
                 <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase sticky left-0 bg-gray-50 dark:bg-gray-700">
+                  <th className="sticky left-0 bg-muted px-4 py-3 text-left text-xs font-medium uppercase text-muted-foreground">
                     Employee
                   </th>
                   {Array.from({ length: getDaysInMonth() }, (_, i) => i + 1).map((day) => (
-                    <th key={day} className="px-2 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-300">
+                    <th key={day} className="px-2 py-3 text-center text-xs font-medium text-muted-foreground">
                       {day}
                     </th>
                   ))}
-                  <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase">
+                  <th className="px-4 py-3 text-left text-xs font-medium uppercase text-muted-foreground">
                     Stats
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+              <tbody className="divide-y divide-border">
                 {employees.map((employee) => (
-                  <tr key={employee.employeeId} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                    <td className="px-4 py-3 sticky left-0 bg-white dark:bg-gray-800">
+                  <tr key={employee.employeeId} className="hover:bg-muted/50">
+                    <td className="sticky left-0 bg-card px-4 py-3">
                       <button
                         onClick={() => openEmployeeModal(employee)}
-                        className="text-left hover:text-blue-600"
+                        className="text-left hover:text-foreground"
                       >
-                        <div className="font-medium text-gray-900 dark:text-white">{employee.employeeName}</div>
-                        <div className="text-xs text-gray-500">{employee.employeeEmail}</div>
+                        <div className="font-medium text-foreground">{employee.employeeName}</div>
+                        <div className="text-xs text-muted-foreground">{employee.employeeEmail}</div>
                       </button>
                     </td>
                     {employee.days.map((day, idx) => (
                       <td key={idx} className="px-2 py-3">
                         <div
-                          className={`w-6 h-6 rounded ${getStatusColor(day.status, day.leaveType)} mx-auto cursor-pointer`}
+                          className={`mx-auto h-6 w-6 cursor-pointer rounded border border-border ${getStatusColor(day.status, day.leaveType)}`}
                           title={`${day.date.toLocaleDateString()}: ${day.status}${day.hours ? ` (${day.hours.toFixed(1)}h)` : ''}`}
                         ></div>
                       </td>
                     ))}
                     <td className="px-4 py-3">
-                      <div className="text-xs flex flex-nowrap gap-x-3 gap-y-1">
-                        <span className="text-green-600">P: {employee.stats.present}</span>
-                        <span className="text-red-600">A: {employee.stats.absent}</span>
-                        <span className="text-green-600">AL: {employee.stats.approvedLeave}</span>
-                        <span className="text-green-600">HD: {employee.stats.halfDay}</span>
-                        <span className="text-gray-900 dark:text-gray-100">WFH: {employee.stats.wfh}</span>
-                        <span className="text-red-600">UL: {employee.stats.unapprovedLeave}</span>
-                        <span className="text-blue-600">H: {employee.stats.holiday}</span>
-                        <span className="text-gray-600 dark:text-gray-400">Hrs: {employee.stats.totalHours.toFixed(1)}</span>
+                      <div className="flex flex-nowrap gap-x-3 gap-y-1 text-xs">
+                        <span className="text-success">P: {employee.stats.present}</span>
+                        <span className="text-destructive">A: {employee.stats.absent}</span>
+                        <span className="text-success">AL: {employee.stats.approvedLeave}</span>
+                        <span className="text-success">HD: {employee.stats.halfDay}</span>
+                        <span className="text-foreground">WFH: {employee.stats.wfh}</span>
+                        <span className="text-destructive">UL: {employee.stats.unapprovedLeave}</span>
+                        <span className="text-info">H: {employee.stats.holiday}</span>
+                        <span className="text-muted-foreground">Hrs: {employee.stats.totalHours.toFixed(1)}</span>
                       </div>
                     </td>
                   </tr>
@@ -439,17 +427,17 @@ export default function AttendanceRosterPage() {
             </table>
           </div>
         )}
-      </div>
+      </Card>
 
       {/* Employee Detail Modal */}
       {showEmployeeModal && selectedEmployee && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-start mb-4 sm:mb-6 gap-2">
-              <div className="flex-1 min-w-0">
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white truncate">{selectedEmployee.employeeName}</h3>
-                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">{selectedEmployee.employeeEmail}</p>
-                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1 sm:mt-2">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-2 sm:p-4">
+          <Card className="max-h-[90vh] w-full max-w-4xl overflow-y-auto p-3 sm:p-6">
+            <div className="mb-4 flex items-start justify-between gap-2 sm:mb-6">
+              <div className="min-w-0 flex-1">
+                <h3 className="truncate font-display text-lg font-bold text-foreground sm:text-xl">{selectedEmployee.employeeName}</h3>
+                <p className="truncate text-xs text-muted-foreground sm:text-sm">{selectedEmployee.employeeEmail}</p>
+                <p className="mt-1 text-xs text-muted-foreground sm:mt-2 sm:text-sm">
                   {monthNames[month]} {year} - Attendance Overview
                 </p>
               </div>
@@ -458,7 +446,8 @@ export default function AttendanceRosterPage() {
                   setShowEmployeeModal(false);
                   closeModal();
                 }}
-                className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 flex-shrink-0"
+                aria-label="Close"
+                className="flex-shrink-0 text-muted-foreground transition-colors hover:text-foreground"
               >
                 <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -467,59 +456,45 @@ export default function AttendanceRosterPage() {
             </div>
 
             {/* Stats Summary */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4 mb-4 sm:mb-6">
-              <div className="bg-green-50 dark:bg-green-900/20 p-2 sm:p-4 rounded-lg">
-                <div className="text-lg sm:text-2xl font-bold text-green-600">{selectedEmployee.stats.present}</div>
-                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Present</div>
-              </div>
-              <div className="bg-red-50 dark:bg-red-900/20 p-2 sm:p-4 rounded-lg">
-                <div className="text-lg sm:text-2xl font-bold text-red-600">{selectedEmployee.stats.absent}</div>
-                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Absent</div>
-              </div>
-              <div className="bg-green-50 dark:bg-green-900/20 p-2 sm:p-4 rounded-lg">
-                <div className="text-lg sm:text-2xl font-bold text-green-600">{selectedEmployee.stats.approvedLeave}</div>
-                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Approved Leave</div>
-              </div>
-              <div className="bg-green-50 dark:bg-green-900/20 p-2 sm:p-4 rounded-lg">
-                <div className="text-lg sm:text-2xl font-bold text-green-600">{selectedEmployee.stats.halfDay}</div>
-                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Half Day</div>
-              </div>
-              <div className="bg-gray-100 dark:bg-gray-800 p-2 sm:p-4 rounded-lg">
-                <div className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">{selectedEmployee.stats.wfh}</div>
-                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">WFH</div>
-              </div>
-              <div className="bg-red-50 dark:bg-red-900/20 p-2 sm:p-4 rounded-lg">
-                <div className="text-lg sm:text-2xl font-bold text-red-600">{selectedEmployee.stats.unapprovedLeave}</div>
-                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Unapproved</div>
-              </div>
-              <div className="bg-blue-50 dark:bg-blue-900/20 p-2 sm:p-4 rounded-lg">
-                <div className="text-lg sm:text-2xl font-bold text-blue-600">{selectedEmployee.stats.holiday}</div>
-                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Holidays</div>
-              </div>
-              <div className="bg-gray-50 dark:bg-gray-700 p-2 sm:p-4 rounded-lg col-span-2">
-                <div className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">{selectedEmployee.stats.totalHours.toFixed(1)}</div>
-                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Total Hours</div>
+            <div className="mb-4 grid grid-cols-2 gap-2 sm:mb-6 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
+              {[
+                { label: 'Present', value: selectedEmployee.stats.present, tone: 'text-success' },
+                { label: 'Absent', value: selectedEmployee.stats.absent, tone: 'text-destructive' },
+                { label: 'Approved Leave', value: selectedEmployee.stats.approvedLeave, tone: 'text-success' },
+                { label: 'Half Day', value: selectedEmployee.stats.halfDay, tone: 'text-success' },
+                { label: 'WFH', value: selectedEmployee.stats.wfh, tone: 'text-foreground' },
+                { label: 'Unapproved', value: selectedEmployee.stats.unapprovedLeave, tone: 'text-destructive' },
+                { label: 'Holidays', value: selectedEmployee.stats.holiday, tone: 'text-info' },
+              ].map(({ label, value, tone }) => (
+                <div key={label} className="rounded-lg border-2 border-border bg-muted/40 p-2 sm:p-4">
+                  <div className={`font-display text-lg font-bold sm:text-2xl ${tone}`}>{value}</div>
+                  <div className="text-xs text-muted-foreground sm:text-sm">{label}</div>
+                </div>
+              ))}
+              <div className="col-span-2 rounded-lg border-2 border-border bg-muted/40 p-2 sm:p-4">
+                <div className="font-display text-lg font-bold text-foreground sm:text-2xl">{selectedEmployee.stats.totalHours.toFixed(1)}</div>
+                <div className="text-xs text-muted-foreground sm:text-sm">Total Hours</div>
               </div>
             </div>
 
             {/* Calendar View */}
-            <div className="overflow-x-auto -mx-3 sm:mx-0 px-3 sm:px-0">
-              <div className="grid grid-cols-7 gap-1 sm:gap-2 min-w-[280px]">
+            <div className="-mx-3 overflow-x-auto px-3 sm:mx-0 sm:px-0">
+              <div className="grid min-w-[280px] grid-cols-7 gap-1 sm:gap-2">
                 {selectedEmployee.days.map((day, idx) => (
                   <div
                     key={idx}
-                    className={`p-1.5 sm:p-3 rounded-lg border ${getStatusColor(day.status)} bg-opacity-20 border-opacity-50`}
+                    className={`rounded-lg border border-border p-1.5 sm:p-3 ${getStatusColor(day.status)} bg-opacity-20`}
                   >
-                    <div className="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">{day.date.getDate()}</div>
-                    <div className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 capitalize truncate">{getStatusLabel(day.status)}</div>
+                    <div className="text-xs font-medium text-foreground sm:text-sm">{day.date.getDate()}</div>
+                    <div className="truncate text-[10px] capitalize text-muted-foreground sm:text-xs">{getStatusLabel(day.status)}</div>
                     {(day.hours ?? 0) > 0 && (
-                      <div className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">{(day.hours ?? 0).toFixed(1)}h</div>
+                      <div className="text-[10px] text-muted-foreground sm:text-xs">{(day.hours ?? 0).toFixed(1)}h</div>
                     )}
                   </div>
                 ))}
               </div>
             </div>
-          </div>
+          </Card>
         </div>
       )}
 

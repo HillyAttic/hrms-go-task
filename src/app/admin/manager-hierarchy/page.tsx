@@ -131,8 +131,8 @@ export default function ManagerHierarchyPage() {
     <div className="p-6">
       <div className="mb-6 flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Manager Hierarchy</h1>
-          <p className="text-gray-600 dark:text-gray-400">Assign employees to managers for task management</p>
+          <h1 className="text-2xl font-bold text-foreground">Manager Hierarchy</h1>
+          <p className="text-muted-foreground">Assign employees to managers for task management</p>
         </div>
         <button
           onClick={() => {
@@ -148,23 +148,23 @@ export default function ManagerHierarchyPage() {
       </div>
 
       {/* Hierarchies List */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
+      <div className="bg-card rounded-lg shadow overflow-hidden">
         {loading ? (
           <div className="p-8 text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
           </div>
         ) : hierarchies.length === 0 ? (
-          <div className="p-8 text-center text-gray-500">
+          <div className="p-8 text-center text-muted-foreground">
             No manager hierarchies found. Click "Add Manager Hierarchy" to create one.
           </div>
         ) : (
-          <div className="divide-y divide-gray-200 dark:divide-gray-700">
+          <div className="divide-y divide-border">
             {hierarchies.map((hierarchy) => (
               <div key={hierarchy.id} className="p-6">
                 <div className="flex justify-between items-start mb-4">
                   <div>
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">{hierarchy.managerName}</h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">{hierarchy.managerEmail}</p>
+                    <h3 className="text-lg font-bold text-foreground">{hierarchy.managerName}</h3>
+                    <p className="text-sm text-muted-foreground">{hierarchy.managerEmail}</p>
                   </div>
                   <div className="flex gap-2">
                     <button
@@ -182,17 +182,17 @@ export default function ManagerHierarchyPage() {
                   </div>
                 </div>
                 <div>
-                  <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <h4 className="text-sm font-medium text-muted-foreground mb-2">
                     Assigned Employees ({hierarchy.employees.length})
                   </h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
                     {hierarchy.employees.map((emp) => (
                       <div
                         key={emp.id}
-                        className="px-3 py-2 bg-gray-100 dark:bg-gray-700 rounded text-sm"
+                        className="px-3 py-2 bg-muted rounded text-sm"
                       >
-                        <div className="font-medium text-gray-900 dark:text-white">{emp.name}</div>
-                        <div className="text-xs text-gray-600 dark:text-gray-400">{emp.email}</div>
+                        <div className="font-medium text-foreground">{emp.name}</div>
+                        <div className="text-xs text-muted-foreground">{emp.email}</div>
                       </div>
                     ))}
                   </div>
@@ -206,20 +206,20 @@ export default function ManagerHierarchyPage() {
       {/* Add/Edit Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <h3 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">
+          <div className="bg-card rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <h3 className="text-xl font-bold mb-4 text-foreground">
               {selectedManager ? 'Edit' : 'Add'} Manager Hierarchy
             </h3>
 
             {/* Manager Selection */}
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-muted-foreground mb-2">
                 Select Manager
               </label>
               <select
                 value={selectedManager}
                 onChange={(e) => setSelectedManager(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
+                className="w-full px-4 py-2 border border-border rounded-lg"
               >
                 <option value="">-- Select Manager --</option>
                 {managers.map((manager) => (
@@ -232,14 +232,14 @@ export default function ManagerHierarchyPage() {
 
             {/* Employee Selection */}
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-muted-foreground mb-2">
                 Select Employees ({selectedEmployees.length} selected)
               </label>
-              <div className="border border-gray-300 dark:border-gray-600 rounded-lg max-h-64 overflow-y-auto">
+              <div className="border border-border rounded-lg max-h-64 overflow-y-auto">
                 {employees.map((employee) => (
                   <label
                     key={employee.uid}
-                    className="flex items-center px-4 py-2 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer"
+                    className="flex items-center px-4 py-2 hover:bg-muted/50 cursor-pointer"
                   >
                     <input
                       type="checkbox"
@@ -248,8 +248,8 @@ export default function ManagerHierarchyPage() {
                       className="mr-3"
                     />
                     <div>
-                      <div className="font-medium text-gray-900 dark:text-white">{employee.displayName}</div>
-                      <div className="text-sm text-gray-600 dark:text-gray-400">{employee.email}</div>
+                      <div className="font-medium text-foreground">{employee.displayName}</div>
+                      <div className="text-sm text-muted-foreground">{employee.email}</div>
                     </div>
                   </label>
                 ))}
@@ -271,7 +271,7 @@ export default function ManagerHierarchyPage() {
                   setSelectedManager('');
                   setSelectedEmployees([]);
                 }}
-                className="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
+                className="flex-1 px-4 py-2 bg-muted text-muted-foreground rounded-lg hover:bg-muted"
               >
                 Cancel
               </button>

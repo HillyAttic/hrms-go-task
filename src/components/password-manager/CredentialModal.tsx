@@ -102,13 +102,13 @@ export default function CredentialModal({
   };
 
   const inputClass =
-    'w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ring';
-  const labelClass = 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1';
+    'w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring';
+  const labelClass = 'block text-sm font-medium text-muted-foreground mb-1';
   const errorClass = 'mt-1 text-xs text-red-500';
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-md dark:bg-gray-800 dark:border-gray-700">
+      <DialogContent className="max-w-md">
         <DialogHeader>
           <DialogTitle className="dark:text-white">
             {isEdit ? 'Edit' : 'Add'} {categoryLabels[category]} Credential
@@ -196,7 +196,7 @@ export default function CredentialModal({
             <button
               type="button"
               onClick={handleClose}
-              className="px-4 py-2 text-sm rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+              className="px-4 py-2 text-sm rounded-lg bg-muted text-muted-foreground hover:bg-muted dark:hover:bg-gray-600"
             >
               Cancel
             </button>

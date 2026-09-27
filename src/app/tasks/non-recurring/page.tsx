@@ -326,8 +326,8 @@ export default function NonRecurringTasksPage() {
         {/* Page Header with Action Button - Requirement 2.1 */}
         <div className="flex flex-col gap-4">
           <div>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Non-Recurring Tasks</h1>
-            <p className="text-sm md:text-base text-gray-600 dark:text-gray-400 mt-1 md:mt-2">Manage one-time tasks and track their progress</p>
+            <h1 className="text-2xl md:text-3xl font-bold text-foreground">Non-Recurring Tasks</h1>
+            <p className="text-sm md:text-base text-muted-foreground mt-1 md:mt-2">Manage one-time tasks and track their progress</p>
           </div>
           
           {isAdminOrManager && (
@@ -353,13 +353,13 @@ export default function NonRecurringTasksPage() {
 
         {/* Search Bar */}
         <div className="relative">
-          <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 z-10" />
+          <MagnifyingGlassIcon className="h-5 w-5 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2 z-10" />
           <input
             type="text"
             placeholder="Search tasks by title, description, or assignee..."
             value={searchQuery}
             onChange={handleSearchChange}
-            className="w-full h-10 pl-10 pr-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-ring"
+            className="w-full h-10 pl-10 pr-3 py-2 rounded-md border border-border bg-card text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
             aria-label="Search tasks"
           />
         </div>
@@ -377,8 +377,8 @@ export default function NonRecurringTasksPage() {
 
         {/* Error Display */}
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-            <p className="text-red-800 text-sm">
+          <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 rounded-lg p-4">
+            <p className="text-red-800 dark:text-red-300 text-sm">
               <strong>Error:</strong> {error.message}
             </p>
           </div>

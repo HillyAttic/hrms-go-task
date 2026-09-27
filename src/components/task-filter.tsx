@@ -42,7 +42,7 @@ export function TaskFilter({ filters, onFiltersChange, onClearFilters, taskCount
     <div className="mb-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Tasks</h2>
+          <h2 className="text-xl font-semibold text-foreground">Tasks</h2>
           {taskCount !== undefined && (
             <span className="px-3 py-1 text-sm font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full">
               {taskCount} {taskCount === 1 ? 'task' : 'tasks'}
@@ -76,10 +76,10 @@ export function TaskFilter({ filters, onFiltersChange, onClearFilters, taskCount
       </div>
 
       {showFilters && (
-        <div className="mt-4 p-4 bg-white dark:bg-gray-dark border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+        <div className="mt-4 p-4 bg-card border border-border rounded-lg shadow-sm">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-muted-foreground mb-1">
                 Search
               </label>
               <Input
@@ -90,7 +90,7 @@ export function TaskFilter({ filters, onFiltersChange, onClearFilters, taskCount
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-muted-foreground mb-1">
                 Status
               </label>
               <Select
@@ -105,7 +105,7 @@ export function TaskFilter({ filters, onFiltersChange, onClearFilters, taskCount
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-muted-foreground mb-1">
                 Priority
               </label>
               <Select
@@ -120,7 +120,7 @@ export function TaskFilter({ filters, onFiltersChange, onClearFilters, taskCount
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-muted-foreground mb-1">
                 Assignee
               </label>
               <Input
@@ -139,40 +139,40 @@ export function TaskFilter({ filters, onFiltersChange, onClearFilters, taskCount
                     Search: {filters.search}
                     <button
                       onClick={() => handleFilterChange('search', undefined)}
-                      className="ml-2 text-blue-600 hover:text-blue-800"
+                      className="ml-2 text-blue-600 hover:text-blue-800 dark:hover:text-blue-300"
                     >
                       ×
                     </button>
                   </span>
                 )}
                 {filters.status && (
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-100 text-green-800">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
                     Status: {filters.status.replace('-', ' ')}
                     <button
                       onClick={() => handleFilterChange('status', undefined)}
-                      className="ml-2 text-green-600 hover:text-green-800"
+                      className="ml-2 text-green-600 hover:text-green-800 dark:hover:text-green-300"
                     >
                       ×
                     </button>
                   </span>
                 )}
                 {filters.priority && (
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-yellow-100 text-yellow-800">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300">
                     Priority: {filters.priority}
                     <button
                       onClick={() => handleFilterChange('priority', undefined)}
-                      className="ml-2 text-yellow-600 hover:text-yellow-800"
+                      className="ml-2 text-yellow-600 hover:text-yellow-800 dark:hover:text-yellow-300"
                     >
                       ×
                     </button>
                   </span>
                 )}
                 {filters.assignee && (
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-purple-100 text-purple-800">
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
                     Assignee: {filters.assignee}
                     <button
                       onClick={() => handleFilterChange('assignee', undefined)}
-                      className="ml-2 text-purple-600 hover:text-purple-800"
+                      className="ml-2 text-purple-600 hover:text-purple-800 dark:hover:text-purple-300"
                     >
                       ×
                     </button>

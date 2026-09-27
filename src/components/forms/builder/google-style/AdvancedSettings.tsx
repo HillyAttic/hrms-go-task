@@ -41,7 +41,7 @@ export function AdvancedSettings({
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="
-          text-sm text-purple-600 hover:text-purple-700
+          text-sm text-purple-600 hover:text-purple-700 dark:hover:text-purple-300
           flex items-center space-x-1 transition-colors
         "
       >
@@ -53,7 +53,7 @@ export function AdvancedSettings({
         <div className="mt-4 space-y-4 pt-4 border-t border-gray-100">
           {/* Placeholder */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Placeholder
             </label>
             <input
@@ -61,7 +61,7 @@ export function AdvancedSettings({
               value={field.placeholder || ''}
               onChange={(e) => onUpdate({ placeholder: e.target.value || undefined })}
               className="
-                w-full px-3 py-2 text-sm border border-gray-300 rounded-md
+                w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-700 rounded-md
                 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent
               "
               placeholder="Enter placeholder text"
@@ -70,14 +70,14 @@ export function AdvancedSettings({
 
           {/* Help Text */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Help text
             </label>
             <textarea
               value={field.helpText || ''}
               onChange={(e) => onUpdate({ helpText: e.target.value || undefined })}
               className="
-                w-full px-3 py-2 text-sm border border-gray-300 rounded-md
+                w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-700 rounded-md
                 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent
                 resize-none
               "
@@ -89,7 +89,7 @@ export function AdvancedSettings({
           {/* Validation Rules */}
           {needsValidation && (
             <div className="space-y-3 pt-3 border-t border-gray-100">
-              <h4 className="text-sm font-medium text-gray-700">Validation</h4>
+              <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">Validation</h4>
 
               {['number', 'text', 'textarea'].includes(field.type) && (
                 <>
@@ -105,7 +105,7 @@ export function AdvancedSettings({
                             value={field.validation?.min ?? ''}
                             onChange={(e) => handleValidationChange('min', e.target.value ? Number(e.target.value) : undefined)}
                             className="
-                              w-full px-2 py-1 text-sm border border-gray-300 rounded-md
+                              w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-700 rounded-md
                               focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent
                             "
                             placeholder="Min"
@@ -120,7 +120,7 @@ export function AdvancedSettings({
                             value={field.validation?.max ?? ''}
                             onChange={(e) => handleValidationChange('max', e.target.value ? Number(e.target.value) : undefined)}
                             className="
-                              w-full px-2 py-1 text-sm border border-gray-300 rounded-md
+                              w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-700 rounded-md
                               focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent
                             "
                             placeholder="Max"
@@ -142,7 +142,7 @@ export function AdvancedSettings({
                             value={field.validation?.minLength ?? ''}
                             onChange={(e) => handleValidationChange('minLength', e.target.value ? Number(e.target.value) : undefined)}
                             className="
-                              w-full px-2 py-1 text-sm border border-gray-300 rounded-md
+                              w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-700 rounded-md
                               focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent
                             "
                             placeholder="Min"
@@ -157,7 +157,7 @@ export function AdvancedSettings({
                             value={field.validation?.maxLength ?? ''}
                             onChange={(e) => handleValidationChange('maxLength', e.target.value ? Number(e.target.value) : undefined)}
                             className="
-                              w-full px-2 py-1 text-sm border border-gray-300 rounded-md
+                              w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-700 rounded-md
                               focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent
                             "
                             placeholder="Max"
@@ -177,7 +177,7 @@ export function AdvancedSettings({
                         value={field.validation?.pattern ?? ''}
                         onChange={(e) => handleValidationChange('pattern', e.target.value || undefined)}
                         className="
-                          w-full px-2 py-1 text-sm border border-gray-300 rounded-md
+                          w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-700 rounded-md
                           focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent
                         "
                         placeholder="e.g., ^[A-Z]+$"
@@ -194,7 +194,7 @@ export function AdvancedSettings({
                       value={field.validation?.customMessage ?? ''}
                       onChange={(e) => handleValidationChange('customMessage', e.target.value || undefined)}
                       className="
-                        w-full px-2 py-1 text-sm border border-gray-300 rounded-md
+                        w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-700 rounded-md
                         focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent
                       "
                       placeholder="Custom error message"
@@ -208,7 +208,7 @@ export function AdvancedSettings({
           {/* File Upload Configuration */}
           {needsFileConfig && (
             <div className="space-y-3 pt-3 border-t border-gray-100">
-              <h4 className="text-sm font-medium text-gray-700">File settings</h4>
+              <h4 className="text-sm font-medium text-gray-700 dark:text-gray-300">File settings</h4>
 
               <div>
                 <label className="block text-xs font-medium text-gray-600 mb-1">
@@ -219,7 +219,7 @@ export function AdvancedSettings({
                   value={(field.fileConfig?.acceptedTypes || []).join(', ')}
                   onChange={(e) => handleFileConfigChange('acceptedTypes', e.target.value ? e.target.value.split(',').map(t => t.trim()) : [])}
                   className="
-                    w-full px-2 py-1 text-sm border border-gray-300 rounded-md
+                    w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-700 rounded-md
                     focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent
                   "
                   placeholder="e.g., .pdf, .doc, .docx"
@@ -236,7 +236,7 @@ export function AdvancedSettings({
                     value={(field.fileConfig?.maxSize || 5242880) / 1024 / 1024}
                     onChange={(e) => handleFileConfigChange('maxSize', e.target.value ? Number(e.target.value) * 1024 * 1024 : 5242880)}
                     className="
-                      w-full px-2 py-1 text-sm border border-gray-300 rounded-md
+                      w-full px-2 py-1 text-sm border border-gray-300 dark:border-gray-700 rounded-md
                       focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent
                     "
                     placeholder="5"

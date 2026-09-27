@@ -33,7 +33,7 @@ export function KanbanTaskCard({ task, onDragStart, onClick, onStatusChange, onD
       case 'low':
         return 'text-green-500';
       default:
-        return 'text-gray-400';
+        return 'text-muted-foreground';
     }
   };
 
@@ -46,7 +46,7 @@ export function KanbanTaskCard({ task, onDragStart, onClick, onStatusChange, onD
       case 'low':
         return 'bg-green-100 dark:bg-green-900/30';
       default:
-        return 'bg-gray-100 dark:bg-gray-800';
+        return 'bg-muted';
     }
   };
 
@@ -78,7 +78,7 @@ export function KanbanTaskCard({ task, onDragStart, onClick, onStatusChange, onD
       draggable
       onDragStart={(e) => onDragStart(e, task)}
       onClick={() => onClick(task)}
-      className="p-2.5 mb-2 cursor-move hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring"
+      className="p-2.5 mb-2 cursor-move hover:shadow-hard hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-ring"
       tabIndex={0}
       onKeyDown={(e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -101,34 +101,34 @@ export function KanbanTaskCard({ task, onDragStart, onClick, onStatusChange, onD
             className="p-1 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded transition-colors"
             title="Edit task"
           >
-            <PencilIcon className="w-3.5 h-3.5 text-gray-400 hover:text-blue-500" />
+            <PencilIcon className="w-3.5 h-3.5 text-muted-foreground hover:text-blue-500" />
           </button>
           <button
             onClick={handleDelete}
             className="p-1 hover:bg-red-100 dark:hover:bg-red-900/30 rounded transition-colors"
             title="Delete task"
           >
-            <TrashIcon className="w-3.5 h-3.5 text-gray-400 hover:text-red-500" />
+            <TrashIcon className="w-3.5 h-3.5 text-muted-foreground hover:text-red-500" />
           </button>
         </div>
       </div>
 
       {/* Title */}
-      <h4 className="font-semibold text-sm text-gray-900 dark:text-white mb-1 line-clamp-1">
+      <h4 className="font-semibold text-sm text-foreground mb-1 line-clamp-1">
         {task.title}
       </h4>
 
       {/* Description */}
       {task.description && (
-        <p className="text-xs text-gray-600 dark:text-gray-400 mb-2 line-clamp-1">
+        <p className="text-xs text-muted-foreground mb-2 line-clamp-1">
           {task.description}
         </p>
       )}
 
       {/* Footer with Date and Action Buttons */}
-      <div className="flex items-center justify-between mt-2 pt-2 border-t border-gray-100 dark:border-gray-700">
+      <div className="flex items-center justify-between mt-2 pt-2 border-t border-border">
         {/* Due Date */}
-        <div className={`flex items-center gap-1 ${isOverdue ? 'text-red-500' : 'text-gray-500 dark:text-gray-400'}`}>
+        <div className={`flex items-center gap-1 ${isOverdue ? 'text-red-500' : 'text-muted-foreground'}`}>
           <CalendarIcon className="w-3 h-3" />
           <span className="text-xs">
             {new Date(task.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}

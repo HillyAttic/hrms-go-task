@@ -37,9 +37,9 @@ export function QuestionTypeSelector({
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="
-          w-full sm:w-auto px-3 py-2 text-sm font-medium text-gray-700 bg-white
-          border border-gray-300 rounded-md hover:border-purple-600
-          hover:bg-purple-50 transition-colors flex items-center justify-between sm:justify-start space-x-2
+          w-full sm:w-auto px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white
+          border border-gray-300 dark:border-gray-700 rounded-md hover:border-purple-600
+          hover:bg-purple-50 dark:hover:bg-purple-900/30 transition-colors flex items-center justify-between sm:justify-start space-x-2
           whitespace-nowrap
         "
       >
@@ -49,7 +49,7 @@ export function QuestionTypeSelector({
 
       {/* Dropdown Menu */}
       {isOpen && (
-        <div className="absolute top-10 right-0 bg-white shadow-lg rounded-md border border-gray-200 py-2 z-[9999] min-w-[180px]">
+        <div className="absolute top-10 right-0 bg-white shadow-lg rounded-md border border-gray-200 dark:border-gray-700 py-2 z-[9999] min-w-[180px]">
           {FIELD_TYPES.map((fieldType) => (
             <button
               key={fieldType.type}
@@ -60,8 +60,8 @@ export function QuestionTypeSelector({
               className={`
                 w-full px-4 py-2 text-left text-sm transition-colors
                 ${type === fieldType.type
-                  ? 'bg-purple-100 text-purple-900 font-medium'
-                  : 'text-gray-700 hover:bg-purple-50 hover:text-purple-900'
+                  ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-900 font-medium'
+                  : 'text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-purple-900/30 hover:text-purple-900'
                 }
               `}
             >

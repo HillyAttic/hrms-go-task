@@ -63,7 +63,7 @@ export function RecurringTaskListView({
       case 'low':
         return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400';
       default:
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+        return 'bg-muted text-foreground dark:text-muted-foreground';
     }
   };
 
@@ -74,9 +74,9 @@ export function RecurringTaskListView({
       case 'in-progress':
         return 'bg-foreground text-background dark:bg-foreground dark:text-background';
       case 'pending':
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+        return 'bg-muted text-foreground dark:text-muted-foreground';
       default:
-        return 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
+        return 'bg-muted text-foreground dark:text-muted-foreground';
     }
   };
 
@@ -123,7 +123,7 @@ export function RecurringTaskListView({
     }
 
     return (
-      <div className={containerClassName ?? "px-6 pb-3 pt-2 flex flex-wrap gap-2 border-t border-gray-100 dark:border-gray-700/50 justify-end"}>
+      <div className={containerClassName ?? "px-6 pb-3 pt-2 flex flex-wrap gap-2 border-t border-border/50 justify-end"}>
         {hasClientsButton && onClientsClick && (
           <button
             onClick={() => onClientsClick(task)}
@@ -181,7 +181,7 @@ export function RecurringTaskListView({
         {hasGoToReportsButton && onGoToReportsClick && (
           <button
             onClick={() => onGoToReportsClick(task)}
-            className="px-3 py-1.5 text-xs font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600 rounded-md transition-colors flex items-center gap-1 min-h-[35px]"
+            className="px-3 py-1.5 text-xs font-medium bg-muted text-muted-foreground hover:bg-muted dark:text-muted-foreground dark:hover:bg-gray-600 rounded-md transition-colors flex items-center gap-1 min-h-[35px]"
           >
             <ArrowRightIcon className="w-4 h-4" />
             Go to Reports
@@ -194,9 +194,9 @@ export function RecurringTaskListView({
   return (
     <>
       {/* Desktop Table View - Hidden on mobile */}
-      <div className="hidden md:block bg-white dark:bg-gray-dark rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="hidden md:block bg-card rounded-lg border border-border overflow-hidden">
         {/* Table Header */}
-        <div className="grid grid-cols-12 gap-4 px-6 py-3 bg-gray-50 dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 border-b border-gray-200 dark:border-gray-700">
+        <div className="grid grid-cols-12 gap-4 px-6 py-3 bg-muted text-sm font-medium text-muted-foreground border-b border-border">
           {onSelect && <div className="col-span-1">Select</div>}
           <div className={onSelect ? "col-span-3" : "col-span-3"}>Title</div>
           <div className="col-span-2">Pattern</div>
@@ -207,14 +207,14 @@ export function RecurringTaskListView({
         </div>
 
         {/* Table Body */}
-        <div className="divide-y divide-gray-200 dark:divide-gray-700">
+        <div className="divide-y divide-border">
           {tasks.map((task) => (
-            <div key={task.id} className="bg-white dark:bg-gray-dark">
+            <div key={task.id} className="bg-card">
             <div
               className={`grid grid-cols-12 gap-4 px-6 py-4 text-sm transition-colors ${
                 selected.includes(task.id!)
                   ? 'bg-foreground/10 dark:bg-foreground/20'
-                  : 'hover:bg-gray-50 dark:hover:bg-gray-800'
+                  : 'hover:bg-muted/50'
               }`}
             >
               {/* Select Checkbox */}
@@ -224,14 +224,14 @@ export function RecurringTaskListView({
                     type="checkbox"
                     checked={selected.includes(task.id!)}
                     onChange={() => onSelect(task.id!)}
-                    className="h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-foreground focus:ring-primary"
+                    className="h-4 w-4 rounded border-border text-foreground focus:ring-primary"
                   />
                 </div>
               )}
 
               {/* Title */}
               <div className={onSelect ? "col-span-3" : "col-span-3"}>
-                <div className="font-medium text-gray-900 dark:text-white flex items-center gap-2">
+                <div className="font-medium text-foreground flex items-center gap-2">
                   {task.title}
                   {task.isPaused && (
                     <Badge variant="secondary" className="text-xs">
@@ -239,13 +239,13 @@ export function RecurringTaskListView({
                     </Badge>
                   )}
                 </div>
-                <div className="text-gray-500 dark:text-gray-400 text-xs mt-1 line-clamp-1">
+                <div className="text-muted-foreground text-xs mt-1 line-clamp-1">
                   {task.description}
                 </div>
               </div>
 
               {/* Recurrence Pattern */}
-              <div className="col-span-2 text-gray-700 dark:text-gray-300 flex items-center">
+              <div className="col-span-2 text-muted-foreground flex items-center">
                 {task.recurrencePattern}
               </div>
 
@@ -265,7 +265,7 @@ export function RecurringTaskListView({
 
               {/* Due Date */}
               <div className="col-span-2">
-                <div className="text-gray-700 dark:text-gray-300 flex items-center">
+                <div className="text-muted-foreground flex items-center">
                   {formatDate(task.dueDate)}
                 </div>
               </div>
@@ -321,7 +321,7 @@ export function RecurringTaskListView({
                     </button>
                   </>
                 ) : (
-                  <div className="text-gray-700 dark:text-gray-300">
+                  <div className="text-muted-foreground">
                     {task.teamId && teamNames[task.teamId] ? (
                       <span className="text-sm font-medium">{teamNames[task.teamId]}</span>
                     ) : task.teamMemberMappings && task.teamMemberMappings.length > 0 ? (
@@ -329,9 +329,9 @@ export function RecurringTaskListView({
                         {task.teamMemberMappings.length} member{task.teamMemberMappings.length > 1 ? 's' : ''} assigned
                       </span>
                     ) : task.teamId ? (
-                      <span className="text-sm text-gray-500 dark:text-gray-400">Team ID: {task.teamId}</span>
+                      <span className="text-sm text-muted-foreground">Team ID: {task.teamId}</span>
                     ) : (
-                      <span className="text-sm text-gray-400 dark:text-gray-500 italic">No team assigned</span>
+                      <span className="text-sm text-muted-foreground italic">No team assigned</span>
                     )}
                   </div>
                 )}
@@ -348,18 +348,18 @@ export function RecurringTaskListView({
         {tasks.map((task) => (
           <div
             key={task.id}
-            className={`bg-white dark:bg-gray-dark rounded-lg border border-gray-200 dark:border-gray-700 p-4 space-y-3 ${
+            className={`bg-card rounded-lg border border-border p-4 space-y-3 ${
               selected.includes(task.id!) ? 'ring-2 ring-primary' : ''
             }`}
           >
             {/* Title and Paused Badge */}
             <div className="flex items-start justify-between gap-2">
               <div className="flex-1">
-                <h3 className="font-semibold text-gray-900 dark:text-white text-base">
+                <h3 className="font-semibold text-foreground text-base">
                   {task.title}
                 </h3>
                 {task.description && (
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 line-clamp-2">
+                  <p className="text-sm text-muted-foreground mt-1 line-clamp-2">
                     {task.description}
                   </p>
                 )}
@@ -384,29 +384,29 @@ export function RecurringTaskListView({
             {/* Task Details */}
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-500 dark:text-gray-400">Pattern:</span>
-                <span className="text-gray-900 dark:text-white font-medium">
+                <span className="text-muted-foreground">Pattern:</span>
+                <span className="text-foreground font-medium">
                   {task.recurrencePattern}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500 dark:text-gray-400">Due Date:</span>
-                <span className="text-gray-900 dark:text-white font-medium">
+                <span className="text-muted-foreground">Due Date:</span>
+                <span className="text-foreground font-medium">
                   {formatDate(task.dueDate)}
                 </span>
               </div>
               {!canManageTasks && (
                 <div className="flex justify-between">
-                  <span className="text-gray-500 dark:text-gray-400">Team:</span>
-                  <span className="text-gray-900 dark:text-white font-medium">
+                  <span className="text-muted-foreground">Team:</span>
+                  <span className="text-foreground font-medium">
                     {task.teamId && teamNames[task.teamId] ? (
                       teamNames[task.teamId]
                     ) : task.teamMemberMappings && task.teamMemberMappings.length > 0 ? (
                       `${task.teamMemberMappings.length} member${task.teamMemberMappings.length > 1 ? 's' : ''} assigned`
                     ) : task.teamId ? (
-                      <span className="text-gray-500 dark:text-gray-400">Team ID: {task.teamId}</span>
+                      <span className="text-muted-foreground">Team ID: {task.teamId}</span>
                     ) : (
-                      <span className="text-gray-400 dark:text-gray-500 italic">No team assigned</span>
+                      <span className="text-muted-foreground italic">No team assigned</span>
                     )}
                   </span>
                 </div>
@@ -415,7 +415,7 @@ export function RecurringTaskListView({
 
             {/* Action Buttons */}
             {(canManageTasks || onViewReport) && (
-              <div className="col-span-2 flex items-center justify-end gap-3 pt-2 border-t border-gray-200 dark:border-gray-700">
+              <div className="col-span-2 flex items-center justify-end gap-3 pt-2 border-t border-border">
                 {onViewReport && (
                   <button
                     onClick={() => onViewReport(task)}
@@ -468,7 +468,7 @@ export function RecurringTaskListView({
               </div>
             )}
             {/* Action buttons for team-member-mapped tasks (mobile) */}
-            {renderActionButtons(task, "pt-2 flex flex-wrap gap-2 border-t border-gray-100 dark:border-gray-700/50")}
+            {renderActionButtons(task, "pt-2 flex flex-wrap gap-2 border-t border-border/50")}
           </div>
         ))}
       </div>

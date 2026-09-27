@@ -206,7 +206,7 @@ export function ResponsesView({ formId, formTitle, fields }: ResponsesViewProps)
     return (
       <div className="flex items-center justify-center py-20">
         <div className="text-center">
-          <div className="w-12 h-12 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-12 h-12 border-4 border-purple-200 dark:border-purple-700 border-t-purple-600 rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-gray-600">Loading responses...</p>
         </div>
       </div>
@@ -215,7 +215,7 @@ export function ResponsesView({ formId, formTitle, fields }: ResponsesViewProps)
 
   if (responses.length === 0) {
     return (
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-10 text-center">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-10 text-center">
         <div className="text-6xl text-gray-300 mb-4">📊</div>
         <h2 className="text-xl font-medium text-gray-600 mb-2">0 responses</h2>
         <p className="text-sm text-gray-400">Share your form to start receiving responses</p>
@@ -226,7 +226,7 @@ export function ResponsesView({ formId, formTitle, fields }: ResponsesViewProps)
   return (
     <div className="space-y-4">
       {/* Header with view toggle and export button */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div>
             <h2 className="text-lg font-semibold text-gray-900">
@@ -241,8 +241,8 @@ export function ResponsesView({ formId, formTitle, fields }: ResponsesViewProps)
               onClick={() => setViewMode('summary')}
               className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
                 viewMode === 'summary'
-                  ? 'bg-purple-100 text-purple-700'
-                  : 'text-gray-600 hover:bg-gray-100'
+                  ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300'
+                  : 'text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-900/30'
               }`}
             >
               Summary
@@ -251,8 +251,8 @@ export function ResponsesView({ formId, formTitle, fields }: ResponsesViewProps)
               onClick={() => setViewMode('individual')}
               className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
                 viewMode === 'individual'
-                  ? 'bg-purple-100 text-purple-700'
-                  : 'text-gray-600 hover:bg-gray-100'
+                  ? 'bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300'
+                  : 'text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-900/30'
               }`}
             >
               Individual
@@ -278,7 +278,7 @@ export function ResponsesView({ formId, formTitle, fields }: ResponsesViewProps)
             if (field.type === 'section') {
               return (
                 <div key={field.id} className="space-y-4">
-                  <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                  <div className="bg-white rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-2">
                       {field.label}
                     </h3>
@@ -293,7 +293,7 @@ export function ResponsesView({ formId, formTitle, fields }: ResponsesViewProps)
                     return (
                       <div
                         key={nestedField.id}
-                        className="bg-white rounded-lg shadow-sm border border-gray-200 p-6"
+                        className="bg-white rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6"
                       >
                         <h4 className="text-base font-medium text-gray-900 mb-4">
                           {nestedField.label}
@@ -303,7 +303,7 @@ export function ResponsesView({ formId, formTitle, fields }: ResponsesViewProps)
                             {stats.map((stat, idx) => (
                               <div key={idx}>
                                 <div className="flex items-center justify-between mb-1">
-                                  <span className="text-sm text-gray-700">{stat.option}</span>
+                                  <span className="text-sm text-gray-700 dark:text-gray-300">{stat.option}</span>
                                   <span className="text-sm font-medium text-gray-900">
                                     {stat.count} ({stat.percentage}%)
                                   </span>
@@ -335,7 +335,7 @@ export function ResponsesView({ formId, formTitle, fields }: ResponsesViewProps)
             return (
               <div
                 key={field.id}
-                className="bg-white rounded-lg shadow-sm border border-gray-200 p-6"
+                className="bg-white rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6"
               >
                 <h4 className="text-base font-medium text-gray-900 mb-4">
                   {field.label}
@@ -345,7 +345,7 @@ export function ResponsesView({ formId, formTitle, fields }: ResponsesViewProps)
                     {stats.map((stat, idx) => (
                       <div key={idx}>
                         <div className="flex items-center justify-between mb-1">
-                          <span className="text-sm text-gray-700">{stat.option}</span>
+                          <span className="text-sm text-gray-700 dark:text-gray-300">{stat.option}</span>
                           <span className="text-sm font-medium text-gray-900">
                             {stat.count} ({stat.percentage}%)
                           </span>
@@ -379,9 +379,9 @@ export function ResponsesView({ formId, formTitle, fields }: ResponsesViewProps)
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: idx * 0.05 }}
-              className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden"
+              className="bg-white rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden"
             >
-              <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
+              <div className="bg-gray-50 dark:bg-gray-900/30 px-6 py-4 border-b border-gray-200 dark:border-gray-700">
                 <div className="flex items-center justify-between">
                   <div>
                     <h4 className="text-sm font-medium text-gray-900">
@@ -398,7 +398,7 @@ export function ResponsesView({ formId, formTitle, fields }: ResponsesViewProps)
                   if (field.type === 'section') {
                     return (
                       <div key={field.id} className="space-y-3">
-                        <h5 className="text-sm font-semibold text-gray-900 border-b border-gray-200 pb-2">
+                        <h5 className="text-sm font-semibold text-gray-900 border-b border-gray-200 dark:border-gray-700 pb-2">
                           {field.label}
                         </h5>
                         {field.fields?.map((nestedField) => (

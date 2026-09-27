@@ -271,14 +271,14 @@ export function EmployeeBulkImportModal({
 
         <div className="space-y-4">
           {/* Download Template Button */}
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg p-4">
             <div className="flex items-start gap-3">
               <DocumentArrowDownIcon className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
               <div className="flex-1">
                 <h4 className="text-sm font-medium text-blue-900 mb-1">
                   Download Template
                 </h4>
-                <p className="text-xs text-blue-700 mb-2">
+                <p className="text-xs text-blue-700 dark:text-blue-300 mb-2">
                   Download the CSV template with the correct format and example data.
                 </p>
                 <Button
@@ -286,7 +286,7 @@ export function EmployeeBulkImportModal({
                   variant="outline"
                   size="sm"
                   onClick={downloadTemplate}
-                  className="text-blue-600 border-blue-300 hover:bg-blue-100"
+                  className="text-blue-600 border-blue-300 dark:border-blue-700 hover:bg-blue-100 dark:hover:bg-blue-900/30"
                 >
                   <DocumentArrowDownIcon className="w-4 h-4 mr-2" />
                   Download Template
@@ -297,7 +297,7 @@ export function EmployeeBulkImportModal({
 
           {/* File Upload */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-muted-foreground mb-2">
               Upload CSV File
             </label>
             <div className="flex items-center gap-2">
@@ -305,12 +305,12 @@ export function EmployeeBulkImportModal({
                 type="file"
                 accept=".csv"
                 onChange={handleFileChange}
-                className="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                className="block w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
                 disabled={importing}
               />
             </div>
             {file && (
-              <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+              <p className="text-xs text-muted-foreground mt-1">
                 Selected: {file.name}
               </p>
             )}
@@ -318,13 +318,13 @@ export function EmployeeBulkImportModal({
 
           {/* Preview Data */}
           {previewData.length > 0 && !importResult && !importing && (
-            <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
-              <h4 className="text-sm font-medium text-gray-900 dark:text-white mb-2">
+            <div className="border border-border rounded-lg p-4">
+              <h4 className="text-sm font-medium text-foreground mb-2">
                 Preview (First 5 rows)
               </h4>
               <div className="overflow-x-auto">
                 <table className="min-w-full text-xs">
-                  <thead className="bg-gray-50 dark:bg-gray-800">
+                  <thead className="bg-muted">
                     <tr>
                       <th className="px-2 py-1 text-left">Employee ID</th>
                       <th className="px-2 py-1 text-left">Name</th>
@@ -333,7 +333,7 @@ export function EmployeeBulkImportModal({
                       <th className="px-2 py-1 text-left">Status</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-200">
+                  <tbody className="divide-y divide-border">
                     {previewData.map((row, idx) => (
                       <tr key={idx}>
                         <td className="px-2 py-1">{row['Employee ID']}</td>
@@ -351,7 +351,7 @@ export function EmployeeBulkImportModal({
 
           {/* Import Progress */}
           {importing && importProgress && (
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+            <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg p-4">
               <div className="flex items-center gap-3">
                 <svg className="animate-spin h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -377,7 +377,7 @@ export function EmployeeBulkImportModal({
             <div className="space-y-3">
               {/* Success Summary */}
               {importResult.success > 0 && (
-                <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                <div className="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-700 rounded-lg p-4">
                   <div className="flex items-center gap-2">
                     <CheckCircleIcon className="w-5 h-5 text-green-600" />
                     <span className="text-sm font-medium text-green-900">
@@ -389,7 +389,7 @@ export function EmployeeBulkImportModal({
 
               {/* Error Summary */}
               {importResult.failed > 0 && (
-                <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+                <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 rounded-lg p-4">
                   <div className="flex items-start gap-2">
                     <XCircleIcon className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
                     <div className="flex-1">
@@ -398,7 +398,7 @@ export function EmployeeBulkImportModal({
                       </span>
                       <div className="max-h-40 overflow-y-auto space-y-2">
                         {importResult.errors.map((err, idx) => (
-                          <div key={idx} className="text-xs text-red-800 bg-red-100 rounded p-2">
+                          <div key={idx} className="text-xs text-red-800 dark:text-red-300 bg-red-100 dark:bg-red-900/30 rounded p-2">
                             <span className="font-medium">Row {err.row}:</span> {err.error}
                             <br />
                             <span className="text-red-600">
@@ -416,11 +416,11 @@ export function EmployeeBulkImportModal({
 
           {/* Instructions */}
           {!importResult && (
-            <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+            <div className="bg-muted border border-border rounded-lg p-4">
               <div className="flex items-start gap-2">
-                <ExclamationTriangleIcon className="w-5 h-5 text-gray-600 dark:text-gray-400 flex-shrink-0 mt-0.5" />
-                <div className="text-xs text-gray-600 dark:text-gray-400 space-y-1">
-                  <p className="font-medium text-gray-900 dark:text-white">CSV Format Requirements:</p>
+                <ExclamationTriangleIcon className="w-5 h-5 text-muted-foreground flex-shrink-0 mt-0.5" />
+                <div className="text-xs text-muted-foreground space-y-1">
+                  <p className="font-medium text-foreground">CSV Format Requirements:</p>
                   <ul className="list-disc list-inside space-y-0.5 ml-2">
                     <li>Required columns: Employee ID, Name, Email, Role, Password, Status</li>
                     <li>Optional columns: Phone (if provided, must be in E.164 format e.g., +919876543210)</li>

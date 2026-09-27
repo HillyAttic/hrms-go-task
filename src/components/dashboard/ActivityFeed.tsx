@@ -72,17 +72,17 @@ export function ActivityFeed({ activities }: ActivityFeedProps) {
       <CardContent>
         <div className="space-y-4">
           {activities.length === 0 ? (
-            <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-4">No recent activity</p>
+            <p className="text-sm text-muted-foreground text-center py-4">No recent activity</p>
           ) : (
             activities.map((activity) => (
               <div key={activity.id} className="flex items-start gap-3">
                 <div className="flex-shrink-0 mt-1">{getActivityIcon(activity.type)}</div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-gray-900 dark:text-white">
+                  <p className="text-sm text-foreground">
                     <span className="font-medium">{activity.user}</span>{' '}
                     {getActivityText(activity)}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{getTimeAgo(activity.timestamp)}</p>
+                  <p className="text-xs text-muted-foreground mt-1">{getTimeAgo(activity.timestamp)}</p>
                 </div>
               </div>
             ))

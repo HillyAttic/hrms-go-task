@@ -202,12 +202,12 @@ export default function GeocodeTestPage() {
   return (
     <div className="p-6 max-w-3xl mx-auto">
       <h1 className="text-2xl font-bold mb-2">Geocoding Diagnostic</h1>
-      <p className="text-gray-600 dark:text-gray-400 mb-6">Tests whether reverse geocoding (coordinates → address) is working end-to-end.</p>
+      <p className="text-muted-foreground mb-6">Tests whether reverse geocoding (coordinates → address) is working end-to-end.</p>
 
-      <div className="bg-white dark:bg-gray-800 rounded-lg border p-4 mb-6">
+      <div className="bg-card rounded-lg border p-4 mb-6">
         <div className="flex flex-wrap gap-4 items-end">
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Latitude</label>
+            <label className="block text-sm font-medium text-muted-foreground mb-1">Latitude</label>
             <input
               value={testLat}
               onChange={(e) => setTestLat(e.target.value)}
@@ -215,7 +215,7 @@ export default function GeocodeTestPage() {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Longitude</label>
+            <label className="block text-sm font-medium text-muted-foreground mb-1">Longitude</label>
             <input
               value={testLon}
               onChange={(e) => setTestLon(e.target.value)}
@@ -238,22 +238,22 @@ export default function GeocodeTestPage() {
             key={i}
             className={`rounded-lg border p-4 ${
               r.status === 'ok'
-                ? 'border-green-300 bg-green-50 dark:bg-green-900/20'
+                ? 'border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/20'
                 : r.status === 'fail'
-                  ? 'border-red-300 bg-red-50 dark:bg-red-900/20'
-                  : 'border-yellow-300 bg-yellow-50 dark:bg-yellow-900/20'
+                  ? 'border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/20'
+                  : 'border-yellow-300 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-900/20'
             }`}
           >
             <div className="font-semibold text-sm mb-1">
               {r.status === 'ok' ? '✅' : r.status === 'fail' ? '❌' : '⏳'} {r.step}
             </div>
-            <pre className="text-xs whitespace-pre-wrap text-gray-700 dark:text-gray-300 font-mono">{r.detail}</pre>
+            <pre className="text-xs whitespace-pre-wrap text-muted-foreground font-mono">{r.detail}</pre>
           </div>
         ))}
       </div>
 
       {results.length > 0 && !running && (
-        <div className="mt-6 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg">
+        <div className="mt-6 p-4 bg-muted rounded-lg">
           <h2 className="font-bold mb-2">Summary</h2>
           {results.every((r) => r.status === 'ok') ? (
             <p className="text-green-700 dark:text-green-400 font-medium">All tests passed! Geocoding is working. Try exporting again from the Attendance Sheet.</p>

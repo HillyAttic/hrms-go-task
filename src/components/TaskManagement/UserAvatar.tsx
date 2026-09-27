@@ -55,7 +55,7 @@ export const UserAvatar: React.FC<UserAvatarProps> = ({ users, size = 'md' }) =>
         {firstUserInitials}
       </div>
       {users.length > 1 && (
-        <div className={`${sizeClasses} rounded-full bg-gray-300 flex items-center justify-center text-gray-700 font-medium -ml-2`}>
+        <div className={`${sizeClasses} rounded-full bg-muted flex items-center justify-center text-muted-foreground font-medium -ml-2`}>
           +{users.length - 1}
         </div>
       )}

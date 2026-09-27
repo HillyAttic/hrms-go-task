@@ -635,7 +635,7 @@ export default function ViewSchedulePage() {
                         <td
                           key={day}
                           colSpan={span}
-                          className={`border border-gray-300 text-center font-medium cursor-pointer transition-colors overflow-hidden ${getExcelCellColorClass(taskForColor)}`}
+                          className={`border border-border text-center font-medium cursor-pointer transition-colors overflow-hidden ${getExcelCellColorClass(taskForColor)}`}
                           title={displayName}
                           onClick={() => handleActivityClick(startingActivity, user.name, user.id, day)}
                           style={{ width: `${cellWidth}px`, minWidth: `${cellWidth}px`, maxWidth: `${cellWidth}px`, height: '40px', padding: '0' }}

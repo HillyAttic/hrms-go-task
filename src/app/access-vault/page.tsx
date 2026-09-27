@@ -179,14 +179,14 @@ export default function AccessVaultPage() {
     <div className="p-6">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Access Vault</h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">
+        <h1 className="text-2xl font-bold text-foreground">Access Vault</h1>
+        <p className="text-muted-foreground mt-1">
           Manage credentials for categories you have been granted access to
         </p>
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 mb-6 border-b border-gray-200 dark:border-gray-700">
+      <div className="flex gap-2 mb-6 border-b border-border">
         {TABS.map((tab) => (
           <button
             key={tab.value}
@@ -194,7 +194,7 @@ export default function AccessVaultPage() {
             className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors -mb-px ${
               activeTab === tab.value
                 ? 'border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400'
-                : 'border-transparent text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                : 'border-transparent text-muted-foreground hover:text-foreground dark:hover:text-white'
             }`}
           >
             {tab.label}
@@ -207,7 +207,7 @@ export default function AccessVaultPage() {
         {/* Search box */}
         <div className="relative flex-1">
           <svg
-            className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
+            className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -219,12 +219,12 @@ export default function AccessVaultPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder={SEARCH_PLACEHOLDER[activeTab]}
-            className="w-full pl-9 pr-9 py-2 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-ring"
+            className="w-full pl-9 pr-9 py-2 text-sm rounded-lg border border-border bg-card text-foreground placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-ring"
           />
           {search && (
             <button
               onClick={() => setSearch('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-muted-foreground dark:hover:text-gray-200"
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -234,7 +234,7 @@ export default function AccessVaultPage() {
         </div>
 
         {/* Record count */}
-        <span className="hidden sm:flex items-center text-sm text-gray-500 dark:text-gray-400 shrink-0">
+        <span className="hidden sm:flex items-center text-sm text-muted-foreground shrink-0">
           {loading ? 'Loading...' : search ? `${filteredRecords.length} of ${records.length}` : `${records.length} record${records.length !== 1 ? 's' : ''}`}
         </span>
 
@@ -242,7 +242,7 @@ export default function AccessVaultPage() {
         <div className="flex gap-2 shrink-0">
           <button
             onClick={() => setShowBulkImport(true)}
-            className="px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center gap-1.5"
+            className="px-3 py-2 text-sm rounded-lg border border-border text-muted-foreground hover:bg-muted/50 flex items-center gap-1.5"
           >
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
@@ -262,14 +262,14 @@ export default function AccessVaultPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="bg-card rounded-lg shadow border border-border overflow-hidden">
         {loading ? (
           <div className="p-8 text-center">
             <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mx-auto" />
           </div>
         ) : filteredRecords.length === 0 ? (
-          <div className="p-10 text-center text-gray-500 dark:text-gray-400">
-            <svg className="mx-auto h-10 w-10 text-gray-300 dark:text-gray-600 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="p-10 text-center text-muted-foreground">
+            <svg className="mx-auto h-10 w-10 text-muted-foreground dark:text-muted-foreground mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z" />
             </svg>
             {search ? (
@@ -284,54 +284,54 @@ export default function AccessVaultPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gray-50 dark:bg-gray-700">
+              <thead className="bg-muted">
                 <tr>
                   {columns.map((col) => (
-                    <th key={col} className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    <th key={col} className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                       {col}
                     </th>
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+              <tbody className="divide-y divide-border">
                 {filteredRecords.map((record) => (
-                  <tr key={record.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                  <tr key={record.id} className="hover:bg-muted/50">
                     {/* S.No — GST & MCA */}
                     {(activeTab === 'gst' || activeTab === 'mca') && (
-                      <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
+                      <td className="px-4 py-3 text-sm text-muted-foreground">
                         {record.serialNumber || '-'}
                       </td>
                     )}
 
                     {/* Client Name */}
-                    <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">
+                    <td className="px-4 py-3 text-sm font-medium text-foreground">
                       <Highlight text={record.clientName} query={search} />
                     </td>
 
                     {/* Category-specific fields */}
                     {activeTab === 'gst' && (
-                      <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
+                      <td className="px-4 py-3 text-sm text-muted-foreground">
                         <Highlight text={record.gstNumber || '-'} query={search} />
                       </td>
                     )}
                     {activeTab === 'income-tax' && (
                       <>
-                        <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
+                        <td className="px-4 py-3 text-sm text-muted-foreground">
                           {record.dateOfBirth || '-'}
                         </td>
-                        <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
+                        <td className="px-4 py-3 text-sm text-muted-foreground">
                           <Highlight text={record.panNumber || '-'} query={search} />
                         </td>
                       </>
                     )}
                     {activeTab === 'mca' && (
-                      <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
+                      <td className="px-4 py-3 text-sm text-muted-foreground">
                         <Highlight text={record.membershipDin || '-'} query={search} />
                       </td>
                     )}
 
                     {/* Username */}
-                    <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
+                    <td className="px-4 py-3 text-sm text-muted-foreground">
                       {record.username}
                     </td>
 
@@ -340,11 +340,11 @@ export default function AccessVaultPage() {
                       <button
                         onClick={() => handleReveal(record)}
                         disabled={revealingId === record.id}
-                        className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 disabled:opacity-50 transition-colors"
+                        className="flex items-center gap-1.5 px-3 py-1.5 text-xs rounded-lg bg-muted text-muted-foreground hover:bg-muted dark:hover:bg-gray-600 disabled:opacity-50 transition-colors"
                       >
                         {revealingId === record.id ? (
                           <>
-                            <span className="inline-block w-3 h-3 border-2 border-gray-400 border-t-transparent rounded-full animate-spin" />
+                            <span className="inline-block w-3 h-3 border-2 border-border border-t-transparent rounded-full animate-spin" />
                             Loading...
                           </>
                         ) : (
@@ -386,22 +386,22 @@ export default function AccessVaultPage() {
 
       {/* Reveal Password Modal */}
       <Dialog open={!!revealedData} onOpenChange={() => { setRevealedData(null); setCopied(false); }}>
-        <DialogContent className="max-w-sm dark:bg-gray-800 dark:border-gray-700">
+        <DialogContent className="max-w-sm">
           <DialogHeader>
             <DialogTitle className="dark:text-white">Password</DialogTitle>
             {revealedData && (
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1 truncate">{revealedData.label}</p>
+              <p className="text-sm text-muted-foreground mt-1 truncate">{revealedData.label}</p>
             )}
           </DialogHeader>
           {revealedData && (
             <div className="space-y-3">
-              <div className="flex items-center gap-2 bg-gray-50 dark:bg-gray-700 rounded-lg p-3">
-                <code className="flex-1 font-mono text-sm text-gray-900 dark:text-white break-all">
+              <div className="flex items-center gap-2 bg-muted rounded-lg p-3">
+                <code className="flex-1 font-mono text-sm text-foreground break-all">
                   {revealedData.password}
                 </code>
                 <button
                   onClick={handleCopy}
-                  className="shrink-0 p-1.5 rounded text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-white hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                  className="shrink-0 p-1.5 rounded text-muted-foreground hover:text-muted-foreground dark:text-muted-foreground dark:hover:text-white hover:bg-muted dark:hover:bg-gray-600 transition-colors"
                   title="Copy to clipboard"
                 >
                   {copied ? (
@@ -415,12 +415,12 @@ export default function AccessVaultPage() {
                   )}
                 </button>
               </div>
-              <p className="text-xs text-gray-400 dark:text-gray-500">
+              <p className="text-xs text-muted-foreground">
                 Close this dialog to clear the password from view.
               </p>
               <button
                 onClick={() => { setRevealedData(null); setCopied(false); }}
-                className="w-full px-4 py-2 text-sm rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
+                className="w-full px-4 py-2 text-sm rounded-lg bg-muted text-muted-foreground hover:bg-muted dark:hover:bg-gray-600"
               >
                 Close
               </button>

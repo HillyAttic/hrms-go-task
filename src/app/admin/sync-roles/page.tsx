@@ -46,7 +46,7 @@ export default function SyncRolesPage() {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <RefreshCw className="w-8 h-8 animate-spin mx-auto mb-4 text-blue-600" />
-          <p className="text-gray-600 dark:text-gray-400">Loading...</p>
+          <p className="text-muted-foreground">Loading...</p>
         </div>
       </div>
     );
@@ -57,10 +57,10 @@ export default function SyncRolesPage() {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <XCircle className="w-16 h-16 text-red-600 mx-auto mb-4" />
-          <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+          <h1 className="text-2xl font-bold text-foreground mb-2">
             Access Denied
           </h1>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-muted-foreground">
             Only administrators can access this page
           </p>
         </div>
@@ -71,10 +71,10 @@ export default function SyncRolesPage() {
   return (
     <div className="p-6 max-w-4xl mx-auto">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+        <h1 className="text-2xl font-bold text-foreground mb-2">
           Sync User Roles
         </h1>
-        <p className="text-gray-600 dark:text-gray-400">
+        <p className="text-muted-foreground">
           Sync user roles from Firestore to Firebase Auth custom claims
         </p>
       </div>
@@ -98,11 +98,11 @@ export default function SyncRolesPage() {
       </div>
 
       {/* Sync Button */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-6">
+      <div className="bg-card rounded-lg shadow p-6 mb-6">
         <button
           onClick={handleSync}
           disabled={syncing}
-          className="w-full sm:w-auto px-6 py-3 bg-foreground text-background rounded-lg hover:bg-foreground/90 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors font-medium flex items-center justify-center space-x-2"
+          className="w-full sm:w-auto px-6 py-3 bg-foreground text-background rounded-lg hover:bg-foreground/90 disabled:bg-muted disabled:cursor-not-allowed transition-colors font-medium flex items-center justify-center space-x-2"
         >
           {syncing ? (
             <>
@@ -120,7 +120,7 @@ export default function SyncRolesPage() {
 
       {/* Results */}
       {result && (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+        <div className="bg-card rounded-lg shadow p-6">
           <div className="flex items-start space-x-3 mb-4">
             {result.success ? (
               <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0" />
@@ -128,10 +128,10 @@ export default function SyncRolesPage() {
               <XCircle className="w-6 h-6 text-red-600 flex-shrink-0" />
             )}
             <div className="flex-1">
-              <h3 className="font-semibold text-gray-900 dark:text-white mb-1">
+              <h3 className="font-semibold text-foreground mb-1">
                 {result.success ? 'Sync Completed' : 'Sync Failed'}
               </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+              <p className="text-sm text-muted-foreground">
                 {result.message}
               </p>
             </div>
@@ -161,7 +161,7 @@ export default function SyncRolesPage() {
 
           {result.errors && result.errors.length > 0 && (
             <div className="mt-4">
-              <h4 className="font-semibold text-gray-900 dark:text-white mb-2">
+              <h4 className="font-semibold text-foreground mb-2">
                 Errors:
               </h4>
               <div className="bg-red-50 dark:bg-red-900/20 rounded-lg p-4 max-h-60 overflow-y-auto">

@@ -194,8 +194,8 @@ export function HolidayManagementModal({ isOpen, onClose, managerId, isManager, 
 
         <div className="space-y-6 py-4">
           {/* Add Holiday Form */}
-          <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-800">
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">Add New Holiday</h3>
+          <div className="rounded-lg border-2 border-border bg-muted/40 p-4">
+            <h3 className="mb-4 text-sm font-semibold text-foreground">Add New Holiday</h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -205,7 +205,7 @@ export function HolidayManagementModal({ isOpen, onClose, managerId, isManager, 
                   type="date"
                   value={holidayDate}
                   onChange={(e) => setHolidayDate(e.target.value)}
-                  className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="mt-1 w-full rounded-md border-2 border-border bg-card px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                 />
               </div>
 
@@ -217,7 +217,7 @@ export function HolidayManagementModal({ isOpen, onClose, managerId, isManager, 
                   value={holidayName}
                   onChange={(e) => setHolidayName(e.target.value)}
                   placeholder="e.g., Independence Day"
-                  className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="mt-1 w-full rounded-md border-2 border-border bg-card px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                 />
               </div>
 
@@ -229,7 +229,7 @@ export function HolidayManagementModal({ isOpen, onClose, managerId, isManager, 
                   value={holidayDescription}
                   onChange={(e) => setHolidayDescription(e.target.value)}
                   placeholder="e.g., National Holiday"
-                  className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="mt-1 w-full rounded-md border-2 border-border bg-card px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                 />
               </div>
             </div>
@@ -237,7 +237,7 @@ export function HolidayManagementModal({ isOpen, onClose, managerId, isManager, 
             <Button
               onClick={handleAddHoliday}
               disabled={saving || !holidayDate || !holidayName.trim()}
-              className="mt-4 bg-foreground hover:bg-foreground/90 text-background"
+              className="mt-4"
             >
               {saving ? (
                 <>
@@ -255,51 +255,47 @@ export function HolidayManagementModal({ isOpen, onClose, managerId, isManager, 
 
           {/* Holidays List */}
           <div>
-            <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">
+            <h3 className="mb-3 text-sm font-semibold text-foreground">
               Existing Holidays ({holidays.length})
             </h3>
 
             {loading ? (
               <div className="flex items-center justify-center py-8">
-                <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+                <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
               </div>
             ) : holidays.length === 0 ? (
-              <div className="text-center py-8 text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700 rounded-lg">
+              <div className="rounded-lg border-2 border-border py-8 text-center text-muted-foreground">
                 No holidays added yet
               </div>
             ) : (
-              <div className="space-y-2 max-h-96 overflow-y-auto">
+              <div className="max-h-96 space-y-2 overflow-y-auto">
                 {holidays.map((holiday) => (
                   <div
                     key={holiday.id}
-                    className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:bg-gray-800 transition-colors"
+                    className="flex items-center justify-between rounded-lg border-2 border-border p-4 transition-colors hover:bg-muted/50"
                   >
                     <div className="flex-1">
                       <div className="flex items-center gap-3">
-                        <div className="w-16 h-16 bg-blue-100 rounded-lg flex flex-col items-center justify-center">
-                          <div className="text-xs text-blue-600 font-medium">
+                        <div className="flex h-16 w-16 flex-col items-center justify-center rounded-lg border-2 border-border bg-accent text-accent-foreground">
+                          <div className="text-xs font-medium">
                             {new Date(holiday.date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short' })}
                           </div>
-                          <div className="text-2xl font-bold text-blue-700">
+                          <div className="font-display text-2xl font-bold">
                             {new Date(holiday.date + 'T00:00:00').getDate()}
                           </div>
                         </div>
                         <div>
-                          <h4 className="font-semibold text-gray-900 dark:text-white">
+                          <h4 className="font-semibold text-foreground">
                             {holiday.name}
                             {isManager && !isAdmin && (
-                              <span className={`ml-2 text-xs font-normal px-1.5 py-0.5 rounded ${
-                                holiday.scope === 'manager'
-                                  ? 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300'
-                                  : 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300'
-                              }`}>
+                              <span className="ml-2 rounded border border-border px-1.5 py-0.5 text-xs font-normal text-muted-foreground">
                                 {holiday.scope === 'manager' ? 'Team' : 'Global'}
                               </span>
                             )}
                           </h4>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">{formatDate(holiday.date)}</p>
+                          <p className="text-sm text-muted-foreground">{formatDate(holiday.date)}</p>
                           {holiday.description && (
-                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{holiday.description}</p>
+                            <p className="mt-1 text-xs text-muted-foreground">{holiday.description}</p>
                           )}
                         </div>
                       </div>
@@ -307,10 +303,11 @@ export function HolidayManagementModal({ isOpen, onClose, managerId, isManager, 
                     {/* Managers can only delete their own holidays, admins can delete any */}
                     {(isAdmin || (isManager && holiday.scope === 'manager' && holiday.createdBy === managerId)) && (
                       <Button
-                        variant="outline"
-                        size="sm"
+                        variant="ghost"
+                        size="icon"
                         onClick={() => handleDeleteHoliday(holiday.id)}
-                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                        aria-label={`Delete ${holiday.name}`}
+                        className="h-9 w-9 text-destructive"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>

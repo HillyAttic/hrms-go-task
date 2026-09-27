@@ -529,13 +529,13 @@ export default function UpdateSchedulePage() {
   const getTaskColorClass = (task: RosterEntry): string => {
     // Check if it's a leave task
     if (task.taskDetail?.startsWith('OFF:')) {
-      return 'bg-yellow-100 text-yellow-800 border-yellow-300';
+      return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 border-yellow-300 dark:border-yellow-700';
     }
     
     const color = getTaskColor(task);
-    if (color === 'green') return 'bg-green-100 text-green-800 border-green-300';
-    if (color === 'yellow') return 'bg-yellow-100 text-yellow-800 border-yellow-300';
-    return 'bg-orange-100 text-orange-800 border-orange-300';
+    if (color === 'green') return 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 border-green-300 dark:border-green-700';
+    if (color === 'yellow') return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 border-yellow-300 dark:border-yellow-700';
+    return 'bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300 border-orange-300 dark:border-orange-700';
   };
 
   if (authLoading || loading) {
@@ -555,20 +555,20 @@ export default function UpdateSchedulePage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Update Schedule</h1>
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Update Schedule</h1>
+          <p className="text-sm sm:text-base text-muted-foreground mt-1">
             Manage your personal schedule and activities
           </p>
         </div>
         
         {/* View Toggle */}
-        <div className="flex items-center space-x-2 bg-gray-100 dark:bg-gray-800 rounded-lg p-1">
+        <div className="flex items-center space-x-2 bg-muted rounded-lg p-1">
           <button
             onClick={() => setViewMode('desktop')}
             className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
               viewMode === 'desktop'
-                ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                ? 'bg-card text-foreground shadow-sm'
+                : 'text-muted-foreground hover:text-foreground dark:hover:text-white'
             }`}
           >
             <ComputerDesktopIcon className="w-4 h-4" />
@@ -578,8 +578,8 @@ export default function UpdateSchedulePage() {
             onClick={() => setViewMode('mobile')}
             className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
               viewMode === 'mobile'
-                ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
-                : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
+                ? 'bg-card text-foreground shadow-sm'
+                : 'text-muted-foreground hover:text-foreground dark:hover:text-white'
             }`}
           >
             <DevicePhoneMobileIcon className="w-4 h-4" />
@@ -589,19 +589,19 @@ export default function UpdateSchedulePage() {
       </div>
 
       {/* Color Legend */}
-      <div className="bg-white dark:bg-gray-dark rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+      <div className="bg-card rounded-lg border border-border p-4">
         <h3 className="text-sm font-semibold mb-2">Task Duration Legend:</h3>
         <div className="flex flex-wrap gap-4 text-sm">
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-yellow-100 border border-yellow-300 rounded"></div>
+            <div className="w-4 h-4 bg-yellow-100 dark:bg-yellow-900/30 border border-yellow-300 dark:border-yellow-700 rounded"></div>
             <span>Less than 8 hours</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-orange-100 border border-orange-300 rounded"></div>
+            <div className="w-4 h-4 bg-orange-100 dark:bg-orange-900/30 border border-orange-300 dark:border-orange-700 rounded"></div>
             <span>8 hours or more</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-indigo-100 border border-indigo-300 rounded"></div>
+            <div className="w-4 h-4 bg-indigo-100 dark:bg-indigo-900/30 border border-indigo-300 dark:border-indigo-700 rounded"></div>
             <span>Assigned Task (due date)</span>
           </div>
         </div>
@@ -609,12 +609,12 @@ export default function UpdateSchedulePage() {
 
       {/* Calendar */}
       {viewMode === 'desktop' ? (
-        <div className="bg-white dark:bg-gray-dark rounded-xl border border-gray-200 dark:border-gray-700 p-4 md:p-6">
+        <div className="bg-card rounded-xl border border-border p-4 md:p-6">
           {/* Month Navigation */}
           <div className="flex items-center justify-between mb-6">
             <button
               onClick={handlePreviousMonth}
-              className="p-2 hover:bg-gray-100 dark:bg-gray-700 rounded-lg transition-colors"
+              className="p-2 hover:bg-muted rounded-lg transition-colors"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -625,7 +625,7 @@ export default function UpdateSchedulePage() {
             </h2>
             <button
               onClick={handleNextMonth}
-              className="p-2 hover:bg-gray-100 dark:bg-gray-700 rounded-lg transition-colors"
+              className="p-2 hover:bg-muted rounded-lg transition-colors"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -637,7 +637,7 @@ export default function UpdateSchedulePage() {
         <div className="md:grid md:grid-cols-7 md:gap-1 space-y-2 md:space-y-0">
           {/* Day Headers - Desktop only */}
           {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
-            <div key={day} className="hidden md:block text-center font-semibold text-sm text-gray-600 dark:text-gray-400 py-2">
+            <div key={day} className="hidden md:block text-center font-semibold text-sm text-muted-foreground py-2">
               {day}
             </div>
           ))}
@@ -646,14 +646,14 @@ export default function UpdateSchedulePage() {
           {calendarDays.map((calDay, index) => {
             // Skip rendering days from prev/next month on mobile
             if (!calDay.isCurrentMonth) {
-              return <div key={index} className="hidden md:block bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 min-h-[100px]" />;
+              return <div key={index} className="hidden md:block bg-muted border border-border min-h-[100px]" />;
             }
 
             return (
               <div
                 key={index}
-                className={`relative min-h-[100px] border border-gray-200 dark:border-gray-700 p-3 md:p-2 ${
-                  calDay.isCurrentMonth ? 'bg-white dark:bg-gray-dark hover:bg-blue-50 dark:hover:bg-blue-900/20 cursor-pointer' : ''
+                className={`relative min-h-[100px] border border-border p-3 md:p-2 ${
+                  calDay.isCurrentMonth ? 'bg-card hover:bg-blue-50 dark:hover:bg-blue-900/20 cursor-pointer' : ''
                 } transition-colors group`}
                 onMouseEnter={() => calDay.isCurrentMonth && setHoveredDay(index)}
                 onMouseLeave={() => setHoveredDay(null)}
@@ -661,7 +661,7 @@ export default function UpdateSchedulePage() {
               >
                 {/* Mobile: Show full date with day name */}
                 <div className="md:hidden flex items-center justify-between mb-2">
-                  <div className="text-base font-semibold text-gray-900 dark:text-white">
+                  <div className="text-base font-semibold text-foreground">
                     {calDay.date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                   </div>
                   {calDay.date.toDateString() === new Date().toDateString() && (
@@ -670,7 +670,7 @@ export default function UpdateSchedulePage() {
                 </div>
 
                 {/* Desktop: Show just day number */}
-                <div className="hidden md:block text-sm font-medium text-gray-900 dark:text-white">
+                <div className="hidden md:block text-sm font-medium text-foreground">
                   {calDay.day}
                 </div>
 
@@ -727,7 +727,7 @@ export default function UpdateSchedulePage() {
                     </div>
                   ))}
                   {calDay.tasks.length > 3 && (
-                    <div className="text-xs text-gray-500 dark:text-gray-400 px-2 md:px-1">
+                    <div className="text-xs text-muted-foreground px-2 md:px-1">
                       +{calDay.tasks.length - 3} more
                     </div>
                   )}
@@ -746,7 +746,7 @@ export default function UpdateSchedulePage() {
                     </div>
                   ))}
                   {calDay.nonRecurringTasks.length > 2 && (
-                    <div className="text-xs text-gray-500 dark:text-gray-400 px-2 md:px-1">
+                    <div className="text-xs text-muted-foreground px-2 md:px-1">
                       +{calDay.nonRecurringTasks.length - 2} more
                     </div>
                   )}
@@ -776,17 +776,17 @@ export default function UpdateSchedulePage() {
           onClick={handleCloseModal}
         >
           <div
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl w-full max-w-md mx-auto p-4 sm:p-6 max-h-[90vh] overflow-y-auto pb-safe"
+            className="bg-card rounded-lg shadow-xl w-full max-w-md mx-auto p-4 sm:p-6 max-h-[90vh] overflow-y-auto pb-safe"
             onClick={(e) => e.stopPropagation()}
           >
-            <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">
+            <h3 className="text-lg sm:text-xl font-bold text-foreground mb-3 sm:mb-4">
               {editingEntry ? 'Edit Task' : 'Add Task'}
             </h3>
 
             {/* Task Type Selector (only for new tasks) */}
             {!editingEntry && (
               <div className="mb-3 sm:mb-4">
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Task Type</label>
+                <label className="block text-sm font-medium text-muted-foreground mb-2">Task Type</label>
                 <div className="flex gap-2">
                   <button
                     type="button"
@@ -794,7 +794,7 @@ export default function UpdateSchedulePage() {
                     className={`flex-1 py-2 px-3 sm:px-4 text-sm sm:text-base rounded-lg border ${
                       taskType === 'single'
                         ? 'bg-foreground text-background border-blue-600'
-                        : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
+                        : 'bg-card text-muted-foreground border-border hover:bg-muted/50'
                     }`}
                   >
                     Client Task
@@ -805,7 +805,7 @@ export default function UpdateSchedulePage() {
                     className={`flex-1 py-2 px-3 sm:px-4 text-sm sm:text-base rounded-lg border ${
                       taskType === 'multi'
                         ? 'bg-foreground text-background border-blue-600'
-                        : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
+                        : 'bg-card text-muted-foreground border-border hover:bg-muted/50'
                     }`}
                   >
                     <span className="hidden sm:inline">Activity</span>
@@ -819,50 +819,50 @@ export default function UpdateSchedulePage() {
               {taskType === 'multi' ? (
                 <>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-muted-foreground mb-1">
                       Activity Name *
                     </label>
                     <input
                       type="text"
                       value={formData.activityName}
                       onChange={(e) => setFormData({ ...formData, activityName: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+                      className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                       required
                       placeholder="e.g., Project planning, Sprint review, Team sync"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-muted-foreground mb-1">
                       Start Date *
                     </label>
                     <input
                       type="date"
                       value={formData.startDate}
                       onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+                      className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-muted-foreground mb-1">
                       End Date *
                     </label>
                     <input
                       type="date"
                       value={formData.endDate}
                       onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+                      className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-muted-foreground mb-1">
                       Notes (Optional)
                     </label>
                     <textarea
                       value={formData.notes}
                       onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+                      className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                       rows={3}
                       placeholder="Additional details..."
                     />
@@ -871,51 +871,51 @@ export default function UpdateSchedulePage() {
               ) : (
                 <>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-muted-foreground mb-1">
                       Task Detail *
                     </label>
                     <input
                       type="text"
                       value={formData.taskDetail}
                       onChange={(e) => setFormData({ ...formData, taskDetail: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+                      className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                       required
                       placeholder="e.g., Client visit, Project work, HR meeting"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-muted-foreground mb-1">
                       Date *
                     </label>
                     <input
                       type="date"
                       value={formData.taskDate}
                       onChange={(e) => setFormData({ ...formData, taskDate: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+                      className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-muted-foreground mb-1">
                       Start Time *
                     </label>
                     <input
                       type="time"
                       value={formData.timeStart}
                       onChange={(e) => setFormData({ ...formData, timeStart: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+                      className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                       required
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                    <label className="block text-sm font-medium text-muted-foreground mb-1">
                       End Time *
                     </label>
                     <input
                       type="time"
                       value={formData.timeEnd}
                       onChange={(e) => setFormData({ ...formData, timeEnd: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+                      className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                       required
                     />
                   </div>
@@ -947,49 +947,49 @@ export default function UpdateSchedulePage() {
           onClick={() => { setSelectedNonRecurringTask(null); closeModal(); }}
         >
           <div
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl w-full max-w-md p-6"
+            className="bg-card rounded-lg shadow-xl w-full max-w-md p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-start mb-4">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white">Assigned Task</h3>
+              <h3 className="text-lg font-bold text-foreground">Assigned Task</h3>
               <button
                 onClick={() => { setSelectedNonRecurringTask(null); closeModal(); }}
-                className="text-gray-500 hover:text-gray-700"
+                className="text-muted-foreground hover:text-muted-foreground"
               >
                 <XMarkIcon className="w-5 h-5" />
               </button>
             </div>
             <div className="space-y-3">
               <div>
-                <p className="text-xs text-gray-500 uppercase font-semibold">Title</p>
-                <p className="text-sm text-gray-900 dark:text-white">{selectedNonRecurringTask.title}</p>
+                <p className="text-xs text-muted-foreground uppercase font-semibold">Title</p>
+                <p className="text-sm text-foreground">{selectedNonRecurringTask.title}</p>
               </div>
               {selectedNonRecurringTask.description && (
                 <div>
-                  <p className="text-xs text-gray-500 uppercase font-semibold">Description</p>
-                  <p className="text-sm text-gray-900 dark:text-white">{selectedNonRecurringTask.description}</p>
+                  <p className="text-xs text-muted-foreground uppercase font-semibold">Description</p>
+                  <p className="text-sm text-foreground">{selectedNonRecurringTask.description}</p>
                 </div>
               )}
               <div className="flex gap-4">
                 <div>
-                  <p className="text-xs text-gray-500 uppercase font-semibold">Priority</p>
-                  <p className="text-sm capitalize text-gray-900 dark:text-white">{selectedNonRecurringTask.priority}</p>
+                  <p className="text-xs text-muted-foreground uppercase font-semibold">Priority</p>
+                  <p className="text-sm capitalize text-foreground">{selectedNonRecurringTask.priority}</p>
                 </div>
                 <div>
-                  <p className="text-xs text-gray-500 uppercase font-semibold">Status</p>
-                  <p className="text-sm capitalize text-gray-900 dark:text-white">{selectedNonRecurringTask.status}</p>
+                  <p className="text-xs text-muted-foreground uppercase font-semibold">Status</p>
+                  <p className="text-sm capitalize text-foreground">{selectedNonRecurringTask.status}</p>
                 </div>
               </div>
               <div>
-                <p className="text-xs text-gray-500 uppercase font-semibold">Due Date</p>
-                <p className="text-sm text-gray-900 dark:text-white">
+                <p className="text-xs text-muted-foreground uppercase font-semibold">Due Date</p>
+                <p className="text-sm text-foreground">
                   {new Date(selectedNonRecurringTask.dueDate).toLocaleDateString()}
                 </p>
               </div>
               {nonRecurringTaskClientName && (
                 <div>
-                  <p className="text-xs text-gray-500 uppercase font-semibold">Client</p>
-                  <p className="text-sm text-gray-900 dark:text-white">{nonRecurringTaskClientName}</p>
+                  <p className="text-xs text-muted-foreground uppercase font-semibold">Client</p>
+                  <p className="text-sm text-foreground">{nonRecurringTaskClientName}</p>
                 </div>
               )}
             </div>
@@ -1004,14 +1004,14 @@ export default function UpdateSchedulePage() {
           onClick={handleCloseTaskActionMenu}
         >
           <div
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl w-full max-w-sm p-6"
+            className="bg-card rounded-lg shadow-xl w-full max-w-sm p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-start mb-4">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white">Task Options</h3>
+              <h3 className="text-lg font-bold text-foreground">Task Options</h3>
               <button
                 onClick={handleCloseTaskActionMenu}
-                className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                className="text-muted-foreground hover:text-muted-foreground dark:hover:text-muted-foreground"
               >
                 <XMarkIcon className="w-5 h-5" />
               </button>
@@ -1027,8 +1027,8 @@ export default function UpdateSchedulePage() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
                 <div>
-                  <div className="font-medium text-gray-900 dark:text-white">View Task</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">See task details</div>
+                  <div className="font-medium text-foreground">View Task</div>
+                  <div className="text-xs text-muted-foreground">See task details</div>
                 </div>
               </button>
 
@@ -1038,8 +1038,8 @@ export default function UpdateSchedulePage() {
               >
                 <PencilIcon className="w-5 h-5 text-green-600 dark:text-green-400" />
                 <div>
-                  <div className="font-medium text-gray-900 dark:text-white">Edit Task</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">Modify task details</div>
+                  <div className="font-medium text-foreground">Edit Task</div>
+                  <div className="text-xs text-muted-foreground">Modify task details</div>
                 </div>
               </button>
 
@@ -1055,8 +1055,8 @@ export default function UpdateSchedulePage() {
               >
                 <TrashIcon className="w-5 h-5 text-red-600 dark:text-red-400" />
                 <div>
-                  <div className="font-medium text-gray-900 dark:text-white">Delete Task</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-400">Remove this task</div>
+                  <div className="font-medium text-foreground">Delete Task</div>
+                  <div className="text-xs text-muted-foreground">Remove this task</div>
                 </div>
               </button>
             </div>
@@ -1071,14 +1071,14 @@ export default function UpdateSchedulePage() {
           onClick={handleCloseTaskViewModal}
         >
           <div
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl w-full max-w-md p-6"
+            className="bg-card rounded-lg shadow-xl w-full max-w-md p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-start mb-4">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white">Task Details</h3>
+              <h3 className="text-lg font-bold text-foreground">Task Details</h3>
               <button
                 onClick={handleCloseTaskViewModal}
-                className="text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                className="text-muted-foreground hover:text-muted-foreground dark:hover:text-muted-foreground"
               >
                 <XMarkIcon className="w-5 h-5" />
               </button>
@@ -1088,27 +1088,27 @@ export default function UpdateSchedulePage() {
               {selectedTaskForAction.taskType === 'multi' ? (
                 <>
                   <div>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold mb-1">Activity Name</p>
-                    <p className="text-sm text-gray-900 dark:text-white">{selectedTaskForAction.activityName}</p>
+                    <p className="text-xs text-muted-foreground uppercase font-semibold mb-1">Activity Name</p>
+                    <p className="text-sm text-foreground">{selectedTaskForAction.activityName}</p>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold mb-1">Start Date</p>
-                      <p className="text-sm text-gray-900 dark:text-white">
+                      <p className="text-xs text-muted-foreground uppercase font-semibold mb-1">Start Date</p>
+                      <p className="text-sm text-foreground">
                         {selectedTaskForAction.startDate ? new Date(selectedTaskForAction.startDate).toLocaleDateString() : '—'}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold mb-1">End Date</p>
-                      <p className="text-sm text-gray-900 dark:text-white">
+                      <p className="text-xs text-muted-foreground uppercase font-semibold mb-1">End Date</p>
+                      <p className="text-sm text-foreground">
                         {selectedTaskForAction.endDate ? new Date(selectedTaskForAction.endDate).toLocaleDateString() : '—'}
                       </p>
                     </div>
                   </div>
                   {selectedTaskForAction.notes && (
                     <div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold mb-1">Notes</p>
-                      <p className="text-sm text-gray-900 dark:text-white">{selectedTaskForAction.notes}</p>
+                      <p className="text-xs text-muted-foreground uppercase font-semibold mb-1">Notes</p>
+                      <p className="text-sm text-foreground">{selectedTaskForAction.notes}</p>
                     </div>
                   )}
                 </>
@@ -1116,31 +1116,31 @@ export default function UpdateSchedulePage() {
                 <>
                   {selectedTaskForAction.clientName && (
                     <div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold mb-1">Client Name</p>
-                      <p className="text-sm text-gray-900 dark:text-white">{selectedTaskForAction.clientName}</p>
+                      <p className="text-xs text-muted-foreground uppercase font-semibold mb-1">Client Name</p>
+                      <p className="text-sm text-foreground">{selectedTaskForAction.clientName}</p>
                     </div>
                   )}
                   <div>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold mb-1">Task Detail</p>
-                    <p className="text-sm text-gray-900 dark:text-white">{selectedTaskForAction.taskDetail}</p>
+                    <p className="text-xs text-muted-foreground uppercase font-semibold mb-1">Task Detail</p>
+                    <p className="text-sm text-foreground">{selectedTaskForAction.taskDetail}</p>
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold mb-1">Start Time</p>
-                      <p className="text-sm text-gray-900 dark:text-white">
+                      <p className="text-xs text-muted-foreground uppercase font-semibold mb-1">Start Time</p>
+                      <p className="text-sm text-foreground">
                         {selectedTaskForAction.timeStart ? new Date(selectedTaskForAction.timeStart).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '—'}
                       </p>
                     </div>
                     <div>
-                      <p className="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold mb-1">End Time</p>
-                      <p className="text-sm text-gray-900 dark:text-white">
+                      <p className="text-xs text-muted-foreground uppercase font-semibold mb-1">End Time</p>
+                      <p className="text-sm text-foreground">
                         {selectedTaskForAction.timeEnd ? new Date(selectedTaskForAction.timeEnd).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '—'}
                       </p>
                     </div>
                   </div>
                   <div>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 uppercase font-semibold mb-1">Date</p>
-                    <p className="text-sm text-gray-900 dark:text-white">
+                    <p className="text-xs text-muted-foreground uppercase font-semibold mb-1">Date</p>
+                    <p className="text-sm text-foreground">
                       {selectedTaskForAction.timeStart ? new Date(selectedTaskForAction.timeStart).toLocaleDateString() : '—'}
                     </p>
                   </div>
@@ -1160,7 +1160,7 @@ export default function UpdateSchedulePage() {
               </button>
               <button
                 onClick={handleCloseTaskViewModal}
-                className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                className="flex-1 px-4 py-2 border border-border text-muted-foreground rounded-lg hover:bg-muted/50 transition-colors"
               >
                 Close
               </button>
@@ -1176,11 +1176,11 @@ export default function UpdateSchedulePage() {
           onClick={handleCloseTaskTable}
         >
           <div
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-4xl w-full p-6 max-h-[90vh] overflow-y-auto"
+            className="bg-card rounded-lg shadow-xl max-w-4xl w-full p-6 max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-center mb-4 gap-2">
-              <h3 className="text-base sm:text-lg md:text-xl font-bold text-gray-900 dark:text-white flex-1 min-w-0">
+              <h3 className="text-base sm:text-lg md:text-xl font-bold text-foreground flex-1 min-w-0">
                 <span className="block sm:inline">Tasks for </span>
                 <span className="block sm:inline">{selectedDate.toLocaleDateString('en-US', { 
                   weekday: 'long', 
@@ -1203,7 +1203,7 @@ export default function UpdateSchedulePage() {
                 </button>
                 <button
                   onClick={handleCloseTaskTable}
-                  className="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors flex-shrink-0"
+                  className="p-2 hover:bg-muted/50 rounded-lg transition-colors flex-shrink-0"
                 >
                   <XMarkIcon className="w-5 h-5" />
                 </button>
@@ -1212,7 +1212,7 @@ export default function UpdateSchedulePage() {
 
             {selectedDateTasks.length === 0 ? (
               <div className="text-center py-8">
-                <p className="text-gray-500 dark:text-gray-400 mb-4">No tasks assigned for this day</p>
+                <p className="text-muted-foreground mb-4">No tasks assigned for this day</p>
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
@@ -1229,13 +1229,13 @@ export default function UpdateSchedulePage() {
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse">
                   <thead>
-                    <tr className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-                      <th className="text-left py-3 px-4 font-semibold text-sm text-gray-700 dark:text-gray-300">Date</th>
-                      <th className="text-left py-3 px-4 font-semibold text-sm text-gray-700 dark:text-gray-300">Client Name</th>
-                      <th className="text-left py-3 px-4 font-semibold text-sm text-gray-700 dark:text-gray-300">Task Name</th>
-                      <th className="text-left py-3 px-4 font-semibold text-sm text-gray-700 dark:text-gray-300">Start Time</th>
-                      <th className="text-left py-3 px-4 font-semibold text-sm text-gray-700 dark:text-gray-300">End Time</th>
-                      <th className="text-left py-3 px-4 font-semibold text-sm text-gray-700 dark:text-gray-300">Actions</th>
+                    <tr className="bg-muted border-b border-border">
+                      <th className="text-left py-3 px-4 font-semibold text-sm text-muted-foreground">Date</th>
+                      <th className="text-left py-3 px-4 font-semibold text-sm text-muted-foreground">Client Name</th>
+                      <th className="text-left py-3 px-4 font-semibold text-sm text-muted-foreground">Task Name</th>
+                      <th className="text-left py-3 px-4 font-semibold text-sm text-muted-foreground">Start Time</th>
+                      <th className="text-left py-3 px-4 font-semibold text-sm text-muted-foreground">End Time</th>
+                      <th className="text-left py-3 px-4 font-semibold text-sm text-muted-foreground">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1251,23 +1251,23 @@ export default function UpdateSchedulePage() {
                         const isMulti = task.taskType === 'multi';
                         
                         return (
-                          <tr key={task.id} className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:bg-gray-800">
-                            <td className="py-3 px-4 text-sm text-gray-900 dark:text-white">
+                          <tr key={task.id} className="border-b border-border hover:bg-muted">
+                            <td className="py-3 px-4 text-sm text-foreground">
                               {start?.toLocaleDateString()}
                             </td>
-                            <td className="py-3 px-4 text-sm text-gray-900 dark:text-white">
+                            <td className="py-3 px-4 text-sm text-foreground">
                               {task.clientName || '—'}
                             </td>
-                            <td className="py-3 px-4 text-sm text-gray-900 dark:text-white">
+                            <td className="py-3 px-4 text-sm text-foreground">
                               {task.taskDetail || task.activityName}
                             </td>
-                            <td className="py-3 px-4 text-sm text-gray-900 dark:text-white">
+                            <td className="py-3 px-4 text-sm text-foreground">
                               {isMulti ? '09:00 AM' : start ? start.toLocaleTimeString('en-US', { 
                                 hour: '2-digit', 
                                 minute: '2-digit' 
                               }) : '—'}
                             </td>
-                            <td className="py-3 px-4 text-sm text-gray-900 dark:text-white">
+                            <td className="py-3 px-4 text-sm text-foreground">
                               {isMulti ? '05:00 PM' : end ? end.toLocaleTimeString('en-US', { 
                                 hour: '2-digit', 
                                 minute: '2-digit' 

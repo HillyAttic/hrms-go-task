@@ -35,10 +35,10 @@ interface PayrollSettingsFormProps {
 }
 
 const inputClass =
-  'w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ring';
-const labelClass = 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1';
+  'w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring';
+const labelClass = 'block text-sm font-medium text-muted-foreground mb-1';
 const errorClass = 'mt-1 text-xs text-red-500';
-const sectionTitleClass = 'text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2';
+const sectionTitleClass = 'text-base font-semibold text-foreground flex items-center gap-2';
 
 export function PayrollSettingsForm({ onSaveSuccess }: PayrollSettingsFormProps) {
   const [loading, setLoading] = useState(true);
@@ -137,7 +137,7 @@ export function PayrollSettingsForm({ onSaveSuccess }: PayrollSettingsFormProps)
           <Textarea
             rows={3}
             {...register('companyAddress')}
-            className="rounded-lg border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+            className="rounded-lg border-border bg-card px-3 py-2 text-sm text-foreground"
           />
           {errors.companyAddress && <p className={errorClass}>{errors.companyAddress.message}</p>}
         </div>
@@ -191,18 +191,18 @@ export function PayrollSettingsForm({ onSaveSuccess }: PayrollSettingsFormProps)
           />
           {errors.allowedPaidLeaves && <p className={errorClass}>{errors.allowedPaidLeaves.message}</p>}
         </div>
-        <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+        <div className="flex items-center gap-3 p-3 rounded-lg bg-muted border border-border">
           <input
             type="checkbox"
             id="include-paid-leaves"
             {...register('includePaidLeavesInPaidDays')}
-            className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-ring dark:border-gray-600 dark:bg-gray-700"
+            className="h-4 w-4 rounded border-border text-blue-600 focus:ring-ring"
           />
-          <label htmlFor="include-paid-leaves" className="text-sm text-gray-700 dark:text-gray-300">
+          <label htmlFor="include-paid-leaves" className="text-sm text-muted-foreground">
             Include Allowed Paid Leaves in Paid Days count
           </label>
         </div>
-        <p className="text-xs text-gray-500 dark:text-gray-400">
+        <p className="text-xs text-muted-foreground">
           When enabled, the monthly paid-leave allowance also counts towards paid days on the slip.
         </p>
       </section>
@@ -213,7 +213,7 @@ export function PayrollSettingsForm({ onSaveSuccess }: PayrollSettingsFormProps)
           rows={2}
           {...register('footerNote')}
           placeholder="This is a computer-generated salary slip and does not require a signature."
-          className="rounded-lg border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+          className="rounded-lg border-border bg-card px-3 py-2 text-sm text-foreground"
         />
       </section>
 

@@ -29,8 +29,8 @@ export const TouchOptimizedInput = forwardRef<HTMLInputElement, TouchOptimizedIn
     };
 
     const variantClasses = {
-      default: 'border border-stroke bg-white dark:border-stroke-dark dark:bg-gray-dark',
-      filled: 'bg-gray-1 border-0 dark:bg-gray-dark',
+      default: 'border border-stroke bg-card dark:border-stroke-dark',
+      filled: 'bg-muted border-0',
       outlined: 'border-2 border-primary bg-transparent'
     };
 
@@ -125,7 +125,7 @@ export const TouchOptimizedButton = forwardRef<HTMLButtonElement, TouchOptimized
           // Touch-specific styles
           isTouchDevice && 'touch-manipulation active:scale-95',
           // Hover states only on non-touch devices
-          !isTouchDevice && 'hover:shadow-md',
+          !isTouchDevice && 'hover:shadow-hard',
           className
         )}
         {...props}

@@ -748,7 +748,7 @@ export function RosterExportModal({
         <div className="space-y-4 py-2">
           {/* Month and Year Selection */}
           <div className="space-y-2">
-            <div className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+            <div className="flex items-center gap-2 text-sm font-medium text-foreground">
               <Calendar className="w-4 h-4" />
               <span>Select Period</span>
             </div>
@@ -759,7 +759,7 @@ export function RosterExportModal({
                   id="export-month"
                   value={selectedMonth}
                   onChange={(e) => setSelectedMonth(Number(e.target.value))}
-                  className="w-full mt-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-ring dark:bg-gray-700 dark:text-white"
+                  className="mt-1 w-full rounded-lg border-2 border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                 >
                   <option value="0">January</option>
                   <option value="1">February</option>
@@ -781,7 +781,7 @@ export function RosterExportModal({
                   id="export-year"
                   value={selectedYear}
                   onChange={(e) => setSelectedYear(Number(e.target.value))}
-                  className="w-full mt-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-ring dark:bg-gray-700 dark:text-white"
+                  className="mt-1 w-full rounded-lg border-2 border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                 >
                   <option value="2024">2024</option>
                   <option value="2025">2025</option>
@@ -794,7 +794,7 @@ export function RosterExportModal({
 
           {/* Date Range */}
           <div className="space-y-2">
-            <div className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+            <div className="flex items-center gap-2 text-sm font-medium text-foreground">
               <Calendar className="w-4 h-4" />
               <span>Custom Date Range (Optional)</span>
             </div>
@@ -806,7 +806,7 @@ export function RosterExportModal({
                   type="date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full mt-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-ring dark:bg-gray-700 dark:text-white"
+                  className="mt-1 w-full rounded-lg border-2 border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                 />
               </div>
               <div>
@@ -816,7 +816,7 @@ export function RosterExportModal({
                   type="date"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full mt-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-ring dark:bg-gray-700 dark:text-white"
+                  className="mt-1 w-full rounded-lg border-2 border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
                 />
               </div>
             </div>
@@ -824,34 +824,36 @@ export function RosterExportModal({
 
           {/* Format Selection */}
           <div className="space-y-2">
-            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Export Format</p>
+            <p className="text-sm font-medium text-foreground">Export Format</p>
             <div className="grid grid-cols-2 gap-2 sm:gap-3">
               <button
                 onClick={() => setExportFormat('excel')}
-                className={`flex items-center gap-2 sm:gap-3 p-2 sm:p-3 border-2 rounded-lg transition-all ${
+                aria-pressed={exportFormat === 'excel'}
+                className={`flex items-center gap-2 rounded-lg border-2 p-2 transition-colors sm:gap-3 sm:p-3 ${
                   exportFormat === 'excel'
-                    ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
-                    : 'border-gray-200 dark:border-gray-600 hover:border-green-300'
+                    ? 'border-foreground bg-muted'
+                    : 'border-border hover:bg-muted/50'
                 }`}
               >
-                <FileSpreadsheet className={`w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 ${exportFormat === 'excel' ? 'text-green-600' : 'text-gray-400'}`} />
+                <FileSpreadsheet className={`h-4 w-4 shrink-0 sm:h-5 sm:w-5 ${exportFormat === 'excel' ? 'text-foreground' : 'text-muted-foreground'}`} />
                 <div className="text-left">
-                  <div className="font-medium text-xs sm:text-sm text-gray-900 dark:text-white">Excel</div>
-                  <div className="text-[10px] sm:text-xs text-gray-500">.xlsx</div>
+                  <div className="text-xs font-medium text-foreground sm:text-sm">Excel</div>
+                  <div className="text-[10px] text-muted-foreground sm:text-xs">.xlsx</div>
                 </div>
               </button>
               <button
                 onClick={() => setExportFormat('pdf')}
-                className={`flex items-center gap-2 sm:gap-3 p-2 sm:p-3 border-2 rounded-lg transition-all ${
+                aria-pressed={exportFormat === 'pdf'}
+                className={`flex items-center gap-2 rounded-lg border-2 p-2 transition-colors sm:gap-3 sm:p-3 ${
                   exportFormat === 'pdf'
-                    ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
-                    : 'border-gray-200 dark:border-gray-600 hover:border-red-300'
+                    ? 'border-foreground bg-muted'
+                    : 'border-border hover:bg-muted/50'
                 }`}
               >
-                <FileText className={`w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 ${exportFormat === 'pdf' ? 'text-red-600' : 'text-gray-400'}`} />
+                <FileText className={`h-4 w-4 shrink-0 sm:h-5 sm:w-5 ${exportFormat === 'pdf' ? 'text-foreground' : 'text-muted-foreground'}`} />
                 <div className="text-left">
-                  <div className="font-medium text-xs sm:text-sm text-gray-900 dark:text-white">PDF</div>
-                  <div className="text-[10px] sm:text-xs text-gray-500">.pdf</div>
+                  <div className="text-xs font-medium text-foreground sm:text-sm">PDF</div>
+                  <div className="text-[10px] text-muted-foreground sm:text-xs">.pdf</div>
                 </div>
               </button>
             </div>
@@ -859,25 +861,25 @@ export function RosterExportModal({
 
           {/* Options */}
           <div className="space-y-2">
-            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Options</p>
+            <p className="text-sm font-medium text-foreground">Options</p>
             <div className="space-y-2">
               <label className="flex items-start gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={includeLocation}
                   onChange={(e) => setIncludeLocation(e.target.checked)}
-                  className="w-4 h-4 mt-0.5 text-blue-600 rounded flex-shrink-0"
+                  className="mt-0.5 h-4 w-4 shrink-0 rounded"
                 />
-                <span className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">Include clock-in / clock-out location (full address)</span>
+                <span className="text-xs sm:text-sm text-foreground">Include clock-in / clock-out location (full address)</span>
               </label>
               <label className="flex items-start gap-2 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={includeStats}
                   onChange={(e) => setIncludeStats(e.target.checked)}
-                  className="w-4 h-4 mt-0.5 text-blue-600 rounded flex-shrink-0"
+                  className="mt-0.5 h-4 w-4 shrink-0 rounded"
                 />
-                <span className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">
+                <span className="text-xs sm:text-sm text-foreground">
                   Include summary {exportFormat === 'excel' ? 'sheet' : 'page'} (per-employee totals)
                 </span>
               </label>
@@ -888,18 +890,18 @@ export function RosterExportModal({
                       type="checkbox"
                       checked={excludeAdmins}
                       onChange={(e) => setExcludeAdmins(e.target.checked)}
-                      className="w-4 h-4 mt-0.5 text-blue-600 rounded flex-shrink-0"
+                      className="mt-0.5 h-4 w-4 shrink-0 rounded"
                     />
-                    <span className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">Exclude Admins from export</span>
+                    <span className="text-xs sm:text-sm text-foreground">Exclude Admins from export</span>
                   </label>
                   <label className="flex items-start gap-2 cursor-pointer">
                     <input
                       type="checkbox"
                       checked={excludeManagers}
                       onChange={(e) => setExcludeManagers(e.target.checked)}
-                      className="w-4 h-4 mt-0.5 text-blue-600 rounded flex-shrink-0"
+                      className="mt-0.5 h-4 w-4 shrink-0 rounded"
                     />
-                    <span className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">Exclude Managers from export</span>
+                    <span className="text-xs sm:text-sm text-foreground">Exclude Managers from export</span>
                   </label>
                 </>
               )}
@@ -907,16 +909,16 @@ export function RosterExportModal({
           </div>
 
           {/* Info */}
-          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-2.5 sm:p-3 text-xs sm:text-sm text-blue-700 dark:text-blue-300 space-y-1">
-            <p className="font-medium text-xs sm:text-sm">Export includes:</p>
-            <ul className="list-disc list-inside space-y-0.5 text-[11px] sm:text-xs pl-1">
+          <div className="space-y-1 rounded-lg border-2 border-border bg-info/10 p-2.5 text-xs text-info sm:p-3 sm:text-sm">
+            <p className="text-xs font-medium sm:text-sm">Export includes:</p>
+            <ul className="list-inside list-disc space-y-0.5 pl-1 text-[11px] sm:text-xs">
               <li>Daily status, clock-in/out times (IST), hours worked</li>
               {includeLocation && <li>Full address for clock-in/out locations</li>}
               <li>Leave type, status, and reason</li>
               {includeStats && <li>Summary {exportFormat === 'excel' ? 'sheet' : 'page'} with per-employee totals</li>}
             </ul>
             {includeLocation && (
-              <p className="text-[11px] sm:text-xs mt-2 text-orange-600 dark:text-orange-400">
+              <p className="mt-2 text-[11px] text-warning sm:text-xs">
                 Address lookup uses OpenStreetMap (~1 sec per unique location). Previously resolved locations are cached.
               </p>
             )}
@@ -924,8 +926,8 @@ export function RosterExportModal({
 
           {/* Progress */}
           {exporting && progressMsg && (
-            <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 rounded-lg px-3 py-2.5 sm:px-4 sm:py-3">
-              <Loader2 className="w-4 h-4 animate-spin flex-shrink-0 text-blue-600" />
+            <div className="flex items-center gap-2 rounded-lg border-2 border-border bg-muted/40 px-3 py-2.5 text-xs text-muted-foreground sm:px-4 sm:py-3 sm:text-sm">
+              <Loader2 className="h-4 w-4 shrink-0 animate-spin text-foreground" />
               <span className="break-words">{progressMsg}</span>
             </div>
           )}
@@ -943,11 +945,7 @@ export function RosterExportModal({
           <Button
             onClick={handleExport}
             disabled={exporting}
-            className={`w-full sm:w-auto order-1 sm:order-2 text-white ${
-              exportFormat === 'excel'
-                ? 'bg-green-600 hover:bg-green-700'
-                : 'bg-red-600 hover:bg-red-700'
-            }`}
+            className="order-1 w-full sm:order-2 sm:w-auto"
           >
             {exporting ? (
               <>

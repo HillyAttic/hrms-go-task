@@ -177,16 +177,16 @@ export default function BulkImportModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="max-w-2xl dark:bg-gray-800 dark:border-gray-700">
+      <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle className="dark:text-white">Bulk Import {label} Credentials</DialogTitle>
         </DialogHeader>
 
         {step === 'upload' && (
           <div className="space-y-4">
-            <p className="text-sm text-gray-600 dark:text-gray-400">
+            <p className="text-sm text-muted-foreground">
               Upload a CSV file with columns:{' '}
-              <span className="font-mono text-xs bg-gray-100 dark:bg-gray-700 px-1 rounded">
+              <span className="font-mono text-xs bg-muted px-1 rounded">
                 {Object.keys(mapping).join(', ')}
               </span>
             </p>
@@ -197,7 +197,7 @@ export default function BulkImportModal({
             >
               Download template CSV
             </a>
-            <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-8 text-center">
+            <div className="border-2 border-dashed border-border rounded-lg p-8 text-center">
               <input
                 ref={fileInputRef}
                 type="file"
@@ -207,7 +207,7 @@ export default function BulkImportModal({
                 id="csv-upload"
               />
               <label htmlFor="csv-upload" className="cursor-pointer">
-                <div className="text-gray-400 mb-2">
+                <div className="text-muted-foreground mb-2">
                   <svg
                     className="mx-auto h-10 w-10"
                     fill="none"
@@ -222,7 +222,7 @@ export default function BulkImportModal({
                     />
                   </svg>
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-muted-foreground">
                   Click to select CSV file
                 </p>
               </label>
@@ -230,7 +230,7 @@ export default function BulkImportModal({
             <DialogFooter>
               <button
                 onClick={handleClose}
-                className="px-4 py-2 text-sm rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200"
+                className="px-4 py-2 text-sm rounded-lg bg-muted text-muted-foreground hover:bg-muted"
               >
                 Cancel
               </button>
@@ -241,7 +241,7 @@ export default function BulkImportModal({
         {step === 'preview' && (
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <p className="text-sm text-gray-700 dark:text-gray-300">
+              <p className="text-sm text-muted-foreground">
                 Found <strong>{parsedRows.length}</strong> rows
                 {parseErrors.length > 0 && (
                   <span className="ml-2 text-yellow-600">
@@ -264,37 +264,37 @@ export default function BulkImportModal({
               </div>
             )}
 
-            <div className="overflow-x-auto max-h-64 border border-gray-200 dark:border-gray-700 rounded-lg">
+            <div className="overflow-x-auto max-h-64 border border-border rounded-lg">
               <table className="w-full text-xs">
-                <thead className="bg-gray-50 dark:bg-gray-700 sticky top-0">
+                <thead className="bg-muted sticky top-0">
                   <tr>
-                    <th className="px-3 py-2 text-left text-gray-500 dark:text-gray-400">#</th>
+                    <th className="px-3 py-2 text-left text-muted-foreground">#</th>
                     {previewColumns.map((col) => (
                       <th
                         key={col}
-                        className="px-3 py-2 text-left text-gray-500 dark:text-gray-400"
+                        className="px-3 py-2 text-left text-muted-foreground"
                       >
                         {col}
                       </th>
                     ))}
-                    <th className="px-3 py-2 text-left text-gray-500 dark:text-gray-400">
+                    <th className="px-3 py-2 text-left text-muted-foreground">
                       Password
                     </th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+                <tbody className="divide-y divide-border">
                   {parsedRows.slice(0, 10).map((row, i) => (
-                    <tr key={i} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
-                      <td className="px-3 py-2 text-gray-500 dark:text-gray-400">{i + 1}</td>
+                    <tr key={i} className="hover:bg-muted/50">
+                      <td className="px-3 py-2 text-muted-foreground">{i + 1}</td>
                       {previewColumns.map((col) => (
                         <td
                           key={col}
-                          className="px-3 py-2 text-gray-900 dark:text-white max-w-[150px] truncate"
+                          className="px-3 py-2 text-foreground max-w-[150px] truncate"
                         >
                           {row[col] || '-'}
                         </td>
                       ))}
-                      <td className="px-3 py-2 text-gray-400">
+                      <td className="px-3 py-2 text-muted-foreground">
                         {row['Password'] ? '●●●●●●' : '-'}
                       </td>
                     </tr>
@@ -302,7 +302,7 @@ export default function BulkImportModal({
                 </tbody>
               </table>
               {parsedRows.length > 10 && (
-                <p className="text-xs text-gray-500 dark:text-gray-400 text-center py-2">
+                <p className="text-xs text-muted-foreground text-center py-2">
                   ...and {parsedRows.length - 10} more rows
                 </p>
               )}
@@ -316,7 +316,7 @@ export default function BulkImportModal({
                   setParseErrors([]);
                   if (fileInputRef.current) fileInputRef.current.value = '';
                 }}
-                className="px-4 py-2 text-sm rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200"
+                className="px-4 py-2 text-sm rounded-lg bg-muted text-muted-foreground hover:bg-muted"
               >
                 Back
               </button>
@@ -334,7 +334,7 @@ export default function BulkImportModal({
         {step === 'importing' && (
           <div className="py-8 text-center">
             <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mx-auto mb-4" />
-            <p className="text-gray-600 dark:text-gray-400">Importing records...</p>
+            <p className="text-muted-foreground">Importing records...</p>
           </div>
         )}
 

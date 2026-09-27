@@ -16,10 +16,10 @@ export async function InvoiceTable() {
   const data = await getInvoiceTableData();
 
   return (
-    <div className="rounded-[10px] border border-stroke bg-white p-4 shadow-1 dark:border-dark-3 dark:bg-gray-dark dark:shadow-card sm:p-7.5">
+    <div className="rounded-[10px] border border-stroke bg-card p-4 shadow-hard dark:border-dark-3 sm:p-7.5">
       <Table>
         <TableHeader>
-          <TableRow className="border-none bg-muted dark:bg-dark-2 [&>th]:py-4 [&>th]:text-base [&>th]:text-dark [&>th]:dark:text-white">
+          <TableRow className="border-none bg-muted [&>th]:py-4 [&>th]:text-base [&>th]:text-dark dark:[&>th]:text-white">
             <TableHead className="min-w-[155px] xl:pl-7.5">Package</TableHead>
             <TableHead>Invoice Date</TableHead>
             <TableHead>Status</TableHead>

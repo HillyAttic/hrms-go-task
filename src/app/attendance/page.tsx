@@ -246,11 +246,11 @@ export default function AttendancePage() {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <Card className="p-8 text-center">
-          <div className="mx-auto h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center mb-4">
+          <div className="mx-auto h-12 w-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-4">
             <ClockIcon className="h-6 w-6 text-blue-600" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Attendance Access Required</h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">Please sign in to access the attendance tracking system.</p>
+          <h2 className="text-2xl font-bold text-foreground mb-2">Attendance Access Required</h2>
+          <p className="text-muted-foreground mb-6">Please sign in to access the attendance tracking system.</p>
           <Button
             onClick={() => window.location.href = '/auth/signin'}
             className="bg-foreground hover:bg-foreground/90 text-background"
@@ -313,19 +313,19 @@ export default function AttendancePage() {
             <CardContent className="pt-6">
               <div className="space-y-4">
                 {pendingLeaves.map((request) => (
-                  <div key={request.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border rounded-lg bg-white dark:bg-gray-800 shadow-sm">
+                  <div key={request.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border rounded-lg bg-card shadow-sm">
                     <div className="mb-4 sm:mb-0">
                       <div className="flex items-center gap-2">
                         <p className="font-semibold text-lg">{request.employeeName}</p>
                         <Badge variant="outline">{request.leaveTypeName}</Badge>
                         {request.halfDay && (
-                          <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-100">Half Day</Badge>
+                          <Badge className="bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900/30">Half Day</Badge>
                         )}
                       </div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                      <p className="text-sm text-muted-foreground mt-1">
                         <span className="font-medium">{request.duration} days</span> • {request.startDate instanceof Date ? request.startDate.toLocaleDateString() : new Date(request.startDate).toLocaleDateString()} to {request.endDate instanceof Date ? request.endDate.toLocaleDateString() : new Date(request.endDate).toLocaleDateString()}
                       </p>
-                      <p className="text-sm mt-2 italic text-gray-700 dark:text-gray-300">"{request.reason}"</p>
+                      <p className="text-sm mt-2 italic text-muted-foreground">"{request.reason}"</p>
                     </div>
                     <div className="flex gap-2 w-full sm:w-auto">
                       <Button
@@ -368,9 +368,9 @@ export default function AttendancePage() {
 
         {/* Pending WFH Approval Section (Managers Only) */}
         {(isManager || isAdmin) && pendingWfhRequests.length > 0 && (
-          <Card className="border-gray-400 dark:border-gray-600">
-            <CardHeader className="bg-gray-100 dark:bg-gray-800">
-              <CardTitle className="flex items-center gap-2 text-gray-800 dark:text-gray-200">
+          <Card className="border-border">
+            <CardHeader className="bg-muted">
+              <CardTitle className="flex items-center gap-2 text-foreground">
                 <HomeIcon className="h-5 w-5" />
                 Pending WFH Approvals ({pendingWfhRequests.length})
               </CardTitle>
@@ -378,16 +378,16 @@ export default function AttendancePage() {
             <CardContent className="pt-6">
               <div className="space-y-4">
                 {pendingWfhRequests.map((request) => (
-                  <div key={request.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border rounded-lg bg-white dark:bg-gray-800 shadow-sm">
+                  <div key={request.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border rounded-lg bg-card shadow-sm">
                     <div className="mb-4 sm:mb-0">
                       <div className="flex items-center gap-2">
                         <p className="font-semibold text-lg">{request.employeeName}</p>
                         <Badge variant="outline">WFH</Badge>
                       </div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                      <p className="text-sm text-muted-foreground mt-1">
                         <span className="font-medium">{request.duration} days</span> • {request.startDate instanceof Date ? request.startDate.toLocaleDateString() : new Date(request.startDate).toLocaleDateString()} to {request.endDate instanceof Date ? request.endDate.toLocaleDateString() : new Date(request.endDate).toLocaleDateString()}
                       </p>
-                      <p className="text-sm mt-2 italic text-gray-700 dark:text-gray-300">"{request.reason}"</p>
+                      <p className="text-sm mt-2 italic text-muted-foreground">"{request.reason}"</p>
                     </div>
                     <div className="flex gap-2 w-full sm:w-auto">
                       <Button
@@ -435,7 +435,7 @@ export default function AttendancePage() {
           </CardHeader>
           <CardContent>
             {myLeaves.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-muted-foreground">
                 <CalendarIcon className="h-10 w-10 mx-auto mb-3 opacity-20" />
                 <p>No leave requests found.</p>
                 <Button variant="link" onClick={() => setShowLeaveModal(true)}>Apply for leave</Button>
@@ -443,13 +443,13 @@ export default function AttendancePage() {
             ) : (
               <div className="space-y-4">
                 {myLeaves.map((request) => (
-                  <div key={request.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                  <div key={request.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
                         <span className="font-medium text-lg">{request.leaveTypeName}</span>
                         {getStatusBadge(request.status)}
                         {request.halfDay && (
-                          <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-100">Half Day</Badge>
+                          <Badge className="bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900/30">Half Day</Badge>
                         )}
                       </div>
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -488,7 +488,7 @@ export default function AttendancePage() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="text-red-500 hover:text-red-700 hover:bg-red-50 mt-2 sm:mt-0"
+                        className="text-red-500 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30 mt-2 sm:mt-0"
                         onClick={() => {
                           if (confirm('Are you sure you want to cancel this request?')) {
                             leaveService.cancelLeaveRequest(request.id).then(() => {
@@ -518,7 +518,7 @@ export default function AttendancePage() {
           </CardHeader>
           <CardContent>
             {myWfhRequests.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
+              <div className="text-center py-8 text-muted-foreground">
                 <HomeIcon className="h-10 w-10 mx-auto mb-3 opacity-20" />
                 <p>No WFH requests found.</p>
                 <Button variant="link" onClick={() => setShowWfhModal(true)}>Apply for WFH</Button>
@@ -526,7 +526,7 @@ export default function AttendancePage() {
             ) : (
               <div className="space-y-4">
                 {myWfhRequests.map((request) => (
-                  <div key={request.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors">
+                  <div key={request.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors">
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
                         <span className="font-medium text-lg">WFH</span>
@@ -568,7 +568,7 @@ export default function AttendancePage() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="text-red-500 hover:text-red-700 hover:bg-red-50 mt-2 sm:mt-0"
+                        className="text-red-500 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30 mt-2 sm:mt-0"
                         onClick={() => {
                           if (confirm('Are you sure you want to cancel this WFH request?')) {
                             leaveService.cancelLeaveRequest(request.id).then(() => {
@@ -598,7 +598,7 @@ export default function AttendancePage() {
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300">
+          <p className="text-sm sm:text-base text-muted-foreground">
             This geolocation-based attendance system tracks your location when clocking in and out.
             Your location data is securely stored and used for attendance verification purposes.
           </p>
@@ -607,28 +607,28 @@ export default function AttendancePage() {
               <div className="w-2 h-2 bg-green-500 rounded-full mt-1.5 flex-shrink-0"></div>
               <div>
                 <p className="font-medium">Location Required</p>
-                <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm">Browser location permission is needed for clock-in/out</p>
+                <p className="text-muted-foreground text-xs sm:text-sm">Browser location permission is needed for clock-in/out</p>
               </div>
             </div>
             <div className="flex items-start gap-2">
               <div className="w-2 h-2 bg-blue-500 rounded-full mt-1.5 flex-shrink-0"></div>
               <div>
                 <p className="font-medium">Privacy Protected</p>
-                <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm">Location data is only stored for attendance records</p>
+                <p className="text-muted-foreground text-xs sm:text-sm">Location data is only stored for attendance records</p>
               </div>
             </div>
             <div className="flex items-start gap-2">
               <div className="w-2 h-2 bg-yellow-500 rounded-full mt-1.5 flex-shrink-0"></div>
               <div>
                 <p className="font-medium">Real-time Tracking</p>
-                <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm">Instant status updates and location verification</p>
+                <p className="text-muted-foreground text-xs sm:text-sm">Instant status updates and location verification</p>
               </div>
             </div>
             <div className="flex items-start gap-2">
               <div className="w-2 h-2 bg-purple-500 rounded-full mt-1.5 flex-shrink-0"></div>
               <div>
                 <p className="font-medium">Mobile Friendly</p>
-                <p className="text-gray-600 dark:text-gray-400 text-xs sm:text-sm">Works on smartphones and tablets for remote workers</p>
+                <p className="text-muted-foreground text-xs sm:text-sm">Works on smartphones and tablets for remote workers</p>
               </div>
             </div>
           </div>
@@ -654,23 +654,23 @@ export default function AttendancePage() {
       {/* Approve with Reason Modal */}
       {showApproveModal && selectedLeaveRequest && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full">
-            <h3 className="text-lg font-bold mb-4 text-gray-900 dark:text-white">Approve Leave Request</h3>
-            <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
-              <p className="text-sm text-gray-600 dark:text-gray-400">
+          <div className="bg-card rounded-lg p-6 max-w-md w-full">
+            <h3 className="text-lg font-bold mb-4 text-foreground">Approve Leave Request</h3>
+            <div className="mb-4 p-3 bg-muted rounded-lg">
+              <p className="text-sm text-muted-foreground">
                 <span className="font-semibold">{selectedLeaveRequest.employeeName}</span> - {selectedLeaveRequest.leaveTypeName}
               </p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              <p className="text-xs text-muted-foreground mt-1">
                 {selectedLeaveRequest.startDate instanceof Date ? selectedLeaveRequest.startDate.toLocaleDateString() : new Date(selectedLeaveRequest.startDate).toLocaleDateString()} to {selectedLeaveRequest.endDate instanceof Date ? selectedLeaveRequest.endDate.toLocaleDateString() : new Date(selectedLeaveRequest.endDate).toLocaleDateString()}
               </p>
             </div>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+            <p className="text-sm text-muted-foreground mb-2">
               Add an optional note for the employee (optional):
             </p>
             <textarea
               value={approvalReason}
               onChange={(e) => setApprovalReason(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
+              className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-green-500"
               rows={3}
               placeholder="e.g., Approved. Enjoy your time off!"
             />

@@ -2,9 +2,9 @@
 
 export default function OfflineContent() {
   return (
-    <div className="min-h-screen bg-gray-1 dark:bg-gray-dark flex items-center justify-center p-4">
+    <div className="min-h-screen bg-card flex items-center justify-center p-4">
       <div className="max-w-md w-full text-center">
-        <div className="bg-white dark:bg-gray-dark rounded-lg shadow-card p-8">
+        <div className="bg-card rounded-lg shadow-hard p-8">
           {/* Offline Icon */}
           <div className="w-16 h-16 mx-auto mb-6 text-gray-4 dark:text-gray-6">
             <svg 
@@ -71,7 +71,7 @@ export default function OfflineContent() {
             
             <button
               onClick={() => window.history.back()}
-              className="w-full bg-gray-2 dark:bg-gray-7 hover:bg-gray-3 dark:hover:bg-gray-6 text-dark dark:text-white font-medium py-3 px-4 rounded-lg transition-colors duration-200"
+              className="w-full bg-card border-2 border-border hover:bg-muted text-foreground font-medium py-3 px-4 rounded-lg transition-colors duration-200"
             >
               Go Back
             </button>

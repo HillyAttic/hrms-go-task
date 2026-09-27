@@ -406,9 +406,9 @@ export function ClientModal({
                     type="checkbox"
                     {...register(field)}
                     disabled={isLoading}
-                    className="rounded border-gray-300 dark:border-gray-600"
+                    className="rounded border-border"
                   />
-                  <span className="text-sm text-gray-700 dark:text-gray-300">{label}</span>
+                  <span className="text-sm text-muted-foreground">{label}</span>
                 </label>
               ))}
             </div>
@@ -420,7 +420,7 @@ export function ClientModal({
             <select
               id="status"
               {...register('status')}
-              className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
+              className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isLoading}
             >
               <option value="active">Active</option>

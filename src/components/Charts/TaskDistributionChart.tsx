@@ -75,39 +75,39 @@ export function TaskDistributionChart({
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="text-center">
                 <div className="text-2xl font-bold">{total}</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">Total</div>
+                <div className="text-xs text-muted-foreground">Total</div>
               </div>
             </div>
           </div>
 
           {/* Legend */}
           <div className="w-full space-y-2">
-            <div className="flex items-center justify-between p-2 bg-green-50 rounded">
+            <div className="flex items-center justify-between p-2 bg-muted rounded">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                <span className="text-sm font-medium text-gray-700">Completed</span>
+                <span className="text-sm font-medium text-muted-foreground">Completed</span>
               </div>
-              <span className="text-sm font-bold text-gray-900 dark:text-white">
+              <span className="text-sm font-bold text-foreground">
                 {completed} ({Math.round(completedPercent)}%)
               </span>
             </div>
             
-            <div className="flex items-center justify-between p-2 bg-orange-50 rounded">
+            <div className="flex items-center justify-between p-2 bg-muted rounded">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-orange-500"></div>
-                <span className="text-sm font-medium text-gray-700">In Progress</span>
+                <span className="text-sm font-medium text-muted-foreground">In Progress</span>
               </div>
-              <span className="text-sm font-bold text-gray-900 dark:text-white">
+              <span className="text-sm font-bold text-foreground">
                 {inProgress} ({Math.round(inProgressPercent)}%)
               </span>
             </div>
             
-            <div className="flex items-center justify-between p-2 bg-red-50 rounded">
+            <div className="flex items-center justify-between p-2 bg-muted rounded">
               <div className="flex items-center gap-2">
                 <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                <span className="text-sm font-medium text-gray-700">To Do</span>
+                <span className="text-sm font-medium text-muted-foreground">To Do</span>
               </div>
-              <span className="text-sm font-bold text-gray-900 dark:text-white">
+              <span className="text-sm font-bold text-foreground">
                 {todo} ({Math.round(todoPercent)}%)
               </span>
             </div>

@@ -78,7 +78,7 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
               type="checkbox"
               checked={selected}
               onChange={(e) => onSelect(employee.id!, e.target.checked)}
-              className="w-5 h-5 rounded border-gray-300 dark:border-gray-600 text-blue-600 focus:ring-ring cursor-pointer"
+              className="w-5 h-5 rounded border-border text-blue-600 focus:ring-ring cursor-pointer"
               aria-label={`Select ${employee.name}`}
             />
           </div>
@@ -88,7 +88,7 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
           {/* Name and Role */}
           <div className="flex items-start gap-4 flex-1">
             {/* Avatar with photo or initials */}
-            <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
+            <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0 overflow-hidden">
               {employee.photoURL ? (
                 <img
                   src={employee.photoURL}
@@ -104,14 +104,14 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
 
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white truncate">
+                <h3 className="text-lg font-semibold text-foreground truncate">
                   {employee.name}
                 </h3>
                 <Badge variant={getStatusBadgeVariant(employee.status)}>
                   {formatStatus(employee.status)}
                 </Badge>
               </div>
-              <p className="text-sm text-gray-600 dark:text-gray-400">{employee.role}</p>
+              <p className="text-sm text-muted-foreground">{employee.role}</p>
             </div>
           </div>
 
@@ -121,7 +121,7 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
               size="sm"
               variant="ghost"
               onClick={() => onEdit(employee)}
-              className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+              className="text-blue-600 hover:text-blue-700 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/30"
               aria-label={`Edit ${employee.name}`}
             >
               <PencilSquareIcon className="w-4 h-4" />
@@ -132,7 +132,7 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
                 size="sm"
                 variant="ghost"
                 onClick={() => onDeactivate(employee.id!)}
-                className="text-orange-600 hover:text-orange-700 hover:bg-orange-50"
+                className="text-orange-600 hover:text-orange-700 dark:hover:text-orange-300 hover:bg-orange-50 dark:hover:bg-orange-900/30"
                 aria-label={`Deactivate ${employee.name}`}
               >
                 <UserMinusIcon className="w-4 h-4" />
@@ -143,7 +143,7 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
               size="sm"
               variant="ghost"
               onClick={() => onDelete(employee.id!)}
-              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+              className="text-red-600 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30"
               aria-label={`Delete ${employee.name}`}
             >
               <TrashIcon className="w-4 h-4" />
@@ -154,13 +154,13 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
         {/* Contact & Employment Information */}
         <div className="space-y-2">
           {/* Employee ID */}
-          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <span className="font-medium">ID:</span>
             <span>{employee.employeeId}</span>
           </div>
 
           {/* Email */}
-          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <EnvelopeIcon className="w-4 h-4 flex-shrink-0" />
             <a
               href={`mailto:${employee.email}`}
@@ -171,7 +171,7 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
           </div>
 
           {/* Phone */}
-          <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <PhoneIcon className="w-4 h-4 flex-shrink-0" />
             <a
               href={`tel:${employee.phone}`}
@@ -183,7 +183,7 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
 
           {/* Department */}
           {employee.department && (
-            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <BuildingOfficeIcon className="w-4 h-4 flex-shrink-0" />
               <span>{employee.department}</span>
             </div>
@@ -191,7 +191,7 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
 
           {/* DOJ */}
           {employee.dateOfJoining && (
-            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <CalendarDaysIcon className="w-4 h-4 flex-shrink-0" />
               <span>Joined: {new Date(employee.dateOfJoining).toLocaleDateString('en-IN')}</span>
             </div>
@@ -199,7 +199,7 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
 
           {/* Salary */}
           {employee.salary && (
-            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <CurrencyRupeeIcon className="w-4 h-4 flex-shrink-0" />
               <span>{formatCurrency(employee.salary)}</span>
             </div>
@@ -207,7 +207,7 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
 
           {/* Manager */}
           {employee.managerName && (
-            <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-500">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground dark:text-muted-foreground">
               <span className="text-xs">Reports to: {employee.managerName}</span>
             </div>
           )}

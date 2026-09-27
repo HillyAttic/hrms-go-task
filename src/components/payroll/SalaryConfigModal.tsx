@@ -49,8 +49,8 @@ interface SalaryConfigModalProps {
 }
 
 const inputClass =
-  'w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-ring';
-const labelClass = 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1';
+  'w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring';
+const labelClass = 'block text-sm font-medium text-muted-foreground mb-1';
 const errorClass = 'mt-1 text-xs text-red-500';
 
 export function SalaryConfigModal({
@@ -84,7 +84,7 @@ export function SalaryConfigModal({
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent className="sm:max-w-[500px] max-h-[80vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-gray-900 dark:text-white">
+          <DialogTitle className="text-foreground">
             Configure Salary - {employee?.name ?? ''}
           </DialogTitle>
         </DialogHeader>
@@ -110,7 +110,7 @@ export function SalaryConfigModal({
             {errors.pan ? (
               <p className={errorClass}>{errors.pan.message}</p>
             ) : (
-              <p className="mt-1 text-xs text-gray-500 dark:text-gray-400">
+              <p className="mt-1 text-xs text-muted-foreground">
                 Format: 5 letters, 4 digits, 1 letter
               </p>
             )}

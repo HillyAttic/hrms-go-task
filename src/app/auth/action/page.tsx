@@ -74,7 +74,7 @@ function AuthActionContent() {
 
   if (isVerifying) {
     return (
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-border dark:bg-card">
+      <div className="rounded-sm border border-stroke bg-card shadow-hard dark:border-border">
         <div className="flex flex-wrap items-center">
           <div className="hidden xl:block xl:w-1/2">
             <div className="px-26 py-17.5 text-center">
@@ -110,7 +110,7 @@ function AuthActionContent() {
 
   if (error) {
     return (
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-border dark:bg-card">
+      <div className="rounded-sm border border-stroke bg-card shadow-hard dark:border-border">
         <div className="flex flex-wrap items-center">
           <div className="hidden xl:block xl:w-1/2">
             <div className="px-26 py-17.5 text-center">
@@ -158,7 +158,7 @@ function AuthActionContent() {
   }
 
   return (
-    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-border dark:bg-card">
+    <div className="rounded-sm border border-stroke bg-card shadow-hard dark:border-border">
       <div className="flex flex-wrap items-center">
         <div className="hidden xl:block xl:w-1/2">
           <div className="px-26 py-17.5 text-center">
@@ -243,7 +243,7 @@ function AuthActionContent() {
 export default function AuthActionPage() {
   return (
     <Suspense fallback={
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-border dark:bg-card">
+      <div className="rounded-sm border border-stroke bg-card shadow-hard dark:border-border">
         <div className="flex items-center justify-center p-12">
           <p className="text-black dark:text-white">Loading...</p>
         </div>

@@ -262,7 +262,7 @@ export function ClientBulkImportModal({
 
           {/* File Upload */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label className="block text-sm font-medium text-muted-foreground mb-2">
               Select CSV File
             </label>
             <div className="flex items-center gap-3">
@@ -272,11 +272,11 @@ export function ClientBulkImportModal({
                 accept=".csv"
                 onChange={handleFileSelect}
                 disabled={isUploading}
-                className="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-foreground file:text-background hover:file:bg-foreground/90 disabled:opacity-50"
+                className="block w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-foreground file:text-background hover:file:bg-foreground/90 disabled:opacity-50"
               />
             </div>
             {file && (
-              <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+              <p className="text-sm text-muted-foreground mt-2">
                 Selected: {file.name} ({(file.size / 1024).toFixed(2)} KB)
               </p>
             )}
@@ -302,30 +302,30 @@ export function ClientBulkImportModal({
           {/* Preview */}
           {previewData.length > 0 && errors.length === 0 && (
             <div>
-              <h4 className="font-medium text-gray-900 dark:text-white mb-2">
+              <h4 className="font-medium text-foreground mb-2">
                 Preview (First 5 rows)
               </h4>
-              <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
-                  <thead className="bg-gray-50 dark:bg-gray-800">
+              <div className="border border-border rounded-lg overflow-x-auto">
+                <table className="min-w-full divide-y divide-border text-sm">
+                  <thead className="bg-muted">
                     <tr>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400">Client Name</th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400">Business</th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400">Email</th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400">GSTIN</th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400">ROC</th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400">GSTR1</th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400">GST3B</th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400">IFF</th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400">ITR</th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400">ITR Audit</th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400">Tax Audit</th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400">Accounting</th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400">Client Visit</th>
-                      <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400">Bank</th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Client Name</th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Business</th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Email</th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">GSTIN</th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">ROC</th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">GSTR1</th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">GST3B</th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">IFF</th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">ITR</th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">ITR Audit</th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Tax Audit</th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Accounting</th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Client Visit</th>
+                      <th className="px-3 py-2 text-left text-xs font-medium text-muted-foreground">Bank</th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
+                  <tbody className="bg-card divide-y divide-border">
                     {previewData.map((row, index) => (
                       <tr key={index}>
                         <td className="px-3 py-2 whitespace-nowrap">{row['Client Name']}</td>
@@ -353,11 +353,11 @@ export function ClientBulkImportModal({
           {/* Upload Progress */}
           {isUploading && (
             <div>
-              <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
+              <div className="flex justify-between text-sm text-muted-foreground mb-2">
                 <span>Importing clients...</span>
                 <span>{uploadProgress}%</span>
               </div>
-              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+              <div className="w-full bg-muted rounded-full h-2">
                 <div
                   className="bg-foreground h-2 rounded-full transition-all duration-300"
                   style={{ width: `${uploadProgress}%` }}

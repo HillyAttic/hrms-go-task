@@ -20,9 +20,9 @@ export function KanbanBoard({ tasks, onTaskUpdate, onTaskDelete, onTaskEdit }: K
   const [draggedTask, setDraggedTask] = useState<Task | null>(null);
 
   const columns = [
-    { id: TaskStatus.TODO, title: 'To Do', color: 'bg-yellow-100' },
-    { id: TaskStatus.IN_PROGRESS, title: 'In Progress', color: 'bg-orange-100' },
-    { id: TaskStatus.COMPLETED, title: 'Completed', color: 'bg-green-100' }
+    { id: TaskStatus.TODO, title: 'To Do', color: 'bg-yellow-100 dark:bg-yellow-900/30' },
+    { id: TaskStatus.IN_PROGRESS, title: 'In Progress', color: 'bg-orange-100 dark:bg-orange-900/30' },
+    { id: TaskStatus.COMPLETED, title: 'Completed', color: 'bg-green-100 dark:bg-green-900/30' }
   ];
 
   const handleDragStart = (e: React.DragEvent, task: Task) => {
@@ -46,26 +46,26 @@ export function KanbanBoard({ tasks, onTaskUpdate, onTaskDelete, onTaskEdit }: K
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
-        return 'bg-green-100 text-green-800';
+        return 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300';
       case 'in-progress':
-        return 'bg-orange-100 text-orange-800';
+        return 'bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300';
       case 'todo':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-muted text-foreground';
     }
   };
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'high':
-        return 'bg-red-100 text-red-800';
+        return 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300';
       case 'medium':
-        return 'bg-yellow-100 text-yellow-800';
+        return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300';
       case 'low':
-        return 'bg-green-100 text-green-800';
+        return 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300';
       default:
-        return 'bg-gray-100 text-gray-800';
+        return 'bg-muted text-foreground';
     }
   };
 
@@ -83,7 +83,7 @@ export function KanbanBoard({ tasks, onTaskUpdate, onTaskDelete, onTaskEdit }: K
           >
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-bold text-lg">{column.title}</h3>
-              <span className="bg-white dark:bg-gray-dark bg-opacity-50 rounded-full px-3 py-1 text-sm">
+              <span className="bg-card bg-opacity-50 rounded-full px-3 py-1 text-sm">
                 {columnTasks.length}
               </span>
             </div>
@@ -94,21 +94,21 @@ export function KanbanBoard({ tasks, onTaskUpdate, onTaskDelete, onTaskEdit }: K
                   key={task.id}
                   draggable
                   onDragStart={(e) => handleDragStart(e, task)}
-                  className="cursor-move hover:shadow-md transition-shadow"
+                  className="cursor-move hover:shadow-hard transition-shadow"
                 >
                   <CardContent className="p-4">
                     <div className="flex justify-between items-start mb-2">
-                      <h4 className="font-medium text-gray-900 dark:text-white">{task.title}</h4>
+                      <h4 className="font-medium text-foreground">{task.title}</h4>
                       <div className="flex space-x-1">
                         <button 
                           onClick={() => onTaskEdit?.(task)}
-                          className="text-gray-400 hover:text-gray-600 dark:text-gray-400"
+                          className="text-muted-foreground hover:text-muted-foreground"
                         >
                           <PencilSquareIcon className="w-4 h-4" />
                         </button>
                         <button 
                           onClick={() => onTaskDelete?.(task.id)}
-                          className="text-gray-400 hover:text-red-600"
+                          className="text-muted-foreground hover:text-red-600"
                         >
                           <TrashIcon className="w-4 h-4" />
                         </button>
@@ -116,7 +116,7 @@ export function KanbanBoard({ tasks, onTaskUpdate, onTaskDelete, onTaskEdit }: K
                     </div>
                     
                     {task.description && (
-                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 line-clamp-2">
+                      <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
                         {task.description}
                       </p>
                     )}
@@ -132,7 +132,7 @@ export function KanbanBoard({ tasks, onTaskUpdate, onTaskDelete, onTaskEdit }: K
                       </div>
                       
                       {task.dueDate && (
-                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                        <span className="text-xs text-muted-foreground">
                           {(task.dueDate instanceof Date ? task.dueDate : new Date(task.dueDate)).toLocaleDateString()}
                         </span>
                       )}
@@ -143,14 +143,14 @@ export function KanbanBoard({ tasks, onTaskUpdate, onTaskDelete, onTaskEdit }: K
                         {task.assignedTo.slice(0, 3).map((user, idx) => (
                           <div 
                             key={idx}
-                            className="w-6 h-6 rounded-full bg-gray-300 flex items-center justify-center text-xs font-medium text-gray-700 dark:text-gray-300 border-2 border-white"
+                            className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-muted-foreground border-2 border-white"
                             title={user}
                           >
                             {user.charAt(0).toUpperCase()}
                           </div>
                         ))}
                         {task.assignedTo.length > 3 && (
-                          <div className="w-6 h-6 rounded-full bg-gray-200 flex items-center justify-center text-xs font-medium text-gray-600 dark:text-gray-400 border-2 border-white">
+                          <div className="w-6 h-6 rounded-full bg-muted flex items-center justify-center text-xs font-medium text-muted-foreground border-2 border-white">
                             +{task.assignedTo.length - 3}
                           </div>
                         )}
@@ -161,8 +161,8 @@ export function KanbanBoard({ tasks, onTaskUpdate, onTaskDelete, onTaskEdit }: K
               ))}
               
               {columnTasks.length === 0 && (
-                <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-                  <ArrowPathIcon className="w-8 h-8 mx-auto text-gray-300" />
+                <div className="text-center py-8 text-muted-foreground">
+                  <ArrowPathIcon className="w-8 h-8 mx-auto text-muted-foreground" />
                   <p className="mt-2">No tasks here</p>
                 </div>
               )}

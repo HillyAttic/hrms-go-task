@@ -41,9 +41,9 @@ export function NotificationSettings() {
     <div className="space-y-4">
       <NotificationSetupGuide />
       
-      <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-dark border border-stroke dark:border-stroke-dark rounded-lg">
+      <div className="flex items-center justify-between p-4 bg-card border border-stroke dark:border-stroke-dark rounded-lg">
         <div className="flex items-center space-x-3">
-          <div className={`w-3 h-3 rounded-full ${isEnabled ? 'bg-green-500' : 'bg-gray-400'}`} />
+          <div className={`w-3 h-3 rounded-full ${isEnabled ? 'bg-green-500' : 'bg-muted'}`} />
           <div>
             <h3 className="text-sm font-medium text-dark dark:text-white">
               Push Notifications
@@ -89,7 +89,7 @@ export function NotificationSettings() {
       )}
 
       {permission === 'denied' && (
-        <div className="p-4 bg-gray-50 dark:bg-gray-800 border border-stroke dark:border-stroke-dark rounded-lg">
+        <div className="p-4 bg-muted border border-stroke dark:border-stroke-dark rounded-lg">
           <h4 className="text-sm font-medium text-dark dark:text-white mb-2">
             How to enable notifications:
           </h4>
@@ -102,7 +102,7 @@ export function NotificationSettings() {
         </div>
       )}
 
-      <div className="p-4 bg-gray-50 dark:bg-gray-800 border border-stroke dark:border-stroke-dark rounded-lg">
+      <div className="p-4 bg-muted border border-stroke dark:border-stroke-dark rounded-lg">
         <h4 className="text-sm font-medium text-dark dark:text-white mb-2">
           What you'll receive:
         </h4>

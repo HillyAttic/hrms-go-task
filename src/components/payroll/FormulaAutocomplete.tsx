@@ -101,7 +101,7 @@ export function FormulaAutocomplete({
     <div
       role="listbox"
       className={cn(
-        'absolute left-0 top-full z-30 mt-1 max-h-56 w-full overflow-y-auto rounded-lg border border-gray-200 bg-white py-1 shadow-lg dark:border-gray-600 dark:bg-gray-800',
+        'absolute left-0 top-full z-30 mt-1 max-h-56 w-full overflow-y-auto rounded-lg border border-border bg-card py-1 shadow-lg',
         className
       )}
     >
@@ -120,11 +120,11 @@ export function FormulaAutocomplete({
             'flex w-full items-center justify-between gap-3 px-3 py-1.5 text-left font-mono text-xs',
             index === activeIndex
               ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
-              : 'text-gray-700 dark:text-gray-300'
+              : 'text-muted-foreground'
           )}
         >
           <span>{suggestion.label}</span>
-          <span className="font-sans text-[10px] text-gray-400 dark:text-gray-500">
+          <span className="font-sans text-[10px] text-muted-foreground">
             {suggestion.detail}
           </span>
         </button>

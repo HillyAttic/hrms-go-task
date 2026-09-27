@@ -22,17 +22,17 @@ export function AttendanceCalendar({
   const getDayColor = (status: string) => {
     switch (status) {
       case 'present':
-        return 'bg-green-100 text-green-800 hover:bg-green-200';
+        return 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 hover:bg-green-200';
       case 'absent':
-        return 'bg-red-100 text-red-800 hover:bg-red-200';
+        return 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 hover:bg-red-200';
       case 'leave':
-        return 'bg-blue-100 text-blue-800 hover:bg-blue-200';
+        return 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 hover:bg-blue-200';
       case 'holiday':
-        return 'bg-purple-100 text-purple-800 hover:bg-purple-200';
+        return 'bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 hover:bg-purple-200';
       case 'weekend':
-        return 'bg-gray-100 text-gray-600 hover:bg-gray-200';
+        return 'bg-muted text-muted-foreground hover:bg-muted';
       default:
-        return 'hover:bg-gray-100';
+        return 'hover:bg-muted';
     }
   };
 

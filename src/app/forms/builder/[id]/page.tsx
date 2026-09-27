@@ -374,7 +374,7 @@ export default function FormBuilderEditorPage({ params }: { params: Promise<{ id
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </motion.div>
-          <p className="text-lg font-medium text-gray-700">
+          <p className="text-lg font-medium text-gray-700 dark:text-gray-300">
             Loading form...
           </p>
         </motion.div>
@@ -488,7 +488,7 @@ export default function FormBuilderEditorPage({ params }: { params: Promise<{ id
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-20"
+          className="bg-white border-b border-gray-200 dark:border-gray-700 shadow-sm sticky top-0 z-20"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
             {/* Title and Description */}
@@ -515,7 +515,7 @@ export default function FormBuilderEditorPage({ params }: { params: Promise<{ id
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setShowPreview(true)}
-                className="flex-1 sm:flex-none px-4 py-2 text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 font-medium text-sm rounded-lg transition-all flex items-center justify-center space-x-2"
+                className="flex-1 sm:flex-none px-4 py-2 text-gray-700 dark:text-gray-300 bg-white border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900/30 font-medium text-sm rounded-lg transition-all flex items-center justify-center space-x-2"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -539,7 +539,7 @@ export default function FormBuilderEditorPage({ params }: { params: Promise<{ id
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={toggleBuilderStyle}
-                className="flex-1 sm:flex-none px-4 py-2 text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 font-medium text-sm rounded-lg transition-all"
+                className="flex-1 sm:flex-none px-4 py-2 text-gray-700 dark:text-gray-300 bg-white border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900/30 font-medium text-sm rounded-lg transition-all"
                 title="Switch to Google Forms style"
               >
                 <span>{useGoogleStyle ? 'Classic' : 'Google Style'}</span>
@@ -548,7 +548,7 @@ export default function FormBuilderEditorPage({ params }: { params: Promise<{ id
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => router.push('/forms/builder')}
-                className="px-3 py-2 text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 font-medium text-sm rounded-lg transition-all"
+                className="px-3 py-2 text-gray-700 dark:text-gray-300 bg-white border border-gray-300 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900/30 font-medium text-sm rounded-lg transition-all"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -563,7 +563,7 @@ export default function FormBuilderEditorPage({ params }: { params: Promise<{ id
                 className={`flex-1 sm:flex-none px-4 py-2 text-sm font-medium rounded-lg transition-all flex items-center justify-center space-x-2 ${
                   activeTab === 'fields'
                     ? 'bg-indigo-500 text-white shadow-md'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                    : 'bg-white text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-900/30 border border-gray-200 dark:border-gray-700'
                 }`}
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -576,7 +576,7 @@ export default function FormBuilderEditorPage({ params }: { params: Promise<{ id
                 className={`flex-1 sm:flex-none px-4 py-2 text-sm font-medium rounded-lg transition-all flex items-center justify-center space-x-2 ${
                   activeTab === 'settings'
                     ? 'bg-indigo-500 text-white shadow-md'
-                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                    : 'bg-white text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-900/30 border border-gray-200 dark:border-gray-700'
                 }`}
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -662,7 +662,7 @@ export default function FormBuilderEditorPage({ params }: { params: Promise<{ id
       {/* Drag Overlay */}
       <DragOverlay>
         {activeId ? (
-          <div className="bg-white border border-gray-300 shadow-lg rounded-lg p-4 opacity-90">
+          <div className="bg-white border border-gray-300 dark:border-gray-700 shadow-lg rounded-lg p-4 opacity-90">
             <div className="font-medium text-gray-900">Dragging...</div>
           </div>
         ) : null}

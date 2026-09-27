@@ -22,15 +22,15 @@ interface StatItemProps {
 
 function StatItem({ icon, label, value, color, bgColor }: StatItemProps) {
   return (
-    <div className="flex items-center gap-4 p-4 rounded-lg bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:bg-gray-700 transition-colors">
+    <div className="flex items-center gap-4 p-4 rounded-lg bg-muted hover:bg-muted transition-colors">
       <div className={`flex items-center justify-center w-12 h-12 rounded-full ${bgColor}`}>
         <div className={color}>
           {icon}
         </div>
       </div>
       <div>
-        <p className="text-2xl font-bold text-gray-900 dark:text-white">{value}</p>
-        <p className="text-sm text-gray-600 dark:text-gray-400">{label}</p>
+        <p className="text-2xl font-bold text-foreground">{value}</p>
+        <p className="text-sm text-muted-foreground">{label}</p>
       </div>
     </div>
   );
@@ -61,8 +61,8 @@ export function TaskStatsCard({ tasks }: TaskStatsCardProps) {
     <Card>
       <CardContent className="p-6">
         <div className="mb-6">
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Task Overview</h2>
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">Summary of all task statuses</p>
+          <h2 className="text-xl font-semibold text-foreground">Task Overview</h2>
+          <p className="text-sm text-muted-foreground mt-1">Summary of all task statuses</p>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -81,7 +81,7 @@ export function TaskStatsCard({ tasks }: TaskStatsCardProps) {
             label="Pending"
             value={pendingTasks}
             color="text-yellow-600"
-            bgColor="bg-yellow-100"
+            bgColor="bg-yellow-100 dark:bg-yellow-900/30"
           />
 
           {/* Completed Tasks */}
@@ -90,7 +90,7 @@ export function TaskStatsCard({ tasks }: TaskStatsCardProps) {
             label="Completed"
             value={completedTasks}
             color="text-green-600"
-            bgColor="bg-green-100"
+            bgColor="bg-green-100 dark:bg-green-900/30"
           />
 
           {/* Overdue Tasks */}
@@ -99,20 +99,20 @@ export function TaskStatsCard({ tasks }: TaskStatsCardProps) {
             label="Overdue"
             value={overdueTasks}
             color="text-red-600"
-            bgColor="bg-red-100"
+            bgColor="bg-red-100 dark:bg-red-900/30"
           />
         </div>
 
         {/* Progress Bar */}
         {totalTasks > 0 && (
-          <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+          <div className="mt-6 pt-6 border-t border-border">
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Completion Rate</span>
-              <span className="text-sm font-semibold text-gray-900 dark:text-white">
+              <span className="text-sm font-medium text-muted-foreground">Completion Rate</span>
+              <span className="text-sm font-semibold text-foreground">
                 {Math.round((completedTasks / totalTasks) * 100)}%
               </span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2.5">
+            <div className="w-full bg-muted rounded-full h-2.5">
               <div
                 className="bg-green-600 h-2.5 rounded-full transition-all duration-300"
                 style={{ width: `${(completedTasks / totalTasks) * 100}%` }}

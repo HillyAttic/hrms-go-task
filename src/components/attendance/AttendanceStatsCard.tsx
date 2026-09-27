@@ -16,8 +16,8 @@ export function AttendanceStatsCard({ stats, loading, error }: AttendanceStatsCa
     return (
       <Card className="p-6">
         <div className="animate-pulse space-y-4">
-          <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-          <div className="h-8 bg-gray-200 rounded"></div>
+          <div className="h-4 bg-muted rounded w-1/2"></div>
+          <div className="h-8 bg-muted rounded"></div>
         </div>
       </Card>
     );
@@ -25,12 +25,12 @@ export function AttendanceStatsCard({ stats, loading, error }: AttendanceStatsCa
 
   if (error && !stats) {
     return (
-      <Card className="p-6 border-red-200 bg-red-50">
+      <Card className="p-6 border-red-200 dark:border-red-700 bg-red-50 dark:bg-red-900/30">
         <div className="flex items-center gap-2">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
           </svg>
-          <span className="text-sm font-medium text-red-800">{error}</span>
+          <span className="text-sm font-medium text-red-800 dark:text-red-300">{error}</span>
         </div>
       </Card>
     );
@@ -38,12 +38,12 @@ export function AttendanceStatsCard({ stats, loading, error }: AttendanceStatsCa
 
   if (!stats) {
     return (
-      <Card className="p-6 border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+      <Card className="p-6 border-border bg-muted">
         <div className="flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500 dark:text-gray-400" viewBox="0 0 20 20" fill="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-muted-foreground" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
           </svg>
-          <span className="text-sm font-medium text-gray-600 dark:text-gray-400">No attendance data available</span>
+          <span className="text-sm font-medium text-muted-foreground">No attendance data available</span>
         </div>
       </Card>
     );

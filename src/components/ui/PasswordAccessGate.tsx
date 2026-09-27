@@ -139,10 +139,10 @@ export function PasswordAccessGate({ config, children }: PasswordAccessGateProps
 
   if (verifying && !unlocked) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900">
+      <div className="flex min-h-screen items-center justify-center bg-muted">
         <div className="text-center">
           <Loader2 className="mx-auto mb-4 h-8 w-8 animate-spin text-violet-600" />
-          <p className="text-sm text-gray-500 dark:text-gray-400">
+          <p className="text-sm text-muted-foreground">
             Verifying saved credentials...
           </p>
         </div>
@@ -152,8 +152,8 @@ export function PasswordAccessGate({ config, children }: PasswordAccessGateProps
 
   if (!unlocked) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 dark:bg-gray-900">
-        <div className="w-full max-w-md overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-xl dark:border-gray-700 dark:bg-gray-800">
+      <div className="flex min-h-screen items-center justify-center bg-muted px-4">
+        <div className="w-full max-w-md overflow-hidden rounded-2xl border border-border bg-card shadow-xl">
           <div className={`relative bg-gradient-to-br ${gradient} px-6 py-8 text-center`}>
             <div className="absolute -left-6 -top-6 h-24 w-24 rounded-full bg-white/5 blur-xl" />
             <div className="absolute -bottom-8 right-0 h-32 w-32 rounded-full bg-pink-400/10 blur-2xl" />
@@ -177,20 +177,20 @@ export function PasswordAccessGate({ config, children }: PasswordAccessGateProps
             </div>
 
             <div className="relative">
-              <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+              <Lock className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <input
                 type={showPassword ? 'text' : 'password'}
                 value={password}
                 onChange={(event) => setPassword(event.target.value)}
                 placeholder="Enter password"
                 autoFocus
-                className="w-full rounded-lg border border-gray-300 bg-white py-2.5 pl-10 pr-10 text-sm dark:border-gray-600 dark:bg-gray-700 dark:text-white"
+                className="w-full rounded-lg border border-border bg-card py-2.5 pl-10 pr-10 text-sm"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword((prev) => !prev)}
                 aria-label={showPassword ? 'Hide password' : 'Show password'}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-muted-foreground dark:hover:text-gray-200"
               >
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
@@ -213,7 +213,7 @@ export function PasswordAccessGate({ config, children }: PasswordAccessGateProps
                 className={`flex h-5 w-5 items-center justify-center rounded border-2 ${
                   rememberMe
                     ? 'border-violet-600 bg-violet-600'
-                    : 'border-gray-300 dark:border-gray-600'
+                    : 'border-border'
                 }`}
               >
                 {rememberMe && (
@@ -228,7 +228,7 @@ export function PasswordAccessGate({ config, children }: PasswordAccessGateProps
                   </svg>
                 )}
               </span>
-              <span className="text-sm text-gray-600 dark:text-gray-300">Remember me</span>
+              <span className="text-sm text-muted-foreground">Remember me</span>
             </div>
 
             <button

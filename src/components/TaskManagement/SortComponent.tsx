@@ -52,7 +52,7 @@ export const SortComponent: React.FC<SortComponentProps> = ({ onSortChange }) =>
             className={`px-4 py-2 rounded-lg ${
               sortOrder === 'asc'
                 ? 'bg-accent text-accent-foreground'
-                : 'bg-gray-200 dark:bg-muted text-black dark:text-white'
+                : 'bg-muted text-black'
             }`}
           >
             {sortOrder === 'asc' ? 'Ascending' : 'Descending'}

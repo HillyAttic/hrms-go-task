@@ -51,9 +51,9 @@ export function UserInfo() {
   if (auth.loading) {
     return (
       <div className="flex items-center gap-3">
-        <div className="size-12 rounded-full bg-gray-200 animate-pulse"></div>
+        <div className="size-12 rounded-full bg-muted animate-pulse"></div>
         <div className="max-[1024px]:sr-only">
-          <div className="h-4 w-20 bg-gray-200 rounded animate-pulse"></div>
+          <div className="h-4 w-20 bg-muted rounded animate-pulse"></div>
         </div>
       </div>
     );
@@ -108,7 +108,7 @@ export function UserInfo() {
       </DropdownTrigger>
 
       <DropdownContent
-        className="border border-stroke bg-white shadow-md dark:border-dark-3 dark:bg-gray-dark min-[230px]:min-w-[17.5rem]"
+        className="border border-stroke bg-card shadow-md dark:border-dark-3 min-[230px]:min-w-[17.5rem]"
         align="end"
       >
         <h2 className="sr-only">User information</h2>

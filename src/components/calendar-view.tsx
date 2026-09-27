@@ -268,7 +268,7 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
         className="mt-auto pt-1"
         title={`${orange} employees with 8+ hour tasks, ${yellow} with <8 hour tasks, ${green} with no tasks`}
       >
-        <div className="flex h-2 rounded-full overflow-hidden bg-gray-200">
+        <div className="flex h-2 rounded-full overflow-hidden bg-muted">
           {orange > 0 && (
             <div
               className="bg-orange-500 hover:bg-orange-600 transition-colors"
@@ -293,17 +293,17 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-dark rounded-lg shadow">
+    <div className="bg-card rounded-lg shadow">
       <div className="p-6">
         {/* Calendar Header */}
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h2 className="text-2xl font-bold text-foreground">
             {currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
           </h2>
           <div className="flex items-center space-x-2">
             <button
               onClick={() => navigateMonth('prev')}
-              className="p-2 rounded-full hover:bg-gray-100 dark:bg-gray-700"
+              className="p-2 rounded-full hover:bg-muted"
             >
               <ChevronLeftIcon className="w-5 h-5" />
             </button>
@@ -315,7 +315,7 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
             </button>
             <button
               onClick={() => navigateMonth('next')}
-              className="p-2 rounded-full hover:bg-gray-100 dark:bg-gray-700"
+              className="p-2 rounded-full hover:bg-muted"
             >
               <ChevronRightIcon className="w-5 h-5" />
             </button>
@@ -323,7 +323,7 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
         </div>
 
         {/* Legend - Responsive */}
-        <div className="mb-4 flex flex-col md:flex-row md:items-center gap-2 md:gap-4 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">
+        <div className="mb-4 flex flex-col md:flex-row md:items-center gap-2 md:gap-4 text-[10px] sm:text-xs text-muted-foreground">
           <div className="flex items-center gap-1">
             <ArrowPathIcon className="w-3 h-3 sm:w-4 sm:h-4" />
             <span>Recurring Task</span>
@@ -336,7 +336,7 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
           </div>
           {canViewRosterStats && (
             <>
-              <div className="hidden md:block border-l border-gray-300 dark:border-gray-600 h-4 mx-2"></div>
+              <div className="hidden md:block border-l border-border h-4 mx-2"></div>
               <div className="flex flex-wrap items-center gap-1 sm:gap-2">
                 <span className="font-semibold">Employee Status:</span>
                 <div className="flex items-center gap-1">
@@ -359,7 +359,7 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
         {/* Weekday Headers - Desktop only */}
         <div className="hidden md:grid grid-cols-7 gap-1 mb-2">
           {weekdays.map(day => (
-            <div key={day} className="p-2 text-center text-sm font-medium text-gray-500 dark:text-gray-400">
+            <div key={day} className="p-2 text-center text-sm font-medium text-muted-foreground">
               {day}
             </div>
           ))}
@@ -387,15 +387,15 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
               <div
                 key={index}
                 className={`min-h-24 p-3 md:p-1 border rounded flex flex-col ${
-                  day ? 'border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer' : 'border-transparent'
-                } ${isToday ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-300' : ''} ${
+                  day ? 'border-border hover:bg-muted/50 cursor-pointer' : 'border-transparent'
+                } ${isToday ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-300 dark:border-blue-700' : ''} ${
                   isSelected ? 'bg-blue-100 dark:bg-blue-900/30 border-blue-400' : ''
                 }`}
                 onClick={() => day && setSelectedDate(day)}
               >
                 {/* Mobile: Show full date with day name */}
                 <div className="md:hidden flex items-center justify-between mb-2">
-                  <div className={`text-base font-semibold ${isToday ? 'text-blue-700 dark:text-blue-400' : 'text-gray-900 dark:text-white'}`}>
+                  <div className={`text-base font-semibold ${isToday ? 'text-blue-700 dark:text-blue-400' : 'text-foreground'}`}>
                     {day.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                   </div>
                   {isToday && (
@@ -404,7 +404,7 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
                 </div>
 
                 {/* Desktop: Show just day number */}
-                <div className={`hidden md:block text-sm font-medium ${isToday ? 'text-blue-700 dark:text-blue-400' : 'text-gray-900 dark:text-white'}`}>
+                <div className={`hidden md:block text-sm font-medium ${isToday ? 'text-blue-700 dark:text-blue-400' : 'text-foreground'}`}>
                   {day.getDate()}
                 </div>
 
@@ -445,7 +445,7 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
                     );
                   })}
                   {dayTasks.length > 3 && (
-                    <div className="text-xs text-gray-500 dark:text-gray-400 px-2 md:px-0">
+                    <div className="text-xs text-muted-foreground px-2 md:px-0">
                       +{dayTasks.length - 3} more
                     </div>
                   )}
@@ -458,8 +458,8 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
 
         {/* Selected Date Details */}
         {selectedDate && (
-          <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
-            <h3 className="font-medium text-gray-900 dark:text-white mb-2">
+          <div className="mt-6 p-4 bg-muted rounded-lg">
+            <h3 className="font-medium text-foreground mb-2">
               Tasks for {formatDate(selectedDate)}
             </h3>
             {getTasksForDate(selectedDate).length > 0 ? (
@@ -469,10 +469,10 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
                   return (
                     <div
                       key={task.id}
-                      className={`p-3 bg-white dark:bg-gray-dark rounded border transition-colors ${
+                      className={`p-3 bg-card rounded border transition-colors ${
                         isLoading
                           ? 'cursor-wait opacity-70'
-                          : 'cursor-pointer hover:bg-gray-50 dark:bg-gray-800'
+                          : 'cursor-pointer hover:bg-muted'
                       }`}
                       onClick={(e) => handleTaskClick(task, e, selectedDate)}
                     >
@@ -487,19 +487,19 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
                             )}
                             <h4 className="font-medium">{task.title}</h4>
                             {task.isRecurring && !isLoading && (
-                              <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-purple-100 text-purple-800">
+                              <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
                                 <ArrowPathIcon className="w-3 h-3" />
                                 {task.recurrencePattern?.replace('-', ' ')}
                               </span>
                             )}
                           </div>
                           {task.description && (
-                            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{task.description}</p>
+                            <p className="text-sm text-muted-foreground mt-1">{task.description}</p>
                           )}
                         </div>
-                        <span className={`text-xs px-2 py-1 rounded-full whitespace-nowrap ml-2 ${task.status === 'completed' ? 'bg-green-100 text-green-800' :
-                            task.status === 'in-progress' ? 'bg-orange-100 text-orange-800' :
-                              'bg-yellow-100 text-yellow-800'
+                        <span className={`text-xs px-2 py-1 rounded-full whitespace-nowrap ml-2 ${task.status === 'completed' ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300' :
+                            task.status === 'in-progress' ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300' :
+                              'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300'
                           }`}>
                           {task.status.replace('-', ' ')}
                         </span>
@@ -509,7 +509,7 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
                 })}
               </div>
             ) : (
-              <p className="text-gray-500 dark:text-gray-400">No tasks scheduled for this day.</p>
+              <p className="text-muted-foreground">No tasks scheduled for this day.</p>
             )}
           </div>
         )}

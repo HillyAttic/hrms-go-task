@@ -76,11 +76,11 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
   const hasActiveFilters = filters.status !== 'all' || filters.priority !== 'all' || filters.assignedTo || filters.clientId;
 
   return (
-    <div className="bg-white dark:bg-gray-dark rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-sm">
+    <div className="bg-card rounded-lg border border-border p-4 shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <FunnelIcon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-          <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Filters</h3>
+          <FunnelIcon className="w-5 h-5 text-muted-foreground" />
+          <h3 className="text-sm font-semibold text-foreground">Filters</h3>
         </div>
         
         {hasActiveFilters && (
@@ -99,14 +99,14 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Status Filter - Requirement 2.7 */}
         <div>
-          <Label htmlFor="status-filter" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          <Label htmlFor="status-filter" className="text-sm font-medium text-muted-foreground">
             Status
           </Label>
           <select
             id="status-filter"
             value={filters.status}
             onChange={handleStatusChange}
-            className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+            className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card text-foreground text-sm"
             aria-label="Filter by status"
           >
             <option value="all">All Statuses</option>
@@ -118,14 +118,14 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
 
         {/* Priority Filter - Requirement 2.8 */}
         <div>
-          <Label htmlFor="priority-filter" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          <Label htmlFor="priority-filter" className="text-sm font-medium text-muted-foreground">
             Priority
           </Label>
           <select
             id="priority-filter"
             value={filters.priority}
             onChange={handlePriorityChange}
-            className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+            className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card text-foreground text-sm"
             aria-label="Filter by priority"
           >
             <option value="all">All Priorities</option>
@@ -138,7 +138,7 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
 
         {/* Team Member Filter - Searchable */}
         <div ref={memberDropdownRef} className="relative">
-          <Label htmlFor="assignedTo-filter" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          <Label htmlFor="assignedTo-filter" className="text-sm font-medium text-muted-foreground">
             Team Member
           </Label>
           <input
@@ -152,27 +152,27 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
             onFocus={() => setIsMemberDropdownOpen(true)}
             placeholder="Search team member..."
             autoComplete="off"
-            className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+            className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card text-foreground text-sm"
             aria-label="Search team member"
           />
           {isMemberDropdownOpen && (
-            <ul className="absolute z-50 mt-1 w-full max-h-48 overflow-auto bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg">
+            <ul className="absolute z-50 mt-1 w-full max-h-48 overflow-auto bg-card border border-border rounded-md shadow-lg">
               <li
                 onClick={() => handleMemberSelect(undefined)}
-                className={`px-3 py-2 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                className={`px-3 py-2 text-sm cursor-pointer hover:bg-muted/50 ${
                   !filters.assignedTo ? 'bg-blue-100 dark:bg-blue-900/50 font-medium' : ''
                 }`}
               >
                 All Team Members
               </li>
               {filteredEmployees.length === 0 ? (
-                <li className="px-3 py-2 text-sm text-gray-500 dark:text-gray-400">No results</li>
+                <li className="px-3 py-2 text-sm text-muted-foreground">No results</li>
               ) : (
                 filteredEmployees.map((emp) => (
                   <li
                     key={emp.id}
                     onClick={() => handleMemberSelect(emp.id, emp.name)}
-                    className={`px-3 py-2 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 ${
+                    className={`px-3 py-2 text-sm cursor-pointer hover:bg-muted/50 ${
                       filters.assignedTo === emp.id ? 'bg-blue-100 dark:bg-blue-900/50 font-medium' : ''
                     }`}
                   >
@@ -186,14 +186,14 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
 
         {/* Client Filter */}
         <div>
-          <Label htmlFor="client-filter" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          <Label htmlFor="client-filter" className="text-sm font-medium text-muted-foreground">
             Client
           </Label>
           <select
             id="client-filter"
             value={filters.clientId || ''}
             onChange={handleClientChange}
-            className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+            className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card text-foreground text-sm"
             aria-label="Filter by client"
           >
             <option value="">All Clients</option>
@@ -208,7 +208,7 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
 
       {/* Active Filter Indicators */}
       {hasActiveFilters && (
-        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="mt-4 pt-4 border-t border-border">
           <div className="flex flex-wrap gap-2">
             {filters.status !== 'all' && (
               <span className="inline-flex items-center gap-1 px-3 py-1 bg-foreground dark:bg-blue-500 text-background text-xs font-medium rounded-full">

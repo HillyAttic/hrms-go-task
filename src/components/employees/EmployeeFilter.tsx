@@ -42,11 +42,11 @@ export function EmployeeFilter({
   const hasActiveFilters = filters.status !== 'all' || filters.search !== '';
 
   return (
-    <div className="bg-white dark:bg-gray-dark rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-sm">
+    <div className="bg-card rounded-lg border border-border p-4 shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <FunnelIcon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
-          <h3 className="text-sm font-semibold text-gray-900 dark:text-white">Filters</h3>
+          <FunnelIcon className="w-5 h-5 text-muted-foreground" />
+          <h3 className="text-sm font-semibold text-foreground">Filters</h3>
         </div>
         
         {hasActiveFilters && (
@@ -65,12 +65,12 @@ export function EmployeeFilter({
       <div className="space-y-4">
         {/* Search Input - Requirement 5.8 */}
         <div>
-          <Label htmlFor="search-input" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          <Label htmlFor="search-input" className="text-sm font-medium text-muted-foreground">
             Search Employees
           </Label>
           <div className="relative mt-1">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-              <MagnifyingGlassIcon className="h-4 w-4 text-gray-400 dark:text-gray-500 dark:text-gray-400" />
+              <MagnifyingGlassIcon className="h-4 w-4 text-muted-foreground dark:text-muted-foreground" />
             </div>
             <input
               id="search-input"
@@ -78,7 +78,7 @@ export function EmployeeFilter({
               value={filters.search}
               onChange={handleSearchChange}
               placeholder="Search by name, email, position, or employee ID..."
-              className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm placeholder:text-gray-400 dark:placeholder:text-gray-500 dark:text-gray-400"
+              className="w-full pl-10 pr-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card text-foreground text-sm placeholder:text-muted-foreground dark:placeholder:text-muted-foreground"
               aria-label="Search employees"
             />
           </div>
@@ -87,14 +87,14 @@ export function EmployeeFilter({
         <div className="grid grid-cols-1 md:grid-cols-1 gap-4">
           {/* Status Filter - Requirement 5.7 */}
           <div>
-            <Label htmlFor="status-filter" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <Label htmlFor="status-filter" className="text-sm font-medium text-muted-foreground">
               Status
             </Label>
             <select
               id="status-filter"
               value={filters.status}
               onChange={handleStatusChange}
-              className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+              className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card text-foreground text-sm"
               aria-label="Filter by status"
             >
               <option value="all">All Statuses</option>
@@ -108,7 +108,7 @@ export function EmployeeFilter({
 
       {/* Active Filter Indicators */}
       {hasActiveFilters && (
-        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="mt-4 pt-4 border-t border-border">
           <div className="flex flex-wrap gap-2">
             {filters.search && (
               <span className="inline-flex items-center gap-1 px-3 py-1 bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-200 text-xs font-medium rounded-full">

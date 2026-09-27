@@ -25,21 +25,21 @@ export function EmptyState({
 }: EmptyStateProps) {
   return (
     <div
-      className={`flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 p-12 text-center dark:border-gray-700 dark:bg-gray-800 ${className}`}
+      className={`flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-border bg-muted p-12 text-center ${className}`}
       role="status"
       aria-live="polite"
     >
       {icon && (
-        <div className="mb-4 text-gray-400 dark:text-gray-500 dark:text-gray-400" aria-hidden="true">
+        <div className="mb-4 text-muted-foreground dark:text-muted-foreground" aria-hidden="true">
           {icon}
         </div>
       )}
       
-      <h3 className="mb-2 text-lg font-semibold text-gray-900 dark:text-white">
+      <h3 className="mb-2 text-lg font-semibold text-foreground">
         {title}
       </h3>
       
-      <p className="mb-6 max-w-md text-sm text-gray-600 dark:text-gray-400">
+      <p className="mb-6 max-w-md text-sm text-muted-foreground">
         {description}
       </p>
       

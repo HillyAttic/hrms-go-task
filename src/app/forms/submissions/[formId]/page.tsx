@@ -111,13 +111,13 @@ export default function FormSubmissionsPage({ params }: { params: Promise<{ form
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900/30 p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-6">
           <button
             onClick={() => router.push('/forms/builder')}
-            className="text-blue-600 hover:text-blue-700 mb-4 flex items-center space-x-2"
+            className="text-blue-600 hover:text-blue-700 dark:hover:text-blue-300 mb-4 flex items-center space-x-2"
           >
             <span>←</span>
             <span>Back to Forms</span>

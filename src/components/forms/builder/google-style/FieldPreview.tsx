@@ -15,7 +15,7 @@ export function FieldPreview({ field }: FieldPreviewProps) {
           type="text"
           disabled
           placeholder={field.placeholder || 'Short answer text'}
-          className="w-full px-0 py-2 text-sm border-b border-gray-300 bg-transparent text-gray-400 placeholder-gray-400 disabled:cursor-default"
+          className="w-full px-0 py-2 text-sm border-b border-gray-300 dark:border-gray-700 bg-transparent text-gray-400 placeholder-gray-400 disabled:cursor-default"
         />
       );
 
@@ -24,7 +24,7 @@ export function FieldPreview({ field }: FieldPreviewProps) {
         <textarea
           disabled
           placeholder={field.placeholder || 'Long answer text'}
-          className="w-full px-0 py-2 text-sm border-b border-gray-300 bg-transparent text-gray-400 placeholder-gray-400 disabled:cursor-default resize-none"
+          className="w-full px-0 py-2 text-sm border-b border-gray-300 dark:border-gray-700 bg-transparent text-gray-400 placeholder-gray-400 disabled:cursor-default resize-none"
           rows={3}
         />
       );
@@ -35,7 +35,7 @@ export function FieldPreview({ field }: FieldPreviewProps) {
           type="number"
           disabled
           placeholder={field.placeholder || '0'}
-          className="w-full px-0 py-2 text-sm border-b border-gray-300 bg-transparent text-gray-400 placeholder-gray-400 disabled:cursor-default"
+          className="w-full px-0 py-2 text-sm border-b border-gray-300 dark:border-gray-700 bg-transparent text-gray-400 placeholder-gray-400 disabled:cursor-default"
         />
       );
 
@@ -45,7 +45,7 @@ export function FieldPreview({ field }: FieldPreviewProps) {
           type="email"
           disabled
           placeholder={field.placeholder || 'your@email.com'}
-          className="w-full px-0 py-2 text-sm border-b border-gray-300 bg-transparent text-gray-400 placeholder-gray-400 disabled:cursor-default"
+          className="w-full px-0 py-2 text-sm border-b border-gray-300 dark:border-gray-700 bg-transparent text-gray-400 placeholder-gray-400 disabled:cursor-default"
         />
       );
 
@@ -55,7 +55,7 @@ export function FieldPreview({ field }: FieldPreviewProps) {
           type="tel"
           disabled
           placeholder={field.placeholder || '+1 (555) 000-0000'}
-          className="w-full px-0 py-2 text-sm border-b border-gray-300 bg-transparent text-gray-400 placeholder-gray-400 disabled:cursor-default"
+          className="w-full px-0 py-2 text-sm border-b border-gray-300 dark:border-gray-700 bg-transparent text-gray-400 placeholder-gray-400 disabled:cursor-default"
         />
       );
 
@@ -64,7 +64,7 @@ export function FieldPreview({ field }: FieldPreviewProps) {
         <input
           type="date"
           disabled
-          className="w-full px-0 py-2 text-sm border-b border-gray-300 bg-transparent text-gray-400 disabled:cursor-default"
+          className="w-full px-0 py-2 text-sm border-b border-gray-300 dark:border-gray-700 bg-transparent text-gray-400 disabled:cursor-default"
         />
       );
 
@@ -73,7 +73,7 @@ export function FieldPreview({ field }: FieldPreviewProps) {
         <input
           type="time"
           disabled
-          className="w-full px-0 py-2 text-sm border-b border-gray-300 bg-transparent text-gray-400 disabled:cursor-default"
+          className="w-full px-0 py-2 text-sm border-b border-gray-300 dark:border-gray-700 bg-transparent text-gray-400 disabled:cursor-default"
         />
       );
 
@@ -81,7 +81,7 @@ export function FieldPreview({ field }: FieldPreviewProps) {
       return (
         <select
           disabled
-          className="w-full px-0 py-2 text-sm border-b border-gray-300 bg-transparent text-gray-400 disabled:cursor-default appearance-none"
+          className="w-full px-0 py-2 text-sm border-b border-gray-300 dark:border-gray-700 bg-transparent text-gray-400 disabled:cursor-default appearance-none"
         >
           <option>Choose an option</option>
           {(field.options || []).map((opt, idx) => (
@@ -121,7 +121,7 @@ export function FieldPreview({ field }: FieldPreviewProps) {
         <select
           disabled
           multiple
-          className="w-full px-0 py-2 text-sm border-b border-gray-300 bg-transparent text-gray-400 disabled:cursor-default"
+          className="w-full px-0 py-2 text-sm border-b border-gray-300 dark:border-gray-700 bg-transparent text-gray-400 disabled:cursor-default"
         >
           {(field.options || []).map((opt, idx) => (
             <option key={idx} disabled>

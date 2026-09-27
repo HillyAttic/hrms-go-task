@@ -428,7 +428,7 @@ export function RecurringTaskModal({
             <select
               id="recurrencePattern"
               {...register('recurrencePattern')}
-              className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
+              className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isLoading}
             >
               <option value="monthly">Monthly</option>
@@ -461,10 +461,10 @@ export function RecurringTaskModal({
               <p className="text-sm text-red-600 mt-1">{errors.teamId.message}</p>
             )}
             {loadingTeams && (
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Loading teams...</p>
+              <p className="text-sm text-muted-foreground mt-1">Loading teams...</p>
             )}
             {!loadingTeams && teams.length === 0 && (
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">No teams available</p>
+              <p className="text-sm text-muted-foreground mt-1">No teams available</p>
             )}
           </div>
 
@@ -485,17 +485,17 @@ export function RecurringTaskModal({
                   : `${teamMemberMappings.length} Team Member${teamMemberMappings.length !== 1 ? 's' : ''} Mapped`}
               </span>
             </Button>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+            <p className="text-xs text-muted-foreground mt-2">
               Assign specific clients to individual team members. If configured, team members will only see tasks for their assigned clients.
             </p>
             
             {/* Display current mappings summary */}
             {teamMemberMappings.length > 0 && (
-              <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+              <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg">
                 <p className="text-sm font-medium text-blue-900 mb-2">Current Mappings:</p>
                 <div className="space-y-1">
                   {teamMemberMappings.map((mapping) => (
-                    <div key={mapping.userId} className="text-xs text-blue-800">
+                    <div key={mapping.userId} className="text-xs text-blue-800 dark:text-blue-300">
                       <span className="font-medium">{mapping.userName}</span>: {mapping.clientIds.length} client{mapping.clientIds.length !== 1 ? 's' : ''}
                     </div>
                   ))}
@@ -524,10 +524,10 @@ export function RecurringTaskModal({
               <p className="text-sm text-red-600 mt-1">{errors.categoryId.message}</p>
             )}
             {loadingCategories && (
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Loading categories...</p>
+              <p className="text-sm text-muted-foreground mt-1">Loading categories...</p>
             )}
             {!loadingCategories && categories.length === 0 && (
-              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">No categories available</p>
+              <p className="text-sm text-muted-foreground mt-1">No categories available</p>
             )}
           </div>
 
@@ -599,11 +599,11 @@ export function RecurringTaskModal({
             {/* Multi-Select Client List */}
             <div className="mb-3">
               <Label className="text-xs mb-2 block">Select Clients (Click to add multiple)</Label>
-              <div className="border border-gray-300 dark:border-gray-600 rounded-md max-h-60 overflow-y-auto">
+              <div className="border border-border rounded-md max-h-60 overflow-y-auto">
                 {loadingClients ? (
-                  <div className="p-4 text-center text-gray-500 dark:text-gray-400">Loading clients...</div>
+                  <div className="p-4 text-center text-muted-foreground">Loading clients...</div>
                 ) : getAvailableClients().length === 0 ? (
-                  <div className="p-4 text-center text-gray-500 dark:text-gray-400">
+                  <div className="p-4 text-center text-muted-foreground">
                     {clientSearchQuery.trim() !== '' 
                       ? 'No clients match your search'
                       : clientFilter !== 'all' 
@@ -613,18 +613,18 @@ export function RecurringTaskModal({
                         : 'No clients available'}
                   </div>
                 ) : (
-                  <div className="divide-y divide-gray-200">
+                  <div className="divide-y divide-border">
                     {getAvailableClients().map((client) => (
                       <button
                         key={client.id}
                         type="button"
                         onClick={() => handleClientSelect(client.id!)}
-                        className="w-full text-left px-3 py-2 hover:bg-blue-50 transition-colors focus:bg-blue-100 focus:outline-none"
+                        className="w-full text-left px-3 py-2 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors focus:bg-blue-100 dark:focus:bg-blue-900/30 focus:outline-none"
                         disabled={isLoading}
                       >
                         <div className="flex flex-col">
-                          <span className="text-sm font-medium text-gray-900 dark:text-white">{client.clientName}</span>
-                          <span className="text-xs text-gray-600 dark:text-gray-400">
+                          <span className="text-sm font-medium text-foreground">{client.clientName}</span>
+                          <span className="text-xs text-muted-foreground">
                             {client.businessName || 'No Business Name'}
                             {client.taxIdentifiers?.gstin ? ` • GSTIN: ${client.taxIdentifiers.gstin}` :
                              client.taxIdentifiers?.tan ? ` • TAN: ${client.taxIdentifiers.tan}` :
@@ -640,9 +640,9 @@ export function RecurringTaskModal({
 
             {/* Selected Clients Display */}
             {selectedClients.length > 0 && (
-              <div className="mt-2 mb-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+              <div className="mt-2 mb-3 p-3 bg-muted rounded-lg border border-border">
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-xs font-medium text-gray-600 dark:text-gray-400">Selected Clients ({selectedClients.length})</p>
+                  <p className="text-xs font-medium text-muted-foreground">Selected Clients ({selectedClients.length})</p>
                   <Button
                     type="button"
                     variant="ghost"
@@ -652,7 +652,7 @@ export function RecurringTaskModal({
                       setValue('contactIds', '');
                     }}
                     disabled={isLoading}
-                    className="text-xs text-red-600 hover:text-red-700 hover:bg-red-50"
+                    className="text-xs text-red-600 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30"
                   >
                     Clear All
                   </Button>
@@ -661,11 +661,11 @@ export function RecurringTaskModal({
                   {selectedClients.map((client) => (
                     <div
                       key={client.id}
-                      className="flex items-center gap-2 bg-white dark:bg-gray-dark border border-gray-300 dark:border-gray-600 rounded-md px-2.5 py-1.5 shadow-sm"
+                      className="flex items-center gap-2 bg-card border border-border rounded-md px-2.5 py-1.5 shadow-sm"
                     >
                       <div className="flex flex-col">
-                        <span className="text-sm font-medium text-gray-900 dark:text-white">{client.clientName}</span>
-                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                        <span className="text-sm font-medium text-foreground">{client.clientName}</span>
+                        <span className="text-xs text-muted-foreground">
                           {client.taxIdentifiers?.gstin ? `GSTIN: ${client.taxIdentifiers.gstin}` :
                            client.taxIdentifiers?.tan ? `TAN: ${client.taxIdentifiers.tan}` :
                            client.taxIdentifiers?.pan ? `PAN: ${client.taxIdentifiers.pan}` :
@@ -675,7 +675,7 @@ export function RecurringTaskModal({
                       <button
                         type="button"
                         onClick={() => handleClientRemove(client.id!)}
-                        className="text-red-500 hover:text-red-700 hover:bg-red-50 rounded p-1 ml-1 transition-colors"
+                        className="text-red-500 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30 rounded p-1 ml-1 transition-colors"
                         disabled={isLoading}
                         aria-label={`Remove ${client.clientName}`}
                       >
@@ -687,7 +687,7 @@ export function RecurringTaskModal({
               </div>
             )}
             
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               Optional: Use search and filters to find specific clients, then click "Select All" or click individual clients to add them.
             </p>
             
@@ -708,7 +708,7 @@ export function RecurringTaskModal({
                 id="startDate"
                 type="date"
                 {...register('startDate')}
-                className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
+                className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={isLoading}
                 required
               />
@@ -724,7 +724,7 @@ export function RecurringTaskModal({
                 id="dueDate"
                 type="date"
                 {...register('dueDate')}
-                className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
+                className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={isLoading}
               />
               {errors.dueDate && (
@@ -739,7 +739,7 @@ export function RecurringTaskModal({
             <select
               id="priority"
               {...register('priority')}
-              className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
+              className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isLoading}
             >
               <option value="low">Low</option>
@@ -753,26 +753,26 @@ export function RecurringTaskModal({
           </div>
 
           {/* Enable ARN / Remark Checkboxes */}
-          <div className="flex flex-wrap items-center gap-4 p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
+          <div className="flex flex-wrap items-center gap-4 p-3 bg-muted border border-border rounded-lg">
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"
                 id="requiresArn"
                 {...register('requiresArn')}
-                className="w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded focus:ring-ring"
+                className="w-4 h-4 text-blue-600 border-border rounded focus:ring-ring"
                 disabled={isLoading}
               />
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Require ARN on completion</span>
+              <span className="text-sm font-medium text-muted-foreground">Require ARN on completion</span>
             </label>
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"
                 id="requiresRemark"
                 {...register('requiresRemark')}
-                className="w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded focus:ring-ring"
+                className="w-4 h-4 text-blue-600 border-border rounded focus:ring-ring"
                 disabled={isLoading}
               />
-              <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Require Remark on completion</span>
+              <span className="text-sm font-medium text-muted-foreground">Require Remark on completion</span>
             </label>
           </div>
 

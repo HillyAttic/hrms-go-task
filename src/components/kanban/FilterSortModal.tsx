@@ -54,17 +54,17 @@ export function FilterSortModal({
         <div className="space-y-6 mt-4">
           {/* Filters Section */}
           <div>
-            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Filters</h3>
+            <h3 className="text-lg font-semibold mb-4 text-foreground">Filters</h3>
 
             {/* Due Date Filter */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-muted-foreground mb-2">
                 Due Date
               </label>
               <select
                 value={filters.dueDate || 'all'}
                 onChange={(e) => setFilters({ ...filters, dueDate: e.target.value as any })}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
               >
                 <option value="all">All</option>
                 <option value="today">Today</option>
@@ -76,18 +76,18 @@ export function FilterSortModal({
 
           {/* Sort Section */}
           <div>
-            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Sort</h3>
+            <h3 className="text-lg font-semibold mb-4 text-foreground">Sort</h3>
 
             <div className="grid grid-cols-2 gap-4">
               {/* Sort Field */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-muted-foreground mb-2">
                   Sort By
                 </label>
                 <select
                   value={sort.field}
                   onChange={(e) => setSort({ ...sort, field: e.target.value as any })}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
                 >
                   <option value="dueDate">Due Date</option>
                   <option value="priority">Priority</option>
@@ -97,13 +97,13 @@ export function FilterSortModal({
 
               {/* Sort Direction */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-muted-foreground mb-2">
                   Direction
                 </label>
                 <select
                   value={sort.direction}
                   onChange={(e) => setSort({ ...sort, direction: e.target.value as any })}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
                 >
                   <option value="asc">Ascending</option>
                   <option value="desc">Descending</option>

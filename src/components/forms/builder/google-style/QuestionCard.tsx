@@ -59,7 +59,7 @@ export function QuestionCard({
         bg-white rounded-lg border transition-all duration-150 cursor-pointer
         ${isSelected
           ? 'border-blue-400 shadow-md border-l-4 border-l-[#673ab7]'
-          : 'border-gray-200 hover:border-gray-300 shadow-sm'
+          : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-700 shadow-sm'
         }
         ${isDragging ? 'opacity-50' : ''}
       `}
@@ -91,7 +91,7 @@ export function QuestionCard({
                 className="flex-1 text-base font-medium border-b-2 border-blue-500 focus:outline-none bg-transparent py-1"
               />
             ) : (
-              <span className="flex-1 text-base font-medium text-gray-800">
+              <span className="flex-1 text-base font-medium text-gray-800 dark:text-gray-300">
                 {field.label || 'Section title'}
               </span>
             )
@@ -102,10 +102,10 @@ export function QuestionCard({
               onChange={(e) => onUpdate({ label: e.target.value })}
               onClick={(e) => e.stopPropagation()}
               placeholder="Question"
-              className="flex-1 text-base bg-gray-50 border-0 border-b-2 border-blue-400 focus:outline-none px-3 py-2 rounded-t"
+              className="flex-1 text-base bg-gray-50 dark:bg-gray-900/30 border-0 border-b-2 border-blue-400 focus:outline-none px-3 py-2 rounded-t"
             />
           ) : (
-            <span className="flex-1 text-sm font-medium text-gray-800 py-1">
+            <span className="flex-1 text-sm font-medium text-gray-800 dark:text-gray-300 py-1">
               {field.label || 'Question'}
               {field.required && <span className="text-red-500 ml-1">*</span>}
             </span>
@@ -129,7 +129,7 @@ export function QuestionCard({
             onChange={(e) => onUpdate({ helpText: e.target.value })}
             onClick={(e) => e.stopPropagation()}
             placeholder="Description (optional)"
-            className="w-full text-sm text-gray-500 border-0 border-b border-gray-200 focus:border-ring focus:outline-none py-1 mt-2 bg-transparent"
+            className="w-full text-sm text-gray-500 border-0 border-b border-gray-200 dark:border-gray-700 focus:border-ring focus:outline-none py-1 mt-2 bg-transparent"
           />
         )}
         {!isSelected && field.helpText && (
@@ -165,7 +165,7 @@ export function QuestionCard({
                 onChange={(e) => onUpdate({ description: e.target.value })}
                 onClick={(e) => e.stopPropagation()}
                 placeholder="Section description (optional)"
-                className="mt-2 w-full border-b border-gray-300 focus:border-ring outline-none text-sm py-0.5 bg-transparent text-gray-500"
+                className="mt-2 w-full border-b border-gray-300 dark:border-gray-700 focus:border-ring outline-none text-sm py-0.5 bg-transparent text-gray-500"
               />
             )}
           </div>
@@ -179,7 +179,7 @@ export function QuestionCard({
                 e.stopPropagation();
                 onDuplicate();
               }}
-              className="p-2 rounded-full hover:bg-gray-100 text-gray-600 transition-colors"
+              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-900/30 text-gray-600 transition-colors"
               title="Duplicate"
             >
               <Copy size={20} />
@@ -189,7 +189,7 @@ export function QuestionCard({
                 e.stopPropagation();
                 handleDelete();
               }}
-              className="p-2 rounded-full hover:bg-gray-100 text-gray-600 transition-colors"
+              className="p-2 rounded-full hover:bg-gray-100 dark:hover:bg-gray-900/30 text-gray-600 transition-colors"
               title="Delete"
             >
               <Trash2 size={20} />

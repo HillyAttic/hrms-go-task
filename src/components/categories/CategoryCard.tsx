@@ -13,7 +13,7 @@ interface CategoryCardProps {
 
 export function CategoryCard({ category, onEdit, onDelete, onToggleStatus }: CategoryCardProps) {
   return (
-    <Card className="group hover:shadow-lg transition-all duration-200 border-l-4 aspect-square" style={{ borderLeftColor: category.color }}>
+    <Card className="group hover:shadow-hard transition-all duration-200 border-l-4 aspect-square" style={{ borderLeftColor: category.color }}>
       <CardContent className="p-2 h-full flex flex-col">
         {/* Icon and Status */}
         <div className="flex items-start justify-between mb-1.5">
@@ -35,7 +35,7 @@ export function CategoryCard({ category, onEdit, onDelete, onToggleStatus }: Cat
 
         {/* Category Name */}
         <div className="flex-1 flex items-center justify-center min-h-0">
-          <h3 className="text-xs font-bold text-gray-900 dark:text-white line-clamp-2 text-center leading-tight">
+          <h3 className="text-xs font-bold text-foreground line-clamp-2 text-center leading-tight">
             {category.name}
           </h3>
         </div>

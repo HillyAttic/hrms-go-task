@@ -56,7 +56,7 @@ export function ProgressiveHydration({
  */
 export function SkeletonLoader({ className = '' }: { className?: string }) {
   return (
-    <div className={`animate-pulse bg-gray-200 dark:bg-gray-700 rounded ${className}`}>
+    <div className={`animate-pulse bg-muted rounded ${className}`}>
       <div className="h-full w-full" />
     </div>
   );

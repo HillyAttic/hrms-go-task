@@ -22,14 +22,14 @@ export function WeeklyProgressChart({ data }: WeeklyProgressChartProps) {
         <div className="flex items-center justify-between">
           <CardTitle className="text-xl">Weekly Progress</CardTitle>
           <div className="flex items-center gap-2 text-sm">
-            <div className="flex items-center gap-1 px-3 py-1 bg-white dark:bg-gray-800 rounded-full shadow-sm">
+            <div className="flex items-center gap-1 px-3 py-1 bg-card rounded-full shadow-sm">
               {completionRate >= 50 ? (
                 <ArrowTrendingUpIcon className="w-4 h-4 text-green-500" />
               ) : (
                 <ArrowTrendingDownIcon className="w-4 h-4 text-orange-500" />
               )}
               <span className="font-semibold">{completionRate}%</span>
-              <span className="text-gray-500 dark:text-gray-400">completion</span>
+              <span className="text-muted-foreground">completion</span>
             </div>
           </div>
         </div>
@@ -41,7 +41,7 @@ export function WeeklyProgressChart({ data }: WeeklyProgressChartProps) {
             <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Created</p>
+                  <p className="text-sm text-muted-foreground">Created</p>
                   <p className="text-2xl font-bold text-blue-600 dark:text-blue-400">{totalCreated}</p>
                 </div>
                 <div className="w-12 h-12 bg-blue-100 dark:bg-blue-800 rounded-full flex items-center justify-center">
@@ -54,7 +54,7 @@ export function WeeklyProgressChart({ data }: WeeklyProgressChartProps) {
             <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-600 dark:text-gray-400">Completed</p>
+                  <p className="text-sm text-muted-foreground">Completed</p>
                   <p className="text-2xl font-bold text-green-600 dark:text-green-400">{totalCompleted}</p>
                 </div>
                 <div className="w-12 h-12 bg-green-100 dark:bg-green-800 rounded-full flex items-center justify-center">
@@ -78,7 +78,7 @@ export function WeeklyProgressChart({ data }: WeeklyProgressChartProps) {
               return (
                 <div key={index} className="space-y-2">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="font-medium text-gray-700 dark:text-gray-300 w-12">{label}</span>
+                    <span className="font-medium text-muted-foreground w-12">{label}</span>
                     <div className="flex items-center gap-3 text-xs">
                       <span className="text-blue-600 dark:text-blue-400">
                         <span className="font-semibold">{created}</span> created
@@ -90,14 +90,14 @@ export function WeeklyProgressChart({ data }: WeeklyProgressChartProps) {
                   </div>
                   <div className="flex gap-2 h-8">
                     {/* Created bar */}
-                    <div className="flex-1 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden relative group">
+                    <div className="flex-1 bg-muted rounded-lg overflow-hidden relative group">
                       <div
                         className="h-full bg-gradient-to-r from-blue-400 to-blue-600 rounded-lg transition-all duration-500 ease-out group-hover:from-blue-500 group-hover:to-blue-700"
                         style={{ width: `${createdPercent}%`, minWidth: created > 0 ? '8px' : '0' }}
                       />
                     </div>
                     {/* Completed bar */}
-                    <div className="flex-1 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden relative group">
+                    <div className="flex-1 bg-muted rounded-lg overflow-hidden relative group">
                       <div
                         className="h-full bg-gradient-to-r from-green-400 to-green-600 rounded-lg transition-all duration-500 ease-out group-hover:from-green-500 group-hover:to-green-700"
                         style={{ width: `${completedPercent}%`, minWidth: completed > 0 ? '8px' : '0' }}
@@ -110,14 +110,14 @@ export function WeeklyProgressChart({ data }: WeeklyProgressChartProps) {
           </div>
 
           {/* Legend */}
-          <div className="flex items-center justify-center gap-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="flex items-center justify-center gap-6 pt-4 border-t border-border">
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 rounded bg-gradient-to-r from-blue-400 to-blue-600"></div>
-              <span className="text-sm font-medium text-gray-600 dark:text-gray-400">Tasks Created</span>
+              <span className="text-sm font-medium text-muted-foreground">Tasks Created</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-4 h-4 rounded bg-gradient-to-r from-green-400 to-green-600"></div>
-              <span className="text-sm font-medium text-gray-600 dark:text-gray-400">Tasks Completed</span>
+              <span className="text-sm font-medium text-muted-foreground">Tasks Completed</span>
             </div>
           </div>
         </div>

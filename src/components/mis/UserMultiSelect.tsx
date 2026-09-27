@@ -73,35 +73,35 @@ export default function UserMultiSelect({
   return (
     <div className="space-y-3">
       <div className="flex items-center justify-between">
-        <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+        <label className="text-sm font-medium text-muted-foreground">
           {label}
         </label>
-        <span className="text-xs text-gray-500 dark:text-gray-400">
+        <span className="text-xs text-muted-foreground">
           {selectedCount} of {totalCount} selected
         </span>
       </div>
 
       <div className="relative">
-        <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+        <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
         <input
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder={placeholder}
-          className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-ring focus:border-transparent"
+          className="w-full pl-10 pr-4 py-2 border border-border rounded-lg bg-card text-foreground placeholder-gray-400 focus:ring-2 focus:ring-ring focus:border-transparent"
         />
       </div>
 
-      <div className="border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-        <div className="border-b border-gray-200 dark:border-gray-700 px-4 py-2">
-          <label className="flex items-center gap-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 -mx-2 px-2 py-1 rounded">
+      <div className="border border-border rounded-lg bg-card">
+        <div className="border-b border-border px-4 py-2">
+          <label className="flex items-center gap-3 cursor-pointer hover:bg-muted/50 -mx-2 px-2 py-1 rounded">
             <input
               type="checkbox"
               checked={selectedCount === totalCount && totalCount > 0}
               onChange={toggleAll}
-              className="h-4 w-4 text-blue-600 focus:ring-ring border-gray-300 rounded"
+              className="h-4 w-4 text-blue-600 focus:ring-ring border-border rounded"
             />
-            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <span className="text-sm font-medium text-muted-foreground">
               Select All
             </span>
           </label>
@@ -109,26 +109,26 @@ export default function UserMultiSelect({
 
         <div className="max-h-72 overflow-y-auto">
           {filteredUsers.length === 0 ? (
-            <div className="px-4 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
+            <div className="px-4 py-8 text-center text-sm text-muted-foreground">
               {searchQuery ? 'No users found matching your search' : 'No users available'}
             </div>
           ) : (
             filteredUsers.map((user) => (
               <label
                 key={user.uid}
-                className="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 border-b border-gray-100 dark:border-gray-700 last:border-b-0"
+                className="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-muted/50 border-b border-border last:border-b-0"
               >
                 <input
                   type="checkbox"
                   checked={selectedUserIds.includes(user.uid)}
                   onChange={() => toggleUser(user.uid)}
-                  className="h-4 w-4 text-blue-600 focus:ring-ring border-gray-300 rounded flex-shrink-0"
+                  className="h-4 w-4 text-blue-600 focus:ring-ring border-border rounded flex-shrink-0"
                 />
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                  <p className="text-sm font-medium text-foreground truncate">
                     {user.displayName}
                   </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                  <p className="text-xs text-muted-foreground truncate">
                     {user.email}
                   </p>
                   {user.role && (

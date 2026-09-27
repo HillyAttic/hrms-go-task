@@ -12,33 +12,33 @@ export const AuthenticationDemo: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="p-6 bg-white dark:bg-gray-dark rounded-lg shadow-sm border">
+      <div className="p-6 bg-card rounded-lg shadow-sm border">
         <div className="animate-pulse">
-          <div className="h-4 bg-gray-200 rounded w-1/4 mb-4"></div>
-          <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+          <div className="h-4 bg-muted rounded w-1/4 mb-4"></div>
+          <div className="h-4 bg-muted rounded w-1/2"></div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="p-6 bg-white dark:bg-gray-dark rounded-lg shadow-sm border space-y-4">
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Authentication Protection Demo</h3>
+    <div className="p-6 bg-card rounded-lg shadow-sm border space-y-4">
+      <h3 className="text-lg font-semibold text-foreground">Authentication Protection Demo</h3>
       
       {user ? (
         <div className="space-y-3">
-          <div className="text-sm text-gray-600 dark:text-gray-400">
+          <div className="text-sm text-muted-foreground">
             <strong>Current User:</strong> {user.email}
           </div>
-          <div className="text-sm text-gray-600 dark:text-gray-400">
+          <div className="text-sm text-muted-foreground">
             <strong>Role:</strong> {getRoleDisplayName()}
           </div>
-          <div className="text-sm text-gray-600 dark:text-gray-400">
+          <div className="text-sm text-muted-foreground">
             <strong>Is Admin:</strong> {isAdmin ? 'Yes' : 'No'}
           </div>
           
-          <div className="mt-4 p-4 bg-gray-50 dark:bg-gray-800 rounded-md">
-            <h4 className="font-medium text-gray-900 dark:text-white mb-2">Authentication Menu Visibility Test:</h4>
+          <div className="mt-4 p-4 bg-muted rounded-md">
+            <h4 className="font-medium text-foreground mb-2">Authentication Menu Visibility Test:</h4>
             
             <AdminGuard 
               fallback={
@@ -53,9 +53,9 @@ export const AuthenticationDemo: React.FC = () => {
             </AdminGuard>
           </div>
 
-          <div className="mt-4 p-4 bg-blue-50 rounded-md">
-            <h4 className="font-medium text-gray-900 dark:text-white mb-2">How it works:</h4>
-            <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1">
+          <div className="mt-4 p-4 bg-blue-50 dark:bg-blue-900/30 rounded-md">
+            <h4 className="font-medium text-foreground mb-2">How it works:</h4>
+            <ul className="text-sm text-muted-foreground space-y-1">
               <li>• The Authentication menu item in the sidebar is wrapped with <code>AdminGuard</code></li>
               <li>• Only users with 'admin' role can see the Authentication menu</li>
               <li>• Non-admin users (employee, manager) won't see the menu at all</li>
@@ -64,7 +64,7 @@ export const AuthenticationDemo: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="text-gray-600 dark:text-gray-400">
+        <div className="text-muted-foreground">
           <p>No user is currently authenticated.</p>
           <p className="text-sm mt-2">Sign in to test the authentication protection.</p>
         </div>

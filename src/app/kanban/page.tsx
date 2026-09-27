@@ -176,7 +176,7 @@ export default function KanbanPage() {
       <div className="flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600 dark:text-gray-400">Loading your Kanban board...</p>
+          <p className="text-muted-foreground">Loading your Kanban board...</p>
         </div>
       </div>
     );
@@ -209,7 +209,7 @@ export default function KanbanPage() {
         <div className="text-center max-w-md">
           <div className="mb-6">
             <svg
-              className="w-20 h-20 mx-auto text-gray-400 dark:text-gray-600"
+              className="w-20 h-20 mx-auto text-muted-foreground dark:text-muted-foreground"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -222,13 +222,13 @@ export default function KanbanPage() {
               />
             </svg>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">
+          <h2 className="text-2xl font-bold text-foreground mb-3">
             Desktop Only
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-2">
+          <p className="text-muted-foreground mb-2">
             The Kanban board is optimized for desktop viewing and is not available on mobile devices.
           </p>
-          <p className="text-sm text-gray-500 dark:text-gray-500">
+          <p className="text-sm text-muted-foreground dark:text-muted-foreground">
             Please access this feature from a desktop or laptop computer for the best experience.
           </p>
         </div>
@@ -238,12 +238,12 @@ export default function KanbanPage() {
       <div className="hidden md:block space-y-4 md:space-y-6 px-2 sm:px-4 md:px-0">
         {/* Page Header */}
         <div className="px-2 sm:px-0">
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Kanban Board</h1>
-          <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1 sm:mt-2">Manage tasks across multiple businesses</p>
+          <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Kanban Board</h1>
+          <p className="text-sm sm:text-base text-muted-foreground mt-1 sm:mt-2">Manage tasks across multiple businesses</p>
         </div>
 
         {/* Business Manager */}
-        <div className="bg-white dark:bg-gray-dark rounded-lg shadow-sm p-3 sm:p-4 md:p-6">
+        <div className="bg-card rounded-lg shadow-sm p-3 sm:p-4 md:p-6">
           <BusinessManager
             businesses={businesses}
             selectedBusinessId={selectedBusinessId}
@@ -260,18 +260,18 @@ export default function KanbanPage() {
             className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-3 sm:p-4 border-l-4"
             style={{ borderLeftColor: selectedBusiness.color }}
           >
-            <h2 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white">{selectedBusiness.name}</h2>
+            <h2 className="text-lg sm:text-xl font-bold text-foreground">{selectedBusiness.name}</h2>
             {selectedBusiness.description && (
-              <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1">{selectedBusiness.description}</p>
+              <p className="text-sm sm:text-base text-muted-foreground mt-1">{selectedBusiness.description}</p>
             )}
-            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-2">
+            <p className="text-xs sm:text-sm text-muted-foreground mt-2">
               {currentTasks.length} task{currentTasks.length !== 1 ? 's' : ''} in this business
             </p>
           </div>
         )}
 
         {/* Kanban Board */}
-        <div className="bg-white dark:bg-gray-dark rounded-lg shadow-sm p-3 sm:p-4 md:p-6">
+        <div className="bg-card rounded-lg shadow-sm p-3 sm:p-4 md:p-6">
           <EnhancedKanbanBoard
             tasks={currentTasks}
             onTaskUpdate={handleTaskUpdate}

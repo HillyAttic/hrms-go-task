@@ -30,9 +30,9 @@ const AttendanceCalendarModal = dynamic(
 );
 
 const cardClass =
-  'bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700';
+  'bg-card rounded-xl shadow-sm border border-border';
 const thClass =
-  'px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider';
+  'px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider';
 
 export default function SalaryConfigPage() {
   const [settings, setSettings] = useState<PayrollSettings | null>(null);
@@ -100,7 +100,7 @@ export default function SalaryConfigPage() {
       'gap-2',
       activeTab === value
         ? 'dark:bg-gray-900 dark:text-white'
-        : 'dark:text-gray-400 dark:hover:text-gray-200'
+        : 'dark:text-muted-foreground dark:hover:text-gray-200'
     );
 
   return (
@@ -111,15 +111,15 @@ export default function SalaryConfigPage() {
             <IndianRupee className="h-6 w-6 text-white" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Salary Configuration</h1>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+            <h1 className="text-2xl font-bold text-foreground">Salary Configuration</h1>
+            <p className="text-sm text-muted-foreground mt-0.5">
               Configure payroll settings, employee salaries, and generate salary slips
             </p>
           </div>
         </div>
 
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="h-auto flex-wrap justify-start gap-1 bg-gray-100 dark:bg-gray-800">
+          <TabsList className="h-auto flex-wrap justify-start gap-1 bg-muted">
             <TabsTrigger value="employees" className={triggerClass('employees')}>
               <Users className="h-4 w-4" />
               Employee Salaries
@@ -144,11 +144,11 @@ export default function SalaryConfigPage() {
 
           <TabsContent value="employees" className="mt-4">
             <div className={cardClass}>
-              <div className="p-5 border-b border-gray-200 dark:border-gray-700">
-                <h2 className="text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2">
+              <div className="p-5 border-b border-border">
+                <h2 className="text-base font-semibold text-foreground flex items-center gap-2">
                   Configure Employee Salaries
                 </h2>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+                <p className="text-sm text-muted-foreground mt-0.5">
                   Set DOJ, PAN, Designation, and Gross Salary for each employee
                 </p>
               </div>
@@ -166,7 +166,7 @@ export default function SalaryConfigPage() {
                     <col style={{ width: '12%' }} />
                     <col style={{ width: '10%' }} />
                   </colgroup>
-                  <thead className="bg-gray-50 dark:bg-gray-700/50">
+                  <thead className="bg-muted/50">
                     <tr>
                       <th className={thClass}>#</th>
                       <th className={thClass}>Name</th>
@@ -179,14 +179,14 @@ export default function SalaryConfigPage() {
                       <th
                         className={cn(
                           thClass,
-                          'sticky right-0 text-right bg-gray-50 dark:bg-gray-700/50 shadow-[-4px_0_6px_-2px_rgba(0,0,0,0.05)]'
+                          'sticky right-0 text-right bg-muted/50 shadow-[-4px_0_6px_-2px_rgba(0,0,0,0.05)]'
                         )}
                       >
                         Actions
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-200 dark:divide-gray-600">
+                  <tbody className="divide-y divide-border">
                     {loading ? (
                       <tr>
                         <td colSpan={9} className="px-4 py-10 text-center">
@@ -195,7 +195,7 @@ export default function SalaryConfigPage() {
                       </tr>
                     ) : employees.length === 0 ? (
                       <tr>
-                        <td colSpan={9} className="px-4 py-8 text-center text-sm text-gray-500 dark:text-gray-400">
+                        <td colSpan={9} className="px-4 py-8 text-center text-sm text-muted-foreground">
                           No active employees found.
                         </td>
                       </tr>
@@ -203,9 +203,9 @@ export default function SalaryConfigPage() {
                       employees.map((employee, index) => (
                         <tr
                           key={employee.id}
-                          className="group hover:bg-gray-50 dark:hover:bg-gray-700/50"
+                          className="group hover:bg-muted/50"
                         >
-                          <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">{index + 1}</td>
+                          <td className="px-4 py-3 text-sm text-muted-foreground">{index + 1}</td>
                           <td className="px-4 py-3">
                             <button
                               type="button"
@@ -215,30 +215,30 @@ export default function SalaryConfigPage() {
                               {employee.name}
                             </button>
                           </td>
-                          <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
+                          <td className="px-4 py-3 text-sm text-muted-foreground">
                             {employee.employeeId || '-'}
                           </td>
-                          <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
+                          <td className="px-4 py-3 text-sm text-muted-foreground">
                             {employee.department || '-'}
                           </td>
-                          <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
+                          <td className="px-4 py-3 text-sm text-muted-foreground">
                             {employee.designation || '-'}
                           </td>
-                          <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
+                          <td className="px-4 py-3 text-sm text-muted-foreground">
                             {employee.doj ? new Date(employee.doj).toLocaleDateString('en-IN') : '-'}
                           </td>
-                          <td className="px-4 py-3 font-mono text-sm text-gray-700 dark:text-gray-300">
+                          <td className="px-4 py-3 font-mono text-sm text-muted-foreground">
                             {employee.pan || '-'}
                           </td>
-                          <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
+                          <td className="px-4 py-3 text-sm text-muted-foreground">
                             {employee.grossSalary
                               ? `₹${employee.grossSalary.toLocaleString('en-IN', { maximumFractionDigits: 0 })}`
                               : '-'}
                           </td>
                           <td
                             className={cn(
-                              'sticky right-0 px-4 py-3 text-right bg-white dark:bg-gray-800',
-                              'group-hover:bg-gray-50 dark:group-hover:bg-gray-700/50',
+                              'sticky right-0 px-4 py-3 text-right bg-card',
+                              'group-hover:bg-muted dark:group-hover:bg-gray-700/50',
                               'shadow-[-4px_0_6px_-2px_rgba(0,0,0,0.05)]'
                             )}
                           >

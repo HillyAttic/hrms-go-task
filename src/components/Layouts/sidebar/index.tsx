@@ -145,8 +145,16 @@ export function Sidebar() {
   };
 
   const getSidebarClasses = () => {
-    const baseClasses = "overflow-hidden border-r-2 border-border bg-card text-foreground transition-all duration-200 ease-in-out";
-    
+    // Floating panel: 2px outline, radius and hard offset shadow inset from the
+    // viewport edge — same treatment `Card` uses. Collapsed it drops the border
+    // entirely, because `w-0` plus a border still paints a 2px sliver of ink.
+    const baseClasses = cn(
+      "overflow-hidden bg-card text-foreground transition-all duration-200 ease-in-out",
+      isOpen
+        ? "my-3 ml-3 h-[calc(100vh-1.5rem)] rounded-lg border-2 border-border shadow-hard"
+        : "border-0"
+    );
+
     if (variant === 'mobile') {
       return cn(
         baseClasses,
@@ -158,14 +166,14 @@ export function Sidebar() {
     if (variant === 'tablet') {
       return cn(
         baseClasses,
-        "sticky top-0 h-screen",
+        "sticky top-3",
         getSidebarWidth()
       );
     }
     
     return cn(
       baseClasses,
-      "sticky top-0 h-screen max-w-[290px]",
+      "sticky top-3 max-w-[290px]",
       getSidebarWidth()
     );
   };
@@ -276,7 +284,7 @@ export function Sidebar() {
                     onClick={() => toggleSection(section.label)}
                     className={cn(
                       "flex flex-1 items-center justify-between",
-                      "text-[11px] font-bold uppercase tracking-widest text-muted-foreground",
+                      "text-[13px] font-bold uppercase tracking-widest text-muted-foreground",
                       "hover:text-foreground transition-colors duration-150"
                     )}
                     aria-expanded={!isSectionCollapsed}

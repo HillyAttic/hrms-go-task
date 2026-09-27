@@ -87,7 +87,7 @@ export function BusinessManager({
               className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm sm:text-base font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 whitespace-nowrap ${
                 selectedBusinessId === business.id
                   ? 'text-white shadow-md'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  : 'bg-muted text-muted-foreground hover:bg-muted'
               }`}
               style={{
                 backgroundColor: selectedBusinessId === business.id ? business.color : undefined,
@@ -100,7 +100,7 @@ export function BusinessManager({
               <div className="flex items-center gap-0.5 sm:gap-1">
                 <button
                   onClick={() => handleEdit(business)}
-                  className="p-1 sm:p-1.5 rounded hover:bg-gray-100 dark:bg-gray-700 text-gray-600 hover:text-gray-900 dark:text-white transition-colors"
+                  className="p-1 sm:p-1.5 rounded hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
                   title="Edit business"
                   aria-label="Edit business"
                 >
@@ -114,7 +114,7 @@ export function BusinessManager({
                         onDeleteBusiness(business.id);
                       }
                     }}
-                    className="p-1 sm:p-1.5 rounded hover:bg-red-100 text-gray-600 dark:text-gray-400 hover:text-red-600 transition-colors"
+                    className="p-1 sm:p-1.5 rounded hover:bg-red-100 dark:hover:bg-red-900/30 text-muted-foreground hover:text-red-600 transition-colors"
                     title="Delete business"
                     aria-label="Delete business"
                   >
@@ -140,41 +140,41 @@ export function BusinessManager({
       {/* Add/Edit Business Modal */}
       {showAddModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onClick={handleCancel}>
-          <div className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-md w-full p-4 sm:p-6 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">
+          <div className="bg-card rounded-lg shadow-xl max-w-md w-full p-4 sm:p-6 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-lg sm:text-xl font-bold text-foreground mb-3 sm:mb-4">
               {editingBusiness ? 'Edit Business' : 'Add New Business'}
             </h3>
             
             <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-muted-foreground mb-1">
                   Business Name *
                 </label>
                 <input
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+                  className="w-full px-3 py-2 text-sm sm:text-base border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                   placeholder="e.g., Tech Startup, Consulting Firm"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-muted-foreground mb-1">
                   Description
                 </label>
                 <textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+                  className="w-full px-3 py-2 text-sm sm:text-base border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
                   placeholder="Brief description of this business"
                   rows={3}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-muted-foreground mb-2">
                   Color Theme
                 </label>
                 <div className="flex flex-wrap gap-2">

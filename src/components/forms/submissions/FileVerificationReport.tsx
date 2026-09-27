@@ -273,21 +273,21 @@ export function FileVerificationReport({
             placeholder="Search by name or email..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+            className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
           />
           <input
             type="date"
             placeholder="Start date"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            className="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+            className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
           />
           <input
             type="date"
             placeholder="End date"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            className="px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+            className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
           />
         </div>
 
@@ -295,7 +295,7 @@ export function FileVerificationReport({
         {(searchTerm || startDate || endDate) && (
           <div className="mt-3 flex flex-wrap gap-2 items-center">
             {searchTerm && (
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
                 Search: {searchTerm}
                 <button
                   onClick={() => setSearchTerm('')}
@@ -306,7 +306,7 @@ export function FileVerificationReport({
               </span>
             )}
             {startDate && (
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-100 text-green-800">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
                 From: {startDate}
                 <button
                   onClick={() => setStartDate('')}
@@ -317,7 +317,7 @@ export function FileVerificationReport({
               </span>
             )}
             {endDate && (
-              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-100 text-green-800">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
                 To: {endDate}
                 <button
                   onClick={() => setEndDate('')}
@@ -333,7 +333,7 @@ export function FileVerificationReport({
                 setStartDate('');
                 setEndDate('');
               }}
-              className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+              className="text-sm text-blue-600 hover:text-blue-700 dark:hover:text-blue-300 font-medium"
             >
               Clear all
             </button>
@@ -353,7 +353,7 @@ export function FileVerificationReport({
                   setStartDate('');
                   setEndDate('');
                 }}
-                className="mt-2 text-blue-600 hover:text-blue-700"
+                className="mt-2 text-blue-600 hover:text-blue-700 dark:hover:text-blue-300"
               >
                 Clear filters
               </button>
@@ -369,13 +369,13 @@ export function FileVerificationReport({
                 return (
                   <div key={dayLabel} className="space-y-3">
                     {/* Day Header */}
-                    <div className="bg-blue-100 border border-blue-200 rounded-lg px-3 sm:px-4 py-2 sm:py-3">
+                    <div className="bg-blue-100 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg px-3 sm:px-4 py-2 sm:py-3">
                       <div className="flex items-start justify-between gap-3">
                         <div>
                           <h3 className="text-base sm:text-lg font-semibold text-blue-900">
                             {dayLabel}
                           </h3>
-                          <p className="text-xs sm:text-sm text-blue-700">
+                          <p className="text-xs sm:text-sm text-blue-700 dark:text-blue-300">
                             {daySubs.length} submission(s)
                           </p>
                         </div>
@@ -425,35 +425,35 @@ export function FileVerificationReport({
                     {isExpanded && (
                       <>
                         {/* Desktop Table */}
-                        <div className="hidden lg:block border border-gray-200 rounded-lg overflow-hidden">
+                        <div className="hidden lg:block border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
                           <div className="overflow-x-auto">
                             <table className="w-full border-collapse">
                               <thead>
-                                <tr className="bg-gray-100">
-                                  <th className="sticky left-0 z-20 bg-gray-100 px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-r border-gray-300 min-w-[120px]">
+                                <tr className="bg-gray-100 dark:bg-gray-900/30">
+                                  <th className="sticky left-0 z-20 bg-gray-100 dark:bg-gray-900/30 px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-r border-gray-300 dark:border-gray-700 min-w-[120px]">
                                     Name
                                   </th>
-                                  <th className="sticky left-[120px] z-20 bg-gray-100 px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-r border-gray-300 min-w-[180px]">
+                                  <th className="sticky left-[120px] z-20 bg-gray-100 dark:bg-gray-900/30 px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-r border-gray-300 dark:border-gray-700 min-w-[180px]">
                                     Email
                                   </th>
-                                  <th className="sticky left-[300px] z-20 bg-gray-100 px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-r border-gray-300 min-w-[160px]">
+                                  <th className="sticky left-[300px] z-20 bg-gray-100 dark:bg-gray-900/30 px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-r border-gray-300 dark:border-gray-700 min-w-[160px]">
                                     Date &amp; Time
                                   </th>
                                   {categories.map((cat) => (
                                     <th
                                       key={cat.key}
-                                      className="bg-gray-100 px-4 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider border-r border-gray-300 min-w-[80px]"
+                                      className="bg-gray-100 dark:bg-gray-900/30 px-4 py-3 text-center text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-r border-gray-300 dark:border-gray-700 min-w-[80px]"
                                     >
                                       {cat.shortLabel}
                                     </th>
                                   ))}
                                   {remarkField && (
-                                    <th className="bg-gray-100 px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-r border-gray-300 min-w-[200px]">
+                                    <th className="bg-gray-100 dark:bg-gray-900/30 px-4 py-3 text-left text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider border-r border-gray-300 dark:border-gray-700 min-w-[200px]">
                                       Remark
                                     </th>
                                   )}
                                   {onDelete && (
-                                    <th className="bg-gray-100 px-4 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider min-w-[100px]">
+                                    <th className="bg-gray-100 dark:bg-gray-900/30 px-4 py-3 text-center text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wider min-w-[100px]">
                                       Actions
                                     </th>
                                   )}
@@ -466,10 +466,10 @@ export function FileVerificationReport({
                                     className={
                                       rowIndex % 2 === 0
                                         ? 'bg-white'
-                                        : 'bg-gray-50'
+                                        : 'bg-gray-50 dark:bg-gray-900/30'
                                     }
                                   >
-                                    <td className="sticky left-0 z-10 px-4 py-3 text-sm text-gray-900 border-r border-gray-200 bg-inherit">
+                                    <td className="sticky left-0 z-10 px-4 py-3 text-sm text-gray-900 border-r border-gray-200 dark:border-gray-700 bg-inherit">
                                       <div
                                         className="font-medium truncate"
                                         title={
@@ -480,7 +480,7 @@ export function FileVerificationReport({
                                         {submission.submitterName || 'Anonymous'}
                                       </div>
                                     </td>
-                                    <td className="sticky left-[120px] z-10 px-4 py-3 text-sm text-gray-600 border-r border-gray-200 bg-inherit">
+                                    <td className="sticky left-[120px] z-10 px-4 py-3 text-sm text-gray-600 border-r border-gray-200 dark:border-gray-700 bg-inherit">
                                       <div
                                         className="truncate"
                                         title={submission.submitterEmail || '-'}
@@ -488,7 +488,7 @@ export function FileVerificationReport({
                                         {submission.submitterEmail || '-'}
                                       </div>
                                     </td>
-                                    <td className="sticky left-[300px] z-10 px-4 py-3 text-sm text-gray-600 border-r border-gray-200 bg-inherit whitespace-nowrap">
+                                    <td className="sticky left-[300px] z-10 px-4 py-3 text-sm text-gray-600 border-r border-gray-200 dark:border-gray-700 bg-inherit whitespace-nowrap">
                                       {formatSubmittedAt(
                                         submission.submittedAt
                                       )}
@@ -496,13 +496,13 @@ export function FileVerificationReport({
                                     {categories.map((cat) => (
                                       <td
                                         key={cat.key}
-                                        className="px-4 py-3 text-sm text-gray-900 text-center border-r border-gray-200"
+                                        className="px-4 py-3 text-sm text-gray-900 text-center border-r border-gray-200 dark:border-gray-700"
                                       >
                                         {getValue(submission, cat.fieldId)}
                                       </td>
                                     ))}
                                     {remarkField && (
-                                      <td className="px-4 py-3 text-sm text-gray-900 border-r border-gray-200">
+                                      <td className="px-4 py-3 text-sm text-gray-900 border-r border-gray-200 dark:border-gray-700">
                                         <div
                                           className="truncate max-w-xs"
                                           title={getRemarkValue(submission)}
@@ -528,23 +528,23 @@ export function FileVerificationReport({
                               </tbody>
                               {/* Daily totals footer */}
                               <tfoot>
-                                <tr className="bg-blue-50 font-semibold">
+                                <tr className="bg-blue-50 dark:bg-blue-900/30 font-semibold">
                                   <td
                                     colSpan={3}
-                                    className="px-4 py-2 text-sm text-blue-900 border-r border-gray-200"
+                                    className="px-4 py-2 text-sm text-blue-900 border-r border-gray-200 dark:border-gray-700"
                                   >
                                     Daily Total
                                   </td>
                                   {categories.map((cat) => (
                                     <td
                                       key={cat.key}
-                                      className="px-4 py-2 text-sm text-blue-900 text-center border-r border-gray-200"
+                                      className="px-4 py-2 text-sm text-blue-900 text-center border-r border-gray-200 dark:border-gray-700"
                                     >
                                       {totals[cat.key] ?? 0}
                                     </td>
                                   ))}
                                   {remarkField && (
-                                    <td className="px-4 py-2 text-sm text-blue-900 border-r border-gray-200">
+                                    <td className="px-4 py-2 text-sm text-blue-900 border-r border-gray-200 dark:border-gray-700">
                                       —
                                     </td>
                                   )}
@@ -564,10 +564,10 @@ export function FileVerificationReport({
                           {daySubs.map((submission) => (
                             <div
                               key={submission.id}
-                              className="border border-gray-200 rounded-lg p-4 bg-white"
+                              className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-white"
                             >
                               {/* Submitter Info */}
-                              <div className="mb-3 pb-3 border-b border-gray-200">
+                              <div className="mb-3 pb-3 border-b border-gray-200 dark:border-gray-700">
                                 <div className="text-sm font-semibold text-gray-900">
                                   {submission.submitterName || 'Anonymous'}
                                 </div>
@@ -599,7 +599,7 @@ export function FileVerificationReport({
                                     <span className="text-xs font-medium text-gray-500">
                                       {cat.label}
                                     </span>
-                                    <span className="text-sm font-semibold text-gray-900 bg-gray-100 rounded px-2 py-0.5">
+                                    <span className="text-sm font-semibold text-gray-900 bg-gray-100 dark:bg-gray-900/30 rounded px-2 py-0.5">
                                       {getValue(submission, cat.fieldId)}
                                     </span>
                                   </div>
@@ -609,7 +609,7 @@ export function FileVerificationReport({
                                     <div className="text-xs font-medium text-gray-500 mb-1">
                                       {remarkField.label}
                                     </div>
-                                    <div className="text-sm text-gray-900 bg-gray-50 rounded p-2">
+                                    <div className="text-sm text-gray-900 bg-gray-50 dark:bg-gray-900/30 rounded p-2">
                                       {getRemarkValue(submission)}
                                     </div>
                                   </div>
@@ -618,7 +618,7 @@ export function FileVerificationReport({
 
                               {/* Actions */}
                               {onDelete && (
-                                <div className="mt-4 pt-3 border-t border-gray-200">
+                                <div className="mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
                                   <button
                                     onClick={() =>
                                       handleDelete(submission.id)
@@ -676,7 +676,7 @@ export function FileVerificationReport({
 
       {/* Scroll hint for desktop */}
       <div className="hidden lg:block px-6 pb-6">
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 flex items-center space-x-2">
+        <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg p-3 flex items-center space-x-2">
           <svg
             className="w-5 h-5 text-blue-600"
             fill="none"
@@ -690,7 +690,7 @@ export function FileVerificationReport({
               d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
             />
           </svg>
-          <span className="text-sm text-blue-800">
+          <span className="text-sm text-blue-800 dark:text-blue-300">
             Scroll horizontally to see all columns
           </span>
         </div>

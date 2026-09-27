@@ -174,13 +174,13 @@ export function TaskCreationModal({ open, onClose, onTaskCreated }: TaskCreation
         
         <form onSubmit={handleSubmit} className="space-y-4">
           {errors.submit && (
-            <div className="bg-red-50 border border-red-200 rounded-md p-3">
-              <p className="text-sm text-red-700">{errors.submit}</p>
+            <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 rounded-md p-3">
+              <p className="text-sm text-red-700 dark:text-red-300">{errors.submit}</p>
             </div>
           )}
           
           <div className="space-y-2">
-            <label htmlFor="title" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label htmlFor="title" className="text-sm font-medium text-muted-foreground">
               Task Title *
             </label>
             <Input
@@ -188,7 +188,7 @@ export function TaskCreationModal({ open, onClose, onTaskCreated }: TaskCreation
               value={formData.title}
               onChange={(e) => handleInputChange('title', e.target.value)}
               placeholder="Enter task title"
-              className={errors.title ? 'border-red-300' : ''}
+              className={errors.title ? 'border-red-300 dark:border-red-700' : ''}
             />
             {errors.title && (
               <p className="text-sm text-red-600">{errors.title}</p>
@@ -196,7 +196,7 @@ export function TaskCreationModal({ open, onClose, onTaskCreated }: TaskCreation
           </div>
           
           <div className="space-y-2">
-            <label htmlFor="description" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label htmlFor="description" className="text-sm font-medium text-muted-foreground">
               Description
             </label>
             <Textarea
@@ -205,7 +205,7 @@ export function TaskCreationModal({ open, onClose, onTaskCreated }: TaskCreation
               onChange={(e) => handleInputChange('description', e.target.value)}
               placeholder="Enter task description (optional)"
               rows={3}
-              className={errors.description ? 'border-red-300' : ''}
+              className={errors.description ? 'border-red-300 dark:border-red-700' : ''}
             />
             {errors.description && (
               <p className="text-sm text-red-600">{errors.description}</p>
@@ -214,7 +214,7 @@ export function TaskCreationModal({ open, onClose, onTaskCreated }: TaskCreation
           
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <label htmlFor="status" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label htmlFor="status" className="text-sm font-medium text-muted-foreground">
                 Status
               </label>
               <Select
@@ -229,7 +229,7 @@ export function TaskCreationModal({ open, onClose, onTaskCreated }: TaskCreation
             </div>
             
             <div className="space-y-2">
-              <label htmlFor="priority" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label htmlFor="priority" className="text-sm font-medium text-muted-foreground">
                 Priority
               </label>
               <Select
@@ -245,7 +245,7 @@ export function TaskCreationModal({ open, onClose, onTaskCreated }: TaskCreation
           </div>
           
           <div className="space-y-2">
-            <label htmlFor="dueDate" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label htmlFor="dueDate" className="text-sm font-medium text-muted-foreground">
               Due Date
             </label>
             <Input
@@ -258,7 +258,7 @@ export function TaskCreationModal({ open, onClose, onTaskCreated }: TaskCreation
           </div>
           
           <div className="space-y-2">
-            <label htmlFor="assignee" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label htmlFor="assignee" className="text-sm font-medium text-muted-foreground">
               Assign To
             </label>
             <Select
@@ -286,13 +286,13 @@ export function TaskCreationModal({ open, onClose, onTaskCreated }: TaskCreation
                   return emp ? (
                     <div
                       key={empId}
-                      className="flex items-center justify-between bg-gray-100 dark:bg-gray-800 rounded px-3 py-2"
+                      className="flex items-center justify-between bg-muted rounded px-3 py-2"
                     >
                       <span className="text-sm">{emp.name}</span>
                       <button
                         type="button"
                         onClick={() => removeEmployee(empId)}
-                        className="text-red-600 hover:text-red-700"
+                        className="text-red-600 hover:text-red-700 dark:hover:text-red-300"
                       >
                         <XMarkIcon className="w-4 h-4" />
                       </button>

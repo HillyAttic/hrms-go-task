@@ -111,9 +111,9 @@ export default function FormBuilderListPage() {
 
   const getStatusBadge = (status: string) => {
     const styles = {
-      draft: { bg: 'bg-yellow-100', text: 'text-yellow-800', border: 'border-yellow-300', label: 'Draft' },
-      published: { bg: 'bg-green-100', text: 'text-green-800', border: 'border-green-300', label: 'Published' },
-      archived: { bg: 'bg-gray-100', text: 'text-gray-800', border: 'border-gray-300', label: 'Archived' },
+      draft: { bg: 'bg-yellow-100 dark:bg-yellow-900/30', text: 'text-yellow-800 dark:text-yellow-300', border: 'border-yellow-300 dark:border-yellow-700', label: 'Draft' },
+      published: { bg: 'bg-green-100 dark:bg-green-900/30', text: 'text-green-800 dark:text-green-300', border: 'border-green-300 dark:border-green-700', label: 'Published' },
+      archived: { bg: 'bg-gray-100 dark:bg-gray-900/30', text: 'text-gray-800 dark:text-gray-300', border: 'border-gray-300 dark:border-gray-700', label: 'Archived' },
     };
 
     const style = styles[status as keyof typeof styles] || styles.draft;
@@ -129,7 +129,7 @@ export default function FormBuilderListPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+      <div className="flex items-center justify-center min-h-screen bg-gray-50 dark:bg-gray-900/30">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -144,7 +144,7 @@ export default function FormBuilderListPage() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </motion.div>
-          <p className="text-lg font-medium text-gray-700">
+          <p className="text-lg font-medium text-gray-700 dark:text-gray-300">
             Loading forms...
           </p>
         </motion.div>
@@ -153,9 +153,9 @@ export default function FormBuilderListPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900/30">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 shadow-sm">
+      <div className="bg-white border-b border-gray-200 dark:border-gray-700 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
           <div className="flex items-center justify-between gap-3">
             <div className="flex-1 min-w-0">
@@ -185,7 +185,7 @@ export default function FormBuilderListPage() {
                 className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg font-medium text-xs sm:text-sm transition-all whitespace-nowrap ${
                   filter === status
                     ? 'bg-indigo-600 text-white shadow-md'
-                    : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-200'
+                    : 'bg-white text-gray-600 hover:bg-gray-50 dark:hover:bg-gray-900/30 border border-gray-200 dark:border-gray-700'
                 }`}
               >
                 {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -204,10 +204,10 @@ export default function FormBuilderListPage() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className="text-center py-12 sm:py-20 bg-white rounded-xl border border-gray-200 shadow-sm"
+              className="text-center py-12 sm:py-20 bg-white rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm"
             >
               <motion.div
-                className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 rounded-2xl mx-auto mb-4 sm:mb-6 flex items-center justify-center border border-gray-300"
+                className="w-16 h-16 sm:w-20 sm:h-20 bg-gray-100 dark:bg-gray-900/30 rounded-2xl mx-auto mb-4 sm:mb-6 flex items-center justify-center border border-gray-300 dark:border-gray-700"
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
               >
@@ -248,7 +248,7 @@ export default function FormBuilderListPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.05 }}
                 whileHover={{ y: -4 }}
-                className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden"
+                className="bg-white rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-all cursor-pointer overflow-hidden"
                 onClick={() => handleEdit(template.id)}
               >
                 {/* Header */}
@@ -267,7 +267,7 @@ export default function FormBuilderListPage() {
                 </div>
 
                 {/* Stats */}
-                <div className="px-4 py-3 bg-gray-50">
+                <div className="px-4 py-3 bg-gray-50 dark:bg-gray-900/30">
                   <div className="flex items-center justify-around">
                     <div className="text-center">
                       <div className="text-xl font-bold text-gray-900">
@@ -329,7 +329,7 @@ export default function FormBuilderListPage() {
                           e.stopPropagation();
                           handleDuplicate(template.id);
                         }}
-                        className="px-3 py-2 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-md transition-colors flex items-center justify-center space-x-1"
+                        className="px-3 py-2 text-sm bg-gray-100 dark:bg-gray-900/30 hover:bg-gray-200 text-gray-700 dark:text-gray-300 font-medium rounded-md transition-colors flex items-center justify-center space-x-1"
                       >
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
@@ -344,7 +344,7 @@ export default function FormBuilderListPage() {
                         e.stopPropagation();
                         setPreviewTemplate(template);
                       }}
-                      className="px-3 py-2 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium rounded-md transition-colors flex items-center justify-center space-x-1"
+                      className="px-3 py-2 text-sm bg-gray-100 dark:bg-gray-900/30 hover:bg-gray-200 text-gray-700 dark:text-gray-300 font-medium rounded-md transition-colors flex items-center justify-center space-x-1"
                     >
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -359,7 +359,7 @@ export default function FormBuilderListPage() {
                         e.stopPropagation();
                         handleDelete(template.id, template.title);
                       }}
-                      className="px-3 py-2 text-sm bg-red-50 hover:bg-red-100 text-red-600 font-medium rounded-md transition-colors flex items-center justify-center space-x-1"
+                      className="px-3 py-2 text-sm bg-red-50 dark:bg-red-900/30 hover:bg-red-100 dark:hover:bg-red-900/30 text-red-600 font-medium rounded-md transition-colors flex items-center justify-center space-x-1"
                     >
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />

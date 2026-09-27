@@ -99,10 +99,10 @@ export function ClientList({
             />
           </div>
           <div className="flex items-center gap-2">
-            <FunnelIcon className="w-5 h-5 text-gray-400" />
+            <FunnelIcon className="w-5 h-5 text-muted-foreground" />
             <select
               disabled
-              className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-dark opacity-50"
+              className="px-3 py-2 border border-border rounded-md bg-card opacity-50"
             >
               <option>All Status</option>
             </select>
@@ -121,7 +121,7 @@ export function ClientList({
       <div className="flex flex-col sm:flex-row gap-4">
         {/* Search Input */}
         <div className="flex-1 relative">
-          <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground" />
           <Input
             type="text"
             placeholder="Search by S.No, name, email, business, phone, GSTIN, or PAN..."
@@ -134,11 +134,11 @@ export function ClientList({
 
         {/* Status Filter */}
         <div className="flex items-center gap-2">
-          <FunnelIcon className="w-5 h-5 text-gray-400" />
+          <FunnelIcon className="w-5 h-5 text-muted-foreground" />
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as 'all' | 'active' | 'inactive')}
-            className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-dark"
+            className="px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card"
             aria-label="Filter by status"
           >
             <option value="all">All Status</option>
@@ -150,19 +150,19 @@ export function ClientList({
 
       {/* Results Count */}
       <div className="flex items-center justify-between">
-        <div className="text-sm text-gray-600 dark:text-gray-400">
+        <div className="text-sm text-muted-foreground">
           Showing {startIndex + 1}-{Math.min(endIndex, filteredClients.length)} of {filteredClients.length} client{filteredClients.length !== 1 ? 's' : ''}
           {searchQuery && ` matching "${searchQuery}"`}
         </div>
         <div className="flex items-center gap-2">
-          <label className="text-sm text-gray-600 dark:text-gray-400">Show:</label>
+          <label className="text-sm text-muted-foreground">Show:</label>
           <select
             value={itemsPerPage}
             onChange={(e) => {
               setItemsPerPage(Number(e.target.value));
               setCurrentPage(1);
             }}
-            className="px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-white dark:bg-gray-dark"
+            className="px-2 py-1 text-sm border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card"
           >
             <option value={25}>25</option>
             <option value={50}>50</option>
@@ -170,7 +170,7 @@ export function ClientList({
             <option value={200}>200</option>
             <option value={500}>All</option>
           </select>
-          <span className="text-sm text-gray-600 dark:text-gray-400">per page</span>
+          <span className="text-sm text-muted-foreground">per page</span>
         </div>
       </div>
 
@@ -211,7 +211,7 @@ export function ClientList({
       {/* Pagination Controls */}
       {showPagination && (
         <div className="flex items-center justify-between border-t pt-4">
-          <div className="text-sm text-gray-600 dark:text-gray-400">
+          <div className="text-sm text-muted-foreground">
             Page {currentPage} of {totalPages}
           </div>
           

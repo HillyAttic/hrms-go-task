@@ -330,8 +330,8 @@ export default function ClientAccessPage() {
     <div className="p-6">
       {/* Header */}
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Client Access</h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-1">
+        <h1 className="text-2xl font-bold text-foreground">Client Access</h1>
+        <p className="text-muted-foreground mt-1">
           Control which clients each user can see
         </p>
       </div>
@@ -341,7 +341,7 @@ export default function ClientAccessPage() {
           <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-purple-600 mx-auto" />
         </div>
       ) : users.length === 0 ? (
-        <div className="p-10 text-center text-gray-500 dark:text-gray-400">
+        <div className="p-10 text-center text-muted-foreground">
           No users found.
         </div>
       ) : (
@@ -350,7 +350,7 @@ export default function ClientAccessPage() {
           <div className="mb-6">
             {/* Mobile Dropdown - visible only on small screens */}
             <div className="block md:hidden mb-4">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className="block text-sm font-medium text-muted-foreground mb-2">
                 Select User
               </label>
               <select
@@ -360,7 +360,7 @@ export default function ClientAccessPage() {
                   setSearchQuery('');
                   setComplianceFilter('all');
                 }}
-                className="w-full px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-800 dark:text-white"
+                className="w-full px-4 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
               >
                 <option value="">Choose a user...</option>
                 {users.map((user) => (
@@ -379,7 +379,7 @@ export default function ClientAccessPage() {
                   placeholder="Search users by name, email, or role..."
                   value={userSearchQuery}
                   onChange={(e) => setUserSearchQuery(e.target.value)}
-                  className="w-full px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-800 dark:text-white"
+                  className="w-full px-4 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
               </div>
 
@@ -396,7 +396,7 @@ export default function ClientAccessPage() {
                     className={`p-4 rounded-lg border-2 transition-all text-left ${
                       activeUserId === user.uid
                         ? 'border-purple-600 bg-purple-50 dark:bg-purple-900/20 shadow-md'
-                        : 'border-gray-200 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-700 hover:shadow'
+                        : 'border-border hover:border-purple-300 dark:hover:border-purple-700 hover:shadow'
                     }`}
                   >
                     <div className="flex items-start justify-between">
@@ -405,12 +405,12 @@ export default function ClientAccessPage() {
                           className={`text-sm font-medium truncate ${
                             activeUserId === user.uid
                               ? 'text-purple-700 dark:text-purple-300'
-                              : 'text-gray-900 dark:text-white'
+                              : 'text-foreground'
                           }`}
                         >
                           {user.displayName}
                         </p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400 truncate mt-0.5">
+                        <p className="text-xs text-muted-foreground truncate mt-0.5">
                           {user.email}
                         </p>
                       </div>
@@ -429,7 +429,7 @@ export default function ClientAccessPage() {
               </div>
 
               {filteredUsers.length === 0 && (
-                <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                <div className="text-center py-8 text-muted-foreground">
                   No users found matching "{userSearchQuery}"
                 </div>
               )}
@@ -440,7 +440,7 @@ export default function ClientAccessPage() {
           {activeUserId && (
             <div>
               <div className="mb-4">
-                <p className="text-sm text-gray-500 dark:text-gray-400">
+                <p className="text-sm text-muted-foreground">
                   Toggle clients to grant or revoke access for this user. Only assigned clients
                   will be visible to them on the Clients page and in task modals.
                 </p>
@@ -456,12 +456,12 @@ export default function ClientAccessPage() {
                   placeholder="Search clients..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="flex-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-800 dark:text-white"
+                  className="flex-1 px-3 py-2 text-sm border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                 />
                 <select
                   value={complianceFilter}
                   onChange={(e) => setComplianceFilter(e.target.value)}
-                  className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-800 dark:text-white"
+                  className="px-3 py-2 text-sm border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
                 >
                   <option value="all">All Rows</option>
                   <option value="roc">ROC</option>
@@ -497,56 +497,56 @@ export default function ClientAccessPage() {
               </div>
 
               {/* Client count */}
-              <div className="mb-2 text-xs text-gray-500 dark:text-gray-400">
+              <div className="mb-2 text-xs text-muted-foreground">
                 {filteredClients.length} clients shown
               </div>
 
               {/* Client Table */}
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden">
+              <div className="bg-card rounded-lg shadow border border-border overflow-hidden">
                 {filteredClients.length === 0 ? (
-                  <div className="p-10 text-center text-gray-500 dark:text-gray-400">
+                  <div className="p-10 text-center text-muted-foreground">
                     No clients match your search.
                   </div>
                 ) : (
                   <div className="overflow-x-auto">
                     <table className="w-full">
-                      <thead className="bg-gray-50 dark:bg-gray-700">
+                      <thead className="bg-muted">
                         <tr>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
+                          <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
                             S.No
                           </th>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
+                          <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
                             Client Name
                           </th>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
+                          <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
                             Business Name
                           </th>
-                          <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
+                          <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase">
                             PAN/GSTIN
                           </th>
-                          <th className="px-4 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">
+                          <th className="px-4 py-3 text-center text-xs font-medium text-muted-foreground uppercase">
                             Access
                           </th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-gray-100 dark:divide-gray-700">
+                      <tbody className="divide-y divide-border">
                         {filteredClients.map((client, idx) => {
                           const hasAccess = client.id ? allowedClientIds.has(client.id) : false;
                           return (
                             <tr
                               key={client.id}
-                              className="hover:bg-gray-50 dark:hover:bg-gray-700/50"
+                              className="hover:bg-muted/50"
                             >
-                              <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
+                              <td className="px-4 py-3 text-sm text-muted-foreground">
                                 {client.clientNumber || idx + 1}
                               </td>
-                              <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-white">
+                              <td className="px-4 py-3 text-sm font-medium text-foreground">
                                 {client.clientName}
                               </td>
-                              <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
+                              <td className="px-4 py-3 text-sm text-muted-foreground">
                                 {client.businessName || '-'}
                               </td>
-                              <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-300">
+                              <td className="px-4 py-3 text-sm text-muted-foreground">
                                 {getTaxId(client)}
                               </td>
                               <td className="px-4 py-3 text-center">
@@ -556,7 +556,7 @@ export default function ClientAccessPage() {
                                   className={`w-10 h-6 rounded-full transition-colors relative ${
                                     hasAccess
                                       ? 'bg-green-500'
-                                      : 'bg-gray-300 dark:bg-gray-600'
+                                      : 'bg-muted'
                                   } disabled:opacity-60`}
                                   title={
                                     hasAccess ? 'Revoke access' : 'Grant access'

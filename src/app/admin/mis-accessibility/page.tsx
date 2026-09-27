@@ -142,7 +142,7 @@ export default function MISAccessibilityPage() {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600 dark:text-gray-400">Loading...</p>
+          <p className="mt-4 text-muted-foreground">Loading...</p>
         </div>
       </div>
     );
@@ -151,8 +151,8 @@ export default function MISAccessibilityPage() {
   return (
     <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8 max-w-5xl">
       <div className="mb-4 sm:mb-6 md:mb-8">
-        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">MIS Accessibility</h1>
-        <p className="mt-1 sm:mt-2 text-xs sm:text-sm md:text-base text-gray-600 dark:text-gray-400">
+        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground">MIS Accessibility</h1>
+        <p className="mt-1 sm:mt-2 text-xs sm:text-sm md:text-base text-muted-foreground">
           Configure daily form and submission tracking for users
         </p>
       </div>
@@ -164,13 +164,13 @@ export default function MISAccessibilityPage() {
       ) : (
         <div className="space-y-4 sm:space-y-6 md:space-y-8">
           {/* Form Assignments */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
+          <div className="bg-card rounded-lg shadow-sm border border-border p-3 sm:p-4 md:p-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
               <div className="flex-1 min-w-0">
-                <h2 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900 dark:text-white">
+                <h2 className="text-base sm:text-lg md:text-xl font-semibold text-foreground">
                   Form Assignments
                 </h2>
-                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-0.5 sm:mt-1">
+                <p className="text-xs sm:text-sm text-muted-foreground mt-0.5 sm:mt-1">
                   Assign different forms to different users
                 </p>
               </div>
@@ -184,13 +184,13 @@ export default function MISAccessibilityPage() {
 
             {/* Summary Card */}
             {formToUserMappings.length > 0 ? (
-              <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
+              <div className="bg-muted rounded-lg p-3 sm:p-4 border border-border">
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-0 mb-3">
                   <div>
-                    <h3 className="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">
+                    <h3 className="text-xs sm:text-sm font-medium text-foreground">
                       Current Configuration
                     </h3>
-                    <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+                    <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">
                       {totalForms} form{totalForms !== 1 ? 's' : ''} assigned to {totalUsers} user{totalUsers !== 1 ? 's' : ''}
                       {requiredForms > 0 && ` • ${requiredForms} required for clock-out`}
                     </p>
@@ -200,7 +200,7 @@ export default function MISAccessibilityPage() {
                   {formToUserMappings.map((mapping) => (
                     <div
                       key={mapping.formId}
-                      className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 py-2 px-2 sm:px-3 bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700"
+                      className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 py-2 px-2 sm:px-3 bg-card rounded border border-border"
                     >
                       <div className="flex items-center gap-2 flex-1 min-w-0">
                         <svg
@@ -217,12 +217,12 @@ export default function MISAccessibilityPage() {
                             d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
                           />
                         </svg>
-                        <span className="text-xs sm:text-sm text-gray-900 dark:text-white font-medium truncate">
+                        <span className="text-xs sm:text-sm text-foreground font-medium truncate">
                           {mapping.formTitle}
                         </span>
                       </div>
                       <div className="flex items-center gap-2 flex-shrink-0 ml-5 sm:ml-0">
-                        <span className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">
+                        <span className="text-[10px] sm:text-xs text-muted-foreground">
                           {mapping.assignedUserIds.length} user{mapping.assignedUserIds.length !== 1 ? 's' : ''}
                         </span>
                         {mapping.requiredForClockout && (
@@ -236,14 +236,14 @@ export default function MISAccessibilityPage() {
                 </div>
               </div>
             ) : (
-              <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-6 sm:p-8 border border-dashed border-gray-300 dark:border-gray-700 text-center">
+              <div className="bg-muted rounded-lg p-6 sm:p-8 border border-dashed border-border text-center">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-10 h-10 sm:w-12 sm:h-12 text-gray-400 mx-auto mb-2 sm:mb-3"
+                  className="w-10 h-10 sm:w-12 sm:h-12 text-muted-foreground mx-auto mb-2 sm:mb-3"
                 >
                   <path
                     strokeLinecap="round"
@@ -251,8 +251,8 @@ export default function MISAccessibilityPage() {
                     d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
                   />
                 </svg>
-                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-1">No form assignments configured</p>
-                <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-500">
+                <p className="text-xs sm:text-sm text-muted-foreground mb-1">No form assignments configured</p>
+                <p className="text-[10px] sm:text-xs text-muted-foreground dark:text-muted-foreground">
                   Click "Manage Assignments" to assign forms to users
                 </p>
               </div>
@@ -260,8 +260,8 @@ export default function MISAccessibilityPage() {
           </div>
 
           {/* Submissions Access */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
-            <h2 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4 md:mb-6">
+          <div className="bg-card rounded-lg shadow-sm border border-border p-3 sm:p-4 md:p-6">
+            <h2 className="text-base sm:text-lg md:text-xl font-semibold text-foreground mb-3 sm:mb-4 md:mb-6">
               Submissions Access
             </h2>
 
@@ -273,7 +273,7 @@ export default function MISAccessibilityPage() {
                 label="Who can view submissions"
                 placeholder="Search users by name or email..."
               />
-              <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">
+              <p className="text-[10px] sm:text-xs text-muted-foreground">
                 These users will be able to view form submissions in the MIS Tracker
               </p>
             </div>

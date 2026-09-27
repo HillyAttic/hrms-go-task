@@ -325,7 +325,7 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
           <div className="space-y-4">
             {/* Title - Read-only for non-creators */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-muted-foreground mb-1">
                 Title
               </label>
               {canEditAll ? (
@@ -335,7 +335,7 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
                   className="w-full"
                 />
               ) : (
-                <div className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md text-gray-900 dark:text-white">
+                <div className="w-full px-3 py-2 bg-muted border border-border rounded-md text-foreground">
                   {editingTask.title}
                 </div>
               )}
@@ -343,7 +343,7 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
 
             {/* Description - Read-only for non-creators */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-muted-foreground mb-1">
                 Description
               </label>
               {canEditAll ? (
@@ -354,7 +354,7 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
                   className="w-full"
                 />
               ) : (
-                <div className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md text-gray-900 dark:text-white min-h-[80px]">
+                <div className="w-full px-3 py-2 bg-muted border border-border rounded-md text-foreground min-h-[80px]">
                   {editingTask.description || 'No description'}
                 </div>
               )}
@@ -363,7 +363,7 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
             <div className="grid grid-cols-2 gap-4">
               {/* Status - Editable for everyone */}
               <div className={!canEditAll ? 'ring-2 ring-ring ring-offset-2 rounded-lg p-2 -m-2' : ''}>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-muted-foreground mb-1">
                   Status {!canEditAll && <span className="text-blue-600 text-xs">(You can edit this)</span>}
                 </label>
                 <Select
@@ -379,7 +379,7 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
 
               {/* Priority - Read-only for non-creators */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-muted-foreground mb-1">
                   Priority
                 </label>
                 {canEditAll ? (
@@ -393,7 +393,7 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
                     <option value={TaskPriority.HIGH}>High</option>
                   </Select>
                 ) : (
-                  <div className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md text-gray-900 dark:text-white h-10 flex items-center">
+                  <div className="w-full px-3 py-2 bg-muted border border-border rounded-md text-foreground h-10 flex items-center">
                     {editingTask.priority === TaskPriority.LOW && 'Low'}
                     {editingTask.priority === TaskPriority.MEDIUM && 'Medium'}
                     {editingTask.priority === TaskPriority.HIGH && 'High'}
@@ -404,7 +404,7 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
 
             {/* Due Date - Read-only for non-creators */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-muted-foreground mb-1">
                 Due Date
               </label>
               {canEditAll ? (
@@ -418,7 +418,7 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
                   className="w-full"
                 />
               ) : (
-                <div className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md text-gray-900 dark:text-white">
+                <div className="w-full px-3 py-2 bg-muted border border-border rounded-md text-foreground">
                   {editingTask.dueDate
                     ? new Date(editingTask.dueDate).toLocaleDateString()
                     : 'No due date'}
@@ -428,7 +428,7 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
 
             {/* Assigned Users - Read-only for non-creators */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              <label className="block text-sm font-medium text-muted-foreground mb-1">
                 Assigned Users
               </label>
               {canEditAll ? (
@@ -459,12 +459,12 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
                     className="w-full"
                     disabled={loadingUsers}
                   />
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-xs text-muted-foreground mt-1">
                     {loadingUsers ? 'Loading user names...' : 'Separate multiple users with commas'}
                   </p>
                 </>
               ) : (
-                <div className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md text-gray-900 dark:text-white">
+                <div className="w-full px-3 py-2 bg-muted border border-border rounded-md text-foreground">
                   {displayValue || 'No users assigned'}
                 </div>
               )}
@@ -473,10 +473,10 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
             {/* Client - Read-only, shown when task has a contactId */}
             {clientName && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className="block text-sm font-medium text-muted-foreground mb-1">
                   Client
                 </label>
-                <div className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md text-gray-900 dark:text-white">
+                <div className="w-full px-3 py-2 bg-muted border border-border rounded-md text-foreground">
                   {clientName}
                 </div>
               </div>
@@ -487,7 +487,7 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
           {editingTask.attachments && editingTask.attachments.length > 0 && (
             <div className="border-t pt-6">
               <div className="flex items-center mb-4">
-                <PaperClipIcon className="w-5 h-5 mr-2 text-gray-500 dark:text-gray-400" />
+                <PaperClipIcon className="w-5 h-5 mr-2 text-muted-foreground" />
                 <h3 className="text-lg font-medium">Attachments ({editingTask.attachments.length})</h3>
               </div>
               <div className="space-y-2">
@@ -497,20 +497,20 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
                     href={attachment.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3 px-4 py-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+                    className="flex items-center gap-3 px-4 py-3 bg-muted rounded-lg border border-border hover:bg-muted/50 transition-colors group"
                   >
-                    <DocumentIcon className="w-5 h-5 text-gray-400 flex-shrink-0" />
+                    <DocumentIcon className="w-5 h-5 text-muted-foreground flex-shrink-0" />
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                      <p className="text-sm font-medium text-foreground truncate">
                         {attachment.name}
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
+                      <p className="text-xs text-muted-foreground">
                         {attachment.size < 1024 * 1024
                           ? `${(attachment.size / 1024).toFixed(1)} KB`
                           : `${(attachment.size / (1024 * 1024)).toFixed(1)} MB`}
                       </p>
                     </div>
-                    <ArrowDownTrayIcon className="w-4 h-4 text-gray-400 group-hover:text-blue-500 flex-shrink-0 transition-colors" />
+                    <ArrowDownTrayIcon className="w-4 h-4 text-muted-foreground group-hover:text-blue-500 flex-shrink-0 transition-colors" />
                   </a>
                 ))}
               </div>
@@ -520,24 +520,24 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
           {/* Comments Section */}
           <div className="border-t pt-6">
             <div className="flex items-center mb-4">
-              <ChatBubbleLeftRightIcon className="w-5 h-5 mr-2 text-gray-500 dark:text-gray-400" />
+              <ChatBubbleLeftRightIcon className="w-5 h-5 mr-2 text-muted-foreground" />
               <h3 className="text-lg font-medium">Comments ({comments.length})</h3>
             </div>
 
             <div className="space-y-4 mb-4 max-h-60 overflow-y-auto">
               {comments.length === 0 ? (
-                <p className="text-gray-500 dark:text-gray-400 text-center py-4">No comments yet</p>
+                <p className="text-muted-foreground text-center py-4">No comments yet</p>
               ) : (
                 comments.map((comment) => (
-                  <div key={comment.id} className="bg-gray-50 dark:bg-gray-800 rounded-lg p-4">
+                  <div key={comment.id} className="bg-muted rounded-lg p-4">
                     <div className="flex items-start space-x-3">
-                      <UserCircleIcon className="w-8 h-8 text-gray-400 flex-shrink-0" />
+                      <UserCircleIcon className="w-8 h-8 text-muted-foreground flex-shrink-0" />
                       <div className="flex-1">
                         <div className="flex items-center justify-between">
-                          <span className="font-medium text-gray-900 dark:text-white">{resolveCommentAuthor(comment)}</span>
-                          <span className="text-sm text-gray-500 dark:text-gray-400">{formatDate(comment.createdAt)}</span>
+                          <span className="font-medium text-foreground">{resolveCommentAuthor(comment)}</span>
+                          <span className="text-sm text-muted-foreground">{formatDate(comment.createdAt)}</span>
                         </div>
-                        <p className="mt-1 text-gray-700 dark:text-gray-300">{comment.content}</p>
+                        <p className="mt-1 text-muted-foreground">{comment.content}</p>
                         {comment.attachments && comment.attachments.length > 0 && (
                           <div className="mt-2 space-y-1">
                             {comment.attachments.map((att, idx) => (
@@ -546,16 +546,16 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
                                 href={att.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors group text-sm"
+                                className="flex items-center gap-2 px-3 py-2 bg-card rounded border border-border hover:bg-muted dark:hover:bg-gray-600 transition-colors group text-sm"
                               >
-                                <DocumentIcon className="w-4 h-4 text-gray-400 flex-shrink-0" />
-                                <span className="flex-1 truncate text-gray-700 dark:text-gray-300">{att.name}</span>
-                                <span className="text-xs text-gray-400">
+                                <DocumentIcon className="w-4 h-4 text-muted-foreground flex-shrink-0" />
+                                <span className="flex-1 truncate text-muted-foreground">{att.name}</span>
+                                <span className="text-xs text-muted-foreground">
                                   {att.size < 1024 * 1024
                                     ? `${(att.size / 1024).toFixed(1)} KB`
                                     : `${(att.size / (1024 * 1024)).toFixed(1)} MB`}
                                 </span>
-                                <ArrowDownTrayIcon className="w-4 h-4 text-gray-400 group-hover:text-blue-500 flex-shrink-0" />
+                                <ArrowDownTrayIcon className="w-4 h-4 text-muted-foreground group-hover:text-blue-500 flex-shrink-0" />
                               </a>
                             ))}
                           </div>
@@ -573,13 +573,13 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
                 {commentFiles.map((file, idx) => (
                   <div key={idx} className="flex items-center gap-2 px-3 py-2 bg-blue-50 dark:bg-blue-900/20 rounded border border-blue-200 dark:border-blue-800 text-sm">
                     <DocumentIcon className="w-4 h-4 text-blue-500 flex-shrink-0" />
-                    <span className="flex-1 truncate text-gray-700 dark:text-gray-300">{file.name}</span>
-                    <span className="text-xs text-gray-400">
+                    <span className="flex-1 truncate text-muted-foreground">{file.name}</span>
+                    <span className="text-xs text-muted-foreground">
                       {file.size < 1024 * 1024
                         ? `${(file.size / 1024).toFixed(1)} KB`
                         : `${(file.size / (1024 * 1024)).toFixed(1)} MB`}
                     </span>
-                    <button onClick={() => removeCommentFile(idx)} className="text-gray-400 hover:text-red-500">
+                    <button onClick={() => removeCommentFile(idx)} className="text-muted-foreground hover:text-red-500">
                       <XMarkIcon className="w-4 h-4" />
                     </button>
                   </div>
@@ -614,7 +614,7 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
                 <button
                   type="button"
                   onClick={() => commentFileInputRef.current?.click()}
-                  className="flex items-center gap-1 px-3 py-2 text-sm text-gray-500 dark:text-gray-400 border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                  className="flex items-center gap-1 px-3 py-2 text-sm text-muted-foreground border border-border rounded-md hover:bg-muted/50 transition-colors"
                   title="Attach file (PNG, JPG, PDF, Excel, Word)"
                 >
                   <PaperClipIcon className="w-4 h-4" />

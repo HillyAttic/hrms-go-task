@@ -22,15 +22,15 @@ interface StatItemProps {
 
 function StatItem({ icon, label, value, color, bgColor }: StatItemProps) {
   return (
-    <div className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:bg-gray-700 transition-colors">
+    <div className="flex items-center gap-3 p-3 rounded-lg bg-muted hover:bg-muted transition-colors">
       <div className={`flex items-center justify-center w-10 h-10 rounded-full ${bgColor}`}>
         <div className={color}>
           {icon}
         </div>
       </div>
       <div>
-        <p className="text-xl font-bold text-gray-900 dark:text-white">{value}</p>
-        <p className="text-xs text-gray-600 dark:text-gray-400">{label}</p>
+        <p className="text-xl font-bold text-foreground">{value}</p>
+        <p className="text-xs text-muted-foreground">{label}</p>
       </div>
     </div>
   );
@@ -61,8 +61,8 @@ export function EmployeeStatsCard({ employees }: EmployeeStatsCardProps) {
     <Card>
       <CardContent className="p-4">
         <div className="mb-4">
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Employee Overview</h2>
-          <p className="text-xs text-gray-600 dark:text-gray-400 mt-0.5">Summary of all employee statuses</p>
+          <h2 className="text-lg font-semibold text-foreground">Employee Overview</h2>
+          <p className="text-xs text-muted-foreground mt-0.5">Summary of all employee statuses</p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -72,7 +72,7 @@ export function EmployeeStatsCard({ employees }: EmployeeStatsCardProps) {
             label="Total Employees"
             value={totalEmployees}
             color="text-blue-600"
-            bgColor="bg-blue-100"
+            bgColor="bg-blue-100 dark:bg-blue-900/30"
           />
 
           {/* Active Employees */}
@@ -81,7 +81,7 @@ export function EmployeeStatsCard({ employees }: EmployeeStatsCardProps) {
             label="Active"
             value={activeEmployees}
             color="text-green-600"
-            bgColor="bg-green-100"
+            bgColor="bg-green-100 dark:bg-green-900/30"
           />
 
           {/* On Leave Employees */}
@@ -90,7 +90,7 @@ export function EmployeeStatsCard({ employees }: EmployeeStatsCardProps) {
             label="On Leave"
             value={onLeaveEmployees}
             color="text-yellow-600"
-            bgColor="bg-yellow-100"
+            bgColor="bg-yellow-100 dark:bg-yellow-900/30"
           />
 
           {/* Resigned Employees */}
@@ -98,8 +98,8 @@ export function EmployeeStatsCard({ employees }: EmployeeStatsCardProps) {
             icon={<UserMinusIcon className="w-5 h-5" />}
             label="Resigned"
             value={resignedEmployees}
-            color="text-gray-600"
-            bgColor="bg-gray-100"
+            color="text-muted-foreground"
+            bgColor="bg-muted"
           />
         </div>
       </CardContent>

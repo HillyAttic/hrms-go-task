@@ -108,9 +108,9 @@ export function SearchableSelect({
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg">
+        <div className="absolute z-50 w-full mt-1 bg-card border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg">
           {/* Search Input */}
-          <div className="p-2 border-b border-gray-200">
+          <div className="p-2 border-b border-gray-200 dark:border-gray-700">
             <div className="relative">
               <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
               <input
@@ -119,7 +119,7 @@ export function SearchableSelect({
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search..."
-                className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-ring focus:border-transparent"
+                className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 dark:border-gray-700 rounded-md focus:ring-2 focus:ring-ring focus:border-transparent"
                 onClick={(e) => e.stopPropagation()}
               />
             </div>
@@ -137,9 +137,9 @@ export function SearchableSelect({
                   key={option.value}
                   type="button"
                   onClick={() => handleSelect(option.value)}
-                  className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 transition-colors ${
+                  className={`w-full text-left px-4 py-2.5 text-sm hover:bg-gray-50 dark:hover:bg-gray-900/30 transition-colors ${
                     option.value === value
-                      ? 'bg-blue-50 text-blue-700 font-medium'
+                      ? 'bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 font-medium'
                       : 'text-gray-900'
                   }`}
                 >

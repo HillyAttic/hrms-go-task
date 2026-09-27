@@ -136,7 +136,7 @@ export function SubmissionDetailModal({
         {/* Content */}
         <div className="p-6 space-y-6">
           {/* Submitter Info */}
-          <div className="bg-gray-50 rounded-lg p-4">
+          <div className="bg-gray-50 dark:bg-gray-900/30 rounded-lg p-4">
             <h3 className="text-sm font-semibold text-gray-900 mb-3">Submitter Information</h3>
             <div className="grid grid-cols-2 gap-4 text-sm">
               <div>
@@ -192,7 +192,7 @@ export function SubmissionDetailModal({
                     // Render section header differently
                     if (field.type === 'section') {
                       return (
-                        <div key={field.id} className="py-6 border-t-2 border-gray-300 mt-8 first:mt-0 first:pt-0 first:border-t-0">
+                        <div key={field.id} className="py-6 border-t-2 border-gray-300 dark:border-gray-700 mt-8 first:mt-0 first:pt-0 first:border-t-0">
                           <h2 className="text-2xl font-bold text-gray-900 mb-2">{field.label}</h2>
                           {field.description && (
                             <p className="text-sm text-gray-600 mt-1">{field.description}</p>
@@ -204,7 +204,7 @@ export function SubmissionDetailModal({
                     // Render regular field
                     return (
                       <div key={field.id} className="border-b pb-4">
-                        <div className="text-sm font-medium text-gray-700 mb-2">
+                        <div className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                           {field.label}
                           {field.required && <span className="text-red-500 ml-1">*</span>}
                         </div>
@@ -237,7 +237,7 @@ export function SubmissionDetailModal({
                       return (
                         <div
                           key={index}
-                          className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                          className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-900/30 rounded-lg"
                         >
                           <div className="flex items-center space-x-3">
                             <span className="text-2xl">📎</span>
@@ -266,12 +266,12 @@ export function SubmissionDetailModal({
               );
             } else {
               return (
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                <div className="bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-200 dark:border-yellow-700 rounded-lg p-4">
                   <div className="flex items-start space-x-3">
                     <span className="text-yellow-600 text-xl">ℹ️</span>
                     <div>
                       <h3 className="text-sm font-semibold text-yellow-900 mb-1">No Attachments</h3>
-                      <p className="text-sm text-yellow-700">
+                      <p className="text-sm text-yellow-700 dark:text-yellow-300">
                         No files were attached to this submission.
                       </p>
                     </div>
@@ -283,7 +283,7 @@ export function SubmissionDetailModal({
 
           {/* Metadata */}
           {submission.userAgent && (
-            <div className="bg-gray-50 rounded-lg p-4">
+            <div className="bg-gray-50 dark:bg-gray-900/30 rounded-lg p-4">
               <h3 className="text-sm font-semibold text-gray-900 mb-2">Technical Details</h3>
               <div className="text-xs text-gray-600 font-mono break-all">
                 {submission.userAgent}
@@ -293,7 +293,7 @@ export function SubmissionDetailModal({
         </div>
 
         {/* Footer */}
-        <div className="sticky bottom-0 bg-gray-50 border-t px-6 py-4 flex items-center justify-between">
+        <div className="sticky bottom-0 bg-gray-50 dark:bg-gray-900/30 border-t px-6 py-4 flex items-center justify-between">
           <button
             onClick={handleToggleFlag}
             disabled={toggling}

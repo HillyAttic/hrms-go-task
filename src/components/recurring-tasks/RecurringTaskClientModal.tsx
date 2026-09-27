@@ -639,12 +639,12 @@ export function RecurringTaskClientModal({
         />
 
         {/* Modal */}
-        <div className="relative bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-7xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+        <div className="relative bg-card rounded-lg shadow-xl max-w-7xl w-full max-h-[90vh] overflow-hidden flex flex-col">
           {/* Header */}
-          <div className="sticky top-0 bg-white dark:bg-gray-dark border-b border-gray-200 dark:border-gray-700 px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between z-10">
+          <div className="sticky top-0 bg-card border-b border-border px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between z-10">
             <div className="flex-1 min-w-0 pr-4">
-              <h2 className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white truncate">{task.title}</h2>
-              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1">
+              <h2 className="text-lg sm:text-2xl font-bold text-foreground truncate">{task.title}</h2>
+              <p className="text-xs sm:text-sm text-muted-foreground mt-1">
                 Track completion for {filteredClients.length} client{filteredClients.length !== 1 ? 's' : ''} • {visibleMonths[0]?.label || 'Current month'} only
               </p>
               {task.teamMemberMappings && task.teamMemberMappings.length > 0 && filteredClients.length < clients.length && userProfile?.role !== 'admin' && userProfile?.role !== 'manager' && (
@@ -656,7 +656,7 @@ export function RecurringTaskClientModal({
             </div>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300 transition-colors flex-shrink-0"
+              className="text-muted-foreground hover:text-muted-foreground dark:hover:text-muted-foreground transition-colors flex-shrink-0"
               aria-label="Close modal"
             >
               <XMarkIcon className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -672,7 +672,7 @@ export function RecurringTaskClientModal({
                 </div>
               ) : filteredClients.length === 0 ? (
                 <div className="text-center py-12">
-                  <p className="text-gray-500 dark:text-gray-400">
+                  <p className="text-muted-foreground">
                     {task.teamMemberMappings && task.teamMemberMappings.length > 0
                       ? 'No clients assigned to you for this task'
                       : 'No clients assigned to this task'}
@@ -682,35 +682,35 @@ export function RecurringTaskClientModal({
                 <div className="overflow-x-auto">
                   <table className="w-full border-collapse">
                     <thead>
-                      <tr className="bg-gray-50 dark:bg-gray-800 sticky top-0">
-                        <th className="px-3 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-gray-900 dark:text-white border-b-2 border-gray-200 dark:border-gray-700 sticky left-0 bg-gray-50 dark:bg-gray-800 z-10 min-w-[150px] sm:min-w-[200px]">
+                      <tr className="bg-muted sticky top-0">
+                        <th className="px-3 sm:px-4 py-2 sm:py-3 text-left text-xs sm:text-sm font-semibold text-foreground border-b-2 border-border sticky left-0 bg-muted z-10 min-w-[150px] sm:min-w-[200px]">
                           Client Name
                         </th>
                         {visibleMonths.map(month => (
                           <th
                             key={month.key}
-                            className="px-2 sm:px-3 py-2 sm:py-3 text-center text-xs sm:text-sm font-semibold text-gray-900 dark:text-white border-b-2 border-gray-200 dark:border-gray-700 min-w-[60px] sm:min-w-[80px]"
+                            className="px-2 sm:px-3 py-2 sm:py-3 text-center text-xs sm:text-sm font-semibold text-foreground border-b-2 border-border min-w-[60px] sm:min-w-[80px]"
                           >
                             <div>{month.monthName}</div>
-                            <div className="text-xs font-normal text-gray-500 dark:text-gray-400">
+                            <div className="text-xs font-normal text-muted-foreground">
                               {month.fullDate.getFullYear()}
                             </div>
                           </th>
                         ))}
                       </tr>
                     </thead>
-                    <tbody className="bg-white dark:bg-gray-dark divide-y divide-gray-200 dark:divide-gray-700">
+                    <tbody className="bg-card divide-y divide-border">
                       {filteredClients.map((client, clientIndex) => {
                         return (
                           <tr
                             key={client.id}
-                            className={clientIndex % 2 === 0 ? 'bg-white dark:bg-gray-dark' : 'bg-gray-50 dark:bg-gray-800'}
+                            className={clientIndex % 2 === 0 ? 'bg-card' : 'bg-muted'}
                           >
-                            <td className="px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium text-gray-900 dark:text-white border-r border-gray-200 dark:border-gray-700 sticky left-0 z-10 bg-white dark:bg-gray-dark">
+                            <td className="px-3 sm:px-4 py-2 sm:py-3 text-xs sm:text-sm font-medium text-foreground border-r border-border sticky left-0 z-10 bg-card">
                               <div>
                                 <div className="font-semibold text-xs sm:text-sm">{client.clientName}</div>
                                 {client.contact?.email && (
-                                  <div className="text-xs text-gray-500 dark:text-gray-400 truncate max-w-[150px] sm:max-w-none">{client.contact.email}</div>
+                                  <div className="text-xs text-muted-foreground truncate max-w-[150px] sm:max-w-none">{client.contact.email}</div>
                                 )}
                               </div>
                             </td>
@@ -727,7 +727,7 @@ export function RecurringTaskClientModal({
                                       type="checkbox"
                                       checked={isCompleted(client.id, month.key)}
                                       onChange={() => toggleCompletion(client.id, month.key)}
-                                      className="w-4 h-4 sm:w-5 sm:h-5 rounded border-gray-300 dark:border-gray-600 text-green-600 focus:ring-green-500 cursor-pointer"
+                                      className="w-4 h-4 sm:w-5 sm:h-5 rounded border-border text-green-600 focus:ring-green-500 cursor-pointer"
                                       aria-label={`Mark ${client.clientName} as completed for ${month.label}`}
                                     />
                                   </div>
@@ -754,14 +754,14 @@ export function RecurringTaskClientModal({
           </div>
 
           {/* Footer */}
-          <div className="sticky bottom-0 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 px-4 sm:px-6 py-3 sm:py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
-            <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+          <div className="sticky bottom-0 bg-muted border-t border-border px-4 sm:px-6 py-3 sm:py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+            <div className="text-xs sm:text-sm text-muted-foreground">
               Total: {filteredClients.length} client{filteredClients.length !== 1 ? 's' : ''} × {visibleMonths.length} month{visibleMonths.length !== 1 ? 's' : ''}
             </div>
             <div className="flex gap-3 w-full sm:w-auto">
               <button
                 onClick={onClose}
-                className="flex-1 sm:flex-none px-4 py-2 text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-dark border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:bg-gray-800 transition-colors"
+                className="flex-1 sm:flex-none px-4 py-2 text-xs sm:text-sm font-medium text-muted-foreground bg-card border border-border rounded-md hover:bg-muted transition-colors"
               >
                 Cancel
               </button>
@@ -788,19 +788,19 @@ export function RecurringTaskClientModal({
             />
 
             {/* Dialog */}
-            <div className="relative bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-md w-full p-6">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <div className="relative bg-card rounded-lg shadow-xl max-w-md w-full p-6">
+              <h3 className="text-lg font-semibold text-foreground mb-4">
                 ARN Required
               </h3>
               
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+              <p className="text-sm text-muted-foreground mb-4">
                 This task requires an Application Reference Number (ARN) to mark as complete.
               </p>
 
               <div className="space-y-4">
                 {/* ARN Number Input */}
                 <div>
-                  <label htmlFor="arn-number" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label htmlFor="arn-number" className="block text-sm font-medium text-muted-foreground mb-1">
                     ARN Number <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -814,16 +814,16 @@ export function RecurringTaskClientModal({
                     }}
                     placeholder="Enter 15-digit ARN"
                     maxLength={15}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                    className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
                   />
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-xs text-muted-foreground mt-1">
                     {arnNumber.length}/15 digits
                   </p>
                 </div>
 
                 {/* Name Input - Read Only */}
                 <div>
-                  <label htmlFor="arn-name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label htmlFor="arn-name" className="block text-sm font-medium text-muted-foreground mb-1">
                     Your Name <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -832,16 +832,16 @@ export function RecurringTaskClientModal({
                     value={arnName}
                     readOnly
                     disabled
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 cursor-not-allowed"
+                    className="w-full px-3 py-2 border border-border rounded-md bg-muted text-muted-foreground cursor-not-allowed"
                   />
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-xs text-muted-foreground mt-1">
                     Name is automatically filled from your profile
                   </p>
                 </div>
 
                 {/* Error Message */}
                 {arnError && (
-                  <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-md p-2">
+                  <div className="text-sm text-red-600 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 rounded-md p-2">
                     {arnError}
                   </div>
                 )}
@@ -851,7 +851,7 @@ export function RecurringTaskClientModal({
               <div className="flex gap-3 mt-6">
                 <button
                   onClick={handleArnCancel}
-                  className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-dark border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:bg-gray-800 transition-colors"
+                  className="flex-1 px-4 py-2 text-sm font-medium text-muted-foreground bg-card border border-border rounded-md hover:bg-muted transition-colors"
                 >
                   Cancel
                 </button>
@@ -876,27 +876,27 @@ export function RecurringTaskClientModal({
               onClick={handleRemarkSkip}
             />
 
-            <div className="relative bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-md w-full p-6">
+            <div className="relative bg-card rounded-lg shadow-xl max-w-md w-full p-6">
               {/* Close button */}
               <button
                 onClick={handleRemarkSkip}
-                className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-300 transition-colors"
+                className="absolute top-4 right-4 text-muted-foreground hover:text-muted-foreground dark:hover:text-muted-foreground transition-colors"
                 aria-label="Close dialog"
               >
                 <XMarkIcon className="w-5 h-5" />
               </button>
 
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 pr-8">
+              <h3 className="text-lg font-semibold text-foreground mb-4 pr-8">
                 Add Remark
               </h3>
 
-              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
+              <p className="text-sm text-muted-foreground mb-4">
                 Add a remark for this task. Submit to mark complete with remark, or Save Remark to add remark without marking complete.
               </p>
 
               <div className="space-y-4">
                 <div>
-                  <label htmlFor="remark-text" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label htmlFor="remark-text" className="block text-sm font-medium text-muted-foreground mb-1">
                     Remark <span className="text-red-500">*</span>
                   </label>
                   <textarea
@@ -908,12 +908,12 @@ export function RecurringTaskClientModal({
                     }}
                     placeholder="Enter your remark..."
                     rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring dark:bg-gray-800 dark:text-white resize-none"
+                    className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring resize-none"
                   />
                 </div>
 
                 <div>
-                  <label htmlFor="remark-name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label htmlFor="remark-name" className="block text-sm font-medium text-muted-foreground mb-1">
                     Your Name <span className="text-red-500">*</span>
                   </label>
                   <input
@@ -922,15 +922,15 @@ export function RecurringTaskClientModal({
                     value={remarkBy}
                     readOnly
                     disabled
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 cursor-not-allowed"
+                    className="w-full px-3 py-2 border border-border rounded-md bg-muted text-muted-foreground cursor-not-allowed"
                   />
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-xs text-muted-foreground mt-1">
                     Name is automatically filled from your profile
                   </p>
                 </div>
 
                 <div>
-                  <label htmlFor="remark-date" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                  <label htmlFor="remark-date" className="block text-sm font-medium text-muted-foreground mb-1">
                     Date
                   </label>
                   <input
@@ -939,15 +939,15 @@ export function RecurringTaskClientModal({
                     value={remarkDate}
                     readOnly
                     disabled
-                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 cursor-not-allowed"
+                    className="w-full px-3 py-2 border border-border rounded-md bg-muted text-muted-foreground cursor-not-allowed"
                   />
-                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                  <p className="text-xs text-muted-foreground mt-1">
                     Current date is automatically recorded
                   </p>
                 </div>
 
                 {remarkError && (
-                  <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-md p-2">
+                  <div className="text-sm text-red-600 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 rounded-md p-2">
                     {remarkError}
                   </div>
                 )}
@@ -956,7 +956,7 @@ export function RecurringTaskClientModal({
               <div className="flex gap-3 mt-6">
                 <button
                   onClick={handleRemarkOnly}
-                  className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-dark border border-gray-300 dark:border-gray-600 rounded-md hover:bg-gray-50 dark:bg-gray-800 transition-colors flex items-center justify-center"
+                  className="flex-1 px-4 py-2 text-sm font-medium text-muted-foreground bg-card border border-border rounded-md hover:bg-muted transition-colors flex items-center justify-center"
                 >
                   Save remark but mark as incomplete
                 </button>

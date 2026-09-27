@@ -131,7 +131,7 @@ export function CategoryModal({
               id="description"
               {...register('description')}
               placeholder="Enter category description (optional)"
-              className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring min-h-[80px]"
+              className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring min-h-[80px]"
             />
             {errors.description && (
               <p className="text-sm text-red-600 mt-1">{errors.description.message}</p>
@@ -152,7 +152,7 @@ export function CategoryModal({
                     className={`w-10 h-10 rounded-lg border-2 transition-all ${
                       selectedColor === color
                         ? 'border-gray-900 scale-110'
-                        : 'border-gray-200 hover:scale-105'
+                        : 'border-border hover:scale-105'
                     }`}
                     style={{ backgroundColor: color }}
                     title={color}
@@ -190,7 +190,7 @@ export function CategoryModal({
               maxLength={10}
               className="mt-1"
             />
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+            <p className="text-xs text-muted-foreground mt-1">
               Add an emoji to represent this category
             </p>
           </div>
@@ -201,7 +201,7 @@ export function CategoryModal({
               type="checkbox"
               id="isActive"
               {...register('isActive')}
-              className="w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded focus:ring-ring"
+              className="w-4 h-4 text-blue-600 border-border rounded focus:ring-ring"
             />
             <Label htmlFor="isActive" className="cursor-pointer">
               Active (visible to users)

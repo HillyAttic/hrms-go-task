@@ -11,7 +11,7 @@ export function PWADashboard() {
   const { isInstalled, isInstallable, promptInstall } = usePWAInstall();
 
   return (
-    <div className="bg-white dark:bg-gray-dark border border-stroke dark:border-stroke-dark rounded-lg shadow-card">
+    <div className="bg-card border border-stroke dark:border-stroke-dark rounded-lg shadow-hard">
       {/* Tabs */}
       <div className="border-b border-stroke dark:border-stroke-dark">
         <div className="flex">
@@ -152,7 +152,7 @@ export function PWADashboard() {
                 </button>
               </div>
             ) : (
-              <div className="p-4 bg-gray-50 dark:bg-gray-800 border border-stroke dark:border-stroke-dark rounded-lg">
+              <div className="p-4 bg-muted border border-stroke dark:border-stroke-dark rounded-lg">
                 <p className="text-sm text-dark-4 dark:text-dark-6">
                   Installation is not available at this time. This could be because:
                 </p>

@@ -298,9 +298,9 @@ export default function AttendanceHistoryPage() {
     if (!record.clockIn) {
       return <Badge variant="secondary">Not Clocked In</Badge>;
     } else if (record.clockOut) {
-      return <Badge variant="default" className="bg-green-100 text-green-800 hover:bg-green-100">Completed</Badge>;
+      return <Badge variant="default" className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 hover:bg-green-100 dark:hover:bg-green-900/30">Completed</Badge>;
     } else {
-      return <Badge variant="default" className="bg-blue-100 text-blue-800 hover:bg-blue-100">Active</Badge>;
+      return <Badge variant="default" className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/30">Active</Badge>;
     }
   };
 
@@ -314,11 +314,11 @@ export default function AttendanceHistoryPage() {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <Card className="p-8 text-center">
-          <div className="mx-auto h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center mb-4">
+          <div className="mx-auto h-12 w-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-4">
             <Clock className="h-6 w-6 text-blue-600" />
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Authentication Required</h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">Please sign in to view attendance history.</p>
+          <h2 className="text-2xl font-bold text-foreground mb-2">Authentication Required</h2>
+          <p className="text-muted-foreground mb-6">Please sign in to view attendance history.</p>
           <Button 
             onClick={() => window.location.href = '/auth/signin'}
             className="bg-foreground hover:bg-foreground/90 text-background"
@@ -336,8 +336,8 @@ export default function AttendanceHistoryPage() {
       <div className="mb-6 sm:mb-8">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
           <div>
-            <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white">Attendance History</h1>
-            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mt-1 sm:mt-2">View your historical attendance records</p>
+            <h1 className="text-2xl sm:text-3xl font-bold text-foreground">Attendance History</h1>
+            <p className="text-sm sm:text-base text-muted-foreground mt-1 sm:mt-2">View your historical attendance records</p>
           </div>
           
           {/* Action Buttons - Mobile Responsive */}
@@ -367,25 +367,25 @@ export default function AttendanceHistoryPage() {
       {attendances.length === 0 && !loading && !isInitialLoad ? (
         <Card className="text-center py-12">
           <CardContent>
-            <div className="mx-auto h-16 w-16 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center mb-4">
-              <Clock className="h-8 w-8 text-gray-400" />
+            <div className="mx-auto h-16 w-16 rounded-full bg-muted flex items-center justify-center mb-4">
+              <Clock className="h-8 w-8 text-muted-foreground" />
             </div>
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">No Attendance Records</h3>
-            <p className="text-gray-600 dark:text-gray-400">You don't have any attendance records yet.</p>
+            <h3 className="text-xl font-semibold text-foreground mb-2">No Attendance Records</h3>
+            <p className="text-muted-foreground">You don't have any attendance records yet.</p>
           </CardContent>
         </Card>
       ) : (
         <div className="space-y-4 sm:space-y-6">
           {attendances.map((record) => (
-            <Card key={record.id} className="hover:shadow-md transition-shadow">
+            <Card key={record.id} className="hover:shadow-hard transition-shadow">
               <CardHeader className="px-3 sm:px-6 py-3 sm:py-4 pb-3 sm:pb-6">
                 <div className="flex justify-between items-start gap-2 sm:gap-3">
                   <div className="flex-1 min-w-0">
-                    <CardTitle className="flex items-center gap-1 sm:gap-2 leading-tight sm:leading-normal pb-2 sm:pb-0 border-b sm:border-b-0 border-gray-200 dark:border-gray-700">
-                      <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-gray-500 dark:text-gray-400 flex-shrink-0" />
+                    <CardTitle className="flex items-center gap-1 sm:gap-2 leading-tight sm:leading-normal pb-2 sm:pb-0 border-b sm:border-b-0 border-border">
+                      <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-muted-foreground flex-shrink-0" />
                       <span className="whitespace-nowrap text-sm sm:text-xl">{formatDate(record.clockIn)}</span>
                     </CardTitle>
-                    <p className="hidden sm:block text-[9px] sm:text-sm text-gray-500 dark:text-gray-400 mt-1 truncate ml-2.5 sm:ml-7">
+                    <p className="hidden sm:block text-[9px] sm:text-sm text-muted-foreground mt-1 truncate ml-2.5 sm:ml-7">
                       {record.employeeName}
                     </p>
                   </div>
@@ -397,7 +397,7 @@ export default function AttendanceHistoryPage() {
                       variant="ghost"
                       size="sm"
                       onClick={() => confirmDelete(record)}
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50 p-1 sm:p-2 h-7 w-7 sm:h-auto sm:w-auto"
+                      className="text-red-600 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30 p-1 sm:p-2 h-7 w-7 sm:h-auto sm:w-auto"
                     >
                       <Trash2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                     </Button>
@@ -410,13 +410,13 @@ export default function AttendanceHistoryPage() {
                     {/* Clock In Section */}
                     <div className="flex items-start space-x-1 sm:space-x-3 flex-1">
                       <div className="flex-shrink-0 mt-0.5 sm:mt-1">
-                        <div className="w-7 h-5 sm:w-10 sm:h-10 rounded-lg sm:rounded-full bg-green-100 flex items-center justify-center">
+                        <div className="w-7 h-5 sm:w-10 sm:h-10 rounded-lg sm:rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
                           <Clock className="w-2.5 h-2.5 sm:w-5 sm:h-5 text-green-600" />
                         </div>
                       </div>
                       <div className="flex-1 min-w-0 overflow-hidden">
-                        <h4 className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mb-0.5 sm:mb-1 whitespace-nowrap">Clock In</h4>
-                        <p className="text-sm sm:text-lg font-semibold text-gray-900 dark:text-white whitespace-nowrap">{formatTime(record.clockIn)}</p>
+                        <h4 className="text-xs sm:text-sm font-medium text-muted-foreground mb-0.5 sm:mb-1 whitespace-nowrap">Clock In</h4>
+                        <p className="text-sm sm:text-lg font-semibold text-foreground whitespace-nowrap">{formatTime(record.clockIn)}</p>
                         {record.location?.clockIn && (
                           <button
                             onClick={() => handleLocationClick(
@@ -424,7 +424,7 @@ export default function AttendanceHistoryPage() {
                               record.location!.clockIn!.longitude,
                               `Clock In Location - ${formatDate(record.clockIn)}`
                             )}
-                            className="flex items-center gap-0.5 sm:gap-1 mt-0.5 sm:mt-1 text-blue-600 hover:text-blue-800 hover:underline cursor-pointer"
+                            className="flex items-center gap-0.5 sm:gap-1 mt-0.5 sm:mt-1 text-blue-600 hover:text-blue-800 dark:hover:text-blue-300 hover:underline cursor-pointer"
                           >
                             <MapPin className="h-2 w-2 sm:h-3 sm:w-3 flex-shrink-0" />
                             <span className="text-xs sm:text-xs truncate">
@@ -439,13 +439,13 @@ export default function AttendanceHistoryPage() {
                     {/* Clock Out Section */}
                     <div className="flex items-start space-x-1 sm:space-x-3 flex-1">
                       <div className="flex-shrink-0 mt-0.5 sm:mt-1">
-                        <div className="w-7 h-5 sm:w-10 sm:h-10 rounded-lg sm:rounded-full bg-red-100 flex items-center justify-center">
+                        <div className="w-7 h-5 sm:w-10 sm:h-10 rounded-lg sm:rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
                           <Clock className="w-2.5 h-2.5 sm:w-5 sm:h-5 text-red-600 rotate-180" />
                         </div>
                       </div>
                       <div className="flex-1 min-w-0 overflow-hidden">
-                        <h4 className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mb-0.5 sm:mb-1 whitespace-nowrap">Clock Out</h4>
-                        <p className="text-sm sm:text-lg font-semibold text-gray-900 dark:text-white whitespace-nowrap">{formatTime(record.clockOut)}</p>
+                        <h4 className="text-xs sm:text-sm font-medium text-muted-foreground mb-0.5 sm:mb-1 whitespace-nowrap">Clock Out</h4>
+                        <p className="text-sm sm:text-lg font-semibold text-foreground whitespace-nowrap">{formatTime(record.clockOut)}</p>
                         {record.location?.clockOut && (
                           <button
                             onClick={() => handleLocationClick(
@@ -453,7 +453,7 @@ export default function AttendanceHistoryPage() {
                               record.location!.clockOut!.longitude,
                               `Clock Out Location - ${formatDate(record.clockIn)}`
                             )}
-                            className="flex items-center gap-0.5 sm:gap-1 mt-0.5 sm:mt-1 text-blue-600 hover:text-blue-800 hover:underline cursor-pointer"
+                            className="flex items-center gap-0.5 sm:gap-1 mt-0.5 sm:mt-1 text-blue-600 hover:text-blue-800 dark:hover:text-blue-300 hover:underline cursor-pointer"
                           >
                             <MapPin className="h-2 w-2 sm:h-3 sm:w-3 flex-shrink-0" />
                             <span className="text-xs sm:text-xs truncate">
@@ -468,12 +468,12 @@ export default function AttendanceHistoryPage() {
                 </div>
                 
                 {/* Duration and Stats - Now inside CardHeader on mobile */}
-                <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-100">
+                <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-border">
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-4">
                     <div className="flex items-center gap-3 sm:gap-6">
                       <div>
-                        <span className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Duration:</span>
-                        <span className="ml-2 text-xs sm:text-sm font-medium text-gray-900 dark:text-white">
+                        <span className="text-xs sm:text-sm text-muted-foreground">Duration:</span>
+                        <span className="ml-2 text-xs sm:text-sm font-medium text-foreground">
                           {calculateDuration(record.clockIn, record.clockOut)}
                         </span>
                       </div>
@@ -481,7 +481,7 @@ export default function AttendanceHistoryPage() {
                         {getStatusBadge(record)}
                       </div>
                     </div>
-                    <div className="hidden sm:block text-[8px] sm:text-xs text-gray-400">
+                    <div className="hidden sm:block text-[8px] sm:text-xs text-muted-foreground">
                       Updated: {formatDateTime(record.updatedAt)}
                     </div>
                   </div>
@@ -507,7 +507,7 @@ export default function AttendanceHistoryPage() {
             </Button>
           
             <div className="flex items-center justify-center gap-2">
-              <span className="text-sm text-gray-600 dark:text-gray-400">
+              <span className="text-sm text-muted-foreground">
                 Page {currentPage} {hasMoreData ? 'of many' : ''}
               </span>
             </div>
@@ -531,7 +531,7 @@ export default function AttendanceHistoryPage() {
             <div className="text-center py-8">
               <div className="inline-flex items-center gap-2">
                 <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
-                <span className="text-gray-600 dark:text-gray-400">Loading records...</span>
+                <span className="text-muted-foreground">Loading records...</span>
               </div>
             </div>
           )}
@@ -541,19 +541,19 @@ export default function AttendanceHistoryPage() {
       {/* Delete Confirmation Modal - Mobile Responsive */}
       {showDeleteModal && recordToDelete && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-dark rounded-lg max-w-md w-full p-4 sm:p-6 mx-4">
+          <div className="bg-card rounded-lg max-w-md w-full p-4 sm:p-6 mx-4">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0">
                 <AlertTriangle className="w-5 h-5 text-red-600" />
               </div>
-              <h3 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white">Confirm Deletion</h3>
+              <h3 className="text-base sm:text-lg font-semibold text-foreground">Confirm Deletion</h3>
             </div>
             
-            <p className="text-sm sm:text-base text-gray-600 dark:text-gray-400 mb-2">
+            <p className="text-sm sm:text-base text-muted-foreground mb-2">
               Are you sure you want to delete this attendance record?
             </p>
             
-            <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mb-6">
+            <p className="text-xs sm:text-sm text-muted-foreground mb-6">
               Date: {formatDate(recordToDelete.clockIn)}
             </p>
             

@@ -718,7 +718,7 @@ export function AttendanceExportModal({
         <div className="space-y-4 py-2">
           {/* Month and Year Selection */}
           <div className="space-y-2">
-            <div className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+            <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
               <Calendar className="w-4 h-4" />
               <span>Select Period</span>
             </div>
@@ -729,7 +729,7 @@ export function AttendanceExportModal({
                   id="export-month"
                   value={selectedMonth}
                   onChange={(e) => setSelectedMonth(Number(e.target.value))}
-                  className="w-full mt-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-ring dark:bg-gray-700 dark:text-white"
+                  className="w-full mt-1 px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
                 >
                   <option value="0">January</option>
                   <option value="1">February</option>
@@ -751,7 +751,7 @@ export function AttendanceExportModal({
                   id="export-year"
                   value={selectedYear}
                   onChange={(e) => setSelectedYear(Number(e.target.value))}
-                  className="w-full mt-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-ring dark:bg-gray-700 dark:text-white"
+                  className="w-full mt-1 px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
                 >
                   <option value="2024">2024</option>
                   <option value="2025">2025</option>
@@ -764,7 +764,7 @@ export function AttendanceExportModal({
 
           {/* Date Range Selection */}
           <div className="space-y-2">
-            <div className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+            <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
               <Calendar className="w-4 h-4" />
               <span>Custom Date Range (Optional)</span>
             </div>
@@ -776,7 +776,7 @@ export function AttendanceExportModal({
                   type="date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full mt-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-ring dark:bg-gray-700 dark:text-white"
+                  className="w-full mt-1 px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
                 />
               </div>
               <div>
@@ -786,7 +786,7 @@ export function AttendanceExportModal({
                   type="date"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full mt-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-ring dark:bg-gray-700 dark:text-white"
+                  className="w-full mt-1 px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
                 />
               </div>
             </div>
@@ -795,13 +795,13 @@ export function AttendanceExportModal({
           {/* Employee Selection */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+              <div className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
                 <Users className="w-4 h-4" />
                 <span>Select Employees</span>
               </div>
               <button
                 onClick={handleSelectAll}
-                className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+                className="text-sm text-blue-600 hover:text-blue-800 dark:hover:text-blue-300 font-medium"
               >
                 {selectAll ? 'Deselect All' : 'Select All'}
               </button>
@@ -814,11 +814,11 @@ export function AttendanceExportModal({
                 placeholder="Search employees by name, email, or role..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 py-2 pl-10 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                className="w-full px-4 py-2 pl-10 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
               />
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400"
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -837,38 +837,38 @@ export function AttendanceExportModal({
                 <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
               </div>
             ) : filteredEmployees.length === 0 ? (
-              <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+              <div className="text-center py-8 text-muted-foreground">
                 No employees found matching your search
               </div>
             ) : (
-              <div className="border border-gray-200 dark:border-gray-700 rounded-md max-h-60 overflow-y-auto">
+              <div className="border border-border rounded-md max-h-60 overflow-y-auto">
                 {filteredEmployees.map((employee) => {
                   const isPreSelected = employee.id === preSelectedEmployeeId;
                   return (
                     <label
                       key={employee.id}
-                      className={`flex items-center gap-3 px-4 py-3 cursor-pointer border-b border-gray-100 last:border-b-0 transition-colors ${
+                      className={`flex items-center gap-3 px-4 py-3 cursor-pointer border-b border-border last:border-b-0 transition-colors ${
                         isPreSelected
-                          ? 'bg-blue-50 hover:bg-blue-100 border-l-4 border-l-blue-500'
-                          : 'hover:bg-gray-50'
+                          ? 'bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 dark:hover:bg-blue-900/30 border-l-4 border-l-blue-500'
+                          : 'hover:bg-muted'
                       }`}
                     >
                       <input
                         type="checkbox"
                         checked={selectedEmployees.includes(employee.id!)}
                         onChange={() => handleEmployeeToggle(employee.id!)}
-                        className="w-4 h-4 text-blue-600 border-gray-300 dark:border-gray-600 rounded focus:ring-ring"
+                        className="w-4 h-4 text-blue-600 border-border rounded focus:ring-ring"
                       />
                       <div className="flex-1">
-                        <div className={`font-medium ${isPreSelected ? 'text-blue-900' : 'text-gray-900'}`}>
+                        <div className={`font-medium ${isPreSelected ? 'text-blue-900' : 'text-foreground'}`}>
                           {employee.name}
                           {isPreSelected && (
-                            <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800">
+                            <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
                               Selected
                             </span>
                           )}
                         </div>
-                        <div className={`text-xs ${isPreSelected ? 'text-blue-700' : 'text-gray-500'}`}>
+                        <div className={`text-xs ${isPreSelected ? 'text-blue-700 dark:text-blue-300' : 'text-muted-foreground'}`}>
                           {employee.role} • {employee.email}
                         </div>
                       </div>
@@ -878,7 +878,7 @@ export function AttendanceExportModal({
               </div>
             )}
 
-            <div className="text-sm text-gray-600 dark:text-gray-400">
+            <div className="text-sm text-muted-foreground">
               {selectedEmployees.length} employee{selectedEmployees.length !== 1 ? 's' : ''} selected
               {searchQuery && ` • ${filteredEmployees.length} found`}
             </div>
@@ -886,20 +886,20 @@ export function AttendanceExportModal({
 
           {/* Export Format Selection */}
           <div className="space-y-2">
-            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Export Format</p>
+            <p className="text-sm font-medium text-muted-foreground">Export Format</p>
             <div className="grid grid-cols-2 gap-2 sm:gap-3">
               <button
                 onClick={() => setExportFormat('excel')}
                 className={`flex items-center gap-2 sm:gap-3 p-2 sm:p-3 border-2 rounded-lg transition-all ${
                   exportFormat === 'excel'
                     ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
-                    : 'border-gray-200 dark:border-gray-600 hover:border-green-300'
+                    : 'border-border hover:border-green-300 dark:hover:border-green-700'
                 }`}
               >
-                <FileSpreadsheet className={`w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 ${exportFormat === 'excel' ? 'text-green-600' : 'text-gray-400'}`} />
+                <FileSpreadsheet className={`w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 ${exportFormat === 'excel' ? 'text-green-600' : 'text-muted-foreground'}`} />
                 <div className="text-left">
-                  <div className="font-medium text-xs sm:text-sm text-gray-900 dark:text-white">Excel</div>
-                  <div className="text-[10px] sm:text-xs text-gray-500">.xlsx</div>
+                  <div className="font-medium text-xs sm:text-sm text-foreground">Excel</div>
+                  <div className="text-[10px] sm:text-xs text-muted-foreground">.xlsx</div>
                 </div>
               </button>
 
@@ -908,13 +908,13 @@ export function AttendanceExportModal({
                 className={`flex items-center gap-2 sm:gap-3 p-2 sm:p-3 border-2 rounded-lg transition-all ${
                   exportFormat === 'pdf'
                     ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
-                    : 'border-gray-200 dark:border-gray-600 hover:border-red-300'
+                    : 'border-border hover:border-red-300 dark:hover:border-red-700'
                 }`}
               >
-                <FileText className={`w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 ${exportFormat === 'pdf' ? 'text-red-600' : 'text-gray-400'}`} />
+                <FileText className={`w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 ${exportFormat === 'pdf' ? 'text-red-600' : 'text-muted-foreground'}`} />
                 <div className="text-left">
-                  <div className="font-medium text-xs sm:text-sm text-gray-900 dark:text-white">PDF</div>
-                  <div className="text-[10px] sm:text-xs text-gray-500">.pdf</div>
+                  <div className="font-medium text-xs sm:text-sm text-foreground">PDF</div>
+                  <div className="text-[10px] sm:text-xs text-muted-foreground">.pdf</div>
                 </div>
               </button>
             </div>
@@ -922,7 +922,7 @@ export function AttendanceExportModal({
 
           {/* Options */}
           <div className="space-y-2">
-            <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Options</p>
+            <p className="text-sm font-medium text-muted-foreground">Options</p>
             <div className="space-y-2">
               <label className="flex items-start gap-2 cursor-pointer">
                 <input
@@ -931,7 +931,7 @@ export function AttendanceExportModal({
                   onChange={(e) => setIncludeLocation(e.target.checked)}
                   className="w-4 h-4 mt-0.5 text-blue-600 rounded flex-shrink-0"
                 />
-                <span className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">Include clock-in / clock-out location (full address)</span>
+                <span className="text-xs sm:text-sm text-muted-foreground">Include clock-in / clock-out location (full address)</span>
               </label>
               <label className="flex items-start gap-2 cursor-pointer">
                 <input
@@ -940,7 +940,7 @@ export function AttendanceExportModal({
                   onChange={(e) => setIncludeStats(e.target.checked)}
                   className="w-4 h-4 mt-0.5 text-blue-600 rounded flex-shrink-0"
                 />
-                <span className="text-xs sm:text-sm text-gray-700 dark:text-gray-300">
+                <span className="text-xs sm:text-sm text-muted-foreground">
                   Include summary {exportFormat === 'excel' ? 'sheet' : 'page'} (per-employee totals)
                 </span>
               </label>
@@ -965,7 +965,7 @@ export function AttendanceExportModal({
 
           {/* Progress */}
           {exporting && progressMsg && (
-            <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 rounded-lg px-3 py-2.5 sm:px-4 sm:py-3">
+            <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground bg-muted rounded-lg px-3 py-2.5 sm:px-4 sm:py-3">
               <Loader2 className="w-4 h-4 animate-spin flex-shrink-0 text-blue-600" />
               <span className="break-words">{progressMsg}</span>
             </div>

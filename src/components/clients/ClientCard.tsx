@@ -29,7 +29,7 @@ export function ClientCard({ client, onEdit, onDelete }: ClientCardProps) {
   };
 
   return (
-    <Card className="group hover:shadow-lg transition-all duration-200">
+    <Card className="group hover:shadow-hard transition-all duration-200">
       <CardContent className="p-6">
 
         
@@ -44,7 +44,7 @@ export function ClientCard({ client, onEdit, onDelete }: ClientCardProps) {
             
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 mb-1">
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white truncate">
+                <h3 className="text-lg font-semibold text-foreground truncate">
                   {client.clientName}
                 </h3>
                 <Badge
@@ -62,7 +62,7 @@ export function ClientCard({ client, onEdit, onDelete }: ClientCardProps) {
               size="sm"
               variant="ghost"
               onClick={() => onEdit(client)}
-              className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+              className="text-blue-600 hover:text-blue-700 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/30"
               aria-label={`Edit ${client.clientName}`}
             >
               <PencilSquareIcon className="w-4 h-4" />
@@ -71,7 +71,7 @@ export function ClientCard({ client, onEdit, onDelete }: ClientCardProps) {
               size="sm"
               variant="ghost"
               onClick={() => onDelete(client.id!)}
-              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+              className="text-red-600 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30"
               aria-label={`Delete ${client.clientName}`}
             >
               <TrashIcon className="w-4 h-4" />
@@ -83,7 +83,7 @@ export function ClientCard({ client, onEdit, onDelete }: ClientCardProps) {
         <div className="space-y-2">
           {/* Email */}
           {client.contact?.email && (
-            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <EnvelopeIcon className="w-4 h-4 flex-shrink-0" />
               <a
                 href={`mailto:${client.contact.email}`}
@@ -96,7 +96,7 @@ export function ClientCard({ client, onEdit, onDelete }: ClientCardProps) {
 
           {/* Phone */}
           {client.contact?.phone && (
-            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <PhoneIcon className="w-4 h-4 flex-shrink-0" />
               <a
                 href={`tel:${client.contact.phone}`}
@@ -109,7 +109,7 @@ export function ClientCard({ client, onEdit, onDelete }: ClientCardProps) {
 
           {/* Business Name */}
           {client.businessName && (
-            <div className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+            <div className="flex items-center gap-2 text-sm text-muted-foreground">
               <BuildingOfficeIcon className="w-4 h-4 flex-shrink-0" />
               <span className="truncate">{client.businessName}</span>
             </div>
@@ -118,7 +118,7 @@ export function ClientCard({ client, onEdit, onDelete }: ClientCardProps) {
 
         {/* Footer with creation date */}
         {client.createdAt && (
-          <div className="mt-4 pt-4 border-t text-xs text-gray-500 dark:text-gray-400">
+          <div className="mt-4 pt-4 border-t text-xs text-muted-foreground">
             Added {new Date(client.createdAt).toLocaleDateString()}
           </div>
         )}

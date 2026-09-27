@@ -82,7 +82,7 @@ export const TaskCreationModal: React.FC<TaskCreationModalProps> = ({
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
       <div 
-        className="bg-white dark:bg-card rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+        className="bg-card rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-6">
@@ -91,7 +91,7 @@ export const TaskCreationModal: React.FC<TaskCreationModalProps> = ({
             <h2 className="text-2xl font-bold text-black dark:text-white">Create New Task</h2>
             <button
               onClick={onClose}
-              className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+              className="text-muted-foreground hover:text-muted-foreground dark:text-muted-foreground dark:hover:text-gray-200"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -109,7 +109,7 @@ export const TaskCreationModal: React.FC<TaskCreationModalProps> = ({
                 type="text"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="w-full p-3 bg-gray-50 dark:bg-muted border border-stroke dark:border-border rounded-lg text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full p-3 bg-muted border border-stroke dark:border-border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="Enter task title"
               />
             </div>
@@ -123,7 +123,7 @@ export const TaskCreationModal: React.FC<TaskCreationModalProps> = ({
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 rows={3}
-                className="w-full p-3 bg-gray-50 dark:bg-muted border border-stroke dark:border-border rounded-lg text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full p-3 bg-muted border border-stroke dark:border-border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="Enter task description"
               />
             </div>
@@ -137,7 +137,7 @@ export const TaskCreationModal: React.FC<TaskCreationModalProps> = ({
                 type="date"
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
-                className="w-full p-3 bg-gray-50 dark:bg-muted border border-stroke dark:border-border rounded-lg text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full p-3 bg-muted border border-stroke dark:border-border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-primary"
               />
             </div>
 
@@ -150,7 +150,7 @@ export const TaskCreationModal: React.FC<TaskCreationModalProps> = ({
                 type="text"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full p-3 bg-gray-50 dark:bg-muted border border-stroke dark:border-border rounded-lg text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full p-3 bg-muted border border-stroke dark:border-border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-primary"
                 placeholder="Enter category (optional)"
               />
             </div>
@@ -166,7 +166,7 @@ export const TaskCreationModal: React.FC<TaskCreationModalProps> = ({
                     type="text"
                     value={assignee}
                     onChange={(e) => updateAssignee(index, e.target.value)}
-                    className="flex-1 p-3 bg-gray-50 dark:bg-muted border border-stroke dark:border-border rounded-lg text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                    className="flex-1 p-3 bg-muted border border-stroke dark:border-border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-primary"
                     placeholder="Enter assignee name"
                   />
                   {assignedUsers.length > 1 && (
@@ -183,7 +183,7 @@ export const TaskCreationModal: React.FC<TaskCreationModalProps> = ({
               <button
                 type="button"
                 onClick={addAssigneeField}
-                className="mt-2 px-4 py-2 bg-gray-200 dark:bg-muted text-black dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-card"
+                className="mt-2 px-4 py-2 bg-muted text-black rounded-lg hover:bg-muted dark:hover:bg-card"
               >
                 + Add Assignee
               </button>
@@ -198,7 +198,7 @@ export const TaskCreationModal: React.FC<TaskCreationModalProps> = ({
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value as TaskStatus)}
-                  className="w-full p-3 bg-gray-50 dark:bg-muted border border-stroke dark:border-border rounded-lg text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full p-3 bg-muted border border-stroke dark:border-border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-primary"
                 >
                   <option value={TaskStatus.TODO}>To Do</option>
                   <option value={TaskStatus.IN_PROGRESS}>In Progress</option>
@@ -214,7 +214,7 @@ export const TaskCreationModal: React.FC<TaskCreationModalProps> = ({
                 <select
                   value={priority}
                   onChange={(e) => setPriority(e.target.value as TaskPriority)}
-                  className="w-full p-3 bg-gray-50 dark:bg-muted border border-stroke dark:border-border rounded-lg text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full p-3 bg-muted border border-stroke dark:border-border rounded-lg text-black focus:outline-none focus:ring-2 focus:ring-primary"
                 >
                   <option value={TaskPriority.LOW}>Low</option>
                   <option value={TaskPriority.MEDIUM}>Medium</option>
@@ -228,7 +228,7 @@ export const TaskCreationModal: React.FC<TaskCreationModalProps> = ({
               <button
                 type="button"
                 onClick={onClose}
-                className="px-6 py-3 bg-gray-200 dark:bg-muted text-black dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-card"
+                className="px-6 py-3 bg-muted text-black rounded-lg hover:bg-muted dark:hover:bg-card"
               >
                 Cancel
               </button>

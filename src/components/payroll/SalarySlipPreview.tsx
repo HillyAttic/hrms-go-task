@@ -49,7 +49,7 @@ function formatDate(value: string | null | undefined): string {
 function FieldRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex justify-between gap-2">
-      <span className="text-gray-700">{label}</span>
+      <span className="text-muted-foreground">{label}</span>
       <span className="font-semibold text-right">{value}</span>
     </div>
   );
@@ -221,10 +221,10 @@ export function SalarySlipPreview({
       }}
     >
       {/* Letterhead substitute — this app ships no letterhead image. */}
-      <div className="border-b border-gray-300 pb-3 mb-6 text-center">
+      <div className="border-b border-border pb-3 mb-6 text-center">
         <p className="text-base font-bold">{safeSettings.companyName || 'Company'}</p>
         {safeSettings.companyAddress ? (
-          <p className="text-xs text-gray-600 mt-1 whitespace-pre-line">
+          <p className="text-xs text-muted-foreground mt-1 whitespace-pre-line">
             {safeSettings.companyAddress}
           </p>
         ) : null}
@@ -246,7 +246,7 @@ export function SalarySlipPreview({
       )}
 
       {attendanceFields.length > 0 && (
-        <div className="border-t border-gray-300 pt-4 mb-6">
+        <div className="border-t border-border pt-4 mb-6">
           <h3 className="font-bold mb-2">{sectionFor('attendance')?.title ?? 'Attendance Details'}</h3>
           <div className="grid grid-cols-3 gap-x-4 gap-y-1.5 text-sm">
             {attendanceFields.map((field) => (
@@ -260,7 +260,7 @@ export function SalarySlipPreview({
         <div className="grid grid-cols-2 gap-8">
           {earningsVisible && (
             <div>
-              <h3 className="text-center font-bold border-b border-gray-400 pb-2">
+              <h3 className="text-center font-bold border-b border-border pb-2">
                 {sectionFor('earnings')?.title ?? 'Earnings'}
               </h3>
               <div className="space-y-2 text-sm mt-2">
@@ -268,7 +268,7 @@ export function SalarySlipPreview({
                   <FieldRow key={field.key} label={field.label} value={earningsValues[field.key]} />
                 ))}
               </div>
-              <div className="flex justify-between font-bold border-t border-gray-400 pt-2 mt-2 text-sm">
+              <div className="flex justify-between font-bold border-t border-border pt-2 mt-2 text-sm">
                 <span>Total Earnings</span>
                 <span>{formatCurrency(totalEarnings)}</span>
               </div>
@@ -276,7 +276,7 @@ export function SalarySlipPreview({
           )}
           {deductionsVisible && (
             <div>
-              <h3 className="text-center font-bold border-b border-gray-400 pb-2">
+              <h3 className="text-center font-bold border-b border-border pb-2">
                 {sectionFor('deductions')?.title ?? 'Deductions'}
               </h3>
               <div className="space-y-2 text-sm mt-2">
@@ -284,7 +284,7 @@ export function SalarySlipPreview({
                   <FieldRow key={field.key} label={field.label} value={deductionsValues[field.key]} />
                 ))}
               </div>
-              <div className="flex justify-between font-bold border-t border-gray-400 pt-2 mt-2 text-sm">
+              <div className="flex justify-between font-bold border-t border-border pt-2 mt-2 text-sm">
                 <span>Total Deductions</span>
                 <span>{formatCurrency(totalDeductions)}</span>
               </div>
@@ -293,18 +293,18 @@ export function SalarySlipPreview({
         </div>
       )}
 
-      <div className="bg-gray-200 p-4 rounded mb-6 mt-6 flex justify-between items-center">
+      <div className="bg-muted p-4 rounded mb-6 mt-6 flex justify-between items-center">
         <span className="text-lg font-bold">Net Salary</span>
         <span className="text-xl font-bold">{formatCurrency(netSalary)}</span>
       </div>
 
       {activeTemplate.showFooterNote && (
-        <p className="text-xs text-gray-600 italic mt-8 pt-4 border-t border-gray-300">
+        <p className="text-xs text-muted-foreground italic mt-8 pt-4 border-t border-border">
           {activeTemplate.footerNote || safeSettings.footerNote || DEFAULT_FOOTER_NOTE}
         </p>
       )}
       {activeTemplate.showSlipNumber && slip.slipNumber ? (
-        <p className="text-xs text-gray-500 mt-4">Slip Number: {slip.slipNumber}</p>
+        <p className="text-xs text-muted-foreground mt-4">Slip Number: {slip.slipNumber}</p>
       ) : null}
 
       {showBreakdownPanel && (
@@ -312,7 +312,7 @@ export function SalarySlipPreview({
           <button
             type="button"
             onClick={() => setShowBreakdown((open) => !open)}
-            className="mt-8 flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 px-3 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50"
+            className="mt-8 flex w-full items-center justify-center gap-2 rounded-lg border border-border px-3 py-2 text-xs font-semibold text-muted-foreground hover:bg-muted"
           >
             {showBreakdown ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
             {showBreakdown ? 'Hide Calculation Breakdown' : 'Show Calculation Breakdown'}
@@ -320,18 +320,18 @@ export function SalarySlipPreview({
 
           {showBreakdown && (
             <div className="mt-4 space-y-3">
-              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 space-y-2">
-                <p className="text-xs font-semibold text-blue-700 uppercase">Leave Deduction</p>
+              <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg p-4 space-y-2">
+                <p className="text-xs font-semibold text-blue-700 dark:text-blue-300 uppercase">Leave Deduction</p>
                 <p className="font-mono text-xs text-blue-900 font-bold">
                   leaveDeduction = (grossSalary × unpaidLeave) / 26 = ({formatCurrency(grossSalary)} ×{' '}
                   {unpaidLeave}) / 26 = {formatCurrency(leaveDeduction)}
                 </p>
-                <p className="text-xs font-semibold text-blue-700 uppercase pt-2">Net Salary</p>
+                <p className="text-xs font-semibold text-blue-700 dark:text-blue-300 uppercase pt-2">Net Salary</p>
                 <p className="font-mono text-xs text-blue-900 font-bold">
                   netSalary = grossSalary − leaveDeduction = {formatCurrency(grossSalary)} −{' '}
                   {formatCurrency(leaveDeduction)} = {formatCurrency(netSalary)}
                 </p>
-                <p className="text-xs font-semibold text-blue-700 uppercase pt-2">Paid Days</p>
+                <p className="text-xs font-semibold text-blue-700 dark:text-blue-300 uppercase pt-2">Paid Days</p>
                 <p className="font-mono text-xs text-blue-900 font-bold">
                   paidDays = 26 − unpaidLeave − (halfDay × 0.5) = 26 − {unpaidLeave} − ({halfDay} ×
                   0.5) = {formatCount(paidDays)}
@@ -339,8 +339,8 @@ export function SalarySlipPreview({
               </div>
 
               <div className="grid grid-cols-3 gap-3">
-                <div className="bg-gray-50 rounded-lg p-4 text-xs space-y-1.5">
-                  <p className="font-semibold text-gray-700 uppercase mb-2">Given</p>
+                <div className="bg-muted rounded-lg p-4 text-xs space-y-1.5">
+                  <p className="font-semibold text-muted-foreground uppercase mb-2">Given</p>
                   <FieldRow label="Gross Salary" value={formatCurrency(grossSalary)} />
                   <FieldRow label="Total Days in Month" value={formatCount(totalDaysInMonth)} />
                   <FieldRow label="Unpaid Leave" value={formatCount(unpaidLeave)} />
@@ -349,16 +349,16 @@ export function SalarySlipPreview({
                   <FieldRow label="Basic / HRA / Special" value={`${basicPercentage}/${hraPercentage}/${specialPercentage}%`} />
                 </div>
 
-                <div className="bg-gray-50 rounded-lg p-4 text-xs space-y-1.5">
-                  <p className="font-semibold text-gray-700 uppercase mb-2">Calculation</p>
+                <div className="bg-muted rounded-lg p-4 text-xs space-y-1.5">
+                  <p className="font-semibold text-muted-foreground uppercase mb-2">Calculation</p>
                   <FieldRow label="Paid Days" value={formatCount(paidDays)} />
                   <FieldRow label="Leave Deduction" value={formatCurrency(leaveDeduction)} />
                   <FieldRow label="Total Deductions" value={formatCurrency(totalDeductions)} />
                   <FieldRow label="Net Salary" value={formatCurrency(netSalary)} />
                 </div>
 
-                <div className="bg-gray-50 rounded-lg p-4 text-xs space-y-1.5">
-                  <p className="font-semibold text-gray-700 uppercase mb-2">Breakdown</p>
+                <div className="bg-muted rounded-lg p-4 text-xs space-y-1.5">
+                  <p className="font-semibold text-muted-foreground uppercase mb-2">Breakdown</p>
                   <FieldRow label="Basic Wage" value={formatCurrency(basic)} />
                   <FieldRow label="HRA" value={formatCurrency(hra)} />
                   <FieldRow label="Special Allowances" value={formatCurrency(special)} />

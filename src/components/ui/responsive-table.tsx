@@ -84,7 +84,7 @@ export function ResponsiveTable<T extends Record<string, any>>({
           <div
             key={index}
             className={cn(
-              "rounded-lg border border-stroke bg-white p-4 shadow-card dark:border-stroke-dark dark:bg-gray-dark",
+              "rounded-lg border border-stroke bg-card p-4 shadow-hard dark:border-stroke-dark",
               onRowClick && "cursor-pointer hover:shadow-card-2 transition-shadow"
             )}
             onClick={() => onRowClick?.(row)}
@@ -112,7 +112,7 @@ export function ResponsiveTable<T extends Record<string, any>>({
         {sortedData.map((row, index) => (
           <div
             key={index}
-            className="rounded-lg border border-stroke bg-white dark:border-stroke-dark dark:bg-gray-dark"
+            className="rounded-lg border border-stroke bg-card dark:border-stroke-dark"
           >
             <button
               className="w-full p-4 text-left flex items-center justify-between"
@@ -220,7 +220,7 @@ export function ResponsiveTable<T extends Record<string, any>>({
   return (
     <div className={cn("overflow-hidden rounded-lg border border-stroke dark:border-stroke-dark", className)}>
       <table className="w-full table-auto">
-        <thead className="bg-gray-1 dark:bg-gray-dark">
+        <thead className="bg-muted">
           <tr>
             {columns.map((column) => (
               <th
@@ -252,7 +252,7 @@ export function ResponsiveTable<T extends Record<string, any>>({
             ))}
           </tr>
         </thead>
-        <tbody className="bg-white dark:bg-gray-dark">
+        <tbody className="bg-card">
           {sortedData.map((row, index) => (
             <tr
               key={index}
