@@ -6,10 +6,12 @@ const config: Config = {
   darkMode: ["class"],
   theme: {
     extend: {
-      fontFamily: {
-        sans: ["var(--font-inter)", ...defaultTheme.fontFamily.sans],
-        display: ["var(--font-space-grotesk)", ...defaultTheme.fontFamily.sans],
-      },
+      // The -override vars are set inline on <html> by /admin/theme-setting and win
+        // over the next/font defaults they fall back to.
+        fontFamily: {
+          sans: ["var(--font-sans-override, var(--font-inter))", ...defaultTheme.fontFamily.sans],
+          display: ["var(--font-display-override, var(--font-space-grotesk))", ...defaultTheme.fontFamily.sans],
+        },
       screens: {
         "2xsm": "375px",
         xsm: "425px",
@@ -175,17 +177,19 @@ const config: Config = {
         "brand-gradient-sidebar":
           "linear-gradient(180deg, #002176 0%, #001A5C 50%, #1A0E62 100%)",
       },
-      fontSize: {
-        "heading-1": ["60px", "72px"],
-        "heading-2": ["48px", "58px"],
-        "heading-3": ["40px", "48px"],
-        "heading-4": ["35px", "45px"],
-        "heading-5": ["28px", "40px"],
-        "heading-6": ["24px", "30px"],
-        "body-2xlg": ["22px", "28px"],
-        "body-sm": ["14px", "22px"],
-        "body-xs": ["12px", "20px"],
-      },
+      // rem, not px, so the base-size setting on /admin/theme-setting scales
+        // these too. Values are the previous px figures over 16.
+        fontSize: {
+          "heading-1": ["3.75rem", "4.5rem"],
+          "heading-2": ["3rem", "3.625rem"],
+          "heading-3": ["2.5rem", "3rem"],
+          "heading-4": ["2.1875rem", "2.8125rem"],
+          "heading-5": ["1.75rem", "2.5rem"],
+          "heading-6": ["1.5rem", "1.875rem"],
+          "body-2xlg": ["1.375rem", "1.75rem"],
+          "body-sm": ["0.875rem", "1.375rem"],
+          "body-xs": ["0.75rem", "1.25rem"],
+        },
       spacing: {
         4.5: "1.125rem",
         5.5: "1.375rem",
@@ -359,14 +363,18 @@ const config: Config = {
         // One radius system. DEFAULT/lg are the card+input sizes, xl the large card,
         // md/sm the compact controls. Existing rounded-* utilities now resolve here
         // instead of Tailwind's defaults, so radii become consistent app-wide.
+        // Every step is a multiple of the admin-controlled base radius
+        // (/admin/theme-setting). At the default 20px these resolve to the old
+        // hardcoded 8/12/20/18/24/28/36 — the ratios are exact, so the slider
+        // scales the whole system without changing today's look.
         none: "0",
-        sm: "8px",
-        md: "12px",
-        DEFAULT: "20px",
-        lg: "18px",
-        xl: "24px",
-        "2xl": "28px",
-        "3xl": "36px",
+        sm: "calc(var(--radius-override, 20px) * 0.4)",
+        md: "calc(var(--radius-override, 20px) * 0.6)",
+        DEFAULT: "var(--radius-override, 20px)",
+        lg: "calc(var(--radius-override, 20px) * 0.9)",
+        xl: "calc(var(--radius-override, 20px) * 1.2)",
+        "2xl": "calc(var(--radius-override, 20px) * 1.4)",
+        "3xl": "calc(var(--radius-override, 20px) * 1.8)",
         full: "9999px",
       },
       boxShadow: {

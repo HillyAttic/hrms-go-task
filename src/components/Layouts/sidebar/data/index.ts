@@ -185,6 +185,13 @@ export const NAV_DATA = [
         items: [],
       },
       {
+        title: "Theme Setting",
+        url: "/admin/theme-setting",
+        icon: Icons.PaletteIcon,
+        items: [],
+        requiresRole: ['admin'],
+      },
+      {
         title: "Password Manager",
         url: "/admin/password-manager",
         icon: Icons.ShieldLockIcon,

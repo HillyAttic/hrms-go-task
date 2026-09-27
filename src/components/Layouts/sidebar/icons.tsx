@@ -37,6 +37,7 @@ import {
   FolderKanban,
   Wallet,
   CircleDollarSign,
+  Palette,
 } from "lucide-react";
 
 export type PropsType = SVGProps<SVGSVGElement>;
@@ -85,6 +86,7 @@ export const LockOpenIcon = wrap(LucideLockOpen);
 export const ProjectIcon = wrap(FolderKanban);
 export const SalarySlipIcon = wrap(Wallet);
 export const SalaryConfigIcon = wrap(CircleDollarSign);
+export const PaletteIcon = wrap(Palette);
 
 export function ChevronUp(props: PropsType) {
   const { className } = props;

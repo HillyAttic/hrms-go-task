@@ -65,7 +65,17 @@
   --dark: 25 26 35;
   --dark-secondary: 37 38 47;
 
-  --radius: 20px;
+  /* --radius-override is set inline on <html> by /admin/theme-setting; the
+     borderRadius scale in tailwind.config.ts reads it directly. */
+  --radius: var(--radius-override, 20px);
+}
+
+/* The sidebar's width class is compiled to a literal `w-[290px]`, so an inline
+   --sidebar-width cannot reach it. Re-declare it here to read the token. */
+@media (min-width: 768px) {
+  .w-\[290px\] {
+    width: var(--sidebar-width, 290px);
+  }
 }
 
 .dark {
@@ -104,6 +114,12 @@
 }
 
 @layer base {
+  /* Base size is admin-controlled via /admin/theme-setting. Everything in the app
+     is rem-based, so this one declaration scales the whole interface. */
+  html {
+    font-size: var(--font-scale, 16px);
+  }
+
   body {
     @apply bg-surface text-foreground;
     margin: 0;

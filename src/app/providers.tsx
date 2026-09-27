@@ -5,6 +5,7 @@ import { ThemeProvider, useTheme } from "next-themes";
 import { EnhancedAuthProvider } from "@/contexts/enhanced-auth.context";
 import { NotificationProvider } from "@/contexts/notification.context";
 import { ModalProvider } from "@/contexts/modal-context";
+import { ThemeConfigProvider } from "@/contexts/theme-config.context";
 import { NotificationPermissionPrompt } from "@/components/pwa/notification-permission-prompt";
 import { IOSPWAPrompt } from "@/components/pwa/ios-pwa-prompt";
 import { NotificationClickHandler } from "@/components/pwa/notification-click-handler";
@@ -14,6 +15,7 @@ import "react-toastify/dist/ReactToastify.css";
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <ThemeProvider defaultTheme="light" attribute="class">
+      <ThemeConfigProvider>
       <NotificationProvider>
         <EnhancedAuthProvider>
           <ModalProvider>
@@ -25,6 +27,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
           </ModalProvider>
         </EnhancedAuthProvider>
       </NotificationProvider>
+      </ThemeConfigProvider>
     </ThemeProvider>
   );
 }

@@ -11,6 +11,7 @@ import { ArrowLeftIcon, ChevronUp } from "./icons";
 import { MenuItem } from "./menu-item";
 import { useSidebarContext } from "./sidebar-context";
 import { useAuthEnhanced } from "@/hooks/use-auth-enhanced";
+import { useThemeConfig } from "@/contexts/theme-config.context";
 import { authenticatedFetch } from "@/lib/api-client";
 import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { db } from "@/lib/firebase";
@@ -20,6 +21,7 @@ export function Sidebar() {
   const { setIsOpen, isOpen, isMobile, isTablet, isDesktop, toggleSidebar, variant } = useSidebarContext();
   const { device, isTouchDevice } = useResponsive();
   const { hasRole, user } = useAuthEnhanced();
+  const { config } = useThemeConfig();
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
   const [collapsedSections, setCollapsedSections] = useState<string[]>(
     NAV_DATA.filter((s) => s.label !== 'MAIN MENU').map((s) => s.label)
@@ -158,7 +160,7 @@ export function Sidebar() {
     if (variant === 'mobile') {
       return cn(
         baseClasses,
-        "fixed bottom-0 top-0 z-50 max-w-[290px]",
+        "fixed bottom-0 top-0 z-50 max-w-[90vw]",
         getSidebarWidth()
       );
     }
@@ -173,7 +175,7 @@ export function Sidebar() {
     
     return cn(
       baseClasses,
-      "sticky top-3 max-w-[290px]",
+      "sticky top-3",
       getSidebarWidth()
     );
   };
@@ -222,14 +224,14 @@ export function Sidebar() {
           <div className="px-3.5" style={{ marginBottom: '-0.5rem' }}>
             {/* Light mode logo */}
             <img
-              src="/images/branding_edVenture-5.png"
+              src={config.logoLight || "/images/branding_edVenture-5.png"}
               alt="edVenture Logo"
               className="h-auto w-full block dark:hidden"
               style={{ maxWidth: '220px' }}
             />
             {/* Dark mode logo */}
             <img
-              src="/images/dark-mode.png"
+              src={config.logoDark || "/images/dark-mode.png"}
               alt="edVenture Logo"
               className="h-auto w-full hidden dark:block"
               style={{ maxWidth: '220px' }}

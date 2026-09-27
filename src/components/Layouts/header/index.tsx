@@ -11,6 +11,7 @@ import { PWAInstallButton } from "./pwa-install-button";
 import { ThemeToggleSwitch } from "./theme-toggle";
 import { UserInfo } from "./user-info";
 import { useModal } from "@/contexts/modal-context";
+import { useThemeConfig } from "@/contexts/theme-config.context";
 
 /** Derive a readable page title from the route, e.g. /admin/leave-approvals -> "Leave Approvals". */
 function titleFromPath(pathname: string): string {
@@ -26,6 +27,7 @@ export function Header() {
   const { toggleSidebar, isMobile, isTablet } = useSidebarContext();
   const { device, isTouchDevice } = useResponsive();
   const { isModalOpen } = useModal();
+  const { config } = useThemeConfig();
   const pathname = usePathname();
 
   const pageTitle = titleFromPath(pathname);
@@ -34,10 +36,11 @@ export function Header() {
     <header
       className={`
         sticky top-0 z-30 flex items-center justify-between border-b-2 border-border
-        bg-card px-4 py-4 transition-transform duration-200
-        md:px-6 md:py-4 2xl:px-10
+        bg-card px-4 transition-transform duration-200
+        md:px-6 2xl:px-10
         ${isModalOpen ? '-translate-y-full' : 'translate-y-0'}
       `}
+      style={{ minHeight: 'var(--header-height, 70px)' }}
       aria-hidden={isModalOpen}
     >
       {/* Mobile/Tablet Menu Button */}
@@ -65,7 +68,7 @@ export function Header() {
           `}
         >
           <Image
-            src={"/images/logo/logo-icon.svg"}
+            src={config.logoIcon || "/images/logo/logo-icon.svg"}
             width={32}
             height={32}
             alt="EdVentureHub"
