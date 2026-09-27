@@ -91,7 +91,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleComplete, onView, sel
               type="checkbox"
               checked={selected}
               onChange={(e) => onSelect(task.id, e.target.checked)}
-              className="w-5 h-5 rounded border-border text-blue-600 focus:ring-ring cursor-pointer"
+              className="w-5 h-5 rounded border-border text-ring focus:ring-ring cursor-pointer"
               aria-label={`Select ${task.title}`}
             />
           </div>
@@ -115,7 +115,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleComplete, onView, sel
             
             {/* Overdue Indicator - Requirement 2.5 */}
             {isOverdue && (
-              <div className="flex items-center gap-1 text-red-600 text-sm font-medium mb-2">
+              <div className="flex items-center gap-1 text-destructive text-sm font-medium mb-2">
                 <ExclamationTriangleIcon className="w-4 h-4" />
                 <span>Overdue</span>
               </div>
@@ -129,7 +129,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleComplete, onView, sel
                 size="sm"
                 variant="ghost"
                 onClick={() => onView(task)}
-                className="text-purple-600 hover:text-purple-700 dark:hover:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/30"
+                className="text-foreground hover:bg-muted"
                 aria-label={`View details for ${task.title}`}
                 title="View details, comments & attachments"
               >
@@ -140,7 +140,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleComplete, onView, sel
               size="sm"
               variant="ghost"
               onClick={() => onEdit(task)}
-              className="text-blue-600 hover:text-blue-700 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/30"
+              className="text-foreground hover:bg-muted"
               aria-label={`Edit ${task.title}`}
             >
               <PencilSquareIcon className="w-4 h-4" />
@@ -149,7 +149,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleComplete, onView, sel
               size="sm"
               variant="ghost"
               onClick={() => onDelete(task.id)}
-              className="text-red-600 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30"
+              className="text-destructive hover:bg-destructive/10"
               aria-label={`Delete ${task.title}`}
             >
               <TrashIcon className="w-4 h-4" />
@@ -169,7 +169,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleComplete, onView, sel
           {/* Due Date - Requirement 2.4 */}
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <CalendarIcon className="w-4 h-4 flex-shrink-0" />
-            <span className={isOverdue ? 'text-red-600 font-medium' : ''}>
+            <span className={isOverdue ? 'text-destructive font-medium' : ''}>
               Due: {formatDate(task.dueDate)}
             </span>
           </div>
@@ -216,7 +216,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleComplete, onView, sel
                 </span>
               )}
               {task.commentCount != null && task.commentCount > 0 && (
-                <span className="inline-flex items-center gap-1 text-sm text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 rounded-full px-2 py-0.5">
+                <span className="inline-flex items-center gap-1 text-sm text-info bg-info/15 rounded-full px-2 py-0.5">
                   <ChatBubbleLeftRightIcon className="w-3.5 h-3.5 flex-shrink-0" />
                   {task.commentCount} comment{task.commentCount !== 1 ? 's' : ''}
                 </span>
@@ -232,7 +232,7 @@ export function TaskCard({ task, onEdit, onDelete, onToggleComplete, onView, sel
               variant="outline"
               size="sm"
               onClick={() => onView(task)}
-              className="flex-shrink-0 text-purple-600 border-purple-200 dark:border-purple-700 hover:bg-purple-50 dark:hover:bg-purple-900/30"
+              className="flex-shrink-0 text-foreground border-border hover:bg-muted"
               aria-label={`View details for ${task.title}`}
               title="View details, comments & attachments"
             >

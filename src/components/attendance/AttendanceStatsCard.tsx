@@ -25,12 +25,12 @@ export function AttendanceStatsCard({ stats, loading, error }: AttendanceStatsCa
 
   if (error && !stats) {
     return (
-      <Card className="p-6 border-red-200 dark:border-red-700 bg-red-50 dark:bg-red-900/30">
+      <Card className="p-6 border-destructive/30 bg-destructive/10">
         <div className="flex items-center gap-2">
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-red-500" viewBox="0 0 20 20" fill="currentColor">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-destructive" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
           </svg>
-          <span className="text-sm font-medium text-red-800 dark:text-red-300">{error}</span>
+          <span className="text-sm font-medium text-destructive">{error}</span>
         </div>
       </Card>
     );
@@ -54,25 +54,25 @@ export function AttendanceStatsCard({ stats, loading, error }: AttendanceStatsCa
       label: 'Total Hours',
       value: `${stats.totalHours.toFixed(1)}h`,
       icon: Clock,
-      color: 'text-blue-600',
+      color: 'text-foreground',
     },
     {
       label: 'Average Hours',
       value: `${stats.averageHours.toFixed(1)}h`,
       icon: TrendingUp,
-      color: 'text-green-600',
+      color: 'text-foreground',
     },
     {
       label: 'Attendance Rate',
       value: `${stats.attendanceRate.toFixed(0)}%`,
       icon: Calendar,
-      color: 'text-purple-600',
+      color: 'text-foreground',
     },
     {
       label: 'Punctuality',
       value: `${stats.punctualityRate.toFixed(0)}%`,
       icon: Award,
-      color: 'text-orange-600',
+      color: 'text-foreground',
     },
   ];
 
@@ -93,7 +93,7 @@ export function AttendanceStatsCard({ stats, loading, error }: AttendanceStatsCa
       {stats.overtimeHours > 0 && (
         <div className="mt-4 pt-4 border-t text-center">
           <p className="text-sm text-muted-foreground">
-            Overtime: <span className="font-semibold text-orange-600">{stats.overtimeHours.toFixed(1)}h</span>
+            Overtime: <span className="font-semibold text-warning">{stats.overtimeHours.toFixed(1)}h</span>
           </p>
         </div>
       )}

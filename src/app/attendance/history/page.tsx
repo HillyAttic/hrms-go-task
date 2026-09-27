@@ -299,9 +299,9 @@ export default function AttendanceHistoryPage() {
     if (!record.clockIn) {
       return <Badge variant="secondary">Not Clocked In</Badge>;
     } else if (record.clockOut) {
-      return <Badge variant="default" className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 hover:bg-green-100 dark:hover:bg-green-900/30">Completed</Badge>;
+      return <Badge variant="success">Completed</Badge>;
     } else {
-      return <Badge variant="default" className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/30">Active</Badge>;
+      return <Badge variant="info">Active</Badge>;
     }
   };
 
@@ -315,8 +315,8 @@ export default function AttendanceHistoryPage() {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <Card className="p-8 text-center">
-          <div className="mx-auto h-12 w-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-4">
-            <Clock className="h-6 w-6 text-blue-600" />
+          <div className="mx-auto h-12 w-12 rounded-full bg-info/15 flex items-center justify-center mb-4">
+            <Clock className="h-6 w-6 text-info" />
           </div>
           <h2 className="text-2xl font-bold text-foreground mb-2">Authentication Required</h2>
           <p className="text-muted-foreground mb-6">Please sign in to view attendance history.</p>
@@ -398,7 +398,7 @@ export default function AttendanceHistoryPage() {
                       variant="ghost"
                       size="sm"
                       onClick={() => confirmDelete(record)}
-                      className="text-red-600 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30 p-1 sm:p-2 h-7 w-7 sm:h-auto sm:w-auto"
+                      className="text-destructive hover:bg-destructive/10 p-1 sm:p-2 h-7 w-7 sm:h-auto sm:w-auto"
                     >
                       <Trash2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                     </Button>
@@ -411,8 +411,8 @@ export default function AttendanceHistoryPage() {
                     {/* Clock In Section */}
                     <div className="flex items-start space-x-1 sm:space-x-3 flex-1">
                       <div className="flex-shrink-0 mt-0.5 sm:mt-1">
-                        <div className="w-7 h-5 sm:w-10 sm:h-10 rounded-lg sm:rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                          <Clock className="w-2.5 h-2.5 sm:w-5 sm:h-5 text-green-600" />
+                        <div className="w-7 h-5 sm:w-10 sm:h-10 rounded-lg sm:rounded-full bg-success/15 flex items-center justify-center">
+                          <Clock className="w-2.5 h-2.5 sm:w-5 sm:h-5 text-success" />
                         </div>
                       </div>
                       <div className="flex-1 min-w-0 overflow-hidden">
@@ -425,7 +425,7 @@ export default function AttendanceHistoryPage() {
                               record.location!.clockIn!.longitude,
                               `Clock In Location - ${formatDate(record.clockIn)}`
                             )}
-                            className="flex items-center gap-0.5 sm:gap-1 mt-0.5 sm:mt-1 text-blue-600 hover:text-blue-800 dark:hover:text-blue-300 hover:underline cursor-pointer"
+                            className="flex items-center gap-0.5 sm:gap-1 mt-0.5 sm:mt-1 text-foreground hover:underline cursor-pointer"
                           >
                             <MapPin className="h-2 w-2 sm:h-3 sm:w-3 flex-shrink-0" />
                             <span className="text-xs sm:text-xs truncate">
@@ -440,8 +440,8 @@ export default function AttendanceHistoryPage() {
                     {/* Clock Out Section */}
                     <div className="flex items-start space-x-1 sm:space-x-3 flex-1">
                       <div className="flex-shrink-0 mt-0.5 sm:mt-1">
-                        <div className="w-7 h-5 sm:w-10 sm:h-10 rounded-lg sm:rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
-                          <Clock className="w-2.5 h-2.5 sm:w-5 sm:h-5 text-red-600 rotate-180" />
+                        <div className="w-7 h-5 sm:w-10 sm:h-10 rounded-lg sm:rounded-full bg-destructive/15 flex items-center justify-center">
+                          <Clock className="w-2.5 h-2.5 sm:w-5 sm:h-5 text-destructive rotate-180" />
                         </div>
                       </div>
                       <div className="flex-1 min-w-0 overflow-hidden">
@@ -454,7 +454,7 @@ export default function AttendanceHistoryPage() {
                               record.location!.clockOut!.longitude,
                               `Clock Out Location - ${formatDate(record.clockIn)}`
                             )}
-                            className="flex items-center gap-0.5 sm:gap-1 mt-0.5 sm:mt-1 text-blue-600 hover:text-blue-800 dark:hover:text-blue-300 hover:underline cursor-pointer"
+                            className="flex items-center gap-0.5 sm:gap-1 mt-0.5 sm:mt-1 text-foreground hover:underline cursor-pointer"
                           >
                             <MapPin className="h-2 w-2 sm:h-3 sm:w-3 flex-shrink-0" />
                             <span className="text-xs sm:text-xs truncate">
@@ -531,7 +531,7 @@ export default function AttendanceHistoryPage() {
           {loading && (
             <div className="text-center py-8">
               <div className="inline-flex items-center gap-2">
-                <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
+                <Loader2 className="h-5 w-5 animate-spin text-foreground" />
                 <span className="text-muted-foreground">Loading records...</span>
               </div>
             </div>
@@ -544,8 +544,8 @@ export default function AttendanceHistoryPage() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-card rounded-lg max-w-md w-full m-4 p-4 sm:p-6">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0">
-                <AlertTriangle className="w-5 h-5 text-red-600" />
+              <div className="w-10 h-10 rounded-full bg-destructive/15 flex items-center justify-center flex-shrink-0">
+                <AlertTriangle className="w-5 h-5 text-destructive" />
               </div>
               <h3 className="text-base sm:text-lg font-semibold text-foreground">Confirm Deletion</h3>
             </div>
