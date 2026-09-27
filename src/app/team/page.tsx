@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useModal } from '@/contexts/modal-context';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -157,7 +158,7 @@ export default function TeamPage() {
       </div>
 
       {/* Add Member Modal Placeholder */}
-      {showAddMember && (
+      {showAddMember && createPortal(
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-card rounded-lg p-6 w-full max-w-md">
             <h2 className="text-xl font-bold mb-4">Add Team Member</h2>
@@ -198,7 +199,7 @@ export default function TeamPage() {
             </div>
           </div>
         </div>
-      )}
+      , document.body)}
     </div>
   );
 }

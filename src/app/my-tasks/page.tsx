@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useEnhancedAuth } from '@/contexts/enhanced-auth.context';
 import { useRouter } from 'next/navigation';
 import { myTasksService } from '@/services/my-tasks.service';
@@ -397,9 +398,9 @@ function CreateListModal({ onClose, onCreate }: CreateListModalProps) {
     const [name, setName] = useState('');
     const [color, setColor] = useState(TASK_LIST_COLORS[0]);
 
-    return (
+    return createPortal(
         <div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 z-50 flex items-center justify-center"
             onClick={onClose}
         >
             {/* Backdrop */}
@@ -407,7 +408,7 @@ function CreateListModal({ onClose, onCreate }: CreateListModalProps) {
 
             {/* Sheet */}
             <div
-                className="relative bg-card rounded-2xl shadow-2xl w-full max-w-md p-6 sm:p-6"
+                className="relative bg-card rounded-2xl shadow-2xl w-full max-w-md m-4 p-6 sm:p-6"
                 onClick={e => e.stopPropagation()}
             >
                 <div className="flex items-center justify-between mb-5">
@@ -461,5 +462,5 @@ function CreateListModal({ onClose, onCreate }: CreateListModalProps) {
                 </div>
             </div>
         </div>
-    );
+    , document.body);
 }

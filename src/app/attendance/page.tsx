@@ -1,6 +1,7 @@
   'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { useModal } from '@/contexts/modal-context';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -652,9 +653,9 @@ export default function AttendancePage() {
       />
 
       {/* Approve with Reason Modal */}
-      {showApproveModal && selectedLeaveRequest && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-card rounded-lg p-6 max-w-md w-full">
+      {showApproveModal && selectedLeaveRequest && createPortal(
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-card rounded-lg m-4 p-6 max-w-md w-full">
             <h3 className="text-lg font-bold mb-4 text-foreground">Approve Leave Request</h3>
             <div className="mb-4 p-3 bg-muted rounded-lg">
               <p className="text-sm text-muted-foreground">
@@ -696,7 +697,7 @@ export default function AttendancePage() {
             </div>
           </div>
         </div>
-      )}
+      , document.body)}
     </div>
   );
 }

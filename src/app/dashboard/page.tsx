@@ -1204,16 +1204,16 @@ export default function DashboardPage() {
       )}
 
       {/* Modals - Only render when needed */}
-      {showTaskTypeDialog && (
-        <div 
-          className="fixed inset-0 !mt-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+      {showTaskTypeDialog && createPortal(
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
           onClick={() => {
             setShowTaskTypeDialog(false);
             closeModal(); // Close modal context to show header
           }}
         >
-          <div 
-            className="bg-card rounded-lg shadow-xl max-w-md w-full p-6"
+          <div
+            className="bg-card rounded-lg shadow-xl max-w-md w-full m-4 p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <h3 className="text-xl font-bold text-foreground mb-4">
@@ -1245,19 +1245,19 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
-      )}
+      , document.body)}
 
       {/* All Tasks Modal */}
-      {showAllTasksModal && (
-        <div 
-          className="fixed inset-0 !mt-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+      {showAllTasksModal && createPortal(
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
           onClick={() => {
             setShowAllTasksModal(false);
             closeModal(); // Close modal context to show header
           }}
         >
-          <div 
-            className="bg-card rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden"
+          <div
+            className="bg-card rounded-lg shadow-xl max-w-4xl w-full m-4 max-h-[85vh] flex flex-col overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-border">
@@ -1405,19 +1405,19 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
-      )}
+      , document.body)}
 
       {/* Completed Tasks Modal */}
-      {showCompletedModal && (
-        <div 
-          className="fixed inset-0 !mt-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+      {showCompletedModal && createPortal(
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
           onClick={() => {
             setShowCompletedModal(false);
             closeModal();
           }}
         >
-          <div 
-            className="bg-card rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden"
+          <div
+            className="bg-card rounded-lg shadow-xl max-w-4xl w-full m-4 max-h-[85vh] flex flex-col overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-border">
@@ -1520,19 +1520,19 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
-      )}
+      , document.body)}
 
       {/* In Progress Tasks Modal */}
-      {showInProgressModal && (
-        <div 
-          className="fixed inset-0 !mt-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+      {showInProgressModal && createPortal(
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
           onClick={() => {
             setShowInProgressModal(false);
             closeModal();
           }}
         >
-          <div 
-            className="bg-card rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden"
+          <div
+            className="bg-card rounded-lg shadow-xl max-w-4xl w-full m-4 max-h-[85vh] flex flex-col overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-border">
@@ -1641,19 +1641,19 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
-      )}
+      , document.body)}
 
       {/* To Do Tasks Modal */}
-      {showTodoModal && (
-        <div 
-          className="fixed inset-0 !mt-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+      {showTodoModal && createPortal(
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
           onClick={() => {
             setShowTodoModal(false);
             closeModal();
           }}
         >
-          <div 
-            className="bg-card rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden"
+          <div
+            className="bg-card rounded-lg shadow-xl max-w-4xl w-full m-4 max-h-[85vh] flex flex-col overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-border">
@@ -1762,19 +1762,19 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
-      )}
+      , document.body)}
 
       {/* Overdue Tasks Modal */}
-      {showOverdueModal && (
-        <div 
-          className="fixed inset-0 !mt-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+      {showOverdueModal && createPortal(
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
           onClick={() => {
             setShowOverdueModal(false);
             closeModal();
           }}
         >
-          <div 
-            className="bg-card rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden"
+          <div
+            className="bg-card rounded-lg shadow-xl max-w-4xl w-full m-4 max-h-[85vh] flex flex-col overflow-hidden"
             onClick={(e) => {
               e.stopPropagation();
             }}
@@ -1877,8 +1877,8 @@ export default function DashboardPage() {
             </div>
           </div>
         </div>
-      )}
-      
+      , document.body)}
+
       {/* Plan Task Modal */}
       {showPlanTaskModal && selectedTaskForPlanning && (
         <PlanTaskModal

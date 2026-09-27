@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { useModal } from '@/contexts/modal-context';
 import { LeaveRequest, LeaveStatus } from '@/types/leave.types';
 import { toast } from 'react-toastify';
@@ -349,7 +350,7 @@ export default function LeaveApprovalsPage() {
                               <button
                                 onClick={() => handleApprove(request.id!)}
                                 disabled={busy}
-                                className={`${ACTION_BTN} col-start-1 row-start-1 justify-self-center bg-green-600 hover:bg-green-700`}
+                                className={`${ACTION_BTN} col-start-1 row-start-1 justify-self-start bg-green-600 hover:bg-green-700`}
                               >
                                 Approve
                               </button>
@@ -495,7 +496,7 @@ export default function LeaveApprovalsPage() {
       </div>
 
       {/* Reject with Reason Modal */}
-      {showRejectModal && (
+      {showRejectModal && createPortal(
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-card rounded-lg p-6 max-w-md w-full mx-4">
             <h3 className="text-lg font-bold mb-1 text-foreground">Reject Leave Request</h3>
@@ -537,10 +538,10 @@ export default function LeaveApprovalsPage() {
             </div>
           </div>
         </div>
-      )}
+      , document.body)}
 
       {/* Approve with Reason Modal */}
-      {showApproveModal && (
+      {showApproveModal && createPortal(
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-card rounded-lg p-6 max-w-md w-full mx-4">
             <h3 className="text-lg font-bold mb-1 text-foreground">Approve Leave Request with Reason</h3>
@@ -582,7 +583,7 @@ export default function LeaveApprovalsPage() {
             </div>
           </div>
         </div>
-      )}
+      , document.body)}
     </div>
   );
 }

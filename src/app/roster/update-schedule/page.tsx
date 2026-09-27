@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useEnhancedAuth } from '@/contexts/enhanced-auth.context';
 import { useRouter } from 'next/navigation';
 import { useModal } from '@/contexts/modal-context';
@@ -770,13 +771,13 @@ export default function UpdateSchedulePage() {
         />
       )}
       {/* Task Form Modal */}
-      {showModal && (
+      {showModal && createPortal(
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4"
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
           onClick={handleCloseModal}
         >
           <div
-            className="bg-card rounded-lg shadow-xl w-full max-w-md mx-auto p-4 sm:p-6 max-h-[90vh] overflow-y-auto pb-safe"
+            className="bg-card rounded-lg shadow-xl w-full max-w-md m-2 sm:m-4 mx-auto p-4 sm:p-6 max-h-[90vh] overflow-y-auto pb-safe"
             onClick={(e) => e.stopPropagation()}
           >
             <h3 className="text-lg sm:text-xl font-bold text-foreground mb-3 sm:mb-4">
@@ -938,16 +939,16 @@ export default function UpdateSchedulePage() {
             </form>
           </div>
         </div>
-      )}
+      , document.body)}
 
       {/* Non-Recurring Task Details Modal */}
-      {selectedNonRecurringTask && (
+      {selectedNonRecurringTask && createPortal(
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
           onClick={() => { setSelectedNonRecurringTask(null); closeModal(); }}
         >
           <div
-            className="bg-card rounded-lg shadow-xl w-full max-w-md p-6"
+            className="bg-card rounded-lg shadow-xl w-full max-w-md m-4 p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-start mb-4">
@@ -995,16 +996,16 @@ export default function UpdateSchedulePage() {
             </div>
           </div>
         </div>
-      )}
+      , document.body)}
 
       {/* Task Action Menu Modal */}
-      {showTaskActionMenu && selectedTaskForAction && (
+      {showTaskActionMenu && selectedTaskForAction && createPortal(
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
           onClick={handleCloseTaskActionMenu}
         >
           <div
-            className="bg-card rounded-lg shadow-xl w-full max-w-sm p-6"
+            className="bg-card rounded-lg shadow-xl w-full max-w-sm m-4 p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-start mb-4">
@@ -1062,16 +1063,16 @@ export default function UpdateSchedulePage() {
             </div>
           </div>
         </div>
-      )}
+      , document.body)}
 
       {/* Task View Modal */}
-      {showTaskViewModal && selectedTaskForAction && (
+      {showTaskViewModal && selectedTaskForAction && createPortal(
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
           onClick={handleCloseTaskViewModal}
         >
           <div
-            className="bg-card rounded-lg shadow-xl w-full max-w-md p-6"
+            className="bg-card rounded-lg shadow-xl w-full max-w-md m-4 p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-start mb-4">
@@ -1167,16 +1168,16 @@ export default function UpdateSchedulePage() {
             </div>
           </div>
         </div>
-      )}
+      , document.body)}
 
       {/* Task Table Modal */}
-      {showTaskTable && selectedDate && (
+      {showTaskTable && selectedDate && createPortal(
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
           onClick={handleCloseTaskTable}
         >
           <div
-            className="bg-card rounded-lg shadow-xl max-w-4xl w-full p-6 max-h-[90vh] overflow-y-auto"
+            className="bg-card rounded-lg shadow-xl max-w-4xl w-full m-4 p-6 max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-center mb-4 gap-2">
@@ -1317,7 +1318,7 @@ export default function UpdateSchedulePage() {
             )}
           </div>
         </div>
-      )}
+      , document.body)}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useModal } from '@/contexts/modal-context';
 import {
   collection,
@@ -539,9 +540,9 @@ export default function AttendanceHistoryPage() {
       )}
     
       {/* Delete Confirmation Modal - Mobile Responsive */}
-      {showDeleteModal && recordToDelete && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-card rounded-lg max-w-md w-full p-4 sm:p-6 mx-4">
+      {showDeleteModal && recordToDelete && createPortal(
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-card rounded-lg max-w-md w-full m-4 p-4 sm:p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center flex-shrink-0">
                 <AlertTriangle className="w-5 h-5 text-red-600" />
@@ -589,7 +590,7 @@ export default function AttendanceHistoryPage() {
             </div>
           </div>
         </div>
-      )}
+      , document.body)}
 
       {/* Location Map Modal */}
       {selectedLocation && (

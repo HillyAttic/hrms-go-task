@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Task, TaskStatus, TaskPriority } from '@/types/task.types';
 import { useNotification } from '@/contexts/notification.context';
 import { useModal } from '@/contexts/modal-context';
@@ -79,10 +80,10 @@ export const TaskCreationModal: React.FC<TaskCreationModalProps> = ({
     setAssignedUsers(newAssignees);
   };
 
-  return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div 
-        className="bg-card rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+  return createPortal(
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div
+        className="m-4 bg-card rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-6">
@@ -242,6 +243,7 @@ export const TaskCreationModal: React.FC<TaskCreationModalProps> = ({
           </form>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };

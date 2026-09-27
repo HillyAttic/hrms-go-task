@@ -36,9 +36,8 @@ export function Header() {
     <header
       className={`
         sticky top-0 z-30 flex items-center justify-between border-b-2 border-border
-        bg-card px-4 transition-transform duration-200
+        bg-card px-4 py-4 transition-transform duration-200
         md:px-6 2xl:px-10
-        ${isModalOpen ? '-translate-y-full' : 'translate-y-0'}
       `}
       style={{ minHeight: 'var(--header-height, 70px)' }}
       aria-hidden={isModalOpen}

@@ -6,6 +6,7 @@ import { useModal } from '@/contexts/modal-context';
 import { Card } from '@/components/ui/card';
 import { PageHeader } from '@/components/ui/page-header';
 import dynamic from 'next/dynamic';
+import { createPortal } from 'react-dom';
 
 // Lazy load the HolidayManagementModal
 const HolidayManagementModal = dynamic(() => import('@/components/attendance/HolidayManagementModal').then(mod => ({ default: mod.HolidayManagementModal })), {
@@ -430,9 +431,9 @@ export default function AttendanceRosterPage() {
       </Card>
 
       {/* Employee Detail Modal */}
-      {showEmployeeModal && selectedEmployee && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-2 sm:p-4">
-          <Card className="max-h-[90vh] w-full max-w-4xl overflow-y-auto p-3 sm:p-6">
+      {showEmployeeModal && selectedEmployee && createPortal(
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+          <Card className="max-h-[90vh] w-full max-w-4xl overflow-y-auto p-3 sm:p-6 m-2 sm:m-4">
             <div className="mb-4 flex items-start justify-between gap-2 sm:mb-6">
               <div className="min-w-0 flex-1">
                 <h3 className="truncate font-display text-lg font-bold text-foreground sm:text-xl">{selectedEmployee.employeeName}</h3>
@@ -496,7 +497,7 @@ export default function AttendanceRosterPage() {
             </div>
           </Card>
         </div>
-      )}
+      , document.body)}
 
       {/* Holiday Management Modal */}
       <HolidayManagementModal

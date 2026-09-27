@@ -154,6 +154,13 @@ export const NAV_DATA = [
         items: [],
         requiresRole: ['admin', 'manager'],
       },
+      {
+        title: "Theme Setting",
+        url: "/admin/theme-setting",
+        icon: Icons.PaletteIcon,
+        items: [],
+        requiresRole: ['admin'],
+      },
       // Authentication menu item hidden - users can access auth pages directly via URL if needed
       // {
       //   title: "Authentication",
@@ -183,13 +190,6 @@ export const NAV_DATA = [
         url: "/access-vault",
         icon: Icons.KeyIcon,
         items: [],
-      },
-      {
-        title: "Theme Setting",
-        url: "/admin/theme-setting",
-        icon: Icons.PaletteIcon,
-        items: [],
-        requiresRole: ['admin'],
       },
       {
         title: "Password Manager",

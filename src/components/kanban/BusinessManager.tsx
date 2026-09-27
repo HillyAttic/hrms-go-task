@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { Business } from '@/types/kanban.types';
 import { Button } from '@/components/ui/button';
 import { PlusIcon, PencilIcon, TrashIcon } from '@heroicons/react/24/outline';
@@ -138,9 +139,9 @@ export function BusinessManager({
       </div>
 
       {/* Add/Edit Business Modal */}
-      {showAddModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onClick={handleCancel}>
-          <div className="bg-card rounded-lg shadow-xl max-w-md w-full p-4 sm:p-6 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+      {showAddModal && createPortal(
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onClick={handleCancel}>
+          <div className="m-4 bg-card rounded-lg shadow-xl max-w-md w-full p-4 sm:p-6 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
             <h3 className="text-lg sm:text-xl font-bold text-foreground mb-3 sm:mb-4">
               {editingBusiness ? 'Edit Business' : 'Add New Business'}
             </h3>
@@ -213,7 +214,8 @@ export function BusinessManager({
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

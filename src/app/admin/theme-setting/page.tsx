@@ -213,22 +213,34 @@ function BrandAndSurfaces({
             </p>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {group.tokens.map((token) => {
-                const value = colors[token.key] ?? resolved[mode]?.[token.key];
+                const value = colors[token.key] ?? resolved[mode]?.[token.key] ?? '#000000';
                 return (
-                  <label key={token.key} className="flex items-center gap-3">
-                    <input
-                      type="color"
-                      value={value || '#000000'}
-                      onChange={(e) => onColor(mode, token.key, e.target.value)}
-                      className="h-9 w-9 shrink-0 cursor-pointer rounded-lg border border-border bg-transparent p-0"
-                      aria-label={token.label}
-                    />
+                  // The native colour input is left in the DOM for the OS picker but
+                  // painted invisible over a swatch we draw: Chrome renders its own
+                  // control (circle, slashed box) which ignores our radius and border.
+                  // The swatch keeps a fixed 6px radius so it stays legible when the
+                  // corner-radius setting is at either extreme.
+                  <label
+                    key={token.key}
+                    title={token.hint}
+                    className="flex cursor-pointer items-center gap-3"
+                  >
+                    <span className="relative h-9 w-9 shrink-0 overflow-hidden rounded-md border border-border">
+                      <span className="absolute inset-0" style={{ background: value }} />
+                      <input
+                        type="color"
+                        value={value}
+                        onChange={(e) => onColor(mode, token.key, e.target.value)}
+                        className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+                        aria-label={token.label}
+                      />
+                    </span>
                     <span className="min-w-0 flex-1">
                       <span className="block truncate text-sm font-medium text-foreground">
                         {token.label}
                       </span>
-                      <span className="block truncate text-xs text-muted-foreground">
-                        {token.hint ? token.hint : value || 'default'}
+                      <span className="block truncate font-mono text-xs text-muted-foreground">
+                        {value}
                       </span>
                     </span>
                   </label>

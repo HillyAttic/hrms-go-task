@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useMemo, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { RecurringTask } from '@/services/recurring-task.service';
 import { Client } from '@/services/client.service';
 import { ClientTaskCompletion } from '@/services/task-completion.service';
@@ -150,9 +151,9 @@ function ExportDialog({ task, clients, completions, isTeamMemberView, teamMember
     onClose();
   };
 
-  return (
-    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black bg-opacity-50">
-      <div className="bg-card rounded-xl shadow-2xl p-6 w-full max-w-sm border border-border">
+  return createPortal(
+    <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black bg-opacity-50">
+      <div className="m-4 bg-card rounded-xl shadow-2xl p-6 w-full max-w-sm border border-border">
         <div className="flex items-center justify-between mb-5">
           <h3 className="text-lg font-semibold text-foreground">Export Report</h3>
           <button onClick={onClose} className="text-muted-foreground hover:text-muted-foreground transition-colors">
@@ -217,7 +218,8 @@ function ExportDialog({ task, clients, completions, isTeamMemberView, teamMember
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
@@ -322,9 +324,9 @@ function ReportTable({
     </table>
 
     {/* Remark View Dialog */}
-    {viewingRemark && (
-      <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black bg-opacity-50" onClick={() => setViewingRemark(null)}>
-        <div className="bg-card rounded-xl shadow-2xl p-6 w-full max-w-md border border-border" onClick={e => e.stopPropagation()}>
+    {viewingRemark && createPortal(
+      <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black bg-opacity-50" onClick={() => setViewingRemark(null)}>
+        <div className="m-4 bg-card rounded-xl shadow-2xl p-6 w-full max-w-md border border-border" onClick={e => e.stopPropagation()}>
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-foreground">Remark</h3>
             <button onClick={() => setViewingRemark(null)} className="text-muted-foreground hover:text-muted-foreground transition-colors">
@@ -341,7 +343,8 @@ function ReportTable({
             By: {viewingRemark.remarkBy}
           </div>
         </div>
-      </div>
+      </div>,
+      document.body
     )}
     </>
   );
@@ -352,13 +355,14 @@ function ReportTable({
 function ModalShell({ onClose, onFullscreenToggle, isFullscreen, children }: { onClose: () => void; onFullscreenToggle: () => void; isFullscreen: boolean; children: React.ReactNode }) {
   const { openModal, closeModal } = useModal();
   useEffect(() => { openModal(); return () => closeModal(); }, [openModal, closeModal]);
-  return (
-    <div className={`fixed inset-0 z-50 flex flex-col ${isFullscreen ? 'items-stretch justify-stretch p-0' : 'sm:items-center sm:justify-center sm:p-4'}`}>
+  return createPortal(
+    <div className={`fixed inset-0 z-50 flex flex-col ${isFullscreen ? 'items-stretch justify-stretch p-0' : 'sm:items-center sm:justify-center'}`}>
       <div className="fixed inset-0 transition-opacity bg-muted bg-opacity-75" onClick={onClose} />
-      <div className={`relative ${isFullscreen ? 'w-full h-full' : 'w-full h-full sm:h-auto sm:max-h-[90vh] sm:max-w-6xl'} flex flex-col bg-card sm:rounded-lg shadow-xl overflow-hidden`}>
+      <div className={`relative ${isFullscreen ? 'w-full h-full' : 'w-full h-full sm:m-4 sm:h-auto sm:max-h-[90vh] sm:max-w-6xl'} flex flex-col bg-card sm:rounded-lg shadow-xl overflow-hidden`}>
         {children}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 

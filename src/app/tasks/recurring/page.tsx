@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { useRecurringTasks } from '@/hooks/use-recurring-tasks';
 import { useBulkSelection } from '@/hooks/use-bulk-selection';
 import { useEnhancedAuth } from '@/contexts/enhanced-auth.context';
@@ -486,7 +487,7 @@ export default function RecurringTasksPage() {
         />
 
         {/* Delete Confirmation Dialog */}
-        {deleteConfirmId && (
+        {deleteConfirmId && createPortal(
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-card rounded-lg p-6 max-w-md w-full mx-4">
               <h3 className="text-lg font-semibold text-foreground mb-4">
@@ -520,7 +521,7 @@ export default function RecurringTasksPage() {
               </div>
             </div>
           </div>
-        )}
+        , document.body)}
       </div>
 
       {/* Plan Task Modal */}
@@ -608,11 +609,11 @@ export default function RecurringTasksPage() {
       )}
 
       {/* Report loading overlay */}
-      {isReportLoading && (
+      {isReportLoading && createPortal(
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
         </div>
-      )}
+      , document.body)}
 
       {/* Task Report Modal */}
       {reportTask && !isReportLoading && (
