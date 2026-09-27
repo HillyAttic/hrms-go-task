@@ -49,6 +49,10 @@ export function StatsCard({
 
   const interactive = href || onClick;
 
+  // The badge owns the glyph size — callers pass icons anywhere from w-4 to
+  // md:w-7, which used to overflow a 28px tile edge-to-edge.
+  const glyphSize = compact ? '[&>svg]:size-5' : '[&>svg]:size-6';
+
   const content = (
     <>
       <div className="flex items-start justify-between gap-3">
@@ -63,8 +67,9 @@ export function StatsCard({
         {icon && (
           <span
             className={cn(
-              'flex shrink-0 items-center justify-center rounded-md border-2 border-border',
-              compact ? 'h-7 w-7' : 'h-9 w-9',
+              'flex shrink-0 items-center justify-center rounded-full border-2 border-border shadow-hard-sm',
+              compact ? 'h-9 w-9' : 'h-11 w-11',
+              glyphSize,
               iconClassName ?? 'bg-accent text-accent-foreground'
             )}
           >
@@ -75,8 +80,8 @@ export function StatsCard({
 
       <p
         className={cn(
-          'font-display font-semibold tracking-tight text-foreground',
-          compact ? 'mt-2 text-xl sm:text-2xl' : 'mt-3 text-2xl'
+          'font-display font-semibold tracking-tight text-foreground tabular-nums',
+          compact ? 'mt-3 text-xl sm:text-2xl' : 'mt-3 text-2xl'
         )}
       >
         {value}
@@ -91,10 +96,10 @@ export function StatsCard({
   );
 
   const base = cn(
-    'block rounded-lg border-2 border-border bg-card text-card-foreground shadow-hard transition-transform',
+    'block rounded-lg border-2 border-border bg-card text-card-foreground shadow-hard transition-[transform,box-shadow]',
     compact ? 'p-3 sm:p-4' : 'p-5',
     interactive &&
-      'cursor-pointer text-left hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/45',
+      'cursor-pointer text-left hover:-translate-y-0.5 hover:shadow-hard-lg focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/45',
     className
   );
 

@@ -24,6 +24,7 @@ interface SimpleStatCardProps {
 
 /** Only the semantically meaningful states get a tint; the rest stay lime. */
 const statusIconClass: Partial<Record<NonNullable<SimpleStatCardProps['color']>, string>> = {
+  blue: 'bg-info/15 text-info',
   green: 'bg-success/15 text-success',
   orange: 'bg-warning/15 text-warning',
   red: 'bg-destructive/15 text-destructive',

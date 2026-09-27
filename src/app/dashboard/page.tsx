@@ -987,13 +987,15 @@ export default function DashboardPage() {
         description="A quick overview of your team's current activity."
       />
 
-      {/* Stats Cards - Critical, render immediately */}
-      <div className="grid grid-cols-3 gap-2 sm:gap-4 md:grid-cols-5 md:gap-4 lg:gap-5 xl:gap-6">
+      {/* Stats Cards - Critical, render immediately.
+          Mobile: 2 cols with the lone 5th card spanning full width; 3 cols on
+          sm+; 5 across once there's room (lg). */}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-5 lg:gap-5 [&>*:last-child]:col-span-2 sm:[&>*:last-child]:col-span-1">
         <SimpleStatCard
           title="Total Tasks"
           mobileTitle="Total"
           value={stats.total}
-          icon={<ClipboardDocumentListIcon className="w-4 h-4 sm:w-6 sm:h-6 md:w-7 md:h-7" />}
+          icon={<ClipboardDocumentListIcon />}
           onClick={() => {
             setShowAllTasksModal(true);
             openModal(); // Open modal context to hide header
@@ -1006,7 +1008,7 @@ export default function DashboardPage() {
           title="Completed"
           mobileTitle="Done"
           value={stats.completed}
-          icon={<CheckCircleIcon className="w-4 h-4 sm:w-6 sm:h-6 md:w-7 md:h-7" />}
+          icon={<CheckCircleIcon />}
           onClick={() => {
             setShowCompletedModal(true);
             openModal();
@@ -1019,7 +1021,7 @@ export default function DashboardPage() {
           title="In Progress"
           mobileTitle="Active"
           value={stats.inProgress}
-          icon={<ClockIcon className="w-4 h-4 sm:w-6 sm:h-6 md:w-7 md:h-7" />}
+          icon={<ClockIcon />}
           onClick={() => {
             setShowInProgressModal(true);
             openModal();
@@ -1031,7 +1033,7 @@ export default function DashboardPage() {
         <SimpleStatCard
           title="To Do"
           value={stats.todo}
-          icon={<PlusCircleIcon className="w-4 h-4 sm:w-6 sm:h-6 md:w-7 md:h-7" />}
+          icon={<PlusCircleIcon />}
           onClick={() => {
             setShowTodoModal(true);
             openModal();
@@ -1044,7 +1046,7 @@ export default function DashboardPage() {
           title="Overdue"
           mobileTitle="Late"
           value={stats.overdue}
-          icon={<ExclamationTriangleIcon className="w-4 h-4 sm:w-5 sm:h-5 md:w-7 md:h-7" />}
+          icon={<ExclamationTriangleIcon />}
           onClick={() => {
             setShowOverdueModal(true);
             openModal();
