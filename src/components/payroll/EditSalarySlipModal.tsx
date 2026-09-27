@@ -85,7 +85,7 @@ interface EditSalarySlipModalProps {
 const inputClass =
   'w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring';
 const labelClass = 'block text-sm font-medium text-muted-foreground mb-1';
-const errorClass = 'mt-1 text-xs text-red-500';
+const errorClass = 'mt-1 text-xs text-destructive';
 const sectionTitleClass = 'text-base font-semibold text-foreground';
 
 export function EditSalarySlipModal({
@@ -178,7 +178,7 @@ export function EditSalarySlipModal({
         min={0}
         step={options?.step ?? 1}
         {...register(name, { valueAsNumber: true })}
-        className={cn(inputClass, options?.highlight && 'bg-blue-50 dark:bg-blue-900/20')}
+        className={cn(inputClass, options?.highlight && 'bg-muted')}
       />
       {errors[name] && <p className={errorClass}>{errors[name]?.message}</p>}
     </div>
@@ -319,19 +319,19 @@ export function EditSalarySlipModal({
           <div className="bg-muted border border-border rounded-lg p-4 grid grid-cols-3 gap-4 text-sm">
             <div>
               <p className="text-muted-foreground">Total Earnings</p>
-              <p className="font-bold text-green-600 dark:text-green-400">
+              <p className="font-bold text-success">
                 ₹{totalEarnings.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
               </p>
             </div>
             <div>
               <p className="text-muted-foreground">Total Deductions</p>
-              <p className="font-bold text-red-600 dark:text-red-400">
+              <p className="font-bold text-destructive">
                 ₹{totalDeductions.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
               </p>
             </div>
             <div>
               <p className="text-muted-foreground">Net Salary</p>
-              <p className="text-lg font-bold text-blue-600 dark:text-blue-400">
+              <p className="text-lg font-bold text-info">
                 ₹{netSalary.toLocaleString('en-IN', { maximumFractionDigits: 0 })}
               </p>
             </div>

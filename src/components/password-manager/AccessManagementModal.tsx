@@ -107,7 +107,7 @@ export default function AccessManagementModal({
 
         {loading ? (
           <div className="py-8 text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto" />
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-foreground mx-auto" />
           </div>
         ) : (
           <div className="space-y-3">
@@ -138,7 +138,7 @@ export default function AccessManagementModal({
                       type="checkbox"
                       checked={user.hasAccess}
                       onChange={() => toggleUser(user.uid)}
-                      className="h-4 w-4 rounded border-border text-blue-600 focus:ring-ring"
+                      className="h-4 w-4 rounded border-border text-ring focus:ring-ring"
                     />
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-foreground truncate">
@@ -151,7 +151,7 @@ export default function AccessManagementModal({
                       )}
                     </div>
                     {user.hasAccess && (
-                      <span className="text-xs text-green-600 dark:text-green-400 font-medium">
+                      <span className="text-xs text-success font-medium">
                         Access
                       </span>
                     )}

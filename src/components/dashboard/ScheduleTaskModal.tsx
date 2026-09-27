@@ -300,7 +300,7 @@ export function ScheduleTaskModal({
       <DialogContent className="sm:max-w-[900px] max-h-[95vh] sm:max-h-[90vh] overflow-y-auto !p-4 sm:!p-6">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-base sm:text-lg">
-            <CalendarDaysIcon className="w-4 h-4 sm:w-5 sm:h-5 text-teal-600" />
+            <CalendarDaysIcon className="w-4 h-4 sm:w-5 sm:h-5 text-foreground" />
             Schedule Task
           </DialogTitle>
           <p className="text-xs sm:text-sm text-muted-foreground mt-1 sm:mt-2">
@@ -422,7 +422,7 @@ export function ScheduleTaskModal({
                       <CalendarDaysIcon className="w-4 h-4" />
                       Schedule Date(s)
                       {scheduleDates.length > 0 && (
-                        <span className="ml-1 px-1.5 py-0.5 bg-teal-600 text-white text-xs rounded-full">
+                        <span className="ml-1 px-1.5 py-0.5 bg-foreground text-background text-xs rounded-full">
                           {scheduleDates.length} selected
                         </span>
                       )}
@@ -434,7 +434,7 @@ export function ScheduleTaskModal({
                         {scheduleDates.map(date => (
                           <span
                             key={date}
-                            className="inline-flex items-center gap-1 px-2 py-0.5 bg-teal-100 dark:bg-teal-900/30 text-teal-800 dark:text-teal-300 text-xs rounded-full"
+                            className="inline-flex items-center gap-1 px-2 py-0.5 bg-muted text-foreground text-xs rounded-full"
                           >
                             {formatDate(date)}
                             <button
@@ -444,7 +444,7 @@ export function ScheduleTaskModal({
                                 setScheduleDates(updated);
                                 fpInstance.current?.setDate(updated);
                               }}
-                              className="ml-0.5 hover:text-red-600"
+                              className="ml-0.5 hover:text-destructive"
                             >
                               <XMarkIcon className="w-3 h-3" />
                             </button>
@@ -460,20 +460,20 @@ export function ScheduleTaskModal({
               {/* Scheduled Entries */}
               {entries.length > 0 && (
                 <div>
-                  <Label className="mb-2 sm:mb-3 block font-semibold text-teal-700 dark:text-teal-400 text-sm sm:text-base">
+                  <Label className="mb-2 sm:mb-3 block font-semibold text-foreground text-sm sm:text-base">
                     Scheduled Entries ({entries.length})
                   </Label>
 
                   {Object.entries(groupedEntries).map(([empId, group]) => (
                     <div
                       key={empId}
-                      className="mb-3 border border-teal-200 dark:border-teal-800 rounded-lg overflow-hidden"
+                      className="mb-3 border border-border rounded-lg overflow-hidden"
                     >
-                      <div className="bg-teal-50 dark:bg-teal-900/30 px-3 py-2 border-b border-teal-200 dark:border-teal-800">
-                        <span className="font-medium text-teal-800 dark:text-teal-300 text-sm">
+                      <div className="bg-muted px-3 py-2 border-b border-border">
+                        <span className="font-medium text-foreground text-sm">
                           {group.employeeName}
                         </span>
-                        <span className="text-xs text-teal-600 dark:text-teal-400 ml-2">
+                        <span className="text-xs text-foreground ml-2">
                           ({group.items.length} {group.items.length === 1 ? 'entry' : 'entries'})
                         </span>
                       </div>
@@ -519,7 +519,7 @@ export function ScheduleTaskModal({
                                     <button
                                       type="button"
                                       onClick={() => handleRemoveEntry(globalIdx)}
-                                      className="text-red-600 hover:text-red-800 dark:hover:text-red-300"
+                                      className="text-destructive hover:text-destructive/80"
                                     >
                                       <XMarkIcon className="w-4 h-4" />
                                     </button>
@@ -536,11 +536,11 @@ export function ScheduleTaskModal({
               )}
 
               {/* Info Box — hidden on mobile to save space */}
-              <div className="hidden sm:block bg-teal-50 dark:bg-teal-900/20 border border-teal-200 dark:border-teal-800 rounded-lg p-3 sm:p-4">
-                <p className="text-sm text-teal-900 dark:text-teal-300">
+              <div className="hidden sm:block bg-muted border border-border rounded-lg p-3 sm:p-4">
+                <p className="text-sm text-foreground">
                   <strong>How it works:</strong>
                 </p>
-                <ul className="text-xs sm:text-sm text-teal-800 dark:text-teal-400 mt-2 ml-4 list-disc space-y-1">
+                <ul className="text-xs sm:text-sm text-foreground mt-2 ml-4 list-disc space-y-1">
                   <li>Select an employee, client, and date to schedule a visit</li>
                   <li>You can add multiple dates for the same employee/client</li>
                   <li>You can assign multiple clients to different employees</li>
@@ -563,7 +563,7 @@ export function ScheduleTaskModal({
               onClick={handleSaveAll}
               disabled={entries.length === 0 || saving}
               loading={saving}
-              className="bg-teal-600 hover:bg-teal-700 text-white text-sm h-9 sm:h-10"
+              className="bg-foreground text-background hover:bg-foreground/90 text-sm h-9 sm:h-10"
             >
               {saving ? 'Saving...' : `Save ${entries.length} Schedule${entries.length !== 1 ? 's' : ''}`}
             </Button>

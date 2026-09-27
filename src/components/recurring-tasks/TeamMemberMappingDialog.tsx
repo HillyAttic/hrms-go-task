@@ -262,7 +262,7 @@ export function TeamMemberMappingDialog({
                   <BuildingOfficeIcon className="w-4 h-4" />
                   Select Clients
                   {pendingClientIds.length > 0 && (
-                    <span className="ml-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-semibold px-2 py-0.5 rounded-full">
+                    <span className="ml-1 bg-info/15 text-info text-xs font-semibold px-2 py-0.5 rounded-full">
                       {pendingClientIds.length} selected
                     </span>
                   )}
@@ -310,7 +310,7 @@ export function TeamMemberMappingDialog({
                       type="button"
                       onClick={handleSelectAllFiltered}
                       disabled={filteredClients.length === 0}
-                      className="text-xs text-blue-600 hover:underline disabled:opacity-40 disabled:cursor-not-allowed"
+                      className="text-xs text-foreground hover:underline disabled:opacity-40 disabled:cursor-not-allowed"
                     >
                       Select All
                     </button>
@@ -344,12 +344,12 @@ export function TeamMemberMappingDialog({
                           key={client.id}
                           className={`flex items-center gap-2.5 px-3 py-2 cursor-pointer select-none border-b border-border last:border-b-0 transition-colors ${
                             isAssignedToSelectedUser
-                              ? 'bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30'
+                              ? 'bg-destructive/10 hover:bg-destructive/20'
                               : isAssignedToOther
-                              ? 'bg-orange-50 dark:bg-orange-900/20 hover:bg-orange-100 dark:hover:bg-orange-900/30'
+                              ? 'bg-warning/10 hover:bg-warning/20'
                               : isChecked
-                              ? 'bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-50 dark:hover:bg-gray-700'
-                              : 'hover:bg-blue-50 dark:hover:bg-blue-900/30 dark:hover:bg-gray-700'
+                              ? 'bg-info/10 hover:bg-info/20'
+                              : 'hover:bg-info/10'
                           }`}
                           title={
                             isAssignedToSelectedUser
@@ -372,35 +372,35 @@ export function TeamMemberMappingDialog({
                             }}
                             className={`w-4 h-4 rounded border-border focus:ring-ring ${
                               isAssignedToSelectedUser
-                                ? 'text-red-600 border-red-400 cursor-not-allowed opacity-60'
-                                : 'text-blue-600 cursor-pointer'
+                                ? 'text-destructive border-destructive/40 cursor-not-allowed opacity-60'
+                                : 'text-ring cursor-pointer'
                             }`}
                           />
                           <span className={`text-sm flex-1 truncate ${
                             isAssignedToSelectedUser
-                              ? 'text-red-700 dark:text-red-400 font-medium'
+                              ? 'text-destructive font-medium'
                               : isAssignedToOther
-                              ? 'text-orange-700 dark:text-orange-400'
+                              ? 'text-warning'
                               : 'text-foreground'
                           }`}>
                             {client.clientName}
                           </span>
                           <div className="flex items-center gap-1 flex-shrink-0">
                             {isAssignedToSelectedUser && (
-                              <span className="text-[10px] bg-red-100 dark:bg-red-900/40 text-red-700 dark:text-red-300 rounded px-1.5 py-0.5 font-medium">
+                              <span className="text-[10px] bg-destructive/15 text-destructive rounded px-1.5 py-0.5 font-medium">
                                 Assigned
                               </span>
                             )}
                             {isAssignedToOther && (
-                              <span className="text-[10px] bg-orange-100 dark:bg-orange-900/40 text-orange-700 dark:text-orange-300 rounded px-1.5 py-0.5 font-medium" title={`Assigned to ${assignedMapping.userName}`}>
+                              <span className="text-[10px] bg-warning/15 text-warning rounded px-1.5 py-0.5 font-medium" title={`Assigned to ${assignedMapping.userName}`}>
                                 Assigned: {assignedMapping.userName.split(' ')[0]}
                               </span>
                             )}
                           </div>
                           <div className="flex gap-1 flex-shrink-0">
-                            {client.compliance?.gstr1 && <span className="text-[10px] bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded px-1">G1</span>}
-                            {client.compliance?.itr && <span className="text-[10px] bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded px-1">ITR</span>}
-                            {client.compliance?.tds && <span className="text-[10px] bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300 rounded px-1">TDS</span>}
+                            {client.compliance?.gstr1 && <span className="text-[10px] bg-muted text-foreground rounded px-1">G1</span>}
+                            {client.compliance?.itr && <span className="text-[10px] bg-muted text-foreground rounded px-1">ITR</span>}
+                            {client.compliance?.tds && <span className="text-[10px] bg-muted text-foreground rounded px-1">TDS</span>}
                           </div>
                         </label>
                       );
@@ -453,7 +453,7 @@ export function TeamMemberMappingDialog({
                     >
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex items-center gap-2">
-                          <UserIcon className="w-4 h-4 text-blue-600 flex-shrink-0" />
+                          <UserIcon className="w-4 h-4 text-info flex-shrink-0" />
                           <div>
                             <h4 className="font-medium text-sm text-foreground leading-tight">{mapping.userName}</h4>
                             <p className="text-xs text-muted-foreground">
@@ -464,7 +464,7 @@ export function TeamMemberMappingDialog({
                         <button
                           type="button"
                           onClick={() => handleRemoveUser(mapping.userId)}
-                          className="text-red-400 hover:text-red-600 p-1 rounded hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors flex-shrink-0"
+                          className="text-destructive p-1 rounded hover:bg-destructive/10 transition-colors flex-shrink-0"
                           title="Remove all mappings for this member"
                         >
                           <XMarkIcon className="w-4 h-4" />
@@ -475,13 +475,13 @@ export function TeamMemberMappingDialog({
                         {mapping.clientIds.map((clientId) => (
                           <div
                             key={clientId}
-                            className="flex items-center gap-1.5 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded px-2 py-1"
+                            className="flex items-center gap-1.5 bg-info/10 border border-info/30 rounded px-2 py-1"
                           >
                             <span className="text-xs text-foreground leading-none">{getClientName(clientId)}</span>
                             <button
                               type="button"
                               onClick={() => handleRemoveClient(mapping.userId, clientId)}
-                              className="text-red-400 hover:text-red-600 ml-0.5"
+                              className="text-destructive ml-0.5"
                               aria-label={`Remove ${getClientName(clientId)}`}
                             >
                               <XMarkIcon className="w-3 h-3" />

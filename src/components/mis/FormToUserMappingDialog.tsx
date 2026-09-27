@@ -211,7 +211,7 @@ export function FormToUserMappingDialog({
                   <UserIcon className="w-4 h-4" />
                   Select Users
                   {pendingUserIds.length > 0 && (
-                    <span className="ml-1 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-semibold px-2 py-0.5 rounded-full">
+                    <span className="ml-1 bg-info/15 text-info text-xs font-semibold px-2 py-0.5 rounded-full">
                       {pendingUserIds.length} selected
                     </span>
                   )}
@@ -240,7 +240,7 @@ export function FormToUserMappingDialog({
                       type="button"
                       onClick={handleSelectAllFiltered}
                       disabled={filteredUsers.length === 0}
-                      className="text-xs text-blue-600 hover:underline disabled:opacity-40 disabled:cursor-not-allowed"
+                      className="text-xs text-foreground hover:underline disabled:opacity-40 disabled:cursor-not-allowed"
                     >
                       Select All
                     </button>
@@ -268,13 +268,13 @@ export function FormToUserMappingDialog({
                       return (
                         <label
                           key={user.uid}
-                          className={`flex items-center gap-2.5 px-3 py-2 cursor-pointer select-none border-b border-border last:border-b-0 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors ${isChecked ? 'bg-blue-50 dark:bg-blue-900/20' : ''}`}
+                          className={`flex items-center gap-2.5 px-3 py-2 cursor-pointer select-none border-b border-border last:border-b-0 hover:bg-muted transition-colors ${isChecked ? 'bg-muted' : ''}`}
                         >
                           <input
                             type="checkbox"
                             checked={isChecked}
                             onChange={() => handleUserCheckbox(user.uid)}
-                            className="w-4 h-4 rounded border-border text-blue-600 focus:ring-ring cursor-pointer"
+                            className="w-4 h-4 rounded border-border text-ring focus:ring-ring cursor-pointer"
                           />
                           <div className="flex-1 min-w-0">
                             <div className="text-sm text-foreground truncate">
@@ -300,7 +300,7 @@ export function FormToUserMappingDialog({
                     id="clockout-required"
                     checked={requiredForClockout}
                     onChange={(e) => setRequiredForClockout(e.target.checked)}
-                    className="mt-0.5 h-4 w-4 text-blue-600 focus:ring-ring border-border rounded"
+                    className="mt-0.5 h-4 w-4 text-ring focus:ring-ring border-border rounded"
                   />
                   <label htmlFor="clockout-required" className="text-xs text-muted-foreground cursor-pointer">
                     Require this form submission before clock-out
@@ -352,7 +352,7 @@ export function FormToUserMappingDialog({
                     >
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex items-start gap-2 flex-1 min-w-0">
-                          <DocumentTextIcon className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
+                          <DocumentTextIcon className="w-4 h-4 text-foreground flex-shrink-0 mt-0.5" />
                           <div className="flex-1 min-w-0">
                             <h4 className="font-medium text-sm text-foreground leading-tight truncate">
                               {mapping.formTitle}
@@ -366,7 +366,7 @@ export function FormToUserMappingDialog({
                                 onClick={() => handleToggleClockoutRequirement(mapping.formId)}
                                 className={`text-[10px] px-2 py-0.5 rounded-full font-medium transition-colors ${
                                   mapping.requiredForClockout
-                                    ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 hover:bg-red-200'
+                                    ? 'bg-destructive/15 text-destructive hover:bg-destructive/20'
                                     : 'bg-muted text-muted-foreground dark:text-muted-foreground hover:bg-muted'
                                 }`}
                                 title="Toggle clock-out requirement"
@@ -379,7 +379,7 @@ export function FormToUserMappingDialog({
                         <button
                           type="button"
                           onClick={() => handleRemoveForm(mapping.formId)}
-                          className="text-red-400 hover:text-red-600 p-1 rounded hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors flex-shrink-0"
+                          className="text-destructive hover:text-destructive p-1 rounded hover:bg-destructive/10 transition-colors flex-shrink-0"
                           title="Remove all users from this form"
                         >
                           <XMarkIcon className="w-4 h-4" />
@@ -390,7 +390,7 @@ export function FormToUserMappingDialog({
                         {mapping.assignedUserIds.map((userId) => (
                           <div
                             key={userId}
-                            className="flex items-center gap-1.5 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded px-2 py-1"
+                            className="flex items-center gap-1.5 bg-muted border border-border rounded px-2 py-1"
                           >
                             <span className="text-xs text-foreground leading-none">
                               {getUserName(userId)}
@@ -398,7 +398,7 @@ export function FormToUserMappingDialog({
                             <button
                               type="button"
                               onClick={() => handleRemoveUser(mapping.formId, userId)}
-                              className="text-red-400 hover:text-red-600 ml-0.5"
+                              className="text-destructive hover:text-destructive ml-0.5"
                               aria-label={`Remove ${getUserName(userId)}`}
                             >
                               <XMarkIcon className="w-3 h-3" />

@@ -14,17 +14,17 @@ export function TaskOverview({ tasks, onTaskClick }: TaskOverviewProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
-        return 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300';
+        return 'bg-success/15 text-success';
       case 'in-progress':
-        return 'bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300';
+        return 'bg-warning/15 text-warning';
       default:
-        return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300';
+        return 'bg-warning/15 text-warning';
     }
   };
 
   const getPriorityIcon = (priority: string) => {
     if (priority === 'high') {
-      return <ExclamationCircleIcon className="w-4 h-4 text-red-500" />;
+      return <ExclamationCircleIcon className="w-4 h-4 text-destructive" />;
     }
     return null;
   };

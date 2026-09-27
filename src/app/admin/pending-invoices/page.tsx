@@ -187,7 +187,7 @@ export default function PendingInvoicesPage() {
               onClick={() => setActiveTab('archived')}
               className={`pb-3 sm:pb-4 px-1 font-medium text-sm whitespace-nowrap transition-colors ${
                 activeTab === 'archived'
-                  ? 'text-green-600 border-b-2 border-green-600'
+                  ? 'text-success border-b-2 border-success'
                   : 'text-muted-foreground hover:text-muted-foreground dark:hover:text-muted-foreground'
               }`}
             >
@@ -195,7 +195,7 @@ export default function PendingInvoicesPage() {
                 <CheckCircleSolidIcon className="w-4 h-4" />
                 Archived
                 {activeTab === 'archived' && invoices.length > 0 && (
-                  <span className="bg-green-600 text-white text-xs px-2 py-0.5 rounded-full">
+                  <span className="bg-success text-white text-xs px-2 py-0.5 rounded-full">
                     {invoices.length}
                   </span>
                 )}
@@ -234,12 +234,12 @@ export default function PendingInvoicesPage() {
               {/* Card header */}
               <div className="flex items-center justify-between mb-4">
                 {activeTab === 'archived' ? (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-success/15 text-success">
                     <CheckCircleSolidIcon className="w-3.5 h-3.5" />
                     Archived
                   </span>
                 ) : (
-                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-300">
+                  <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-warning/15 text-warning">
                     <ArchiveBoxIcon className="w-3.5 h-3.5" />
                     Pending
                   </span>
@@ -290,7 +290,7 @@ export default function PendingInvoicesPage() {
                       variant="outline"
                       size="sm"
                       onClick={() => handleView(invoice)}
-                      className="flex items-center justify-center gap-1 text-xs text-blue-600 hover:text-blue-700 border-blue-200 dark:border-blue-700 hover:border-blue-300 dark:hover:border-blue-700 dark:text-blue-400"
+                      className="flex items-center justify-center gap-1 text-xs text-info border-info/30 hover:border-info"
                     >
                       <EyeIcon className="w-3.5 h-3.5" />
                       View
@@ -308,7 +308,7 @@ export default function PendingInvoicesPage() {
                       variant="outline"
                       size="sm"
                       onClick={() => openArchiveConfirm(invoice.id!)}
-                      className="flex items-center justify-center gap-1 text-xs text-green-600 hover:text-green-700 border-green-200 dark:border-green-700 hover:border-green-300 dark:hover:border-green-700 dark:text-green-400"
+                      className="flex items-center justify-center gap-1 text-xs text-success border-success/30 hover:border-success"
                     >
                       <CheckCircleIcon className="w-3.5 h-3.5" />
                       Complete
@@ -317,7 +317,7 @@ export default function PendingInvoicesPage() {
                       variant="outline"
                       size="sm"
                       onClick={() => openDeleteConfirm(invoice.id!)}
-                      className="flex items-center justify-center gap-1 text-xs text-red-600 hover:text-red-700 border-red-200 dark:border-red-700 hover:border-red-300 dark:hover:border-red-700 dark:text-red-400"
+                      className="flex items-center justify-center gap-1 text-xs text-destructive border-destructive/30 hover:border-destructive"
                     >
                       <TrashIcon className="w-3.5 h-3.5" />
                       Delete
@@ -329,7 +329,7 @@ export default function PendingInvoicesPage() {
                       variant="outline"
                       size="sm"
                       onClick={() => handleView(invoice)}
-                      className="flex-1 flex items-center justify-center gap-1 text-xs text-blue-600 hover:text-blue-700 border-blue-200 dark:border-blue-700 hover:border-blue-300 dark:hover:border-blue-700 dark:text-blue-400"
+                      className="flex-1 flex items-center justify-center gap-1 text-xs text-info border-info/30 hover:border-info"
                     >
                       <EyeIcon className="w-3.5 h-3.5" />
                       View
@@ -338,7 +338,7 @@ export default function PendingInvoicesPage() {
                       variant="outline"
                       size="sm"
                       onClick={() => openDeleteConfirm(invoice.id!)}
-                      className="flex-1 flex items-center justify-center gap-1 text-xs text-red-600 hover:text-red-700 border-red-200 dark:border-red-700 hover:border-red-300 dark:hover:border-red-700 dark:text-red-400"
+                      className="flex-1 flex items-center justify-center gap-1 text-xs text-destructive border-destructive/30 hover:border-destructive"
                     >
                       <TrashIcon className="w-3.5 h-3.5" />
                       Delete
@@ -380,11 +380,11 @@ export default function PendingInvoicesPage() {
                   <div className="flex items-center gap-3">
                     {viewingInvoice.archivedAt ? (
                       <div className="flex items-center gap-2">
-                        <div className="p-2 bg-green-100 dark:bg-green-900/40 rounded-full">
-                          <CheckCircleSolidIcon className="w-5 h-5 text-green-600 dark:text-green-400" />
+                        <div className="p-2 bg-success/15 rounded-full">
+                          <CheckCircleSolidIcon className="w-5 h-5 text-success" />
                         </div>
                         <div>
-                          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800 dark:bg-green-900/40 dark:text-green-300">
+                          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium bg-success/15 text-success">
                             Archived
                           </span>
                           <p className="text-xs text-muted-foreground mt-1">Invoice completed</p>
@@ -392,11 +392,11 @@ export default function PendingInvoicesPage() {
                       </div>
                     ) : (
                       <div className="flex items-center gap-2">
-                        <div className="p-2 bg-yellow-100 dark:bg-yellow-900/40 rounded-full">
-                          <ArchiveBoxIcon className="w-5 h-5 text-yellow-600 dark:text-yellow-400" />
+                        <div className="p-2 bg-warning/15 rounded-full">
+                          <ArchiveBoxIcon className="w-5 h-5 text-warning" />
                         </div>
                         <div>
-                          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/40 dark:text-yellow-300">
+                          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-sm font-medium bg-warning/15 text-warning">
                             Pending
                           </span>
                           <p className="text-xs text-muted-foreground mt-1">Awaiting completion</p>
@@ -419,8 +419,8 @@ export default function PendingInvoicesPage() {
                 {viewingInvoice.clientName && (
                   <div className="bg-card rounded-lg p-3 sm:p-4 border border-border hover:border-primary dark:hover:border-primary transition-colors">
                     <div className="flex items-start gap-3">
-                      <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
-                        <UserCircleIcon className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                      <div className="p-2 bg-info/10 rounded-lg">
+                        <UserCircleIcon className="w-5 h-5 text-info" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Client Name</label>
@@ -433,8 +433,8 @@ export default function PendingInvoicesPage() {
                 {viewingInvoice.services && (
                   <div className="bg-card rounded-lg p-3 sm:p-4 border border-border hover:border-primary dark:hover:border-primary transition-colors">
                     <div className="flex items-start gap-3">
-                      <div className="p-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-                        <BriefcaseIcon className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                      <div className="p-2 bg-muted rounded-lg">
+                        <BriefcaseIcon className="w-5 h-5 text-foreground" />
                       </div>
                       <div className="flex-1 min-w-0">
                         <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Services</label>
@@ -477,14 +477,14 @@ export default function PendingInvoicesPage() {
 
               {/* Remark */}
               {viewingInvoice.remark && (
-                <div className="bg-amber-50 dark:bg-amber-900/20 rounded-lg p-3 sm:p-4 border border-amber-200 dark:border-amber-800">
+                <div className="bg-warning/10 rounded-lg p-3 sm:p-4 border border-warning/30">
                   <div className="flex items-start gap-3">
-                    <div className="p-2 bg-amber-100 dark:bg-amber-900/40 rounded-lg">
-                      <ChatBubbleLeftIcon className="w-5 h-5 text-amber-600 dark:text-amber-400" />
+                    <div className="p-2 bg-warning/15 rounded-lg">
+                      <ChatBubbleLeftIcon className="w-5 h-5 text-warning" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <label className="text-xs font-medium text-amber-700 dark:text-amber-300 uppercase tracking-wide">Important Remark</label>
-                      <p className="mt-2 text-sm text-amber-900 dark:text-amber-100 font-medium break-words">📌 {viewingInvoice.remark}</p>
+                      <label className="text-xs font-medium text-warning uppercase tracking-wide">Important Remark</label>
+                      <p className="mt-2 text-sm text-warning font-medium break-words">📌 {viewingInvoice.remark}</p>
                     </div>
                   </div>
                 </div>
@@ -509,7 +509,7 @@ export default function PendingInvoicesPage() {
                   )}
                   {viewingInvoice.archivedAt && (
                     <div className="flex items-center justify-between text-sm pt-2 border-t border-border">
-                      <span className="text-green-600 dark:text-green-400 font-medium">Archived</span>
+                      <span className="text-success font-medium">Archived</span>
                       <span className="font-medium text-foreground">{formatDate(viewingInvoice.archivedAt)}</span>
                     </div>
                   )}

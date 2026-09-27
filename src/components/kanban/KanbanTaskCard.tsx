@@ -27,11 +27,11 @@ export function KanbanTaskCard({ task, onDragStart, onClick, onStatusChange, onD
   const getPriorityColor = (priority?: string) => {
     switch (priority) {
       case 'high':
-        return 'text-red-500';
+        return 'text-destructive';
       case 'medium':
-        return 'text-yellow-500';
+        return 'text-warning';
       case 'low':
-        return 'text-green-500';
+        return 'text-success';
       default:
         return 'text-muted-foreground';
     }
@@ -40,11 +40,11 @@ export function KanbanTaskCard({ task, onDragStart, onClick, onStatusChange, onD
   const getPriorityBgColor = (priority?: string) => {
     switch (priority) {
       case 'high':
-        return 'bg-red-100 dark:bg-red-900/30';
+        return 'bg-destructive/15';
       case 'medium':
-        return 'bg-yellow-100 dark:bg-yellow-900/30';
+        return 'bg-warning/15';
       case 'low':
-        return 'bg-green-100 dark:bg-green-900/30';
+        return 'bg-success/15';
       default:
         return 'bg-muted';
     }
@@ -98,17 +98,17 @@ export function KanbanTaskCard({ task, onDragStart, onClick, onStatusChange, onD
         <div className="flex items-center gap-1">
           <button
             onClick={handleEdit}
-            className="p-1 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded transition-colors"
+            className="p-1 hover:bg-muted rounded transition-colors"
             title="Edit task"
           >
-            <PencilIcon className="w-3.5 h-3.5 text-muted-foreground hover:text-blue-500" />
+            <PencilIcon className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground" />
           </button>
           <button
             onClick={handleDelete}
-            className="p-1 hover:bg-red-100 dark:hover:bg-red-900/30 rounded transition-colors"
+            className="p-1 hover:bg-destructive/10 rounded transition-colors"
             title="Delete task"
           >
-            <TrashIcon className="w-3.5 h-3.5 text-muted-foreground hover:text-red-500" />
+            <TrashIcon className="w-3.5 h-3.5 text-muted-foreground hover:text-destructive" />
           </button>
         </div>
       </div>
@@ -128,7 +128,7 @@ export function KanbanTaskCard({ task, onDragStart, onClick, onStatusChange, onD
       {/* Footer with Date and Action Buttons */}
       <div className="flex items-center justify-between mt-2 pt-2 border-t border-border">
         {/* Due Date */}
-        <div className={`flex items-center gap-1 ${isOverdue ? 'text-red-500' : 'text-muted-foreground'}`}>
+        <div className={`flex items-center gap-1 ${isOverdue ? 'text-destructive' : 'text-muted-foreground'}`}>
           <CalendarIcon className="w-3 h-3" />
           <span className="text-xs">
             {new Date(task.dueDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
@@ -159,9 +159,9 @@ export function KanbanTaskCard({ task, onDragStart, onClick, onStatusChange, onD
         )}
         
         {task.status === 'completed' && (
-          <div className="flex items-center gap-1 px-2 py-0.5 bg-green-100 dark:bg-green-900/30 rounded-full">
-            <CheckCircleIcon className="w-3.5 h-3.5 text-green-600 dark:text-green-400" />
-            <span className="text-xs font-medium text-green-600 dark:text-green-400">Completed</span>
+          <div className="flex items-center gap-1 px-2 py-0.5 bg-success/15 rounded-full">
+            <CheckCircleIcon className="w-3.5 h-3.5 text-success" />
+            <span className="text-xs font-medium text-success">Completed</span>
           </div>
         )}
       </div>

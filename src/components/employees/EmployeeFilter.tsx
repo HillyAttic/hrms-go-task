@@ -54,7 +54,7 @@ export function EmployeeFilter({
             variant="ghost"
             size="sm"
             onClick={onClearFilters}
-            className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+            className="text-foreground hover:underline"
           >
             <XMarkIcon className="w-4 h-4 mr-1" />
             Clear All
@@ -111,11 +111,11 @@ export function EmployeeFilter({
         <div className="mt-4 pt-4 border-t border-border">
           <div className="flex flex-wrap gap-2">
             {filters.search && (
-              <span className="inline-flex items-center gap-1 px-3 py-1 bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-200 text-xs font-medium rounded-full">
+              <span className="inline-flex items-center gap-1 px-3 py-1 bg-muted text-foreground text-xs font-medium rounded-full">
                 Search: "{filters.search}"
                 <button
                   onClick={() => onFilterChange({ ...filters, search: '' })}
-                  className="ml-1 hover:text-purple-600 dark:hover:text-purple-300"
+                  className="ml-1 hover:text-foreground/70"
                   aria-label="Clear search"
                 >
                   <XMarkIcon className="w-3 h-3" />
@@ -124,11 +124,11 @@ export function EmployeeFilter({
             )}
             
             {filters.status !== 'all' && (
-              <span className="inline-flex items-center gap-1 px-3 py-1 bg-foreground dark:bg-blue-500 text-background text-xs font-medium rounded-full">
+              <span className="inline-flex items-center gap-1 px-3 py-1 bg-foreground text-background text-xs font-medium rounded-full">
                 Status: {filters.status === 'on-leave' ? 'On Leave' : filters.status.charAt(0).toUpperCase() + filters.status.slice(1)}
                 <button
                   onClick={() => onFilterChange({ ...filters, status: 'all' })}
-                  className="ml-1 hover:text-blue-200"
+                  className="ml-1 hover:text-background/70"
                   aria-label="Remove status filter"
                 >
                   <XMarkIcon className="w-3 h-3" />

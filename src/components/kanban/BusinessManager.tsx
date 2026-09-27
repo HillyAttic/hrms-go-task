@@ -115,7 +115,7 @@ export function BusinessManager({
                         onDeleteBusiness(business.id);
                       }
                     }}
-                    className="p-1 sm:p-1.5 rounded hover:bg-red-100 dark:hover:bg-red-900/30 text-muted-foreground hover:text-red-600 transition-colors"
+                    className="p-1 sm:p-1.5 rounded hover:bg-destructive/10 text-muted-foreground hover:text-destructive transition-colors"
                     title="Delete business"
                     aria-label="Delete business"
                   >

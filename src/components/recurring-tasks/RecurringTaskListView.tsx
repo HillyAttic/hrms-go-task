@@ -57,11 +57,11 @@ export function RecurringTaskListView({
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'high':
-        return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400';
+        return 'bg-destructive/15 text-destructive';
       case 'medium':
-        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400';
+        return 'bg-warning/15 text-warning';
       case 'low':
-        return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400';
+        return 'bg-success/15 text-success';
       default:
         return 'bg-muted text-foreground dark:text-muted-foreground';
     }
@@ -70,9 +70,9 @@ export function RecurringTaskListView({
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
-        return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400';
+        return 'bg-success/15 text-success';
       case 'in-progress':
-        return 'bg-foreground text-background dark:bg-foreground dark:text-background';
+        return 'bg-foreground text-background';
       case 'pending':
         return 'bg-muted text-foreground dark:text-muted-foreground';
       default:

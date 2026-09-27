@@ -23,7 +23,7 @@ const AttendanceCalendarModal = dynamic(
     ssr: false,
     loading: () => (
       <div className="flex items-center justify-center p-8">
-        <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600" />
+        <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-foreground" />
       </div>
     ),
   }
@@ -107,8 +107,8 @@ export default function SalaryConfigPage() {
     <PayrollAccessGate>
       <div className="space-y-6 p-4 sm:p-6">
         <div className="flex items-center gap-4">
-          <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg shadow-blue-200 dark:shadow-blue-900/30">
-            <IndianRupee className="h-6 w-6 text-white" />
+          <div className="flex items-center justify-center w-12 h-12 rounded-xl bg-foreground text-background shadow-lg shadow-hard">
+            <IndianRupee className="h-6 w-6 text-background" />
           </div>
           <div>
             <h1 className="text-2xl font-bold text-foreground">Salary Configuration</h1>
@@ -190,7 +190,7 @@ export default function SalaryConfigPage() {
                     {loading ? (
                       <tr>
                         <td colSpan={9} className="px-4 py-10 text-center">
-                          <div className="mx-auto h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600" />
+                          <div className="mx-auto h-8 w-8 animate-spin rounded-full border-b-2 border-foreground" />
                         </td>
                       </tr>
                     ) : employees.length === 0 ? (
@@ -210,7 +210,7 @@ export default function SalaryConfigPage() {
                             <button
                               type="button"
                               onClick={() => setCalendarEmployee(employee)}
-                              className="truncate text-sm font-medium text-blue-600 hover:underline dark:text-blue-400"
+                              className="truncate text-sm font-medium text-foreground hover:underline"
                             >
                               {employee.name}
                             </button>

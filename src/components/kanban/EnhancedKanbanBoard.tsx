@@ -18,9 +18,9 @@ interface EnhancedKanbanBoardProps {
 }
 
 const COLUMNS: KanbanColumnType[] = [
-  { id: 'todo', title: 'To Do', color: 'bg-yellow-50 dark:bg-yellow-900/30' },
-  { id: 'in-progress', title: 'In Progress', color: 'bg-blue-50 dark:bg-blue-900/30' },
-  { id: 'completed', title: 'Completed', color: 'bg-green-50 dark:bg-green-900/30' },
+  { id: 'todo', title: 'To Do', color: 'bg-warning/10' },
+  { id: 'in-progress', title: 'In Progress', color: 'bg-info/10' },
+  { id: 'completed', title: 'Completed', color: 'bg-success/10' },
 ];
 
 export function EnhancedKanbanBoard({ tasks, onTaskUpdate, onTaskAdd, onTaskDelete, mobileScrollable, compact }: EnhancedKanbanBoardProps) {

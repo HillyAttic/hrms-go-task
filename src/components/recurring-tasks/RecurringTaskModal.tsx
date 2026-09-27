@@ -418,7 +418,7 @@ export function RecurringTaskModal({
               disabled={isLoading}
             />
             {errors.description && (
-              <p className="text-sm text-red-600 mt-1">{errors.description.message}</p>
+              <p className="text-sm text-destructive mt-1">{errors.description.message}</p>
             )}
           </div>
 
@@ -437,7 +437,7 @@ export function RecurringTaskModal({
               <option value="yearly">Yearly</option>
             </select>
             {errors.recurrencePattern && (
-              <p className="text-sm text-red-600 mt-1">{errors.recurrencePattern.message}</p>
+              <p className="text-sm text-destructive mt-1">{errors.recurrencePattern.message}</p>
             )}
           </div>
 
@@ -458,7 +458,7 @@ export function RecurringTaskModal({
               ))}
             </Select>
             {errors.teamId && (
-              <p className="text-sm text-red-600 mt-1">{errors.teamId.message}</p>
+              <p className="text-sm text-destructive mt-1">{errors.teamId.message}</p>
             )}
             {loadingTeams && (
               <p className="text-sm text-muted-foreground mt-1">Loading teams...</p>
@@ -491,11 +491,11 @@ export function RecurringTaskModal({
             
             {/* Display current mappings summary */}
             {teamMemberMappings.length > 0 && (
-              <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg">
-                <p className="text-sm font-medium text-blue-900 mb-2">Current Mappings:</p>
+              <div className="mt-3 p-3 bg-info/10 border border-info/30 rounded-lg">
+                <p className="text-sm font-medium text-info mb-2">Current Mappings:</p>
                 <div className="space-y-1">
                   {teamMemberMappings.map((mapping) => (
-                    <div key={mapping.userId} className="text-xs text-blue-800 dark:text-blue-300">
+                    <div key={mapping.userId} className="text-xs text-info">
                       <span className="font-medium">{mapping.userName}</span>: {mapping.clientIds.length} client{mapping.clientIds.length !== 1 ? 's' : ''}
                     </div>
                   ))}
@@ -521,7 +521,7 @@ export function RecurringTaskModal({
               ))}
             </Select>
             {errors.categoryId && (
-              <p className="text-sm text-red-600 mt-1">{errors.categoryId.message}</p>
+              <p className="text-sm text-destructive mt-1">{errors.categoryId.message}</p>
             )}
             {loadingCategories && (
               <p className="text-sm text-muted-foreground mt-1">Loading categories...</p>
@@ -619,7 +619,7 @@ export function RecurringTaskModal({
                         key={client.id}
                         type="button"
                         onClick={() => handleClientSelect(client.id!)}
-                        className="w-full text-left px-3 py-2 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors focus:bg-blue-100 dark:focus:bg-blue-900/30 focus:outline-none"
+                        className="w-full text-left px-3 py-2 hover:bg-info/10 transition-colors focus:bg-info/15 focus:outline-none"
                         disabled={isLoading}
                       >
                         <div className="flex flex-col">
@@ -652,7 +652,7 @@ export function RecurringTaskModal({
                       setValue('contactIds', '');
                     }}
                     disabled={isLoading}
-                    className="text-xs text-red-600 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30"
+                    className="text-xs text-destructive hover:bg-destructive/10"
                   >
                     Clear All
                   </Button>
@@ -675,7 +675,7 @@ export function RecurringTaskModal({
                       <button
                         type="button"
                         onClick={() => handleClientRemove(client.id!)}
-                        className="text-red-500 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30 rounded p-1 ml-1 transition-colors"
+                        className="text-destructive hover:bg-destructive/10 rounded p-1 ml-1 transition-colors"
                         disabled={isLoading}
                         aria-label={`Remove ${client.clientName}`}
                       >
@@ -692,7 +692,7 @@ export function RecurringTaskModal({
             </p>
             
             {errors.contactIds && (
-              <p className="text-sm text-red-600 mt-1">{errors.contactIds.message}</p>
+              <p className="text-sm text-destructive mt-1">{errors.contactIds.message}</p>
             )}
 
             {/* Hidden input to store contact IDs */}
@@ -713,7 +713,7 @@ export function RecurringTaskModal({
                 required
               />
               {errors.startDate && (
-                <p className="text-sm text-red-600 mt-1">{errors.startDate.message}</p>
+                <p className="text-sm text-destructive mt-1">{errors.startDate.message}</p>
               )}
             </div>
 
@@ -728,7 +728,7 @@ export function RecurringTaskModal({
                 disabled={isLoading}
               />
               {errors.dueDate && (
-                <p className="text-sm text-red-600 mt-1">{errors.dueDate.message}</p>
+                <p className="text-sm text-destructive mt-1">{errors.dueDate.message}</p>
               )}
             </div>
           </div>
@@ -748,7 +748,7 @@ export function RecurringTaskModal({
               <option value="urgent">Urgent</option>
             </select>
             {errors.priority && (
-              <p className="text-sm text-red-600 mt-1">{errors.priority.message}</p>
+              <p className="text-sm text-destructive mt-1">{errors.priority.message}</p>
             )}
           </div>
 
@@ -759,7 +759,7 @@ export function RecurringTaskModal({
                 type="checkbox"
                 id="requiresArn"
                 {...register('requiresArn')}
-                className="w-4 h-4 text-blue-600 border-border rounded focus:ring-ring"
+                className="w-4 h-4 text-ring border-border rounded focus:ring-ring"
                 disabled={isLoading}
               />
               <span className="text-sm font-medium text-muted-foreground">Require ARN on completion</span>
@@ -769,7 +769,7 @@ export function RecurringTaskModal({
                 type="checkbox"
                 id="requiresRemark"
                 {...register('requiresRemark')}
-                className="w-4 h-4 text-blue-600 border-border rounded focus:ring-ring"
+                className="w-4 h-4 text-ring border-border rounded focus:ring-ring"
                 disabled={isLoading}
               />
               <span className="text-sm font-medium text-muted-foreground">Require Remark on completion</span>

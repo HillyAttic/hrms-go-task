@@ -256,12 +256,12 @@ export default function AttendanceRosterPage() {
 
   const getStatusColor = (status: string, leaveType?: string) => {
     switch (status) {
-      case 'present': return 'bg-green-500';
-      case 'absent': return 'bg-red-500';
-      case 'approved-leave': return 'bg-purple-500';
-      case 'unapproved-leave': return 'bg-red-500';
-      case 'half-day': return 'bg-orange-500';
-      case 'holiday': return 'bg-info';
+      case 'present': return 'bg-success';
+      case 'absent': return 'bg-destructive';
+      case 'approved-leave': return 'bg-info';
+      case 'unapproved-leave': return 'bg-destructive';
+      case 'half-day': return 'bg-warning';
+      case 'holiday': return 'bg-accent';
       case 'pending': return 'bg-muted';
       case 'wfh': return 'bg-foreground';
       default: return 'bg-muted';

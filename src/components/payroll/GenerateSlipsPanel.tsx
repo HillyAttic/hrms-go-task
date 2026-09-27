@@ -27,7 +27,7 @@ const AttendanceCalendarModal = dynamic(
     ssr: false,
     loading: () => (
       <div className="flex items-center justify-center p-8">
-        <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600" />
+        <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-foreground" />
       </div>
     ),
   }
@@ -261,13 +261,13 @@ export function GenerateSlipsPanel({
   return (
     <div className="space-y-6">
       {!settings && (
-        <div className="flex items-start gap-3 p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg">
-          <AlertTriangle className="h-5 w-5 shrink-0 text-amber-600 dark:text-amber-400" />
+        <div className="flex items-start gap-3 p-4 bg-warning/10 border border-warning/30 rounded-lg">
+          <AlertTriangle className="h-5 w-5 shrink-0 text-warning" />
           <div className="flex-1">
-            <p className="text-sm font-medium text-amber-900 dark:text-amber-200">
+            <p className="text-sm font-medium text-warning">
               Payroll settings not configured
             </p>
-            <p className="mt-0.5 text-xs text-amber-700 dark:text-amber-300">
+            <p className="mt-0.5 text-xs text-warning">
               Company details and breakup percentages are required before slips can be generated.
             </p>
           </div>
@@ -313,7 +313,7 @@ export function GenerateSlipsPanel({
       {calculating && (
         <div className={cn(cardClass, 'p-5')}>
           <div className="flex items-center gap-3">
-            <div className="h-5 w-5 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />
+            <div className="h-5 w-5 animate-spin rounded-full border-2 border-foreground border-t-transparent" />
             <p className="text-sm font-medium text-foreground">Calculating salaries…</p>
             <span className="ml-auto text-sm text-muted-foreground">
               {progress.current} / {progress.total}
@@ -321,14 +321,14 @@ export function GenerateSlipsPanel({
           </div>
           <div className="mt-4 h-2 w-full overflow-hidden rounded-full bg-muted">
             <div
-              className="h-full rounded-full transition-all"
-              style={{ width: `${percent}%`, background: 'linear-gradient(90deg, #3b82f6, #2563eb)' }}
+              className="h-full rounded-full transition-all bg-foreground"
+              style={{ width: `${percent}%` }}
             />
           </div>
           <div className="mt-2 flex items-center justify-between">
             <div className="flex items-center gap-4">
               <span className="text-xs text-muted-foreground">✓ {progress.success} success</span>
-              <span className="text-xs text-red-600 dark:text-red-400">✗ {progress.failed} failed</span>
+              <span className="text-xs text-destructive">✗ {progress.failed} failed</span>
             </div>
             <span className="text-xs text-muted-foreground">{percent}%</span>
           </div>
@@ -373,7 +373,7 @@ export function GenerateSlipsPanel({
                     onClick={() => setSelectedEmployeeId(employee.id)}
                     className={cn(
                       'cursor-pointer hover:bg-muted/50',
-                      selectedEmployeeId === employee.id && 'bg-blue-50 dark:bg-blue-900/20'
+                      selectedEmployeeId === employee.id && 'bg-muted'
                     )}
                   >
                     <td className="px-4 py-3 text-sm text-muted-foreground">{index + 1}</td>
@@ -389,7 +389,7 @@ export function GenerateSlipsPanel({
                         }}
                         className={cn(
                           'relative w-10 h-6 rounded-full transition-colors',
-                          granted ? 'bg-green-500' : 'bg-muted'
+                          granted ? 'bg-success' : 'bg-muted'
                         )}
                       >
                         <span
@@ -407,7 +407,7 @@ export function GenerateSlipsPanel({
                           event.stopPropagation();
                           setCalendarEmployee(employee);
                         }}
-                        className="text-sm font-medium text-blue-600 hover:underline dark:text-blue-400"
+                        className="text-sm font-medium text-foreground hover:underline"
                       >
                         {employee.name}
                       </button>

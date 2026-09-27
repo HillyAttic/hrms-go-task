@@ -78,7 +78,7 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
               type="checkbox"
               checked={selected}
               onChange={(e) => onSelect(employee.id!, e.target.checked)}
-              className="w-5 h-5 rounded border-border text-blue-600 focus:ring-ring cursor-pointer"
+              className="w-5 h-5 rounded border-border text-ring focus:ring-ring cursor-pointer"
               aria-label={`Select ${employee.name}`}
             />
           </div>
@@ -88,7 +88,7 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
           {/* Name and Role */}
           <div className="flex items-start gap-4 flex-1">
             {/* Avatar with photo or initials */}
-            <div className="w-12 h-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center flex-shrink-0 overflow-hidden">
+            <div className="w-12 h-12 rounded-full bg-info/15 flex items-center justify-center flex-shrink-0 overflow-hidden">
               {employee.photoURL ? (
                 <img
                   src={employee.photoURL}
@@ -96,7 +96,7 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <span className="text-blue-600 font-semibold text-lg">
+                <span className="text-info font-semibold text-lg">
                   {getInitials(employee.name)}
                 </span>
               )}
@@ -121,7 +121,7 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
               size="sm"
               variant="ghost"
               onClick={() => onEdit(employee)}
-              className="text-blue-600 hover:text-blue-700 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/30"
+              className="text-foreground hover:bg-muted"
               aria-label={`Edit ${employee.name}`}
             >
               <PencilSquareIcon className="w-4 h-4" />
@@ -132,7 +132,7 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
                 size="sm"
                 variant="ghost"
                 onClick={() => onDeactivate(employee.id!)}
-                className="text-orange-600 hover:text-orange-700 dark:hover:text-orange-300 hover:bg-orange-50 dark:hover:bg-orange-900/30"
+                className="text-warning hover:bg-warning/10"
                 aria-label={`Deactivate ${employee.name}`}
               >
                 <UserMinusIcon className="w-4 h-4" />
@@ -143,7 +143,7 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
               size="sm"
               variant="ghost"
               onClick={() => onDelete(employee.id!)}
-              className="text-red-600 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30"
+              className="text-destructive hover:bg-destructive/10"
               aria-label={`Delete ${employee.name}`}
             >
               <TrashIcon className="w-4 h-4" />
@@ -164,7 +164,7 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
             <EnvelopeIcon className="w-4 h-4 flex-shrink-0" />
             <a
               href={`mailto:${employee.email}`}
-              className="hover:text-blue-600 truncate"
+              className="hover:text-foreground truncate"
             >
               {employee.email}
             </a>
@@ -175,7 +175,7 @@ export function EmployeeCard({ employee, onEdit, onDelete, onDeactivate, selecte
             <PhoneIcon className="w-4 h-4 flex-shrink-0" />
             <a
               href={`tel:${employee.phone}`}
-              className="hover:text-blue-600"
+              className="hover:text-foreground"
             >
               {employee.phone}
             </a>

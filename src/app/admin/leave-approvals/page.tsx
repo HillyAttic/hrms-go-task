@@ -188,9 +188,9 @@ export default function LeaveApprovalsPage() {
 
   const getStatusColor = (status: LeaveStatus) => {
     switch (status) {
-      case 'approved': return 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300';
-      case 'rejected': return 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300';
-      case 'pending': return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300';
+      case 'approved': return 'bg-success/15 text-success';
+      case 'rejected': return 'bg-destructive/15 text-destructive';
+      case 'pending': return 'bg-warning/15 text-warning';
       default: return 'bg-muted text-foreground';
     }
   };
@@ -275,7 +275,7 @@ export default function LeaveApprovalsPage() {
       <div className="bg-card rounded-lg shadow overflow-hidden">
         {loading ? (
           <div className="p-8 text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-foreground mx-auto"></div>
           </div>
         ) : filteredRequests.length === 0 ? (
           <div className="p-8 text-center text-muted-foreground">
@@ -314,7 +314,7 @@ export default function LeaveApprovalsPage() {
                           <div className="flex items-center gap-2">
                             {getLeaveTypeLabel(request.leaveType)}
                             {request.halfDay && (
-                              <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
+                              <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-info/15 text-info">
                                 Half Day
                               </span>
                             )}
@@ -350,7 +350,7 @@ export default function LeaveApprovalsPage() {
                               <button
                                 onClick={() => handleApprove(request.id!)}
                                 disabled={busy}
-                                className={`${ACTION_BTN} col-start-1 row-start-1 justify-self-start bg-green-600 hover:bg-green-700`}
+                                className={`${ACTION_BTN} col-start-1 row-start-1 justify-self-start bg-success hover:bg-success/90`}
                               >
                                 Approve
                               </button>
@@ -364,14 +364,14 @@ export default function LeaveApprovalsPage() {
                               <button
                                 onClick={() => handleReject(request.id!)}
                                 disabled={busy}
-                                className={`${ACTION_BTN} col-start-2 row-start-2 bg-red-600 hover:bg-red-700`}
+                                className={`${ACTION_BTN} col-start-2 row-start-2 bg-destructive hover:bg-destructive/90`}
                               >
                                 Reject
                               </button>
                               <button
                                 onClick={() => openRejectModal(request)}
                                 disabled={busy}
-                                className={`${ACTION_BTN} col-start-1 row-start-3 bg-orange-500 hover:bg-orange-600`}
+                                className={`${ACTION_BTN} col-start-1 row-start-3 bg-warning hover:bg-warning/90`}
                               >
                                 Reject w/ Reason
                               </button>
@@ -415,7 +415,7 @@ export default function LeaveApprovalsPage() {
                         <div className="text-foreground font-medium flex items-center gap-2">
                           {getLeaveTypeLabel(request.leaveType)}
                           {request.halfDay && (
-                            <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
+                            <span className="px-2 py-0.5 text-xs font-medium rounded-full bg-info/15 text-info">
                               Half Day
                             </span>
                           )}
@@ -465,14 +465,14 @@ export default function LeaveApprovalsPage() {
                         <button
                           onClick={() => handleReject(request.id!)}
                           disabled={busy}
-                          className={`${ACTION_BTN} col-start-2 row-start-2 py-2 bg-red-600 hover:bg-red-700`}
+                          className={`${ACTION_BTN} col-start-2 row-start-2 py-2 bg-destructive hover:bg-destructive/90`}
                         >
                           Reject
                         </button>
                         <button
                           onClick={() => openRejectModal(request)}
                           disabled={busy}
-                          className={`${ACTION_BTN} col-start-1 row-start-3 py-2 bg-orange-500 hover:bg-orange-600`}
+                          className={`${ACTION_BTN} col-start-1 row-start-3 py-2 bg-warning hover:bg-warning/90`}
                         >
                           Reject w/ Reason
                         </button>
@@ -521,7 +521,7 @@ export default function LeaveApprovalsPage() {
               <button
                 onClick={handleRejectWithReason}
                 disabled={processingId === selectedRequest?.id}
-                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50"
+                className="flex-1 px-4 py-2 bg-destructive text-white rounded-lg hover:bg-destructive/90 disabled:opacity-50"
               >
                 Reject
               </button>
@@ -558,7 +558,7 @@ export default function LeaveApprovalsPage() {
             <textarea
               value={approvalReason}
               onChange={(e) => setApprovalReason(e.target.value)}
-              className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-green-500"
+              className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring"
               rows={4}
               placeholder="Enter approval reason or note..."
             />
@@ -566,7 +566,7 @@ export default function LeaveApprovalsPage() {
               <button
                 onClick={handleApproveWithReason}
                 disabled={processingId === selectedRequest?.id}
-                className="flex-1 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 disabled:opacity-50"
+                className="flex-1 px-4 py-2 bg-success text-white rounded-lg hover:bg-success/90 disabled:opacity-50"
               >
                 Approve
               </button>

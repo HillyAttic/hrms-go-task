@@ -94,7 +94,7 @@ export function AddTaskModal({ isOpen, onClose, onSave, editTask }: AddTaskModal
           {/* Title */}
           <div>
             <label className="block text-sm font-medium text-muted-foreground mb-2">
-              Title <span className="text-red-500">*</span>
+              Title <span className="text-destructive">*</span>
             </label>
             <input
               type="text"
@@ -109,7 +109,7 @@ export function AddTaskModal({ isOpen, onClose, onSave, editTask }: AddTaskModal
           {/* Description */}
           <div>
             <label className="block text-sm font-medium text-muted-foreground mb-2">
-              Description <span className="text-red-500">*</span>
+              Description <span className="text-destructive">*</span>
             </label>
             <textarea
               value={formData.description}

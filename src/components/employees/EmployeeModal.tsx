@@ -495,7 +495,7 @@ export function EmployeeModal({
         {url && (
           <div className="flex items-center justify-between bg-muted rounded-md px-3 py-2 mb-2">
             <div className="flex items-center gap-2 min-w-0 flex-1">
-              <DocumentIcon className="w-5 h-5 text-blue-500 flex-shrink-0" />
+              <DocumentIcon className="w-5 h-5 text-info flex-shrink-0" />
               <span className="text-sm text-muted-foreground truncate">
                 {name || 'Uploaded document'}
               </span>
@@ -504,7 +504,7 @@ export function EmployeeModal({
               <button
                 type="button"
                 onClick={() => viewDocument(url)}
-                className="p-1.5 text-muted-foreground hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded transition-colors"
+                className="p-1.5 text-muted-foreground hover:bg-muted rounded transition-colors"
                 title="View document"
               >
                 <EyeIcon className="w-4 h-4" />
@@ -512,7 +512,7 @@ export function EmployeeModal({
               <button
                 type="button"
                 onClick={() => handleDeleteDocument(field)}
-                className="p-1.5 text-muted-foreground hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 rounded transition-colors"
+                className="p-1.5 text-muted-foreground hover:text-destructive hover:bg-destructive/10 rounded transition-colors"
                 title="Delete document"
               >
                 <TrashIcon className="w-4 h-4" />
@@ -539,7 +539,7 @@ export function EmployeeModal({
           <label className={`flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md cursor-pointer transition-colors ${
             isUploading
               ? 'bg-muted text-muted-foreground cursor-not-allowed'
-              : 'bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50'
+              : 'bg-info/15 text-info hover:bg-info/25'
           }`}>
             <ArrowUpTrayIcon className="w-4 h-4" />
             {url ? 'Replace' : 'Upload'}
@@ -552,7 +552,7 @@ export function EmployeeModal({
             />
           </label>
           {!employee?.id && (
-            <span className="text-xs text-amber-600">Save employee first</span>
+            <span className="text-xs text-warning">Save employee first</span>
           )}
         </div>
       </div>
@@ -577,7 +577,7 @@ export function EmployeeModal({
             <button
               type="button"
               onClick={() => handleDeleteSalarySlip(index)}
-              className="p-1 text-muted-foreground hover:text-red-500 transition-colors"
+              className="p-1 text-muted-foreground hover:text-destructive transition-colors"
               title="Remove this slip"
             >
               <XMarkIcon className="w-4 h-4" />
@@ -589,7 +589,7 @@ export function EmployeeModal({
         {url ? (
           <div className="flex items-center justify-between bg-muted rounded-md px-3 py-2 mb-2">
             <div className="flex items-center gap-2 min-w-0 flex-1">
-              <DocumentIcon className="w-5 h-5 text-blue-500 flex-shrink-0" />
+              <DocumentIcon className="w-5 h-5 text-info flex-shrink-0" />
               <span className="text-sm text-muted-foreground truncate">
                 {name || `Salary Slip ${index + 1}`}
               </span>
@@ -598,7 +598,7 @@ export function EmployeeModal({
               <button
                 type="button"
                 onClick={() => viewDocument(url)}
-                className="p-1.5 text-muted-foreground hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded transition-colors"
+                className="p-1.5 text-muted-foreground hover:bg-muted rounded transition-colors"
                 title="View"
               >
                 <EyeIcon className="w-4 h-4" />
@@ -635,7 +635,7 @@ export function EmployeeModal({
         <label className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md cursor-pointer transition-colors ${
           isUploading
             ? 'bg-muted text-muted-foreground cursor-not-allowed'
-            : 'bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50'
+            : 'bg-info/15 text-info hover:bg-info/25'
         }`}>
           <ArrowUpTrayIcon className="w-4 h-4" />
           {url ? 'Replace' : 'Upload'}
@@ -673,7 +673,7 @@ export function EmployeeModal({
         <form onSubmit={handleSubmit(handleFormSubmit, handleInvalidSubmit)} className="space-y-4">
           {/* Avatar Display */}
           <div className="flex flex-col items-center gap-2">
-            <div className="w-20 h-20 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center overflow-hidden">
+            <div className="w-20 h-20 rounded-full bg-info/15 flex items-center justify-center overflow-hidden">
               {employee?.photoURL ? (
                 <img
                   src={employee.photoURL}
@@ -681,11 +681,11 @@ export function EmployeeModal({
                   className="w-full h-full object-cover"
                 />
               ) : displayName ? (
-                <span className="text-blue-600 text-2xl font-semibold">
+                <span className="text-info text-2xl font-semibold">
                   {getInitials(displayName)}
                 </span>
               ) : (
-                <PhotoIcon className="w-10 h-10 text-blue-600" />
+                <PhotoIcon className="w-10 h-10 text-info" />
               )}
             </div>
             {displayName && (
@@ -845,7 +845,7 @@ export function EmployeeModal({
                     <option value="Admin">Admin</option>
                   </select>
                   {errors.role && (
-                    <p className="text-sm text-red-600 mt-1">{errors.role.message}</p>
+                    <p className="text-sm text-destructive mt-1">{errors.role.message}</p>
                   )}
                 </div>
 
@@ -863,7 +863,7 @@ export function EmployeeModal({
                     <option value="resigned">Resigned</option>
                   </select>
                   {errors.status && (
-                    <p className="text-sm text-red-600 mt-1">{errors.status.message}</p>
+                    <p className="text-sm text-destructive mt-1">{errors.status.message}</p>
                   )}
                 </div>
               </div>
@@ -942,7 +942,7 @@ export function EmployeeModal({
                     <ul className="space-y-1">
                       {employee.reportees.map((rep, idx) => (
                         <li key={idx} className="text-sm text-muted-foreground flex items-center gap-2">
-                          <span className="w-2 h-2 rounded-full bg-blue-400" />
+                          <span className="w-2 h-2 rounded-full bg-info" />
                           {rep.name} ({rep.employeeId})
                         </li>
                       ))}
@@ -1085,7 +1085,7 @@ export function EmployeeModal({
                     <button
                       type="button"
                       onClick={() => removeSalaryChange(index)}
-                      className="absolute top-2 right-2 text-muted-foreground hover:text-red-500"
+                      className="absolute top-2 right-2 text-muted-foreground hover:text-destructive"
                     >
                       <XMarkIcon className="w-5 h-5" />
                     </button>
@@ -1153,7 +1153,7 @@ export function EmployeeModal({
               <div className="flex items-center justify-between">
                 <h3 className="text-md font-semibold text-foreground">Employee Documents</h3>
                 {!employee?.id && (
-                  <span className="text-xs text-amber-600 bg-amber-50 dark:bg-amber-900/30 px-3 py-1 rounded-md">
+                  <span className="text-xs text-warning bg-warning/10 px-3 py-1 rounded-md">
                     Save the employee first to enable document uploads
                   </span>
                 )}
@@ -1164,12 +1164,12 @@ export function EmployeeModal({
 
               {/* Upload error */}
               {uploadError && (
-                <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg p-3 text-sm text-red-700 dark:text-red-400 flex items-center justify-between">
+                <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-3 text-sm text-destructive flex items-center justify-between">
                   <span>{uploadError}</span>
                   <button
                     type="button"
                     onClick={() => setUploadError(null)}
-                    className="text-red-500 hover:text-red-700 dark:hover:text-red-300"
+                    className="text-destructive"
                   >
                     <XMarkIcon className="w-4 h-4" />
                   </button>

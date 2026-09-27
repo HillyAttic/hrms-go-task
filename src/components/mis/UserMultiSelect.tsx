@@ -99,7 +99,7 @@ export default function UserMultiSelect({
               type="checkbox"
               checked={selectedCount === totalCount && totalCount > 0}
               onChange={toggleAll}
-              className="h-4 w-4 text-blue-600 focus:ring-ring border-border rounded"
+              className="h-4 w-4 text-ring focus:ring-ring border-border rounded"
             />
             <span className="text-sm font-medium text-muted-foreground">
               Select All
@@ -122,7 +122,7 @@ export default function UserMultiSelect({
                   type="checkbox"
                   checked={selectedUserIds.includes(user.uid)}
                   onChange={() => toggleUser(user.uid)}
-                  className="h-4 w-4 text-blue-600 focus:ring-ring border-border rounded flex-shrink-0"
+                  className="h-4 w-4 text-ring focus:ring-ring border-border rounded flex-shrink-0"
                 />
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-foreground truncate">
@@ -132,7 +132,7 @@ export default function UserMultiSelect({
                     {user.email}
                   </p>
                   {user.role && (
-                    <span className="inline-block mt-1 px-2 py-0.5 text-xs font-medium rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+                    <span className="inline-block mt-1 px-2 py-0.5 text-xs font-medium rounded-full bg-info/15 text-info">
                       {user.role}
                     </span>
                   )}

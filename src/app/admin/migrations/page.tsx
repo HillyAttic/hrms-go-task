@@ -62,11 +62,11 @@ export default function MigrationToolPage() {
         </h2>
 
         <div className="space-y-4">
-          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-            <h3 className="font-medium text-blue-900 dark:text-blue-100 mb-2">
+          <div className="bg-info/10 border border-info/30 rounded-lg p-4">
+            <h3 className="font-medium text-info mb-2">
               What this does:
             </h3>
-            <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1 list-disc list-inside">
+            <ul className="text-sm text-info space-y-1 list-disc list-inside">
               <li>Adds a <code>serialNumber</code> field to all existing clients</li>
               <li>Assigns sequential numbers: 001, 002, 003, etc.</li>
               <li>Based on client creation date (oldest first)</li>
@@ -88,26 +88,26 @@ export default function MigrationToolPage() {
           {result && (
             <div className={`border rounded-lg p-4 ${
               result.success
-                ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
-                : 'bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800'
+                ? 'bg-success/10 border-success/30'
+                : 'bg-destructive/10 border-destructive/30'
             }`}>
               <h3 className={`font-medium mb-2 ${
                 result.success
-                  ? 'text-green-900 dark:text-green-100'
-                  : 'text-red-900 dark:text-red-100'
+                  ? 'text-success'
+                  : 'text-destructive'
               }`}>
                 {result.message}
               </h3>
 
               {result.stats && (
                 <div className="text-sm space-y-1">
-                  <p className={result.success ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'}>
+                  <p className={result.success ? 'text-success' : 'text-destructive'}>
                     Total clients: {result.stats.total}
                   </p>
-                  <p className={result.success ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'}>
+                  <p className={result.success ? 'text-success' : 'text-destructive'}>
                     Updated: {result.stats.updated}
                   </p>
-                  <p className={result.success ? 'text-green-700 dark:text-green-300' : 'text-red-700 dark:text-red-300'}>
+                  <p className={result.success ? 'text-success' : 'text-destructive'}>
                     Skipped: {result.stats.skipped}
                   </p>
                 </div>
@@ -133,11 +133,11 @@ export default function MigrationToolPage() {
       </div>
 
       {/* Warning */}
-      <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
-        <h3 className="font-medium text-yellow-900 dark:text-yellow-100 mb-2">
+      <div className="bg-warning/10 border border-warning/30 rounded-lg p-4">
+        <h3 className="font-medium text-warning mb-2">
           ⚠️ Important Notes
         </h3>
-        <ul className="text-sm text-yellow-700 dark:text-yellow-300 space-y-1 list-disc list-inside">
+        <ul className="text-sm text-warning space-y-1 list-disc list-inside">
           <li>This operation updates the database directly</li>
           <li>Make sure you have a backup before running migrations</li>
           <li>Only admins can run this migration</li>

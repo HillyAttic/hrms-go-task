@@ -29,7 +29,7 @@ export function StatCard({
 }: StatCardProps) {
   return (
     <Card
-      className={`hover:shadow-lg transition-shadow duration-200 ${onClick ? 'cursor-pointer hover:border-blue-300 dark:hover:border-blue-600' : ''}`}
+      className={`hover:shadow-lg transition-shadow duration-200 ${onClick ? 'cursor-pointer hover:border-ring' : ''}`}
       onClick={onClick}
     >
       <CardHeader className={`flex flex-row items-center justify-between ${compact ? 'pb-1 space-y-0 px-3 pt-3 sm:px-4 sm:pt-4 md:px-5 md:pt-5 md:pb-3' : 'pb-2 px-4 pt-4 sm:px-6 sm:pt-6'}`}>
@@ -49,7 +49,7 @@ export function StatCard({
           <div className="flex items-center justify-between mt-1">
             <p className="text-xs text-muted-foreground line-clamp-1">{subtitle}</p>
             {trend && (
-              <span className={`text-xs font-medium ${trend.isPositive ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}`}>
+              <span className={`text-xs font-medium ${trend.isPositive ? 'text-success' : 'text-destructive'}`}>
                 {trend.isPositive ? '↑' : '↓'} {Math.abs(trend.value)}%
               </span>
             )}

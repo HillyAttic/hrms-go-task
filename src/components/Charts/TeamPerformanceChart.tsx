@@ -81,7 +81,7 @@ export function TeamPerformanceChart({ teamMembers }: TeamPerformanceChartProps)
                     <th className="text-center py-2 px-1 sm:px-2 text-[10px] sm:text-xs font-semibold text-warning uppercase tracking-wide whitespace-nowrap">
                       Pending
                     </th>
-                    <th className="text-center py-2 px-1 sm:px-2 text-[10px] sm:text-xs font-semibold text-orange-600 dark:text-orange-400 uppercase tracking-wide whitespace-nowrap">
+                    <th className="text-center py-2 px-1 sm:px-2 text-[10px] sm:text-xs font-semibold text-warning uppercase tracking-wide whitespace-nowrap">
                       In Progress
                     </th>
                     <th className="text-center py-2 px-1 sm:px-2 text-[10px] sm:text-xs font-semibold text-success uppercase tracking-wide whitespace-nowrap">
@@ -112,7 +112,7 @@ export function TeamPerformanceChart({ teamMembers }: TeamPerformanceChartProps)
                         <td className="py-1.5 px-1 sm:px-2 text-center text-[10px] sm:text-xs font-medium text-warning whitespace-nowrap">
                           {member.tasksPending}
                         </td>
-                        <td className="py-1.5 px-1 sm:px-2 text-center text-[10px] sm:text-xs font-medium text-orange-600 dark:text-orange-400 whitespace-nowrap">
+                        <td className="py-1.5 px-1 sm:px-2 text-center text-[10px] sm:text-xs font-medium text-warning whitespace-nowrap">
                           {member.tasksInProgress}
                         </td>
                         <td className="py-1.5 px-1 sm:px-2 text-center text-[10px] sm:text-xs font-medium text-success whitespace-nowrap">

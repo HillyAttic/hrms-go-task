@@ -141,7 +141,7 @@ export default function MISAccessibilityPage() {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-foreground mx-auto"></div>
           <p className="mt-4 text-muted-foreground">Loading...</p>
         </div>
       </div>
@@ -159,7 +159,7 @@ export default function MISAccessibilityPage() {
 
       {loading ? (
         <div className="flex items-center justify-center py-12">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-foreground"></div>
         </div>
       ) : (
         <div className="space-y-4 sm:space-y-6 md:space-y-8">
@@ -209,7 +209,7 @@ export default function MISAccessibilityPage() {
                           viewBox="0 0 24 24"
                           strokeWidth={1.5}
                           stroke="currentColor"
-                          className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-blue-600 flex-shrink-0"
+                          className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-foreground flex-shrink-0"
                         >
                           <path
                             strokeLinecap="round"
@@ -226,7 +226,7 @@ export default function MISAccessibilityPage() {
                           {mapping.assignedUserIds.length} user{mapping.assignedUserIds.length !== 1 ? 's' : ''}
                         </span>
                         {mapping.requiredForClockout && (
-                          <span className="text-[9px] sm:text-[10px] bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 px-1.5 sm:px-2 py-0.5 rounded-full font-medium whitespace-nowrap">
+                          <span className="text-[9px] sm:text-[10px] bg-destructive/15 text-destructive px-1.5 sm:px-2 py-0.5 rounded-full font-medium whitespace-nowrap">
                             Clock-out required
                           </span>
                         )}

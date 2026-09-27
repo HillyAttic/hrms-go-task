@@ -218,8 +218,8 @@ export default function PasswordManagerPage() {
             className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors -mb-px ${
               activeTab === tab.value
                 ? tab.value === 'access-control'
-                  ? 'border-purple-600 text-purple-600 dark:text-purple-400 dark:border-purple-400'
-                  : 'border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400'
+                  ? 'border-border text-foreground'
+                  : 'border-border text-foreground'
                 : 'border-transparent text-muted-foreground hover:text-foreground dark:hover:text-white'
             }`}
           >
@@ -241,7 +241,7 @@ export default function PasswordManagerPage() {
           <div className="bg-card rounded-lg shadow border border-border overflow-hidden">
             {accessLoading ? (
               <div className="p-8 text-center">
-                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-purple-600 mx-auto" />
+                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-foreground mx-auto" />
               </div>
             ) : users.length === 0 ? (
               <div className="p-10 text-center text-muted-foreground">
@@ -284,7 +284,7 @@ export default function PasswordManagerPage() {
                               disabled={savingAccess === user.uid}
                               className={`w-10 h-6 rounded-full transition-colors relative ${
                                 user.categories.includes(cat)
-                                  ? 'bg-green-500'
+                                  ? 'bg-success'
                                   : 'bg-muted'
                               } disabled:opacity-60`}
                               title={
@@ -353,7 +353,7 @@ export default function PasswordManagerPage() {
           <div className="bg-card rounded-lg shadow border border-border overflow-hidden">
             {loading ? (
               <div className="p-8 text-center">
-                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mx-auto" />
+                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-foreground mx-auto" />
               </div>
             ) : records.length === 0 ? (
               <div className="p-10 text-center text-muted-foreground">
@@ -428,13 +428,13 @@ export default function PasswordManagerPage() {
                                 setEditingRecord(record);
                                 setShowCredentialModal(true);
                               }}
-                              className="px-2 py-1 text-xs rounded bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 hover:bg-blue-200"
+                              className="px-2 py-1 text-xs rounded bg-info/15 text-info hover:bg-info/25"
                             >
                               Edit
                             </button>
                             <button
                               onClick={() => handleDeleteRecord(record.id)}
-                              className="px-2 py-1 text-xs rounded bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 hover:bg-red-200"
+                              className="px-2 py-1 text-xs rounded bg-destructive/15 text-destructive hover:bg-destructive/25"
                             >
                               Delete
                             </button>

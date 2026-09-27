@@ -127,11 +127,11 @@ export default function TeamPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm text-muted-foreground">Tasks Assigned</p>
-                    <p className="text-lg font-bold text-blue-600">{member.tasksAssigned}</p>
+                    <p className="text-lg font-bold text-info">{member.tasksAssigned}</p>
                   </div>
                   <div>
                     <p className="text-sm text-muted-foreground">Tasks Completed</p>
-                    <p className="text-lg font-bold text-green-600">{member.tasksCompleted}</p>
+                    <p className="text-lg font-bold text-success">{member.tasksCompleted}</p>
                   </div>
                 </div>
                 
@@ -142,7 +142,7 @@ export default function TeamPage() {
                   </div>
                   <div className="w-full bg-muted rounded-full h-2">
                     <div 
-                      className="bg-green-600 h-2 rounded-full" 
+                      className="bg-success h-2 rounded-full"
                       style={{ width: `${getCompletionRate(member)}%` }}
                     ></div>
                   </div>

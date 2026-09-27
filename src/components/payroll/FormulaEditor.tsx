@@ -161,7 +161,7 @@ export function FormulaEditor({ settings, onSaveSuccess }: FormulaEditorProps) {
     <div className="bg-card rounded-xl shadow-sm border border-border">
       <div className="p-5 border-b border-border">
         <h2 className="text-base font-semibold text-foreground flex items-center gap-2">
-          <FunctionSquare className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+          <FunctionSquare className="h-5 w-5 text-foreground" />
           Salary Calculation Logic
         </h2>
         <p className="text-sm text-muted-foreground mt-0.5">
@@ -307,7 +307,7 @@ export function FormulaEditor({ settings, onSaveSuccess }: FormulaEditorProps) {
                 return (
                   <tr
                     key={line.key}
-                    className={cn('hover:bg-muted/50', isFocused && 'bg-blue-50 dark:bg-blue-900/20')}
+                    className={cn('hover:bg-muted/50', isFocused && 'bg-muted')}
                   >
                     <td className="px-4 py-3 align-top">
                       <p className="text-sm font-semibold text-foreground">{line.label}</p>
@@ -365,7 +365,7 @@ export function FormulaEditor({ settings, onSaveSuccess }: FormulaEditorProps) {
                         type="button"
                         aria-label={`Clear ${line.label}`}
                         onClick={() => setExpression(line.key, '')}
-                        className="h-8 w-8 text-muted-foreground hover:text-red-500 dark:text-muted-foreground dark:hover:text-red-400"
+                        className="h-8 w-8 text-muted-foreground hover:text-destructive dark:text-muted-foreground"
                       >
                         <X className="h-4 w-4" />
                       </Button>

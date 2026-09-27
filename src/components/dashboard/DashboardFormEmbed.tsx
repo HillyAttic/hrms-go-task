@@ -234,7 +234,7 @@ export default function DashboardFormEmbed() {
           <CardContent className="pt-6">
             <div className="p-6 space-y-6">
               <div className="space-y-3">
-                <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-md border border-green-200 dark:border-green-800">
+                <div className="text-center p-4 bg-success/10 rounded-md border border-success/30">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -245,15 +245,15 @@ export default function DashboardFormEmbed() {
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="h-8 w-8 text-green-600 dark:text-green-400 mx-auto mb-2"
+                    className="h-8 w-8 text-success mx-auto mb-2"
                   >
                     <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
                     <path d="m9 11 3 3L22 4"></path>
                   </svg>
-                  <p className="font-medium text-green-800 dark:text-green-200">
+                  <p className="font-medium text-success">
                     Form Submitted Successfully
                   </p>
-                  <p className="text-sm text-green-700 dark:text-green-300">
+                  <p className="text-sm text-success">
                     Thank you for your submission! You can now clock out when ready.
                     {form.template.settings.allowMultipleSubmissions && (
                       <span className="block mt-1">
@@ -275,10 +275,10 @@ export default function DashboardFormEmbed() {
           <div className="w-full">
             {/* Warning banner if user is clocked in and hasn't submitted */}
             {!form.isSubmitted && userIsClockedIn && form.requiredForClockout && (
-              <div className="mb-4 p-4 bg-yellow-50 dark:bg-yellow-900/20 border-2 border-yellow-400 dark:border-yellow-600 rounded-lg">
+              <div className="mb-4 p-4 bg-warning/10 border-2 border-warning rounded-lg">
                 <div className="flex items-start gap-3">
                   <svg
-                    className="w-6 h-6 text-yellow-600 dark:text-yellow-400 flex-shrink-0"
+                    className="w-6 h-6 text-warning flex-shrink-0"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -291,10 +291,10 @@ export default function DashboardFormEmbed() {
                     />
                   </svg>
                   <div>
-                    <h3 className="font-semibold text-yellow-900 dark:text-yellow-200">
+                    <h3 className="font-semibold text-warning">
                       Form Submission Required
                     </h3>
-                    <p className="text-sm text-yellow-800 dark:text-yellow-300 mt-1">
+                    <p className="text-sm text-warning mt-1">
                       You must submit this form before you can clock out today. Please complete all required fields below.
                     </p>
                   </div>
@@ -320,10 +320,10 @@ export default function DashboardFormEmbed() {
         <div className="w-full space-y-4">
           {/* Warning banner if any required form is not submitted */}
           {pendingRequiredForms.length > 0 && userIsClockedIn && (
-            <div className="p-4 bg-yellow-50 dark:bg-yellow-900/20 border-2 border-yellow-400 dark:border-yellow-600 rounded-lg">
+            <div className="p-4 bg-warning/10 border-2 border-warning rounded-lg">
               <div className="flex items-start gap-3">
                 <svg
-                  className="w-6 h-6 text-yellow-600 dark:text-yellow-400 flex-shrink-0"
+                  className="w-6 h-6 text-warning flex-shrink-0"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -336,13 +336,13 @@ export default function DashboardFormEmbed() {
                   />
                 </svg>
                 <div>
-                  <h3 className="font-semibold text-yellow-900 dark:text-yellow-200">
+                  <h3 className="font-semibold text-warning">
                     Form Submission Required
                   </h3>
-                  <p className="text-sm text-yellow-800 dark:text-yellow-300 mt-1">
+                  <p className="text-sm text-warning mt-1">
                     You must submit the following form(s) before you can clock out today:
                   </p>
-                  <ul className="text-sm text-yellow-800 dark:text-yellow-300 mt-2 list-disc list-inside">
+                  <ul className="text-sm text-warning mt-2 list-disc list-inside">
                     {pendingRequiredForms.map(form => (
                       <li key={form.formId}>{form.formTitle}</li>
                     ))}
@@ -387,7 +387,7 @@ export default function DashboardFormEmbed() {
                         </h3>
                         <div className="flex items-center gap-2 mt-1">
                           {form.isSubmitted ? (
-                            <span className="text-xs text-green-600 dark:text-green-400 flex items-center gap-1">
+                            <span className="text-xs text-success flex items-center gap-1">
                               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                               </svg>
@@ -399,7 +399,7 @@ export default function DashboardFormEmbed() {
                             </span>
                           )}
                           {form.requiredForClockout && (
-                            <span className="text-[10px] bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400 px-2 py-0.5 rounded-full font-medium">
+                            <span className="text-[10px] bg-destructive/15 text-destructive px-2 py-0.5 rounded-full font-medium">
                               Required for clock-out
                             </span>
                           )}
@@ -412,7 +412,7 @@ export default function DashboardFormEmbed() {
                   {isExpanded && form.template && (
                     <div className="p-4 bg-card">
                       {form.isSubmitted ? (
-                        <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-md border border-green-200 dark:border-green-800">
+                        <div className="text-center p-4 bg-success/10 rounded-md border border-success/30">
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
@@ -423,15 +423,15 @@ export default function DashboardFormEmbed() {
                             strokeWidth="2"
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            className="h-8 w-8 text-green-600 dark:text-green-400 mx-auto mb-2"
+                            className="h-8 w-8 text-success mx-auto mb-2"
                           >
                             <path d="M21.801 10A10 10 0 1 1 17 3.335"></path>
                             <path d="m9 11 3 3L22 4"></path>
                           </svg>
-                          <p className="font-medium text-green-800 dark:text-green-200">
+                          <p className="font-medium text-success">
                             Form Submitted Successfully
                           </p>
-                          <p className="text-sm text-green-700 dark:text-green-300">
+                          <p className="text-sm text-success">
                             Thank you for your submission!
                             {form.template.settings.allowMultipleSubmissions && (
                               <span className="block mt-1">

@@ -77,13 +77,13 @@ export function ClientListModal({
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
-                  <UserGroupIcon className="w-6 h-6 text-indigo-600" />
+                  <UserGroupIcon className="w-6 h-6 text-foreground" />
                   Assigned Clients
                 </h3>
                 <p className="text-sm text-muted-foreground mt-1">
                   {taskTitle}
                   {isTeamMemberMapping && teamMemberName && (
-                    <span className="ml-2 text-indigo-600">• Assigned to: {teamMemberName}</span>
+                    <span className="ml-2 text-foreground">• Assigned to: {teamMemberName}</span>
                   )}
                 </p>
               </div>
@@ -101,7 +101,7 @@ export function ClientListModal({
           <div className="px-6 py-4 overflow-y-auto flex-1">
             {loading ? (
               <div className="flex items-center justify-center py-12">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-foreground"></div>
               </div>
             ) : clients.length === 0 ? (
               <div className="text-center py-12">
@@ -113,12 +113,12 @@ export function ClientListModal({
                 {clients.map((client) => (
                   <div
                     key={client.id}
-                    className="p-3 border-2 border-border rounded-lg hover:border-indigo-300 dark:hover:border-indigo-600 transition-colors bg-card"
+                    className="p-3 border-2 border-border rounded-lg hover:border-ring transition-colors bg-card"
                   >
                     <div className="flex items-start gap-2">
                       <div className="flex-shrink-0">
-                        <div className="w-9 h-9 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center">
-                          <span className="text-indigo-600 dark:text-indigo-400 font-semibold text-sm">
+                        <div className="w-9 h-9 rounded-full bg-muted flex items-center justify-center">
+                          <span className="text-foreground font-semibold text-sm">
                             {client.clientName.charAt(0).toUpperCase()}
                           </span>
                         </div>

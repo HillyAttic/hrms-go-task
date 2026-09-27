@@ -146,7 +146,7 @@ export default function MyTasksPage() {
         return (
             <div className="flex items-center justify-center min-h-[60vh]">
                 <div className="text-center space-y-4">
-                    <p className="text-red-500 text-sm">{error}</p>
+                    <p className="text-destructive text-sm">{error}</p>
                     <button onClick={() => window.location.reload()} className="px-5 py-2 bg-foreground text-background rounded-md border-2 border-border text-sm font-semibold">
                         Retry
                     </button>
@@ -185,7 +185,7 @@ export default function MyTasksPage() {
                                     "relative text-left rounded-2xl p-4 transition-all duration-200 active:scale-[0.97]",
                                     "shadow-sm",
                                     isSelected
-                                        ? "ring-2 ring-offset-1 dark:ring-offset-[#1c1c1e]"
+                                        ? "ring-2 ring-offset-1 dark:ring-offset-background"
                                         : "opacity-80 hover:opacity-100"
                                 )}
                                 style={{
@@ -216,7 +216,7 @@ export default function MyTasksPage() {
                         </div>
                         <button
                             onClick={() => handleDeleteList(selectedList.id)}
-                            className="p-1.5 text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+                            className="p-1.5 text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
                             title="Delete list"
                         >
                             <Trash2 className="w-4 h-4" />
@@ -379,7 +379,7 @@ function TaskRow({ task, color, isToggling, onToggle, onDelete, showDivider, com
             {/* Delete — tap area */}
             <button
                 onClick={onDelete}
-                className="p-1.5 -mr-1 text-muted-foreground hover:text-red-400 dark:text-muted-foreground dark:hover:text-red-400 rounded-lg transition-colors active:scale-90"
+                className="p-1.5 -mr-1 text-muted-foreground hover:text-destructive dark:text-muted-foreground dark:hover:text-destructive rounded-lg transition-colors active:scale-90"
                 aria-label="Delete task"
             >
                 <X className="w-4 h-4" />

@@ -229,7 +229,7 @@ export function DelegateTaskModal({
       <DialogContent className="sm:max-w-[720px] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <ArrowRightIcon className="w-5 h-5 text-orange-600" />
+            <ArrowRightIcon className="w-5 h-5 text-warning" />
             Delegate Task
           </DialogTitle>
           <p className="text-sm text-muted-foreground mt-2">
@@ -239,11 +239,11 @@ export function DelegateTaskModal({
 
         <div className="space-y-4 mt-4">
           {/* Current Assignment Info */}
-          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-3">
-            <p className="text-sm text-blue-800 dark:text-blue-300">
+          <div className="bg-info/10 border border-info/30 rounded-lg p-3">
+            <p className="text-sm text-info">
               <strong>Currently assigned to:</strong> {currentUserName}
             </p>
-            <p className="text-xs text-blue-600 dark:text-blue-400 mt-1">
+            <p className="text-xs text-info mt-1">
               {assignedClientIds.length} client{assignedClientIds.length !== 1 ? 's' : ''} assigned
             </p>
           </div>
@@ -255,10 +255,10 @@ export function DelegateTaskModal({
           <div>
             <div className="flex items-center justify-between mb-2">
               <Label className="font-medium">
-                Delegate To <span className="text-red-500">*</span>
+                Delegate To <span className="text-destructive">*</span>
               </Label>
               {selectedUsers.length > 0 && (
-                <span className="text-xs text-orange-600 font-medium">
+                <span className="text-xs text-warning font-medium">
                   {selectedUsers.length} selected
                 </span>
               )}
@@ -302,7 +302,7 @@ export function DelegateTaskModal({
                           type="checkbox"
                           checked={selectedUsers.includes(user.id)}
                           onChange={() => toggleUser(user.id)}
-                          className="w-4 h-4 accent-orange-500 flex-shrink-0"
+                          className="w-4 h-4 flex-shrink-0"
                         />
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-medium text-foreground truncate">
@@ -330,12 +330,12 @@ export function DelegateTaskModal({
             <div>
               <div className="flex items-center justify-between mb-2">
                 <Label className="font-medium">
-                  Clients to Delegate <span className="text-red-500">*</span>
+                  Clients to Delegate <span className="text-destructive">*</span>
                 </Label>
                 <button
                   type="button"
                   onClick={toggleAllClients}
-                  className="text-xs text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+                  className="text-xs text-foreground hover:text-foreground/80"
                 >
                   {selectedClientIds.length === clientList.length ? 'Deselect All' : 'Select All'}
                 </button>
@@ -364,7 +364,7 @@ export function DelegateTaskModal({
                           type="checkbox"
                           checked={selectedClientIds.includes(client.id)}
                           onChange={() => toggleClient(client.id)}
-                          className="w-4 h-4 accent-orange-500 flex-shrink-0"
+                          className="w-4 h-4 flex-shrink-0"
                         />
                         <span className="text-sm text-foreground">
                           {client.name}
@@ -386,8 +386,8 @@ export function DelegateTaskModal({
           </div>{/* end grid */}
 
           {/* Info Note */}
-          <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3">
-            <p className="text-xs text-yellow-800 dark:text-yellow-300">
+          <div className="bg-warning/10 border border-warning/30 rounded-lg p-3">
+            <p className="text-xs text-warning">
               <strong>Note:</strong> The delegated user
               {selectedUsers.length > 1 ? 's' : ''} will see this task on their dashboard with
               the assigned clients. They can plan or further delegate the task.
@@ -405,7 +405,7 @@ export function DelegateTaskModal({
             onClick={handleDelegate}
             disabled={selectedUsers.length === 0 || selectedClientIds.length === 0 || saving || loading}
             loading={saving}
-            className="bg-orange-600 hover:bg-orange-700 text-white"
+            className="bg-warning hover:bg-warning/90 text-white"
           >
             {saving
               ? 'Delegating...'

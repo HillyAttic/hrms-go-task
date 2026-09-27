@@ -158,7 +158,7 @@ export function QuickActions({
               {action.icon}
               <span className="text-sm font-medium">{action.label}</span>
               {action.badge && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 bg-destructive text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">
                   {action.badge}
                 </span>
               )}

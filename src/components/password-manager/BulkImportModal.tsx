@@ -193,7 +193,7 @@ export default function BulkImportModal({
             <a
               href={templateHref}
               download={`${category}-template.csv`}
-              className="inline-flex text-xs text-blue-600 hover:underline"
+              className="inline-flex text-xs text-foreground hover:underline"
             >
               Download template CSV
             </a>
@@ -244,7 +244,7 @@ export default function BulkImportModal({
               <p className="text-sm text-muted-foreground">
                 Found <strong>{parsedRows.length}</strong> rows
                 {parseErrors.length > 0 && (
-                  <span className="ml-2 text-yellow-600">
+                  <span className="ml-2 text-warning">
                     ({parseErrors.length} warning{parseErrors.length > 1 ? 's' : ''})
                   </span>
                 )}
@@ -252,14 +252,14 @@ export default function BulkImportModal({
             </div>
 
             {parseErrors.length > 0 && (
-              <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-3 max-h-24 overflow-y-auto">
+              <div className="bg-warning/10 border border-warning/30 rounded-lg p-3 max-h-24 overflow-y-auto">
                 {parseErrors.slice(0, 5).map((err, i) => (
-                  <p key={i} className="text-xs text-yellow-700 dark:text-yellow-400">
+                  <p key={i} className="text-xs text-warning">
                     {err}
                   </p>
                 ))}
                 {parseErrors.length > 5 && (
-                  <p className="text-xs text-yellow-600">...and {parseErrors.length - 5} more</p>
+                  <p className="text-xs text-warning">...and {parseErrors.length - 5} more</p>
                 )}
               </div>
             )}
@@ -333,22 +333,22 @@ export default function BulkImportModal({
 
         {step === 'importing' && (
           <div className="py-8 text-center">
-            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mx-auto mb-4" />
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-foreground mx-auto mb-4" />
             <p className="text-muted-foreground">Importing records...</p>
           </div>
         )}
 
         {step === 'result' && importResult && (
           <div className="space-y-4">
-            <div className="rounded-lg bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 p-4">
-              <p className="text-green-800 dark:text-green-400 font-medium">
+            <div className="rounded-lg bg-success/10 border border-success/30 p-4">
+              <p className="text-success font-medium">
                 Import Complete
               </p>
-              <p className="text-sm text-green-700 dark:text-green-300 mt-1">
+              <p className="text-sm text-success mt-1">
                 {importResult.created} record{importResult.created !== 1 ? 's' : ''} imported
                 successfully.
                 {importResult.errors > 0 && (
-                  <span className="text-yellow-600 dark:text-yellow-400 ml-1">
+                  <span className="text-warning ml-1">
                     {importResult.errors} error{importResult.errors > 1 ? 's' : ''}.
                   </span>
                 )}

@@ -282,39 +282,39 @@ export function PlanTaskModal({
           {/* Existing Visits (Already Saved) */}
           {!loadingExistingVisits && existingVisits.length > 0 && (
             <div>
-              <Label className="mb-3 block font-semibold text-green-700 dark:text-green-300">
+              <Label className="mb-3 block font-semibold text-success">
                 Previously Scheduled Visits ({existingVisits.length})
               </Label>
-              <div className="border border-green-200 dark:border-green-700 rounded-lg overflow-hidden bg-green-50 dark:bg-green-900/30">
+              <div className="border border-success/30 rounded-lg overflow-hidden bg-success/10">
                 <table className="w-full">
-                  <thead className="bg-green-100 dark:bg-green-900/30">
+                  <thead className="bg-success/15">
                     <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-green-900 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-success uppercase tracking-wider">
                         Client Name
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-green-900 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-success uppercase tracking-wider">
                         Schedule Date
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-green-900 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-success uppercase tracking-wider">
                         Start Time
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-green-900 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-success uppercase tracking-wider">
                         End Time
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-green-900 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-success uppercase tracking-wider">
                         Status
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-card divide-y divide-green-200">
+                  <tbody className="bg-card divide-y divide-border">
                     {existingVisits.map((visit, index) => (
-                      <tr key={`existing-${index}`} className="hover:bg-green-50 dark:hover:bg-green-900/30">
+                      <tr key={`existing-${index}`} className="hover:bg-success/10">
                         <td className="px-4 py-3 text-sm text-foreground">{visit.clientName}</td>
                         <td className="px-4 py-3 text-sm text-foreground">{formatDate(visit.scheduleDate)}</td>
                         <td className="px-4 py-3 text-sm text-foreground">{formatTime(visit.startTime)}</td>
                         <td className="px-4 py-3 text-sm text-foreground">{formatTime(visit.endTime)}</td>
                         <td className="px-4 py-3 text-sm">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">
+                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-success/15 text-success">
                             Saved
                           </span>
                         </td>
@@ -323,7 +323,7 @@ export function PlanTaskModal({
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs text-green-700 dark:text-green-300 mt-2">
+              <p className="text-xs text-success mt-2">
                 These visits are already saved in the roster calendar
               </p>
             </div>
@@ -332,33 +332,33 @@ export function PlanTaskModal({
           {/* Current Visits Table (New, Not Yet Saved) */}
           {visits.length > 0 && (
             <div>
-              <Label className="mb-3 block font-semibold text-blue-700 dark:text-blue-300">
+              <Label className="mb-3 block font-semibold text-info">
                 New Visits to Schedule ({visits.length})
               </Label>
-              <div className="border border-blue-200 dark:border-blue-700 rounded-lg overflow-hidden bg-blue-50 dark:bg-blue-900/30">
+              <div className="border border-info/30 rounded-lg overflow-hidden bg-info/10">
                 <table className="w-full">
-                  <thead className="bg-blue-100 dark:bg-blue-900/30">
+                  <thead className="bg-info/15">
                     <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-blue-900 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-info uppercase tracking-wider">
                         Client Name
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-blue-900 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-info uppercase tracking-wider">
                         Schedule Date
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-blue-900 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-info uppercase tracking-wider">
                         Start Time
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-blue-900 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-info uppercase tracking-wider">
                         End Time
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-blue-900 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-info uppercase tracking-wider">
                         Action
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-card divide-y divide-blue-200">
+                  <tbody className="bg-card divide-y divide-border">
                     {visits.map((visit, index) => (
-                      <tr key={`new-${index}`} className="hover:bg-blue-50 dark:hover:bg-blue-900/30">
+                      <tr key={`new-${index}`} className="hover:bg-info/10">
                         <td className="px-4 py-3 text-sm text-foreground">{visit.clientName}</td>
                         <td className="px-4 py-3 text-sm text-foreground">{formatDate(visit.scheduleDate)}</td>
                         <td className="px-4 py-3 text-sm text-foreground">{formatTime(visit.startTime)}</td>
@@ -367,7 +367,7 @@ export function PlanTaskModal({
                           <button
                             type="button"
                             onClick={() => handleRemoveVisit(index)}
-                            className="text-red-600 hover:text-red-800 dark:hover:text-red-300"
+                            className="text-destructive hover:text-destructive/80"
                           >
                             <XMarkIcon className="w-5 h-5" />
                           </button>
@@ -377,7 +377,7 @@ export function PlanTaskModal({
                   </tbody>
                 </table>
               </div>
-              <p className="text-xs text-blue-700 dark:text-blue-300 mt-2">
+              <p className="text-xs text-info mt-2">
                 Click "Save" button below to add these visits to the roster
               </p>
             </div>
@@ -487,19 +487,19 @@ export function PlanTaskModal({
           </div>
 
           {/* Info Box */}
-          <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg p-4">
-            <p className="text-sm text-blue-900">
+          <div className="bg-info/10 border border-info/30 rounded-lg p-4">
+            <p className="text-sm text-info">
               <strong>Summary:</strong>
             </p>
-            <ul className="text-sm text-blue-800 dark:text-blue-300 mt-2 ml-4 list-disc space-y-1">
+            <ul className="text-sm text-info mt-2 ml-4 list-disc space-y-1">
               <li>Previously scheduled: <strong>{existingVisits.length}</strong> visit{existingVisits.length !== 1 ? 's' : ''}</li>
               <li>New visits to save: <strong>{visits.length}</strong> visit{visits.length !== 1 ? 's' : ''}</li>
               <li>Total after saving: <strong>{existingVisits.length + visits.length}</strong> visit{(existingVisits.length + visits.length) !== 1 ? 's' : ''}</li>
             </ul>
-            <p className="text-sm text-blue-900 mt-3">
+            <p className="text-sm text-info mt-3">
               <strong>Note:</strong> All visits appear in:
             </p>
-            <ul className="text-sm text-blue-800 dark:text-blue-300 mt-1 ml-4 list-disc space-y-1">
+            <ul className="text-sm text-info mt-1 ml-4 list-disc space-y-1">
               <li>Admin/Manager view at <strong>/roster/view-schedule</strong></li>
               <li>Your personal calendar at <strong>/roster/update-schedule</strong></li>
               <li>Color-coded based on duration (Yellow: &lt;8hrs, Orange: ≥8hrs)</li>

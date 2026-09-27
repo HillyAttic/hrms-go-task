@@ -37,7 +37,7 @@ interface PayrollSettingsFormProps {
 const inputClass =
   'w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring';
 const labelClass = 'block text-sm font-medium text-muted-foreground mb-1';
-const errorClass = 'mt-1 text-xs text-red-500';
+const errorClass = 'mt-1 text-xs text-destructive';
 const sectionTitleClass = 'text-base font-semibold text-foreground flex items-center gap-2';
 
 export function PayrollSettingsForm({ onSaveSuccess }: PayrollSettingsFormProps) {
@@ -118,7 +118,7 @@ export function PayrollSettingsForm({ onSaveSuccess }: PayrollSettingsFormProps)
   if (loading) {
     return (
       <div className="flex items-center justify-center p-8">
-        <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-blue-600" />
+        <div className="h-8 w-8 animate-spin rounded-full border-b-2 border-foreground" />
       </div>
     );
   }
@@ -170,8 +170,8 @@ export function PayrollSettingsForm({ onSaveSuccess }: PayrollSettingsFormProps)
           className={cn(
             'inline-flex items-center rounded-full px-3 py-1 text-xs font-medium',
             totalsToHundred
-              ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300'
-              : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300'
+              ? 'bg-success/15 text-success'
+              : 'bg-warning/15 text-warning'
           )}
         >
           Total: {total}%{totalsToHundred ? '' : ' (Must equal 100%)'}
@@ -196,7 +196,7 @@ export function PayrollSettingsForm({ onSaveSuccess }: PayrollSettingsFormProps)
             type="checkbox"
             id="include-paid-leaves"
             {...register('includePaidLeavesInPaidDays')}
-            className="h-4 w-4 rounded border-border text-blue-600 focus:ring-ring"
+            className="h-4 w-4 rounded border-border text-ring focus:ring-ring"
           />
           <label htmlFor="include-paid-leaves" className="text-sm text-muted-foreground">
             Include Allowed Paid Leaves in Paid Days count

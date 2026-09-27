@@ -251,7 +251,7 @@ export function TemplateManager() {
                     size="icon"
                     aria-label={`Delete ${template.title}`}
                     onClick={() => void deleteTemplate(template)}
-                    className="h-8 w-8 text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
+                    className="h-8 w-8 text-destructive hover:bg-destructive/10"
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
@@ -312,7 +312,7 @@ export function TemplateManager() {
                           type="checkbox"
                           checked={section.visible}
                           onChange={() => toggleSection(sectionIndex)}
-                          className="h-4 w-4 rounded border-border text-blue-600 focus:ring-ring"
+                          className="h-4 w-4 rounded border-border text-ring focus:ring-ring"
                         />
                         <span
                           className={cn(
@@ -342,7 +342,7 @@ export function TemplateManager() {
                               checked={field.visible}
                               disabled={!section.visible}
                               onChange={() => toggleField(sectionIndex, fieldIndex)}
-                              className="h-4 w-4 shrink-0 rounded border-border text-blue-600 focus:ring-ring disabled:opacity-50"
+                              className="h-4 w-4 shrink-0 rounded border-border text-ring focus:ring-ring disabled:opacity-50"
                             />
                             <span className="text-xs font-mono truncate text-muted-foreground">
                               {field.key}
@@ -365,7 +365,7 @@ export function TemplateManager() {
                       type="checkbox"
                       checked={draft.showFooterNote}
                       onChange={(event) => patchDraft({ showFooterNote: event.target.checked })}
-                      className="h-4 w-4 rounded border-border text-blue-600 focus:ring-ring"
+                      className="h-4 w-4 rounded border-border text-ring focus:ring-ring"
                     />
                     Show footer note
                   </label>
@@ -374,7 +374,7 @@ export function TemplateManager() {
                       type="checkbox"
                       checked={draft.showSlipNumber}
                       onChange={(event) => patchDraft({ showSlipNumber: event.target.checked })}
-                      className="h-4 w-4 rounded border-border text-blue-600 focus:ring-ring"
+                      className="h-4 w-4 rounded border-border text-ring focus:ring-ring"
                     />
                     Show slip number
                   </label>

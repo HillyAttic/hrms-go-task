@@ -271,14 +271,14 @@ export function EmployeeBulkImportModal({
 
         <div className="space-y-4">
           {/* Download Template Button */}
-          <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg p-4">
+          <div className="bg-info/10 border border-info/30 rounded-lg p-4">
             <div className="flex items-start gap-3">
-              <DocumentArrowDownIcon className="w-5 h-5 text-blue-600 flex-shrink-0 mt-0.5" />
+              <DocumentArrowDownIcon className="w-5 h-5 text-info flex-shrink-0 mt-0.5" />
               <div className="flex-1">
-                <h4 className="text-sm font-medium text-blue-900 mb-1">
+                <h4 className="text-sm font-medium text-info mb-1">
                   Download Template
                 </h4>
-                <p className="text-xs text-blue-700 dark:text-blue-300 mb-2">
+                <p className="text-xs text-info mb-2">
                   Download the CSV template with the correct format and example data.
                 </p>
                 <Button
@@ -286,7 +286,7 @@ export function EmployeeBulkImportModal({
                   variant="outline"
                   size="sm"
                   onClick={downloadTemplate}
-                  className="text-blue-600 border-blue-300 dark:border-blue-700 hover:bg-blue-100 dark:hover:bg-blue-900/30"
+                  className="text-info border-info/30 hover:bg-info/15"
                 >
                   <DocumentArrowDownIcon className="w-4 h-4 mr-2" />
                   Download Template
@@ -305,7 +305,7 @@ export function EmployeeBulkImportModal({
                 type="file"
                 accept=".csv"
                 onChange={handleFileChange}
-                className="block w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                className="block w-full text-sm text-muted-foreground file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-info/10 file:text-info hover:file:bg-info/25"
                 disabled={importing}
               />
             </div>
@@ -351,17 +351,17 @@ export function EmployeeBulkImportModal({
 
           {/* Import Progress */}
           {importing && importProgress && (
-            <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg p-4">
+            <div className="bg-info/10 border border-info/30 rounded-lg p-4">
               <div className="flex items-center gap-3">
-                <svg className="animate-spin h-5 w-5 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <svg className="animate-spin h-5 w-5 text-foreground" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
                 <div className="flex-1">
-                  <p className="text-sm font-medium text-blue-900">
+                  <p className="text-sm font-medium text-info">
                     Importing employee {importProgress.current} of {importProgress.total}...
                   </p>
-                  <div className="w-full bg-blue-200 rounded-full h-2 mt-2">
+                  <div className="w-full bg-info rounded-full h-2 mt-2">
                     <div 
                       className="bg-foreground h-2 rounded-full transition-all duration-300"
                       style={{ width: `${(importProgress.current / importProgress.total) * 100}%` }}
@@ -377,10 +377,10 @@ export function EmployeeBulkImportModal({
             <div className="space-y-3">
               {/* Success Summary */}
               {importResult.success > 0 && (
-                <div className="bg-green-50 dark:bg-green-900/30 border border-green-200 dark:border-green-700 rounded-lg p-4">
+                <div className="bg-success/10 border border-success/30 rounded-lg p-4">
                   <div className="flex items-center gap-2">
-                    <CheckCircleIcon className="w-5 h-5 text-green-600" />
-                    <span className="text-sm font-medium text-green-900">
+                    <CheckCircleIcon className="w-5 h-5 text-success" />
+                    <span className="text-sm font-medium text-success">
                       Successfully imported {importResult.success} employee(s)
                     </span>
                   </div>
@@ -389,19 +389,19 @@ export function EmployeeBulkImportModal({
 
               {/* Error Summary */}
               {importResult.failed > 0 && (
-                <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 rounded-lg p-4">
+                <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4">
                   <div className="flex items-start gap-2">
-                    <XCircleIcon className="w-5 h-5 text-red-600 flex-shrink-0 mt-0.5" />
+                    <XCircleIcon className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
                     <div className="flex-1">
-                      <span className="text-sm font-medium text-red-900 block mb-2">
+                      <span className="text-sm font-medium text-destructive block mb-2">
                         Failed to import {importResult.failed} employee(s)
                       </span>
                       <div className="max-h-40 overflow-y-auto space-y-2">
                         {importResult.errors.map((err, idx) => (
-                          <div key={idx} className="text-xs text-red-800 dark:text-red-300 bg-red-100 dark:bg-red-900/30 rounded p-2">
+                          <div key={idx} className="text-xs text-destructive bg-destructive/10 rounded p-2">
                             <span className="font-medium">Row {err.row}:</span> {err.error}
                             <br />
-                            <span className="text-red-600">
+                            <span className="text-destructive">
                               {err.data.employeeId} - {err.data.name}
                             </span>
                           </div>

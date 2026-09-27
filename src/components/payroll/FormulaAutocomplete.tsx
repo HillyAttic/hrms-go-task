@@ -119,7 +119,7 @@ export function FormulaAutocomplete({
           className={cn(
             'flex w-full items-center justify-between gap-3 px-3 py-1.5 text-left font-mono text-xs',
             index === activeIndex
-              ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
+              ? 'bg-info/10 text-info'
               : 'text-muted-foreground'
           )}
         >

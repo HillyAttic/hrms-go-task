@@ -27,10 +27,10 @@ export function UpcomingDeadlines({ tasks, onTaskClick }: UpcomingDeadlinesProps
   };
 
   const getUrgencyColor = (days: number) => {
-    if (days <= 1) return 'text-red-600 bg-red-50 dark:bg-red-900/30';
-    if (days <= 3) return 'text-orange-600 bg-orange-50 dark:bg-orange-900/30';
-    if (days <= 7) return 'text-yellow-600 bg-yellow-50 dark:bg-yellow-900/30';
-    return 'text-blue-600 bg-blue-50 dark:bg-blue-900/30';
+    if (days <= 1) return 'text-destructive bg-destructive/10';
+    if (days <= 3) return 'text-warning bg-warning/10';
+    if (days <= 7) return 'text-warning bg-warning/10';
+    return 'text-info bg-info/10';
   };
 
   const formatDaysUntil = (days: number) => {
@@ -64,7 +64,7 @@ export function UpcomingDeadlines({ tasks, onTaskClick }: UpcomingDeadlinesProps
                   <div
                     key={task.id}
                     onClick={() => onTaskClick?.(task.id)}
-                    className="flex items-center justify-between p-3 border border-border rounded-lg hover:border-blue-300 dark:hover:border-blue-700 cursor-pointer transition-colors"
+                    className="flex items-center justify-between p-3 border border-border rounded-lg hover:border-ring cursor-pointer transition-colors"
                   >
                     <div className="flex-1 min-w-0">
                       <h4 className="font-medium text-foreground truncate">{task.title}</h4>

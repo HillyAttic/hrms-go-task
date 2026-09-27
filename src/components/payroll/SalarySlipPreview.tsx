@@ -320,19 +320,19 @@ export function SalarySlipPreview({
 
           {showBreakdown && (
             <div className="mt-4 space-y-3">
-              <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-lg p-4 space-y-2">
-                <p className="text-xs font-semibold text-blue-700 dark:text-blue-300 uppercase">Leave Deduction</p>
-                <p className="font-mono text-xs text-blue-900 font-bold">
+              <div className="bg-info/10 border border-info/30 rounded-lg p-4 space-y-2">
+                <p className="text-xs font-semibold text-info uppercase">Leave Deduction</p>
+                <p className="font-mono text-xs text-info font-bold">
                   leaveDeduction = (grossSalary × unpaidLeave) / 26 = ({formatCurrency(grossSalary)} ×{' '}
                   {unpaidLeave}) / 26 = {formatCurrency(leaveDeduction)}
                 </p>
-                <p className="text-xs font-semibold text-blue-700 dark:text-blue-300 uppercase pt-2">Net Salary</p>
-                <p className="font-mono text-xs text-blue-900 font-bold">
+                <p className="text-xs font-semibold text-info uppercase pt-2">Net Salary</p>
+                <p className="font-mono text-xs text-info font-bold">
                   netSalary = grossSalary − leaveDeduction = {formatCurrency(grossSalary)} −{' '}
                   {formatCurrency(leaveDeduction)} = {formatCurrency(netSalary)}
                 </p>
-                <p className="text-xs font-semibold text-blue-700 dark:text-blue-300 uppercase pt-2">Paid Days</p>
-                <p className="font-mono text-xs text-blue-900 font-bold">
+                <p className="text-xs font-semibold text-info uppercase pt-2">Paid Days</p>
+                <p className="font-mono text-xs text-info font-bold">
                   paidDays = 26 − unpaidLeave − (halfDay × 0.5) = 26 − {unpaidLeave} − ({halfDay} ×
                   0.5) = {formatCount(paidDays)}
                 </p>

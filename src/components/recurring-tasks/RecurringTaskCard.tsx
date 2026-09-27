@@ -88,7 +88,7 @@ export function RecurringTaskCard({
   // Get custom color classes for high priority (orange)
   const getPriorityClasses = (priority: string): string => {
     if (priority === 'high') {
-      return 'border-transparent bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300 hover:bg-orange-200';
+      return 'border-transparent bg-warning/15 text-warning hover:bg-warning/25';
     }
     return '';
   };
@@ -168,7 +168,7 @@ export function RecurringTaskCard({
   const completionRate = calculateCompletionRate();
 
   return (
-    <Card className={`group hover:shadow-lg transition-all duration-200 ${isOverdue ? 'border-red-300 dark:border-red-700 bg-red-50/30' : ''} ${task.isPaused ? 'opacity-75' : ''} ${selected ? 'ring-2 ring-ring' : ''}`}>
+    <Card className={`group hover:shadow-lg transition-all duration-200 ${isOverdue ? 'border-destructive/30 bg-destructive/10' : ''} ${task.isPaused ? 'opacity-75' : ''} ${selected ? 'ring-2 ring-ring' : ''}`}>
       <CardContent className="p-6">
         {/* Selection Checkbox */}
         {onSelect && (
@@ -177,7 +177,7 @@ export function RecurringTaskCard({
               type="checkbox"
               checked={selected}
               onChange={(e) => task.id && onSelect(task.id, e.target.checked)}
-              className="w-5 h-5 rounded border-border text-blue-600 focus:ring-ring cursor-pointer"
+              className="w-5 h-5 rounded border-border text-ring focus:ring-ring cursor-pointer"
               aria-label={`Select ${task.title}`}
             />
           </div>
@@ -213,7 +213,7 @@ export function RecurringTaskCard({
             
             {/* Overdue Indicator */}
             {isOverdue && !task.isPaused && (
-              <div className="flex items-center gap-1 text-red-600 text-sm font-medium mb-2">
+              <div className="flex items-center gap-1 text-destructive text-sm font-medium mb-2">
                 <ExclamationTriangleIcon className="w-4 h-4" />
                 <span>Overdue</span>
               </div>
@@ -226,7 +226,7 @@ export function RecurringTaskCard({
               size="sm"
               variant="ghost"
               onClick={() => onEdit(task)}
-              className="text-blue-600 hover:text-blue-700 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/30"
+              className="text-foreground hover:bg-muted"
               aria-label={`Edit ${task.title}`}
             >
               <PencilSquareIcon className="w-4 h-4" />
@@ -235,7 +235,7 @@ export function RecurringTaskCard({
               size="sm"
               variant="ghost"
               onClick={() => onDelete(task.id!)}
-              className="text-red-600 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30"
+              className="text-destructive hover:bg-destructive/10"
               aria-label={`Delete ${task.title}`}
             >
               <TrashIcon className="w-4 h-4" />
@@ -255,7 +255,7 @@ export function RecurringTaskCard({
           {/* Next Occurrence Date - Requirement 3.3 */}
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <CalendarIcon className="w-4 h-4 flex-shrink-0" />
-            <span className={isOverdue && !task.isPaused ? 'text-red-600 font-medium' : ''}>
+            <span className={isOverdue && !task.isPaused ? 'text-destructive font-medium' : ''}>
               Next: {formatDate(task.dueDate)}
             </span>
           </div>
@@ -324,7 +324,7 @@ export function RecurringTaskCard({
         {task.completionHistory.length > 0 && (
           <div className="mb-4 p-3 bg-muted rounded-lg">
             <div className="flex items-center gap-2 mb-2">
-              <CheckCircleSolidIcon className="w-4 h-4 text-green-600" />
+              <CheckCircleSolidIcon className="w-4 h-4 text-success" />
               <span className="text-sm font-medium text-muted-foreground">Recent Completions</span>
             </div>
             <div className="space-y-1">

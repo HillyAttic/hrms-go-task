@@ -115,19 +115,19 @@ export default function ClientVisitsPage() {
     switch (status) {
       case 'present':
         return (
-          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300">
+          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-success/15 text-success">
             ✓ Present
           </span>
         );
       case 'absent':
         return (
-          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300">
+          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-destructive/15 text-destructive">
             ✗ Absent
           </span>
         );
       case 'incomplete':
         return (
-          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300">
+          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-warning/15 text-warning">
             ⚠ Incomplete
           </span>
         );
@@ -155,13 +155,13 @@ export default function ClientVisitsPage() {
           onClick={() => setActiveTab('visits')}
           className={`px-4 py-2 text-sm font-medium rounded-t-lg transition ${
             activeTab === 'visits'
-              ? 'bg-card text-blue-600 dark:text-blue-400 border border-b-white dark:border-b-gray-800 border-border -mb-px'
+              ? 'bg-card text-foreground border border-b-white dark:border-b-gray-800 border-border -mb-px'
               : 'text-muted-foreground hover:text-muted-foreground dark:hover:text-muted-foreground'
           }`}
         >
           Client Visits
           {regularClients.length > 0 && (
-            <span className="ml-2 inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300">
+            <span className="ml-2 inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs bg-info/15 text-info">
               {regularClients.length}
             </span>
           )}
@@ -170,13 +170,13 @@ export default function ClientVisitsPage() {
           onClick={() => setActiveTab('bank')}
           className={`px-4 py-2 text-sm font-medium rounded-t-lg transition ${
             activeTab === 'bank'
-              ? 'bg-card text-blue-600 dark:text-blue-400 border border-b-white dark:border-b-gray-800 border-border -mb-px'
+              ? 'bg-card text-foreground border border-b-white dark:border-b-gray-800 border-border -mb-px'
               : 'text-muted-foreground hover:text-muted-foreground dark:hover:text-muted-foreground'
           }`}
         >
           Bank
           {bankClients.length > 0 && (
-            <span className="ml-2 inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300">
+            <span className="ml-2 inline-flex items-center justify-center px-2 py-0.5 rounded-full text-xs bg-info/15 text-info">
               {bankClients.length}
             </span>
           )}
@@ -186,15 +186,15 @@ export default function ClientVisitsPage() {
       {/* Summary Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
         <div className="bg-card p-4 sm:p-6 rounded-lg shadow">
-          <div className="text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400">{activeClients.length}</div>
+          <div className="text-2xl sm:text-3xl font-bold text-info">{activeClients.length}</div>
           <div className="text-xs sm:text-sm text-muted-foreground">Total Clients</div>
         </div>
         <div className="bg-card p-4 sm:p-6 rounded-lg shadow">
-          <div className="text-2xl sm:text-3xl font-bold text-green-600 dark:text-green-400">{totalVisitsAcrossClients}</div>
+          <div className="text-2xl sm:text-3xl font-bold text-success">{totalVisitsAcrossClients}</div>
           <div className="text-xs sm:text-sm text-muted-foreground">Total Visits</div>
         </div>
         <div className="bg-card p-4 sm:p-6 rounded-lg shadow">
-          <div className="text-2xl sm:text-3xl font-bold text-purple-600 dark:text-purple-400">
+          <div className="text-2xl sm:text-3xl font-bold text-info">
             {activeClients.reduce((sum, c) => sum + c.monthlyData.length, 0)}
           </div>
           <div className="text-xs sm:text-sm text-muted-foreground">Active Months</div>
@@ -249,7 +249,7 @@ export default function ClientVisitsPage() {
       {/* Client Reports */}
       {loading ? (
         <div className="bg-card rounded-lg shadow p-8 sm:p-12 text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-foreground mx-auto"></div>
           <p className="mt-4 text-sm sm:text-base text-muted-foreground">Loading client reports...</p>
         </div>
       ) : activeClients.length === 0 ? (
@@ -274,8 +274,8 @@ export default function ClientVisitsPage() {
                 className="w-full px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between hover:bg-muted/50 transition"
               >
                 <div className="flex items-center gap-2 sm:gap-3 min-w-0">
-                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-blue-600 dark:text-blue-300 font-semibold text-base sm:text-lg">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-info/15 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-info font-semibold text-base sm:text-lg">
                       {client.clientName.charAt(0).toUpperCase()}
                     </span>
                   </div>
@@ -377,8 +377,8 @@ export default function ClientVisitsPage() {
                                     {visit.taskType && (
                                       <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${
                                         visit.taskType === 'recurring'
-                                          ? 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300'
-                                          : 'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300'
+                                          ? 'bg-info/15 text-info'
+                                          : 'bg-warning/15 text-warning'
                                       }`}>
                                         {visit.taskType === 'recurring' ? 'Recurring' : 'Non-Recurring'}
                                       </span>

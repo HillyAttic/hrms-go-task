@@ -648,7 +648,7 @@ export function RecurringTaskClientModal({
                 Track completion for {filteredClients.length} client{filteredClients.length !== 1 ? 's' : ''} • {visibleMonths[0]?.label || 'Current month'} only
               </p>
               {task.teamMemberMappings && task.teamMemberMappings.length > 0 && filteredClients.length < clients.length && userProfile?.role !== 'admin' && userProfile?.role !== 'manager' && (
-                <p className="text-xs text-purple-600 dark:text-purple-400 mt-1 flex items-center gap-1">
+                <p className="text-xs text-foreground mt-1 flex items-center gap-1">
                   <UserGroupIcon className="w-3 h-3" />
                   Showing only your assigned clients
                 </p>
@@ -668,7 +668,7 @@ export function RecurringTaskClientModal({
             <div className="p-4 sm:p-6">
               {loading ? (
                 <div className="flex items-center justify-center py-12">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-foreground"></div>
                 </div>
               ) : filteredClients.length === 0 ? (
                 <div className="text-center py-12">
@@ -727,13 +727,13 @@ export function RecurringTaskClientModal({
                                       type="checkbox"
                                       checked={isCompleted(client.id, month.key)}
                                       onChange={() => toggleCompletion(client.id, month.key)}
-                                      className="w-4 h-4 sm:w-5 sm:h-5 rounded border-border text-green-600 focus:ring-green-500 cursor-pointer"
+                                      className="w-4 h-4 sm:w-5 sm:h-5 rounded border-border text-success focus:ring-ring cursor-pointer"
                                       aria-label={`Mark ${client.clientName} as completed for ${month.label}`}
                                     />
                                   </div>
                                   {monthRemark && (
                                     <span
-                                      className="text-[9px] text-amber-700 dark:text-amber-400 whitespace-normal break-words"
+                                      className="text-[9px] text-warning whitespace-normal break-words"
                                       title={`${monthRemark.remark} — ${monthRemark.remarkBy}`}
                                     >
                                       💬 {monthRemark.remark}
@@ -801,7 +801,7 @@ export function RecurringTaskClientModal({
                 {/* ARN Number Input */}
                 <div>
                   <label htmlFor="arn-number" className="block text-sm font-medium text-muted-foreground mb-1">
-                    ARN Number <span className="text-red-500">*</span>
+                    ARN Number <span className="text-destructive">*</span>
                   </label>
                   <input
                     id="arn-number"
@@ -824,7 +824,7 @@ export function RecurringTaskClientModal({
                 {/* Name Input - Read Only */}
                 <div>
                   <label htmlFor="arn-name" className="block text-sm font-medium text-muted-foreground mb-1">
-                    Your Name <span className="text-red-500">*</span>
+                    Your Name <span className="text-destructive">*</span>
                   </label>
                   <input
                     id="arn-name"
@@ -841,7 +841,7 @@ export function RecurringTaskClientModal({
 
                 {/* Error Message */}
                 {arnError && (
-                  <div className="text-sm text-red-600 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 rounded-md p-2">
+                  <div className="text-sm text-destructive bg-destructive/10 border border-destructive/30 rounded-md p-2">
                     {arnError}
                   </div>
                 )}
@@ -897,7 +897,7 @@ export function RecurringTaskClientModal({
               <div className="space-y-4">
                 <div>
                   <label htmlFor="remark-text" className="block text-sm font-medium text-muted-foreground mb-1">
-                    Remark <span className="text-red-500">*</span>
+                    Remark <span className="text-destructive">*</span>
                   </label>
                   <textarea
                     id="remark-text"
@@ -914,7 +914,7 @@ export function RecurringTaskClientModal({
 
                 <div>
                   <label htmlFor="remark-name" className="block text-sm font-medium text-muted-foreground mb-1">
-                    Your Name <span className="text-red-500">*</span>
+                    Your Name <span className="text-destructive">*</span>
                   </label>
                   <input
                     id="remark-name"
@@ -947,7 +947,7 @@ export function RecurringTaskClientModal({
                 </div>
 
                 {remarkError && (
-                  <div className="text-sm text-red-600 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 rounded-md p-2">
+                  <div className="text-sm text-destructive bg-destructive/10 border border-destructive/30 rounded-md p-2">
                     {remarkError}
                   </div>
                 )}

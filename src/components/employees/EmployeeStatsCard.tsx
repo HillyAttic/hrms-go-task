@@ -71,8 +71,8 @@ export function EmployeeStatsCard({ employees }: EmployeeStatsCardProps) {
             icon={<UsersIcon className="w-5 h-5" />}
             label="Total Employees"
             value={totalEmployees}
-            color="text-blue-600"
-            bgColor="bg-blue-100 dark:bg-blue-900/30"
+            color="text-info"
+            bgColor="bg-info/15"
           />
 
           {/* Active Employees */}
@@ -80,8 +80,8 @@ export function EmployeeStatsCard({ employees }: EmployeeStatsCardProps) {
             icon={<UserIcon className="w-5 h-5" />}
             label="Active"
             value={activeEmployees}
-            color="text-green-600"
-            bgColor="bg-green-100 dark:bg-green-900/30"
+            color="text-success"
+            bgColor="bg-success/15"
           />
 
           {/* On Leave Employees */}
@@ -89,8 +89,8 @@ export function EmployeeStatsCard({ employees }: EmployeeStatsCardProps) {
             icon={<ClockIcon className="w-5 h-5" />}
             label="On Leave"
             value={onLeaveEmployees}
-            color="text-yellow-600"
-            bgColor="bg-yellow-100 dark:bg-yellow-900/30"
+            color="text-warning"
+            bgColor="bg-warning/15"
           />
 
           {/* Resigned Employees */}

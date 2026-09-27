@@ -42,7 +42,7 @@ export function TaskDistributionChart({
                 cy="50"
                 r={radius}
                 fill="none"
-                stroke="#10b981"
+                className="stroke-success"
                 strokeWidth="15"
                 strokeDasharray={`${completedDash} ${circumference}`}
                 strokeDashoffset="0"
@@ -53,7 +53,7 @@ export function TaskDistributionChart({
                 cy="50"
                 r={radius}
                 fill="none"
-                stroke="#f59e0b"
+                className="stroke-warning"
                 strokeWidth="15"
                 strokeDasharray={`${inProgressDash} ${circumference}`}
                 strokeDashoffset={`-${completedDash}`}
@@ -64,7 +64,7 @@ export function TaskDistributionChart({
                 cy="50"
                 r={radius}
                 fill="none"
-                stroke="#ef4444"
+                className="stroke-destructive"
                 strokeWidth="15"
                 strokeDasharray={`${todoDash} ${circumference}`}
                 strokeDashoffset={`-${completedDash + inProgressDash}`}
@@ -84,7 +84,7 @@ export function TaskDistributionChart({
           <div className="w-full space-y-2">
             <div className="flex items-center justify-between p-2 bg-muted rounded">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                <div className="w-3 h-3 rounded-full bg-success"></div>
                 <span className="text-sm font-medium text-muted-foreground">Completed</span>
               </div>
               <span className="text-sm font-bold text-foreground">
@@ -94,7 +94,7 @@ export function TaskDistributionChart({
             
             <div className="flex items-center justify-between p-2 bg-muted rounded">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-orange-500"></div>
+                <div className="w-3 h-3 rounded-full bg-warning"></div>
                 <span className="text-sm font-medium text-muted-foreground">In Progress</span>
               </div>
               <span className="text-sm font-bold text-foreground">
@@ -104,7 +104,7 @@ export function TaskDistributionChart({
             
             <div className="flex items-center justify-between p-2 bg-muted rounded">
               <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                <div className="w-3 h-3 rounded-full bg-destructive"></div>
                 <span className="text-sm font-medium text-muted-foreground">To Do</span>
               </div>
               <span className="text-sm font-bold text-foreground">

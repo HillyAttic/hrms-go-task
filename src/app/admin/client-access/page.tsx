@@ -338,7 +338,7 @@ export default function ClientAccessPage() {
 
       {loading ? (
         <div className="p-8 text-center">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-purple-600 mx-auto" />
+          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-foreground mx-auto" />
         </div>
       ) : users.length === 0 ? (
         <div className="p-10 text-center text-muted-foreground">
@@ -360,7 +360,7 @@ export default function ClientAccessPage() {
                   setSearchQuery('');
                   setComplianceFilter('all');
                 }}
-                className="w-full px-4 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full px-4 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
               >
                 <option value="">Choose a user...</option>
                 {users.map((user) => (
@@ -379,7 +379,7 @@ export default function ClientAccessPage() {
                   placeholder="Search users by name, email, or role..."
                   value={userSearchQuery}
                   onChange={(e) => setUserSearchQuery(e.target.value)}
-                  className="w-full px-4 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="w-full px-4 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
                 />
               </div>
 
@@ -395,8 +395,8 @@ export default function ClientAccessPage() {
                     }}
                     className={`p-4 rounded-lg border-2 transition-all text-left ${
                       activeUserId === user.uid
-                        ? 'border-purple-600 bg-purple-50 dark:bg-purple-900/20 shadow-md'
-                        : 'border-border hover:border-purple-300 dark:hover:border-purple-700 hover:shadow'
+                        ? 'border-border bg-muted shadow-md'
+                        : 'border-border hover:border-ring hover:shadow'
                     }`}
                   >
                     <div className="flex items-start justify-between">
@@ -404,7 +404,7 @@ export default function ClientAccessPage() {
                         <p
                           className={`text-sm font-medium truncate ${
                             activeUserId === user.uid
-                              ? 'text-purple-700 dark:text-purple-300'
+                              ? 'text-info'
                               : 'text-foreground'
                           }`}
                         >
@@ -417,8 +417,8 @@ export default function ClientAccessPage() {
                       <span
                         className={`ml-2 px-2 py-0.5 text-xs font-medium rounded-full whitespace-nowrap ${
                           user.role === 'manager'
-                            ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
-                            : 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300'
+                            ? 'bg-info/15 text-info'
+                            : 'bg-success/15 text-success'
                         }`}
                       >
                         {user.role}
@@ -444,7 +444,7 @@ export default function ClientAccessPage() {
                   Toggle clients to grant or revoke access for this user. Only assigned clients
                   will be visible to them on the Clients page and in task modals.
                 </p>
-                <p className="text-sm font-medium text-purple-600 dark:text-purple-400 mt-1">
+                <p className="text-sm font-medium text-info mt-1">
                   {assignedCount} of {clients.length} clients assigned
                 </p>
               </div>
@@ -456,12 +456,12 @@ export default function ClientAccessPage() {
                   placeholder="Search clients..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="flex-1 px-3 py-2 text-sm border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="flex-1 px-3 py-2 text-sm border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
                 />
                 <select
                   value={complianceFilter}
                   onChange={(e) => setComplianceFilter(e.target.value)}
-                  className="px-3 py-2 text-sm border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                  className="px-3 py-2 text-sm border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
                 >
                   <option value="all">All Rows</option>
                   <option value="roc">ROC</option>
@@ -482,14 +482,14 @@ export default function ClientAccessPage() {
                   <button
                     onClick={handleSelectAll}
                     disabled={savingUser === activeUserId}
-                    className="flex-1 sm:flex-none px-3 py-2 text-sm rounded-md bg-green-600 text-white hover:bg-green-700 disabled:opacity-60 whitespace-nowrap"
+                    className="flex-1 sm:flex-none px-3 py-2 text-sm rounded-md bg-success text-white hover:bg-success/90 disabled:opacity-60 whitespace-nowrap"
                   >
                     Select All
                   </button>
                   <button
                     onClick={handleDeselectAll}
                     disabled={savingUser === activeUserId}
-                    className="flex-1 sm:flex-none px-3 py-2 text-sm rounded-md bg-red-600 text-white hover:bg-red-700 disabled:opacity-60 whitespace-nowrap"
+                    className="flex-1 sm:flex-none px-3 py-2 text-sm rounded-md bg-destructive text-white hover:bg-destructive/90 disabled:opacity-60 whitespace-nowrap"
                   >
                     Deselect All
                   </button>
@@ -555,7 +555,7 @@ export default function ClientAccessPage() {
                                   disabled={savingUser === activeUserId}
                                   className={`w-10 h-6 rounded-full transition-colors relative ${
                                     hasAccess
-                                      ? 'bg-green-500'
+                                      ? 'bg-success'
                                       : 'bg-muted'
                                   } disabled:opacity-60`}
                                   title={

@@ -322,7 +322,7 @@ export default function SalarySlipPage() {
 
       {loading ? (
         <div className="bg-card rounded-xl shadow-sm border border-border p-10 text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4" />
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-foreground mx-auto mb-4" />
           <p className="text-sm text-muted-foreground">Loading your information...</p>
         </div>
       ) : (
@@ -586,7 +586,7 @@ export default function SalarySlipPage() {
               }}
               className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-mono uppercase text-foreground placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-ring"
             />
-            {panError && <p className="text-xs mt-1 text-red-600 dark:text-red-400">{panError}</p>}
+            {panError && <p className="text-xs mt-1 text-destructive">{panError}</p>}
           </div>
 
           <DialogFooter className="gap-2">
