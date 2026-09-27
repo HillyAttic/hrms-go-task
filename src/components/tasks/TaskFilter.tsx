@@ -88,7 +88,7 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
             variant="ghost"
             size="sm"
             onClick={onClearFilters}
-            className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300"
+            className="text-foreground"
           >
             <XMarkIcon className="w-4 h-4 mr-1" />
             Clear All
@@ -160,7 +160,7 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
               <li
                 onClick={() => handleMemberSelect(undefined)}
                 className={`px-3 py-2 text-sm cursor-pointer hover:bg-muted/50 ${
-                  !filters.assignedTo ? 'bg-blue-100 dark:bg-blue-900/50 font-medium' : ''
+                  !filters.assignedTo ? 'bg-muted font-medium' : ''
                 }`}
               >
                 All Team Members
@@ -173,7 +173,7 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
                     key={emp.id}
                     onClick={() => handleMemberSelect(emp.id, emp.name)}
                     className={`px-3 py-2 text-sm cursor-pointer hover:bg-muted/50 ${
-                      filters.assignedTo === emp.id ? 'bg-blue-100 dark:bg-blue-900/50 font-medium' : ''
+                      filters.assignedTo === emp.id ? 'bg-muted font-medium' : ''
                     }`}
                   >
                     {emp.name}
@@ -211,13 +211,13 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
         <div className="mt-4 pt-4 border-t border-border">
           <div className="flex flex-wrap gap-2">
             {filters.status !== 'all' && (
-              <span className="inline-flex items-center gap-1 px-3 py-1 bg-foreground dark:bg-blue-500 text-background text-xs font-medium rounded-full">
+              <span className="inline-flex items-center gap-1 px-3 py-1 bg-foreground text-background text-xs font-medium rounded-full">
                 Status: {filters.status.split('-').map(word =>
                   word.charAt(0).toUpperCase() + word.slice(1)
                 ).join(' ')}
                 <button
                   onClick={() => onFilterChange({ ...filters, status: 'all' })}
-                  className="ml-1 hover:text-blue-200"
+                  className="ml-1 hover:text-background/70"
                   aria-label="Remove status filter"
                 >
                   <XMarkIcon className="w-3 h-3" />
@@ -226,11 +226,11 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
             )}
 
             {filters.priority !== 'all' && (
-              <span className="inline-flex items-center gap-1 px-3 py-1 bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-200 text-xs font-medium rounded-full">
+              <span className="inline-flex items-center gap-1 px-3 py-1 bg-muted text-foreground text-xs font-medium rounded-full">
                 Priority: {filters.priority.charAt(0).toUpperCase() + filters.priority.slice(1)}
                 <button
                   onClick={() => onFilterChange({ ...filters, priority: 'all' })}
-                  className="ml-1 hover:text-purple-600 dark:hover:text-purple-300"
+                  className="ml-1 hover:text-foreground/70"
                   aria-label="Remove priority filter"
                 >
                   <XMarkIcon className="w-3 h-3" />
@@ -239,11 +239,11 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
             )}
 
             {filters.assignedTo && (
-              <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-100 dark:bg-green-900/50 text-green-800 dark:text-green-200 text-xs font-medium rounded-full">
+              <span className="inline-flex items-center gap-1 px-3 py-1 bg-success/15 text-success text-xs font-medium rounded-full">
                 Team Member: {employees.find(e => e.id === filters.assignedTo)?.name || 'Unknown'}
                 <button
                   onClick={() => onFilterChange({ ...filters, assignedTo: undefined })}
-                  className="ml-1 hover:text-green-600 dark:hover:text-green-300"
+                  className="ml-1 hover:text-success/70"
                   aria-label="Remove team member filter"
                 >
                   <XMarkIcon className="w-3 h-3" />
@@ -252,11 +252,11 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
             )}
 
             {filters.clientId && (
-              <span className="inline-flex items-center gap-1 px-3 py-1 bg-orange-100 dark:bg-orange-900/50 text-orange-800 dark:text-orange-200 text-xs font-medium rounded-full">
+              <span className="inline-flex items-center gap-1 px-3 py-1 bg-warning/15 text-warning text-xs font-medium rounded-full">
                 Client: {clients.find(c => c.id === filters.clientId)?.clientName || 'Unknown'}
                 <button
                   onClick={() => onFilterChange({ ...filters, clientId: undefined })}
-                  className="ml-1 hover:text-orange-600 dark:hover:text-orange-300"
+                  className="ml-1 hover:text-warning/70"
                   aria-label="Remove client filter"
                 >
                   <XMarkIcon className="w-3 h-3" />

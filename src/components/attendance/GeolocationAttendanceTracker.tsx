@@ -581,13 +581,13 @@ export function GeolocationAttendanceTracker() {
   const getStatusColor = () => {
     switch (status.status) {
       case 'CLOCKED_IN':
-        return 'text-green-600';
+        return 'text-success';
       case 'ON_BREAK':
-        return 'text-yellow-600';
+        return 'text-warning';
       case 'CLOCKED_OUT':
-        return 'text-blue-600';
+        return 'text-info';
       case 'error':
-        return 'text-red-600';
+        return 'text-destructive';
       default:
         return 'text-muted-foreground';
     }
@@ -608,7 +608,7 @@ export function GeolocationAttendanceTracker() {
     return (
       <Card className="w-full max-w-md mx-auto">
         <CardContent className="p-6 text-center">
-          <AlertCircle className="h-12 w-12 text-yellow-500 mx-auto mb-4" />
+          <AlertCircle className="h-12 w-12 text-warning mx-auto mb-4" />
           <p className="text-lg font-medium mb-2">Authentication Required</p>
           <p className="text-muted-foreground">Please sign in to use attendance tracking</p>
         </CardContent>
@@ -621,7 +621,7 @@ export function GeolocationAttendanceTracker() {
     return (
       <Card className="w-full max-w-md mx-auto">
         <CardContent className="p-6 space-y-4">
-          <div className="flex items-center gap-2 text-red-600">
+          <div className="flex items-center gap-2 text-destructive">
             <ShieldAlert className="h-6 w-6" />
             <h3 className="font-semibold">Security Warning</h3>
           </div>
@@ -635,7 +635,7 @@ export function GeolocationAttendanceTracker() {
             </ul>
           </div>
           
-          <div className="flex items-center gap-2 text-blue-600 pt-2">
+          <div className="flex items-center gap-2 text-info pt-2">
             <Wifi className="h-5 w-5" />
             <p className="text-sm">
               Current connection: <span className="font-mono">{typeof window !== 'undefined' ? `${window.location.protocol}//${window.location.host}` : ''}</span>
@@ -661,11 +661,11 @@ export function GeolocationAttendanceTracker() {
             {status.status === 'loading' ? (
               <Loader2 className="h-5 w-5 animate-spin" />
             ) : status.status === 'CLOCKED_IN' ? (
-              <CheckCircle className="h-5 w-5 text-green-500" />
+              <CheckCircle className="h-5 w-5 text-success" />
             ) : status.status === 'ON_BREAK' ? (
-              <Coffee className="h-5 w-5 text-yellow-500" />
+              <Coffee className="h-5 w-5 text-warning" />
             ) : status.status === 'error' ? (
-              <AlertCircle className="h-5 w-5 text-red-500" />
+              <AlertCircle className="h-5 w-5 text-destructive" />
             ) : (
               <Clock className="h-5 w-5 text-muted-foreground" />
             )}
@@ -681,26 +681,26 @@ export function GeolocationAttendanceTracker() {
           )}
           
           {error && (
-            <div className="mt-2 p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 rounded-md">
-              <p className="text-sm text-red-700 dark:text-red-300">{error}</p>
-              
+            <div className="mt-2 p-3 bg-destructive/10 border border-destructive/30 rounded-md">
+              <p className="text-sm text-destructive">{error}</p>
+
               {/* Show permission instructions if location was denied */}
               {permissionStatus === 'denied' && (
                 <div className="mt-3 text-left space-y-2">
                   {/* Desktop Instructions */}
                   {!isMobileDevice() && (
                     <>
-                      <p className="text-xs font-semibold text-red-800 dark:text-red-300">To enable location access:</p>
-                      <ol className="text-xs text-red-700 dark:text-red-300 space-y-1 list-decimal pl-4">
+                      <p className="text-xs font-semibold text-destructive">To enable location access:</p>
+                      <ol className="text-xs text-destructive space-y-1 list-decimal pl-4">
                         <li>Open your browser and navigate to the app. Then, click the tune (settings) icon in the address bar.</li>
                         <li>Find "Location" in the permissions list</li>
                         <li>Change it from "Block" to "Allow"</li>
                         <li>Click the "Retry" button below</li>
                       </ol>
-                      
+
                       {/* Visual reference images */}
-                      <div className="mt-3 p-2 bg-card rounded border border-red-300 dark:border-red-700">
-                        <p className="text-xs text-red-800 dark:text-red-300 font-medium mb-2">Visual Guide:</p>
+                      <div className="mt-3 p-2 bg-card rounded border border-destructive/30">
+                        <p className="text-xs text-destructive font-medium mb-2">Visual Guide:</p>
                         <div className="space-y-2">
                           <img 
                             src="/images/icons/tune_icon_chrome.webp" 
@@ -720,13 +720,13 @@ export function GeolocationAttendanceTracker() {
                   {/* Mobile Instructions */}
                   {isMobileDevice() && (
                     <>
-                      <p className="text-xs font-semibold text-red-800 dark:text-red-300">Steps to fix on mobile devices:</p>
-                      <ol className="text-xs text-red-700 dark:text-red-300 space-y-1 list-decimal pl-4">                      
+                      <p className="text-xs font-semibold text-destructive">Steps to fix on mobile devices:</p>
+                      <ol className="text-xs text-destructive space-y-1 list-decimal pl-4">
                         <li>Enable location access manually on your mobile device</li>
                         <li>Return to this page and click "Retry" below</li>
                       </ol>
-                      <div className="mt-2 p-2 bg-yellow-50 dark:bg-yellow-900/30 border border-yellow-300 dark:border-yellow-700 rounded">
-                        <p className="text-xs text-yellow-800 dark:text-yellow-300">
+                      <div className="mt-2 p-2 bg-warning/10 border border-warning/30 rounded">
+                        <p className="text-xs text-warning">
                           <strong>Note:</strong> You may need to close and reopen your app after changing settings.
                         </p>
                       </div>
@@ -753,7 +753,7 @@ export function GeolocationAttendanceTracker() {
 
         {/* Location Tracking Disabled Indicator */}
         {locationSettingLoaded && !requireLocation && (
-          <div className="flex items-center gap-2 text-xs text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/20 rounded-md px-3 py-2">
+          <div className="flex items-center gap-2 text-xs text-warning bg-warning/10 rounded-md px-3 py-2">
             <MapPin className="h-4 w-4 flex-shrink-0" />
             <span>Location tracking is disabled for your account</span>
           </div>
@@ -806,19 +806,19 @@ export function GeolocationAttendanceTracker() {
 
               {/* Warning banner if form required but not submitted */}
               {formSubmissionRequired && !formSubmitted && (
-                <div className="mt-3 p-3 bg-red-50 dark:bg-red-900/20 border-2 border-red-500 dark:border-red-600 rounded-lg">
+                <div className="mt-3 p-3 bg-destructive/10 border-2 border-destructive/30 rounded-lg">
                   <div className="flex items-start gap-2">
-                    <AlertCircle className="w-5 h-5 text-red-600 dark:text-red-400 flex-shrink-0 mt-0.5" />
+                    <AlertCircle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
                     <div className="flex-1">
-                      <p className="text-sm font-bold text-red-900 dark:text-red-200">
+                      <p className="text-sm font-bold text-destructive">
                         Clock Out Disabled
                       </p>
-                      <p className="text-xs text-red-800 dark:text-red-300 mt-1">
+                      <p className="text-xs text-destructive mt-1">
                         You must submit today's DMR (Daily Monitoring Report) form before you can clock out. The clock-out button is disabled until you complete the form.
                       </p>
                       <a
                         href="/dashboard"
-                        className="text-xs text-blue-600 dark:text-blue-400 hover:underline mt-2 inline-block font-bold"
+                        className="text-xs text-foreground hover:underline mt-2 inline-block font-bold"
                       >
                         Click here to go to dashboard
                       </a>
@@ -830,10 +830,10 @@ export function GeolocationAttendanceTracker() {
           )}
 
           {status.status === 'CLOCKED_OUT' && (
-            <div className="text-center p-4 bg-green-50 dark:bg-green-900/30 rounded-md border border-green-200 dark:border-green-700">
-              <CheckCircle className="h-8 w-8 text-green-600 mx-auto mb-2" />
-              <p className="font-medium text-green-800 dark:text-green-300">Attendance Completed</p>
-              <p className="text-sm text-green-700 dark:text-green-300">You're all set for today!</p>
+            <div className="text-center p-4 bg-success/10 rounded-md border border-success/30">
+              <CheckCircle className="h-8 w-8 text-success mx-auto mb-2" />
+              <p className="font-medium text-success">Attendance Completed</p>
+              <p className="text-sm text-success">You're all set for today!</p>
             </div>
           )}
         </div>
@@ -857,8 +857,8 @@ export function GeolocationAttendanceTracker() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="m-4 bg-card rounded-lg p-4 sm:p-6 max-w-md w-full shadow-xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center gap-3 mb-4">
-              <div className="bg-red-100 dark:bg-red-900/30 p-3 rounded-full shrink-0">
-                <MapPin className="h-6 w-6 text-red-600" />
+              <div className="bg-destructive/15 p-3 rounded-full shrink-0">
+                <MapPin className="h-6 w-6 text-destructive" />
               </div>
               <h3 className="text-lg sm:text-xl font-bold text-foreground flex-1 min-w-0">Location Access Required</h3>
               <button
@@ -878,17 +878,17 @@ export function GeolocationAttendanceTracker() {
               
               {/* Mobile Instructions */}
               {isMobileDevice() && (
-                <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
-                  <p className="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-2">
+                <div className="bg-info/10 p-4 rounded-lg border border-info/30">
+                  <p className="text-sm font-semibold text-info mb-2">
                     📱 Mobile Device Instructions:
                   </p>
-                  <ol className="text-sm text-blue-800 dark:text-blue-200 space-y-2 list-decimal pl-4">
+                  <ol className="text-sm text-info space-y-2 list-decimal pl-4">
                     <li>Go to your device Settings</li>
                     <li>Enable Location services</li>
                     <li>Return to this page and tap "I've Enabled Location"</li>
                   </ol>
-                  <div className="mt-3 p-2 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-300 dark:border-yellow-700 rounded">
-                    <p className="text-xs text-yellow-800 dark:text-yellow-200">
+                  <div className="mt-3 p-2 bg-warning/10 border border-warning/30 rounded">
+                    <p className="text-xs text-warning">
                       <strong>Note:</strong> You may need to close and reopen your browser after changing settings.
                     </p>
                   </div>
@@ -897,11 +897,11 @@ export function GeolocationAttendanceTracker() {
               
               {/* Desktop Instructions */}
               {!isMobileDevice() && (
-                <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
-                  <p className="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-2">
+                <div className="bg-info/10 p-4 rounded-lg border border-info/30">
+                  <p className="text-sm font-semibold text-info mb-2">
                     💻 Desktop Browser Instructions:
                   </p>
-                  <ol className="text-sm text-blue-800 dark:text-blue-200 space-y-2 list-decimal pl-4">
+                  <ol className="text-sm text-info space-y-2 list-decimal pl-4">
                     <li>Click the tune (settings) icon in your browser's address bar</li>
                     <li>Find "Location" in the permissions list</li>
                     <li>Change it from "Block" to "Allow"</li>
@@ -909,8 +909,8 @@ export function GeolocationAttendanceTracker() {
                   </ol>
                   
                   {/* Visual reference images */}
-                  <div className="mt-3 p-2 bg-card rounded border border-blue-300 dark:border-blue-700">
-                    <p className="text-xs text-blue-900 dark:text-blue-100 font-medium mb-2">Visual Guide:</p>
+                  <div className="mt-3 p-2 bg-card rounded border border-info/30">
+                    <p className="text-xs text-info font-medium mb-2">Visual Guide:</p>
                     <div className="space-y-2">
                       <img 
                         src="/images/icons/tune_icon_chrome.webp" 

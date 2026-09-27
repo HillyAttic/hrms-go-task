@@ -86,7 +86,7 @@ export function TeamMembersModal({
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-xl font-bold text-foreground flex items-center gap-2">
-                  <UserGroupIcon className="w-6 h-6 text-purple-600" />
+                  <UserGroupIcon className="w-6 h-6 text-foreground" />
                   {hasTeamId ? 'Team Information' : 'Team Members'}
                 </h3>
                 <p className="text-sm text-muted-foreground mt-1">
@@ -107,7 +107,7 @@ export function TeamMembersModal({
           <div className="px-6 py-4 overflow-y-auto flex-1">
             {loading ? (
               <div className="flex items-center justify-center py-12">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-foreground"></div>
               </div>
             ) : hasTeamMemberMappings ? (
               // Show team member mappings with client counts
@@ -115,13 +115,13 @@ export function TeamMembersModal({
                 {teamMembers.map((member) => (
                   <div
                     key={member.userId}
-                    className="p-4 border-2 border-border rounded-lg hover:border-purple-300 dark:hover:border-purple-600 transition-colors bg-card"
+                    className="p-4 border-2 border-border rounded-lg hover:border-ring transition-colors bg-card"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3 flex-1 min-w-0">
                         <div className="flex-shrink-0">
-                          <div className="w-12 h-12 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                            <span className="text-purple-600 dark:text-purple-400 font-semibold text-lg">
+                          <div className="w-12 h-12 rounded-full bg-muted flex items-center justify-center">
+                            <span className="text-foreground font-semibold text-lg">
                               {member.userName.charAt(0).toUpperCase()}
                             </span>
                           </div>
@@ -136,7 +136,7 @@ export function TeamMembersModal({
                         </div>
                       </div>
                       <div className="flex-shrink-0">
-                        <div className="px-3 py-1.5 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 rounded-full text-sm font-semibold">
+                        <div className="px-3 py-1.5 bg-muted text-foreground rounded-full text-sm font-semibold">
                           {member.clientIds.length}
                         </div>
                       </div>
@@ -147,7 +147,7 @@ export function TeamMembersModal({
             ) : hasTeamId ? (
               // Show team information
               <div className="space-y-4">
-                <div className="p-4 border-2 border-purple-200 dark:border-purple-700 rounded-lg bg-purple-50 dark:bg-purple-900/10">
+                <div className="p-4 border-2 border-border rounded-lg bg-muted">
                   <h4 className="font-semibold text-foreground mb-2">
                     {team.name}
                   </h4>
@@ -159,7 +159,7 @@ export function TeamMembersModal({
                   {team.leaderName && (
                     <div className="flex items-center gap-2 text-sm">
                       <span className="font-medium text-muted-foreground">Team Leader:</span>
-                      <span className="text-purple-600 dark:text-purple-400">{team.leaderName}</span>
+                      <span className="text-foreground">{team.leaderName}</span>
                     </div>
                   )}
                 </div>
@@ -173,12 +173,12 @@ export function TeamMembersModal({
                       {team.members.map((member) => (
                         <div
                           key={member.id}
-                          className="p-3 border border-border rounded-lg hover:border-purple-300 dark:hover:border-purple-600 transition-colors bg-card"
+                          className="p-3 border border-border rounded-lg hover:border-ring transition-colors bg-card"
                         >
                           <div className="flex items-center gap-3">
                             <div className="flex-shrink-0">
-                              <div className="w-10 h-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
-                                <span className="text-purple-600 dark:text-purple-400 font-semibold">
+                              <div className="w-10 h-10 rounded-full bg-muted flex items-center justify-center">
+                                <span className="text-foreground font-semibold">
                                   {member.name.charAt(0).toUpperCase()}
                                 </span>
                               </div>

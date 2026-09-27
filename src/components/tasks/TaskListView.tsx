@@ -148,11 +148,11 @@ export function TaskListView({
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'high':
-        return 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-400';
+        return 'bg-destructive/15 text-destructive';
       case 'medium':
-        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400';
+        return 'bg-warning/15 text-warning';
       case 'low':
-        return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400';
+        return 'bg-success/15 text-success';
       default:
         return 'bg-muted text-foreground dark:text-muted-foreground';
     }
@@ -161,7 +161,7 @@ export function TaskListView({
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
-        return 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400';
+        return 'bg-success/15 text-success';
       case 'in-progress':
         return 'bg-foreground text-background dark:bg-foreground dark:text-background';
       case 'pending':
@@ -259,7 +259,7 @@ export function TaskListView({
               key={task.id}
               className={`grid grid-cols-12 gap-2 px-3 py-2.5 text-[11px] transition-colors hover:bg-muted/50 border-l-2 ${
                 (task.commentCount != null && task.commentCount > 0) || (task.attachments && task.attachments.length > 0)
-                  ? 'border-l-blue-400 bg-blue-50/30 dark:bg-blue-900/10'
+                  ? 'border-l-info bg-info/10'
                   : 'border-l-transparent bg-card'
               }`}
             >
@@ -281,7 +281,7 @@ export function TaskListView({
                     </span>
                   )}
                   {task.commentCount != null && task.commentCount > 0 && (
-                    <span className="inline-flex items-center gap-0.5 text-[10px] text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 rounded px-1 py-0.5">
+                    <span className="inline-flex items-center gap-0.5 text-[10px] text-info bg-info/15 rounded px-1 py-0.5">
                       <ChatBubbleLeftRightIcon className="w-3 h-3" />
                       {task.commentCount}
                     </span>
@@ -342,7 +342,7 @@ export function TaskListView({
                 {onView && (
                   <button
                     onClick={() => onView(task)}
-                    className="text-purple-600 hover:text-purple-900 dark:text-purple-400 dark:hover:text-purple-300 p-1"
+                    className="text-foreground p-1"
                     aria-label="View details"
                     title="View details, comments & attachments"
                   >
@@ -353,7 +353,7 @@ export function TaskListView({
                   onClick={() => onToggleComplete(task.id)}
                   className={`p-1 ${
                     task.status === 'completed'
-                      ? 'text-green-600 hover:text-green-900 dark:text-green-400'
+                      ? 'text-success'
                       : 'text-muted-foreground hover:text-muted-foreground dark:text-muted-foreground'
                   }`}
                   aria-label="Toggle complete"
@@ -363,7 +363,7 @@ export function TaskListView({
                 </button>
                 <button
                   onClick={() => onEdit(task)}
-                  className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 p-1"
+                  className="text-foreground p-1"
                   aria-label="Edit task"
                   title="Edit task"
                 >
@@ -372,7 +372,7 @@ export function TaskListView({
                 {isAdminOrManager && (
                   <button
                     onClick={() => onDelete(task.id)}
-                    className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300 p-1"
+                    className="text-destructive p-1"
                     aria-label="Delete task"
                     title="Delete task"
                   >
@@ -392,7 +392,7 @@ export function TaskListView({
             key={task.id}
             className={`rounded-lg border p-3 space-y-2.5 ${
               (task.commentCount != null && task.commentCount > 0) || (task.attachments && task.attachments.length > 0)
-                ? 'border-blue-300 dark:border-blue-700 bg-blue-50/40 dark:bg-blue-900/10'
+                ? 'border-info/30 bg-info/10'
                 : 'border-border bg-card'
             }`}
           >
@@ -461,7 +461,7 @@ export function TaskListView({
                   </span>
                 )}
                 {task.commentCount != null && task.commentCount > 0 && (
-                  <span className="inline-flex items-center gap-1 text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 rounded px-1.5 py-0.5 text-[11px]">
+                  <span className="inline-flex items-center gap-1 text-info bg-info/15 rounded px-1.5 py-0.5 text-[11px]">
                     <ChatBubbleLeftRightIcon className="w-3.5 h-3.5" />
                     {task.commentCount} comment{task.commentCount !== 1 ? 's' : ''}
                   </span>
@@ -474,7 +474,7 @@ export function TaskListView({
               {onView && (
                 <button
                   onClick={() => onView(task)}
-                  className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg font-medium bg-purple-100 text-purple-700 hover:bg-purple-200 dark:bg-purple-900/30 dark:text-purple-400 dark:hover:bg-purple-900/50 transition-colors min-h-[40px]"
+                  className="flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg font-medium bg-muted text-foreground transition-colors min-h-[40px]"
                   aria-label="View details"
                 >
                   <EyeIcon className="w-4 h-4" />
@@ -485,7 +485,7 @@ export function TaskListView({
                 onClick={() => onToggleComplete(task.id)}
                 className={`flex-1 flex items-center justify-center gap-1.5 px-3 py-2 rounded-lg font-medium transition-colors min-h-[40px] ${
                   task.status === 'completed'
-                    ? 'bg-green-100 text-green-700 hover:bg-green-200 dark:bg-green-900/30 dark:text-green-400 dark:hover:bg-green-900/50'
+                    ? 'bg-success/15 text-success'
                     : 'bg-muted text-muted-foreground hover:bg-muted dark:text-muted-foreground dark:hover:bg-gray-600'
                 }`}
                 aria-label="Toggle complete"
@@ -504,7 +504,7 @@ export function TaskListView({
               {isAdminOrManager && (
                 <button
                   onClick={() => onDelete(task.id)}
-                  className="px-3 py-2 rounded-lg font-medium bg-red-100 text-red-700 hover:bg-red-200 dark:bg-red-900/30 dark:text-red-400 dark:hover:bg-red-900/50 transition-colors min-h-[40px]"
+                  className="px-3 py-2 rounded-lg font-medium bg-destructive/15 text-destructive transition-colors min-h-[40px]"
                   aria-label="Delete task"
                 >
                   <TrashIcon className="w-4 h-4" />

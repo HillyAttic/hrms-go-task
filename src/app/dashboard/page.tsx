@@ -812,7 +812,7 @@ export default function DashboardPage() {
             </div>
             <div className="w-full bg-muted rounded-full h-2">
               <div
-                className="bg-green-500 h-2 rounded-full transition-all"
+                className="bg-success h-2 rounded-full transition-all"
                 style={{ width: `${completionPct}%` }}
               />
             </div>
@@ -972,7 +972,7 @@ export default function DashboardPage() {
   if (tasksError) {
     return (
       <div className="p-6">
-        <div className="p-4 bg-red-50 dark:bg-red-900/30 text-red-800 dark:text-red-300 rounded">
+        <div className="p-4 bg-destructive/10 text-destructive rounded">
           Error loading dashboard: {tasksError.message}
         </div>
       </div>
@@ -1067,7 +1067,7 @@ export default function DashboardPage() {
             <h2 className="font-display text-lg font-semibold text-foreground">Kanban Board</h2>
             <a
               href="/kanban"
-              className="text-sm text-blue-600 hover:underline dark:text-blue-400 font-medium"
+              className="text-sm text-foreground hover:underline font-medium"
             >
               View Full Board →
             </a>
@@ -1228,7 +1228,7 @@ export default function DashboardPage() {
                   closeModal(); // Close modal context to show header
                   router.push('/tasks/non-recurring');
                 }}
-                className="w-full p-4 border-2 border-border rounded-lg hover:border-blue-500 transition-all text-left"
+                className="w-full p-4 border-2 border-border rounded-lg hover:border-ring transition-all text-left"
               >
                 <h4 className="font-semibold">Non-Recurring Task</h4>
                 <p className="text-sm text-muted-foreground">One-time task with a single due date</p>
@@ -1239,7 +1239,7 @@ export default function DashboardPage() {
                   closeModal(); // Close modal context to show header
                   router.push('/tasks/recurring');
                 }}
-                className="w-full p-4 border-2 border-border rounded-lg hover:border-green-500 transition-all text-left"
+                className="w-full p-4 border-2 border-border rounded-lg hover:border-ring transition-all text-left"
               >
                 <h4 className="font-semibold">Recurring Task</h4>
                 <p className="text-sm text-muted-foreground">Task that repeats on a schedule</p>
@@ -1321,10 +1321,10 @@ export default function DashboardPage() {
                     return (
                       <div
                         key={task.id}
-                        className={`p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-blue-300 dark:hover:border-blue-700 ${
-                          task.status === 'pending' ? 'border-yellow-200 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-900/10' :
-                          task.status === 'in-progress' ? 'border-orange-200 dark:border-orange-700 bg-orange-50 dark:bg-orange-900/10' :
-                          'border-green-200 dark:border-green-700 bg-green-50 dark:bg-green-900/10'
+                        className={`p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-ring ${
+                          task.status === 'pending' ? 'border-warning/40 bg-warning/10' :
+                          task.status === 'in-progress' ? 'border-warning/40 bg-warning/10' :
+                          'border-success/40 bg-success/10'
                         }`}
                         onClick={() => router.push(`/tasks/${task.isRecurring ? 'recurring' : 'non-recurring'}`)}
                       >
@@ -1337,9 +1337,9 @@ export default function DashboardPage() {
                               {dueDate && task.status !== 'completed' && (
                                 <div className="flex items-center gap-2 flex-shrink-0">
                                   <div className={`px-2 sm:px-3 py-0.5 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-semibold whitespace-nowrap ${
-                                    isOverdue ? 'bg-red-600 text-white' :
-                                    daysUntilDue === 0 ? 'bg-orange-600 text-white' :
-                                    daysUntilDue === 1 ? 'bg-red-600 text-white' :
+                                    isOverdue ? 'bg-destructive text-white' :
+                                    daysUntilDue === 0 ? 'bg-warning text-white' :
+                                    daysUntilDue === 1 ? 'bg-destructive text-white' :
                                     'bg-foreground text-background'
                                   }`}>
                                     {isOverdue ? `${Math.abs(daysUntilDue!)} days overdue` :
@@ -1359,9 +1359,9 @@ export default function DashboardPage() {
                             </div>
                             <div className="flex flex-wrap items-center gap-2 text-xs">
                               <span className={`px-2 py-0.5 rounded-full font-medium ${
-                                task.status === 'pending' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300' :
-                                task.status === 'in-progress' ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300' :
-                                'bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300'
+                                task.status === 'pending' ? 'bg-warning/15 text-warning' :
+                                task.status === 'in-progress' ? 'bg-warning/15 text-warning' :
+                                'bg-success/15 text-success'
                               }`}>
                                 {task.status === 'pending' ? 'Pending' : task.status === 'in-progress' ? 'In Progress' : 'Completed'}
                               </span>
@@ -1425,7 +1425,7 @@ export default function DashboardPage() {
             <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-border">
               <div className="flex items-center justify-between gap-2 sm:gap-4">
                 <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-                  <div className="p-1.5 sm:p-2 bg-green-600 rounded-lg flex-shrink-0">
+                  <div className="p-1.5 sm:p-2 bg-success rounded-lg flex-shrink-0">
                     <CheckCircleIcon className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                   </div>
                   <div className="flex-1 min-w-0">
@@ -1466,7 +1466,7 @@ export default function DashboardPage() {
                     return (
                       <div
                         key={task.id}
-                        className="p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-blue-300 dark:hover:border-blue-700 border-green-200 dark:border-green-700 bg-green-50 dark:bg-green-900/10"
+                        className="p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-ring border-success/40 bg-success/10"
                         onClick={() => router.push(`/tasks/${task.isRecurring ? 'recurring' : 'non-recurring'}`)}
                       >
                         <div className="flex items-start justify-between gap-3">
@@ -1477,7 +1477,7 @@ export default function DashboardPage() {
                               </div>
                             </div>
                             <div className="flex flex-wrap items-center gap-2 text-xs">
-                              <span className="px-2 py-0.5 rounded-full font-medium bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300">
+                              <span className="px-2 py-0.5 rounded-full font-medium bg-success/15 text-success">
                                 Completed
                               </span>
                               <span className="px-2 py-0.5 bg-card rounded-full font-medium text-muted-foreground">
@@ -1540,7 +1540,7 @@ export default function DashboardPage() {
             <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-border">
               <div className="flex items-center justify-between">
                 <h3 className="text-base sm:text-xl font-bold text-foreground flex items-center gap-2">
-                  <ClockIcon className="w-5 h-5 sm:w-6 sm:h-6 text-orange-600" />
+                  <ClockIcon className="w-5 h-5 sm:w-6 sm:h-6 text-warning" />
                   In Progress Tasks ({inProgressTasks.length})
                 </h3>
                 <button
@@ -1572,7 +1572,7 @@ export default function DashboardPage() {
                     return (
                       <div
                         key={task.id}
-                        className="p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-blue-300 dark:hover:border-blue-700 border-orange-200 dark:border-orange-700 bg-orange-50 dark:bg-orange-900/10"
+                        className="p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-ring border-warning/40 bg-warning/10"
                         onClick={() => router.push(`/tasks/${task.isRecurring ? 'recurring' : 'non-recurring'}`)}
                       >
                         <div className="flex items-start justify-between gap-3">
@@ -1584,9 +1584,9 @@ export default function DashboardPage() {
                               {dueDate && (
                                 <div className="flex items-center gap-2 flex-shrink-0">
                                   <div className={`px-2 sm:px-3 py-0.5 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-semibold whitespace-nowrap ${
-                                    isOverdue ? 'bg-red-600 text-white' :
-                                    daysUntilDue === 0 ? 'bg-orange-600 text-white' :
-                                    daysUntilDue === 1 ? 'bg-red-600 text-white' :
+                                    isOverdue ? 'bg-destructive text-white' :
+                                    daysUntilDue === 0 ? 'bg-warning text-white' :
+                                    daysUntilDue === 1 ? 'bg-destructive text-white' :
                                     'bg-foreground text-background'
                                   }`}>
                                     {isOverdue ? `${Math.abs(daysUntilDue!)} days overdue` :
@@ -1598,7 +1598,7 @@ export default function DashboardPage() {
                               )}
                             </div>
                             <div className="flex flex-wrap items-center gap-2 text-xs">
-                              <span className="px-2 py-0.5 rounded-full font-medium bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300">
+                              <span className="px-2 py-0.5 rounded-full font-medium bg-warning/15 text-warning">
                                 In Progress
                               </span>
                               <span className="px-2 py-0.5 bg-card rounded-full font-medium text-muted-foreground">
@@ -1661,7 +1661,7 @@ export default function DashboardPage() {
             <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-border">
               <div className="flex items-center justify-between">
                 <h3 className="text-base sm:text-xl font-bold text-foreground flex items-center gap-2">
-                  <PlusCircleIcon className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
+                  <PlusCircleIcon className="w-5 h-5 sm:w-6 sm:h-6 text-info" />
                   To Do Tasks ({todoTasks.length})
                 </h3>
                 <button
@@ -1693,7 +1693,7 @@ export default function DashboardPage() {
                     return (
                       <div
                         key={task.id}
-                        className="p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-blue-300 dark:hover:border-blue-700 border-yellow-200 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-900/10"
+                        className="p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-ring border-warning/40 bg-warning/10"
                         onClick={() => router.push(`/tasks/${task.isRecurring ? 'recurring' : 'non-recurring'}`)}
                       >
                         <div className="flex items-start justify-between gap-3">
@@ -1705,9 +1705,9 @@ export default function DashboardPage() {
                               {dueDate && (
                                 <div className="flex items-center gap-2 flex-shrink-0">
                                   <div className={`px-2 sm:px-3 py-0.5 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-semibold whitespace-nowrap ${
-                                    isOverdue ? 'bg-red-600 text-white' :
-                                    daysUntilDue === 0 ? 'bg-orange-600 text-white' :
-                                    daysUntilDue === 1 ? 'bg-red-600 text-white' :
+                                    isOverdue ? 'bg-destructive text-white' :
+                                    daysUntilDue === 0 ? 'bg-warning text-white' :
+                                    daysUntilDue === 1 ? 'bg-destructive text-white' :
                                     'bg-foreground text-background'
                                   }`}>
                                     {isOverdue ? `${Math.abs(daysUntilDue!)} days overdue` :
@@ -1719,7 +1719,7 @@ export default function DashboardPage() {
                               )}
                             </div>
                             <div className="flex flex-wrap items-center gap-2 text-xs">
-                              <span className="px-2 py-0.5 rounded-full font-medium bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300">
+                              <span className="px-2 py-0.5 rounded-full font-medium bg-warning/15 text-warning">
                                 Pending
                               </span>
                               <span className="px-2 py-0.5 bg-card rounded-full font-medium text-muted-foreground">
@@ -1784,7 +1784,7 @@ export default function DashboardPage() {
             <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-border">
               <div className="flex items-center justify-between">
                 <h3 className="text-base sm:text-xl font-bold text-foreground flex items-center gap-2">
-                  <ExclamationTriangleIcon className="w-5 h-5 sm:w-6 sm:h-6 text-red-600" />
+                  <ExclamationTriangleIcon className="w-5 h-5 sm:w-6 sm:h-6 text-destructive" />
                   Overdue Tasks ({overdueTasks.length})
                 </h3>
                 <button
@@ -1815,7 +1815,7 @@ export default function DashboardPage() {
                     return (
                       <div
                         key={task.id}
-                        className="p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-blue-300 dark:hover:border-blue-700 border-red-200 dark:border-red-700 bg-red-50 dark:bg-red-900/10"
+                        className="p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-ring border-destructive/40 bg-destructive/10"
                         onClick={() => router.push(`/tasks/${task.isRecurring ? 'recurring' : 'non-recurring'}`)}
                       >
                         <div className="flex items-start justify-between gap-3">
@@ -1825,15 +1825,15 @@ export default function DashboardPage() {
                                 <h4 className="font-semibold text-foreground">{task.title}</h4>
                               </div>
                               <div className="flex items-center gap-2 flex-shrink-0">
-                                <div className="px-2 sm:px-3 py-0.5 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-semibold whitespace-nowrap bg-red-600 text-white">
+                                <div className="px-2 sm:px-3 py-0.5 sm:py-1.5 rounded-full text-[10px] sm:text-xs font-semibold whitespace-nowrap bg-destructive text-white">
                                   {daysOverdue} days overdue
                                 </div>
                               </div>
                             </div>
                             <div className="flex flex-wrap items-center gap-2 text-xs">
                               <span className={`px-2 py-0.5 rounded-full font-medium ${
-                                task.status === 'pending' ? 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300' :
-                                'bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-300'
+                                task.status === 'pending' ? 'bg-warning/15 text-warning' :
+                                'bg-warning/15 text-warning'
                               }`}>
                                 {task.status === 'pending' ? 'Pending' : 'In Progress'}
                               </span>
@@ -1993,7 +1993,7 @@ export default function DashboardPage() {
         reportModalLoading ? (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-card rounded-lg p-8 flex flex-col items-center gap-3">
-              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-cyan-600" />
+              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-foreground" />
               <span className="text-sm text-muted-foreground">Loading report...</span>
             </div>
           </div>

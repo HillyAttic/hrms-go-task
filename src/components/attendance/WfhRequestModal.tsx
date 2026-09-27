@@ -70,7 +70,7 @@ export function WfhRequestModal({
                 {...register('startDate', { valueAsDate: true })}
               />
               {errors.startDate && (
-                <p className="text-sm text-red-600 mt-1">
+                <p className="text-sm text-destructive mt-1">
                   {errors.startDate.message}
                 </p>
               )}
@@ -84,7 +84,7 @@ export function WfhRequestModal({
                 {...register('endDate', { valueAsDate: true })}
               />
               {errors.endDate && (
-                <p className="text-sm text-red-600 mt-1">
+                <p className="text-sm text-destructive mt-1">
                   {errors.endDate.message}
                 </p>
               )}
@@ -100,7 +100,7 @@ export function WfhRequestModal({
               placeholder="Please provide a reason for your WFH request"
             />
             {errors.reason && (
-              <p className="text-sm text-red-600 mt-1">
+              <p className="text-sm text-destructive mt-1">
                 {errors.reason.message}
               </p>
             )}

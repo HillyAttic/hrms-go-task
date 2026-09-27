@@ -90,7 +90,7 @@ export function LeaveRequestModal({
               ))}
             </select>
             {errors.leaveTypeId && (
-              <p className="text-sm text-red-600 mt-1">
+              <p className="text-sm text-destructive mt-1">
                 {errors.leaveTypeId.message}
               </p>
             )}
@@ -105,7 +105,7 @@ export function LeaveRequestModal({
                 {...register('startDate', { valueAsDate: true })}
               />
               {errors.startDate && (
-                <p className="text-sm text-red-600 mt-1">
+                <p className="text-sm text-destructive mt-1">
                   {errors.startDate.message}
                 </p>
               )}
@@ -119,7 +119,7 @@ export function LeaveRequestModal({
                 {...register('endDate', { valueAsDate: true })}
               />
               {errors.endDate && (
-                <p className="text-sm text-red-600 mt-1">
+                <p className="text-sm text-destructive mt-1">
                   {errors.endDate.message}
                 </p>
               )}
@@ -135,7 +135,7 @@ export function LeaveRequestModal({
               placeholder="Please provide a reason for your leave request"
             />
             {errors.reason && (
-              <p className="text-sm text-red-600 mt-1">
+              <p className="text-sm text-destructive mt-1">
                 {errors.reason.message}
               </p>
             )}

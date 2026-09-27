@@ -801,7 +801,7 @@ export function AttendanceExportModal({
               </div>
               <button
                 onClick={handleSelectAll}
-                className="text-sm text-blue-600 hover:text-blue-800 dark:hover:text-blue-300 font-medium"
+                className="text-sm text-foreground hover:underline font-medium"
               >
                 {selectAll ? 'Deselect All' : 'Select All'}
               </button>
@@ -834,7 +834,7 @@ export function AttendanceExportModal({
 
             {loading ? (
               <div className="flex items-center justify-center py-8">
-                <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
+                <Loader2 className="w-6 h-6 animate-spin text-foreground" />
               </div>
             ) : filteredEmployees.length === 0 ? (
               <div className="text-center py-8 text-muted-foreground">
@@ -849,7 +849,7 @@ export function AttendanceExportModal({
                       key={employee.id}
                       className={`flex items-center gap-3 px-4 py-3 cursor-pointer border-b border-border last:border-b-0 transition-colors ${
                         isPreSelected
-                          ? 'bg-blue-50 dark:bg-blue-900/30 hover:bg-blue-100 dark:hover:bg-blue-900/30 border-l-4 border-l-blue-500'
+                          ? 'bg-muted hover:bg-muted border-l-4 border-l-foreground'
                           : 'hover:bg-muted'
                       }`}
                     >
@@ -857,18 +857,18 @@ export function AttendanceExportModal({
                         type="checkbox"
                         checked={selectedEmployees.includes(employee.id!)}
                         onChange={() => handleEmployeeToggle(employee.id!)}
-                        className="w-4 h-4 text-blue-600 border-border rounded focus:ring-ring"
+                        className="w-4 h-4 text-ring border-border rounded focus:ring-ring"
                       />
                       <div className="flex-1">
-                        <div className={`font-medium ${isPreSelected ? 'text-blue-900' : 'text-foreground'}`}>
+                        <div className={`font-medium ${isPreSelected ? 'text-info' : 'text-foreground'}`}>
                           {employee.name}
                           {isPreSelected && (
-                            <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
+                            <span className="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-info/15 text-info">
                               Selected
                             </span>
                           )}
                         </div>
-                        <div className={`text-xs ${isPreSelected ? 'text-blue-700 dark:text-blue-300' : 'text-muted-foreground'}`}>
+                        <div className={`text-xs ${isPreSelected ? 'text-info' : 'text-muted-foreground'}`}>
                           {employee.role} • {employee.email}
                         </div>
                       </div>
@@ -892,11 +892,11 @@ export function AttendanceExportModal({
                 onClick={() => setExportFormat('excel')}
                 className={`flex items-center gap-2 sm:gap-3 p-2 sm:p-3 border-2 rounded-lg transition-all ${
                   exportFormat === 'excel'
-                    ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
-                    : 'border-border hover:border-green-300 dark:hover:border-green-700'
+                    ? 'border-success bg-success/10'
+                    : 'border-border hover:border-success/60'
                 }`}
               >
-                <FileSpreadsheet className={`w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 ${exportFormat === 'excel' ? 'text-green-600' : 'text-muted-foreground'}`} />
+                <FileSpreadsheet className={`w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 ${exportFormat === 'excel' ? 'text-success' : 'text-muted-foreground'}`} />
                 <div className="text-left">
                   <div className="font-medium text-xs sm:text-sm text-foreground">Excel</div>
                   <div className="text-[10px] sm:text-xs text-muted-foreground">.xlsx</div>
@@ -907,11 +907,11 @@ export function AttendanceExportModal({
                 onClick={() => setExportFormat('pdf')}
                 className={`flex items-center gap-2 sm:gap-3 p-2 sm:p-3 border-2 rounded-lg transition-all ${
                   exportFormat === 'pdf'
-                    ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
-                    : 'border-border hover:border-red-300 dark:hover:border-red-700'
+                    ? 'border-destructive bg-destructive/10'
+                    : 'border-border hover:border-destructive/60'
                 }`}
               >
-                <FileText className={`w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 ${exportFormat === 'pdf' ? 'text-red-600' : 'text-muted-foreground'}`} />
+                <FileText className={`w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 ${exportFormat === 'pdf' ? 'text-destructive' : 'text-muted-foreground'}`} />
                 <div className="text-left">
                   <div className="font-medium text-xs sm:text-sm text-foreground">PDF</div>
                   <div className="text-[10px] sm:text-xs text-muted-foreground">.pdf</div>
@@ -929,7 +929,7 @@ export function AttendanceExportModal({
                   type="checkbox"
                   checked={includeLocation}
                   onChange={(e) => setIncludeLocation(e.target.checked)}
-                  className="w-4 h-4 mt-0.5 text-blue-600 rounded flex-shrink-0"
+                  className="w-4 h-4 mt-0.5 text-ring rounded flex-shrink-0"
                 />
                 <span className="text-xs sm:text-sm text-muted-foreground">Include clock-in / clock-out location (full address)</span>
               </label>
@@ -938,7 +938,7 @@ export function AttendanceExportModal({
                   type="checkbox"
                   checked={includeStats}
                   onChange={(e) => setIncludeStats(e.target.checked)}
-                  className="w-4 h-4 mt-0.5 text-blue-600 rounded flex-shrink-0"
+                  className="w-4 h-4 mt-0.5 text-ring rounded flex-shrink-0"
                 />
                 <span className="text-xs sm:text-sm text-muted-foreground">
                   Include summary {exportFormat === 'excel' ? 'sheet' : 'page'} (per-employee totals)
@@ -948,7 +948,7 @@ export function AttendanceExportModal({
           </div>
 
           {/* Info */}
-          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-2.5 sm:p-3 text-xs sm:text-sm text-blue-700 dark:text-blue-300 space-y-1">
+          <div className="bg-info/10 rounded-lg p-2.5 sm:p-3 text-xs sm:text-sm text-info space-y-1">
             <p className="font-medium text-xs sm:text-sm">Export includes:</p>
             <ul className="list-disc list-inside space-y-0.5 text-[11px] sm:text-xs pl-1">
               <li>Daily status, clock-in/out times (IST), hours worked</li>
@@ -957,7 +957,7 @@ export function AttendanceExportModal({
               {includeStats && <li>Summary {exportFormat === 'excel' ? 'sheet' : 'page'} with per-employee totals</li>}
             </ul>
             {includeLocation && (
-              <p className="text-[11px] sm:text-xs mt-2 text-orange-600 dark:text-orange-400">
+              <p className="text-[11px] sm:text-xs mt-2 text-warning">
                 Address lookup uses OpenStreetMap (~1 sec per unique location). Previously resolved locations are cached.
               </p>
             )}
@@ -966,7 +966,7 @@ export function AttendanceExportModal({
           {/* Progress */}
           {exporting && progressMsg && (
             <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground bg-muted rounded-lg px-3 py-2.5 sm:px-4 sm:py-3">
-              <Loader2 className="w-4 h-4 animate-spin flex-shrink-0 text-blue-600" />
+              <Loader2 className="w-4 h-4 animate-spin flex-shrink-0 text-foreground" />
               <span className="break-words">{progressMsg}</span>
             </div>
           )}
@@ -986,8 +986,8 @@ export function AttendanceExportModal({
             disabled={exporting || selectedEmployees.length === 0}
             className={`w-full sm:w-auto order-1 sm:order-2 text-white ${
               exportFormat === 'excel'
-                ? 'bg-green-600 hover:bg-green-700'
-                : 'bg-red-600 hover:bg-red-700'
+                ? 'bg-success hover:bg-success/90'
+                : 'bg-destructive hover:bg-destructive/90'
             }`}
           >
             {exporting ? (

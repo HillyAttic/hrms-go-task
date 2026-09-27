@@ -22,13 +22,13 @@ export function AttendanceCalendar({
   const getDayColor = (status: string) => {
     switch (status) {
       case 'present':
-        return 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 hover:bg-green-200';
+        return 'bg-success/15 text-success hover:bg-success/25';
       case 'absent':
-        return 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 hover:bg-red-200';
+        return 'bg-destructive/15 text-destructive hover:bg-destructive/25';
       case 'leave':
-        return 'bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 hover:bg-blue-200';
+        return 'bg-info/15 text-info hover:bg-info/25';
       case 'holiday':
-        return 'bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 hover:bg-purple-200';
+        return 'bg-accent/15 text-accent-foreground hover:bg-accent/25';
       case 'weekend':
         return 'bg-muted text-muted-foreground hover:bg-muted';
       default:

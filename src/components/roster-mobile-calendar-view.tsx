@@ -187,7 +187,7 @@ export function RosterMobileCalendarView({
                 // This will be handled by the parent
               }
             }}
-            className="w-8 h-8 flex items-center justify-center rounded-full text-sm font-bold border-2 border-blue-500 text-blue-600 dark:text-blue-400 dark:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
+            className="w-8 h-8 flex items-center justify-center rounded-full text-sm font-bold border-2 border-info text-info hover:bg-info/10 transition-colors"
           >
             {new Date().getDate()}
           </button>
@@ -203,13 +203,13 @@ export function RosterMobileCalendarView({
             key={index}
             className={`py-2 text-center text-xs font-semibold tracking-wide ${
               isTodayWeekday(index)
-                ? 'text-blue-600 dark:text-blue-400'
+                ? 'text-info'
                 : 'text-muted-foreground dark:text-muted-foreground'
             }`}
           >
             {day}
             {isTodayWeekday(index) && (
-              <div className="mt-1 mx-auto w-6 h-0.5 rounded-full bg-foreground dark:bg-blue-400" />
+              <div className="mt-1 mx-auto w-6 h-0.5 rounded-full bg-foreground" />
             )}
           </div>
         ))}
@@ -251,7 +251,7 @@ export function RosterMobileCalendarView({
                   key={colIndex}
                   className={`min-h-[80px] py-1.5 px-0.5 relative cursor-pointer transition-colors
                     ${!calDay.isCurrentMonth ? 'opacity-40' : ''}
-                    ${isSelected ? 'bg-blue-50 dark:bg-blue-900/15' : 'hover:bg-muted dark:hover:bg-white/5'}
+                    ${isSelected ? 'bg-muted' : 'hover:bg-muted dark:hover:bg-white/5'}
                   `}
                   onClick={() => handleDateClick(calDay)}
                 >
@@ -259,7 +259,7 @@ export function RosterMobileCalendarView({
                   <div className="flex justify-center mb-1">
                     <div className={`w-7 h-7 flex items-center justify-center text-sm font-medium rounded-full transition-colors ${
                       todayHighlight
-                        ? 'bg-foreground text-background shadow-sm shadow-blue-600/30'
+                        ? 'bg-foreground text-background shadow-hard'
                         : calDay.isCurrentMonth
                           ? 'text-foreground'
                           : 'text-muted-foreground dark:text-muted-foreground'
@@ -327,7 +327,7 @@ export function RosterMobileCalendarView({
                           >
                             {getTaskLabel(allTasks[0])}
                           </div>
-                          <div className="text-[10px] leading-tight px-1 text-blue-600 dark:text-blue-400 font-medium">
+                          <div className="text-[10px] leading-tight px-1 text-info font-medium">
                             ● {allTasks.length} pending
                           </div>
                         </>
@@ -427,10 +427,10 @@ export function RosterMobileCalendarView({
                           <div className="flex items-center gap-2 mt-1.5">
                             <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium ${
                               isNonRecurring
-                                ? 'bg-indigo-100 text-indigo-700 dark:bg-indigo-900/40 dark:text-indigo-300'
+                                ? 'bg-muted text-foreground'
                                 : isLeave
-                                  ? 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300'
-                                  : 'bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300'
+                                  ? 'bg-warning/15 text-warning'
+                                  : 'bg-info/15 text-info'
                             }`}>
                               {isNonRecurring ? 'Assigned' : isLeave ? 'Leave' : 'Task'}
                             </span>
@@ -463,7 +463,7 @@ export function RosterMobileCalendarView({
             setSelectedDate(today);
             onAddTask(today, 'single');
           }}
-          className="w-14 h-14 rounded-2xl bg-foreground dark:bg-blue-500 text-background shadow-lg shadow-blue-600/30 dark:shadow-blue-500/30 flex items-center justify-center hover:bg-foreground/90 dark:hover:bg-foreground transition-all active:scale-95"
+          className="w-14 h-14 rounded-2xl bg-foreground text-background shadow-lg shadow-hard flex items-center justify-center hover:bg-foreground/90 dark:hover:bg-foreground transition-all active:scale-95"
         >
           <PlusIcon className="w-7 h-7" />
         </button>

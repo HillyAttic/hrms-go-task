@@ -530,19 +530,19 @@ export default function UpdateSchedulePage() {
   const getTaskColorClass = (task: RosterEntry): string => {
     // Check if it's a leave task
     if (task.taskDetail?.startsWith('OFF:')) {
-      return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 border-yellow-300 dark:border-yellow-700';
+      return 'bg-warning/15 text-warning border-warning/30';
     }
-    
+
     const color = getTaskColor(task);
-    if (color === 'green') return 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 border-green-300 dark:border-green-700';
-    if (color === 'yellow') return 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300 border-yellow-300 dark:border-yellow-700';
-    return 'bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300 border-orange-300 dark:border-orange-700';
+    if (color === 'green') return 'bg-success/15 text-success border-success/30';
+    if (color === 'yellow') return 'bg-warning/15 text-warning border-warning/30';
+    return 'bg-warning/15 text-warning border-warning/30';
   };
 
   if (authLoading || loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-foreground"></div>
       </div>
     );
   }
@@ -594,15 +594,15 @@ export default function UpdateSchedulePage() {
         <h3 className="text-sm font-semibold mb-2">Task Duration Legend:</h3>
         <div className="flex flex-wrap gap-4 text-sm">
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-yellow-100 dark:bg-yellow-900/30 border border-yellow-300 dark:border-yellow-700 rounded"></div>
+            <div className="w-4 h-4 bg-warning/15 border border-warning/30 rounded"></div>
             <span>Less than 8 hours</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-orange-100 dark:bg-orange-900/30 border border-orange-300 dark:border-orange-700 rounded"></div>
+            <div className="w-4 h-4 bg-warning/15 border border-warning/30 rounded"></div>
             <span>8 hours or more</span>
           </div>
           <div className="flex items-center gap-2">
-            <div className="w-4 h-4 bg-indigo-100 dark:bg-indigo-900/30 border border-indigo-300 dark:border-indigo-700 rounded"></div>
+            <div className="w-4 h-4 bg-muted border border-border rounded"></div>
             <span>Assigned Task (due date)</span>
           </div>
         </div>
@@ -654,7 +654,7 @@ export default function UpdateSchedulePage() {
               <div
                 key={index}
                 className={`relative min-h-[100px] border border-border p-3 md:p-2 ${
-                  calDay.isCurrentMonth ? 'bg-card hover:bg-blue-50 dark:hover:bg-blue-900/20 cursor-pointer' : ''
+                  calDay.isCurrentMonth ? 'bg-card hover:bg-muted cursor-pointer' : ''
                 } transition-colors group`}
                 onMouseEnter={() => calDay.isCurrentMonth && setHoveredDay(index)}
                 onMouseLeave={() => setHoveredDay(null)}
@@ -735,7 +735,7 @@ export default function UpdateSchedulePage() {
                   {calDay.nonRecurringTasks.slice(0, 2).map(task => (
                     <div
                       key={`nrt-${task.id}`}
-                      className="text-xs md:text-[11px] px-2 py-1.5 md:px-1 md:py-0.5 rounded border bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-300 border-indigo-300 dark:border-indigo-700 cursor-pointer hover:opacity-80 transition-opacity"
+                      className="text-xs md:text-[11px] px-2 py-1.5 md:px-1 md:py-0.5 rounded border bg-muted text-foreground border-border cursor-pointer hover:opacity-80 transition-opacity"
                       title={task.title}
                       onClick={(e) => {
                         e.stopPropagation();
@@ -794,7 +794,7 @@ export default function UpdateSchedulePage() {
                     onClick={() => setTaskType('single')}
                     className={`flex-1 py-2 px-3 sm:px-4 text-sm sm:text-base rounded-lg border ${
                       taskType === 'single'
-                        ? 'bg-foreground text-background border-blue-600'
+                        ? 'bg-foreground text-background border-border'
                         : 'bg-card text-muted-foreground border-border hover:bg-muted/50'
                     }`}
                   >
@@ -805,7 +805,7 @@ export default function UpdateSchedulePage() {
                     onClick={() => setTaskType('multi')}
                     className={`flex-1 py-2 px-3 sm:px-4 text-sm sm:text-base rounded-lg border ${
                       taskType === 'multi'
-                        ? 'bg-foreground text-background border-blue-600'
+                        ? 'bg-foreground text-background border-border'
                         : 'bg-card text-muted-foreground border-border hover:bg-muted/50'
                     }`}
                   >
@@ -1021,9 +1021,9 @@ export default function UpdateSchedulePage() {
             <div className="space-y-3">
               <button
                 onClick={handleViewTask}
-                className="w-full flex items-center gap-3 px-4 py-3 text-left bg-blue-50 dark:bg-blue-900/20 hover:bg-blue-100 dark:hover:bg-blue-900/30 rounded-lg transition-colors"
+                className="w-full flex items-center gap-3 px-4 py-3 text-left bg-muted hover:bg-muted rounded-lg transition-colors"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-blue-600 dark:text-blue-400">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5 text-foreground">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
                   <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 </svg>
@@ -1035,9 +1035,9 @@ export default function UpdateSchedulePage() {
 
               <button
                 onClick={handleEditTaskFromMenu}
-                className="w-full flex items-center gap-3 px-4 py-3 text-left bg-green-50 dark:bg-green-900/20 hover:bg-green-100 dark:hover:bg-green-900/30 rounded-lg transition-colors"
+                className="w-full flex items-center gap-3 px-4 py-3 text-left bg-muted hover:bg-muted rounded-lg transition-colors"
               >
-                <PencilIcon className="w-5 h-5 text-green-600 dark:text-green-400" />
+                <PencilIcon className="w-5 h-5 text-foreground" />
                 <div>
                   <div className="font-medium text-foreground">Edit Task</div>
                   <div className="text-xs text-muted-foreground">Modify task details</div>
@@ -1052,9 +1052,9 @@ export default function UpdateSchedulePage() {
                     await handleDeleteTask(selectedTaskForAction.id);
                   }
                 }}
-                className="w-full flex items-center gap-3 px-4 py-3 text-left bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg transition-colors"
+                className="w-full flex items-center gap-3 px-4 py-3 text-left bg-destructive/10 hover:bg-destructive/10 rounded-lg transition-colors"
               >
-                <TrashIcon className="w-5 h-5 text-red-600 dark:text-red-400" />
+                <TrashIcon className="w-5 h-5 text-destructive" />
                 <div>
                   <div className="font-medium text-foreground">Delete Task</div>
                   <div className="text-xs text-muted-foreground">Remove this task</div>
@@ -1282,7 +1282,7 @@ export default function UpdateSchedulePage() {
                                     setShowTaskViewModal(true);
                                     openModal();
                                   }}
-                                  className="p-1 text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 rounded transition-colors"
+                                  className="p-1 text-foreground hover:bg-muted rounded transition-colors"
                                   title="View"
                                 >
                                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
@@ -1295,14 +1295,14 @@ export default function UpdateSchedulePage() {
                                     handleCloseTaskTable();
                                     handleEditTask(task);
                                   }}
-                                  className="p-1 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded transition-colors"
+                                  className="p-1 text-foreground hover:bg-muted rounded transition-colors"
                                   title="Edit"
                                 >
                                   <PencilIcon className="w-4 h-4" />
                                 </button>
                                 <button
                                   onClick={() => handleDeleteTask(task.id!)}
-                                  className="p-1 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded transition-colors"
+                                  className="p-1 text-destructive hover:bg-destructive/10 rounded transition-colors"
                                   title="Delete"
                                 >
                                   <TrashIcon className="w-4 h-4" />

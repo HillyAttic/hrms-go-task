@@ -54,9 +54,9 @@ export function LocationDiagnostic() {
   if (!auth.user) return null;
 
   return (
-    <Card className="w-full max-w-4xl mx-auto mt-4 border-2 border-yellow-400">
+    <Card className="w-full max-w-4xl mx-auto mt-4 border-2 border-warning">
       <CardHeader>
-        <CardTitle className="text-yellow-700 dark:text-yellow-300">🔍 Location Diagnostic Tool</CardTitle>
+        <CardTitle className="text-warning">🔍 Location Diagnostic Tool</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <Button onClick={runDiagnostic} disabled={loading}>

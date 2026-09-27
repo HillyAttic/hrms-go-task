@@ -31,13 +31,13 @@ export function AttendanceRecordCard({
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed':
-        return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300';
+        return 'bg-success/15 text-success';
       case 'active':
         return 'bg-foreground text-background dark:bg-foreground dark:text-background';
       case 'incomplete':
-        return 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300';
+        return 'bg-warning/15 text-warning';
       case 'edited':
-        return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-300';
+        return 'bg-info/15 text-info';
       default:
         return 'bg-muted text-foreground dark:text-muted-foreground';
     }
@@ -110,7 +110,7 @@ export function AttendanceRecordCard({
               {record.clockOut ? (
                 formatTimeShort(record.clockOut)
               ) : (
-                <span className="flex items-center gap-1 text-yellow-600">
+                <span className="flex items-center gap-1 text-warning">
                   <AlertCircle className="h-3 w-3" />
                   Incomplete
                 </span>
@@ -131,7 +131,7 @@ export function AttendanceRecordCard({
           </div>
           <div className="text-center">
             <p className="text-xs text-muted-foreground mb-1">Overtime</p>
-            <p className="font-semibold text-orange-600">
+            <p className="font-semibold text-warning">
               {formatHours(record.overtimeHours)}
             </p>
           </div>

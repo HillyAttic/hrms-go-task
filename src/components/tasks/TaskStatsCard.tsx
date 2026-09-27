@@ -80,8 +80,8 @@ export function TaskStatsCard({ tasks }: TaskStatsCardProps) {
             icon={<ClockIcon className="w-6 h-6" />}
             label="Pending"
             value={pendingTasks}
-            color="text-yellow-600"
-            bgColor="bg-yellow-100 dark:bg-yellow-900/30"
+            color="text-warning"
+            bgColor="bg-warning/15"
           />
 
           {/* Completed Tasks */}
@@ -89,8 +89,8 @@ export function TaskStatsCard({ tasks }: TaskStatsCardProps) {
             icon={<CheckCircleIcon className="w-6 h-6" />}
             label="Completed"
             value={completedTasks}
-            color="text-green-600"
-            bgColor="bg-green-100 dark:bg-green-900/30"
+            color="text-success"
+            bgColor="bg-success/15"
           />
 
           {/* Overdue Tasks */}
@@ -98,8 +98,8 @@ export function TaskStatsCard({ tasks }: TaskStatsCardProps) {
             icon={<ExclamationTriangleIcon className="w-6 h-6" />}
             label="Overdue"
             value={overdueTasks}
-            color="text-red-600"
-            bgColor="bg-red-100 dark:bg-red-900/30"
+            color="text-destructive"
+            bgColor="bg-destructive/15"
           />
         </div>
 
@@ -114,7 +114,7 @@ export function TaskStatsCard({ tasks }: TaskStatsCardProps) {
             </div>
             <div className="w-full bg-muted rounded-full h-2.5">
               <div
-                className="bg-green-600 h-2.5 rounded-full transition-all duration-300"
+                className="bg-success h-2.5 rounded-full transition-all duration-300"
                 style={{ width: `${(completedTasks / totalTasks) * 100}%` }}
               />
             </div>

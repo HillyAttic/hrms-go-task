@@ -371,7 +371,7 @@ export function TaskModal({
               disabled={isLoading}
             />
             {errors.description && (
-              <p className="text-sm text-red-600 mt-1">{errors.description.message}</p>
+              <p className="text-sm text-destructive mt-1">{errors.description.message}</p>
             )}
           </div>
 
@@ -382,7 +382,7 @@ export function TaskModal({
               {/* File input trigger */}
               <div
                 onClick={() => !isLoading && fileInputRef.current?.click()}
-                className="flex items-center justify-center gap-2 w-full px-4 py-3 border-2 border-dashed border-border rounded-md cursor-pointer hover:border-blue-400 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-colors"
+                className="flex items-center justify-center gap-2 w-full px-4 py-3 border-2 border-dashed border-border rounded-md cursor-pointer hover:border-ring hover:bg-muted transition-colors"
               >
                 <PaperClipIcon className="w-5 h-5 text-muted-foreground" />
                 <span className="text-sm text-muted-foreground">
@@ -401,7 +401,7 @@ export function TaskModal({
 
               {/* File error */}
               {fileError && (
-                <p className="text-sm text-red-600">{fileError}</p>
+                <p className="text-sm text-destructive">{fileError}</p>
               )}
 
               {/* Existing attachments (edit mode) */}
@@ -421,7 +421,7 @@ export function TaskModal({
                       <button
                         type="button"
                         onClick={() => handleRemoveExistingAttachment(attachment)}
-                        className="text-red-500 hover:text-red-700 dark:hover:text-red-300 p-1 rounded hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors flex-shrink-0"
+                        className="text-destructive p-1 rounded hover:bg-destructive/10 transition-colors flex-shrink-0"
                         disabled={isLoading}
                         aria-label={`Remove ${attachment.name}`}
                       >
@@ -439,17 +439,17 @@ export function TaskModal({
                   {pendingFiles.map((file, index) => (
                     <div
                       key={`${file.name}-${index}`}
-                      className="flex items-center justify-between gap-2 px-3 py-2 bg-blue-50 dark:bg-blue-900/20 rounded-md border border-blue-200 dark:border-blue-800"
+                      className="flex items-center justify-between gap-2 px-3 py-2 bg-muted rounded-md border border-border"
                     >
                       <div className="flex items-center gap-2 min-w-0">
-                        <DocumentIcon className="w-4 h-4 text-blue-400 flex-shrink-0" />
+                        <DocumentIcon className="w-4 h-4 text-foreground flex-shrink-0" />
                         <span className="text-sm text-muted-foreground truncate">{file.name}</span>
                         <span className="text-xs text-muted-foreground flex-shrink-0">{formatFileSize(file.size)}</span>
                       </div>
                       <button
                         type="button"
                         onClick={() => handleRemovePendingFile(index)}
-                        className="text-red-500 hover:text-red-700 dark:hover:text-red-300 p-1 rounded hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors flex-shrink-0"
+                        className="text-destructive p-1 rounded hover:bg-destructive/10 transition-colors flex-shrink-0"
                         disabled={isLoading}
                         aria-label={`Remove ${file.name}`}
                       >
@@ -482,7 +482,7 @@ export function TaskModal({
               required
             />
             {errors.dueDate && (
-              <p className="text-sm text-red-600 mt-1">{errors.dueDate.message}</p>
+              <p className="text-sm text-destructive mt-1">{errors.dueDate.message}</p>
             )}
           </div>
 
@@ -501,7 +501,7 @@ export function TaskModal({
               <option value="urgent">Urgent</option>
             </select>
             {errors.priority && (
-              <p className="text-sm text-red-600 mt-1">{errors.priority.message}</p>
+              <p className="text-sm text-destructive mt-1">{errors.priority.message}</p>
             )}
           </div>
 
@@ -519,7 +519,7 @@ export function TaskModal({
               <option value="completed">Completed</option>
             </select>
             {errors.status && (
-              <p className="text-sm text-red-600 mt-1">{errors.status.message}</p>
+              <p className="text-sm text-destructive mt-1">{errors.status.message}</p>
             )}
           </div>
 
@@ -564,7 +564,7 @@ export function TaskModal({
                         key={employee.id}
                         type="button"
                         onClick={() => handleEmployeeSelect(employee.id!)}
-                        className="w-full text-left px-3 py-2 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors focus:bg-blue-100 dark:focus:bg-blue-900/30 focus:outline-none"
+                        className="w-full text-left px-3 py-2 hover:bg-muted transition-colors focus:bg-muted focus:outline-none"
                         disabled={isLoading}
                       >
                         <div className="flex flex-col">
@@ -594,7 +594,7 @@ export function TaskModal({
                       setValue('assignedTo', '');
                     }}
                     disabled={isLoading}
-                    className="text-xs text-red-600 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30"
+                    className="text-xs text-destructive hover:bg-destructive/10"
                   >
                     Clear All
                   </Button>
@@ -612,7 +612,7 @@ export function TaskModal({
                       <button
                         type="button"
                         onClick={() => handleEmployeeRemove(employee.id!)}
-                        className="text-red-500 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30 rounded p-1 ml-1 transition-colors"
+                        className="text-destructive hover:bg-destructive/10 rounded p-1 ml-1 transition-colors"
                         disabled={isLoading}
                         aria-label={`Remove ${employee.name}`}
                       >
@@ -625,7 +625,7 @@ export function TaskModal({
             )}
             
             {errors.assignedTo && (
-              <p className="text-sm text-red-600 mt-1">{errors.assignedTo.message}</p>
+              <p className="text-sm text-destructive mt-1">{errors.assignedTo.message}</p>
             )}
 
             {/* Hidden input to store employee IDs */}
@@ -649,7 +649,7 @@ export function TaskModal({
               ))}
             </Select>
             {errors.categoryId && (
-              <p className="text-sm text-red-600 mt-1">{errors.categoryId.message}</p>
+              <p className="text-sm text-destructive mt-1">{errors.categoryId.message}</p>
             )}
             {loadingCategories && (
               <p className="text-sm text-muted-foreground mt-1">Loading categories...</p>
@@ -704,7 +704,7 @@ export function TaskModal({
                       key={project.id}
                       type="button"
                       onClick={() => handleProjectSelect(project.id!)}
-                      className="w-full text-left px-3 py-2 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors focus:bg-blue-100 dark:focus:bg-blue-900/30 focus:outline-none"
+                      className="w-full text-left px-3 py-2 hover:bg-muted transition-colors focus:bg-muted focus:outline-none"
                       disabled={isLoading}
                     >
                       <div className="flex flex-col">
@@ -736,7 +736,7 @@ export function TaskModal({
                       setValue('contactId', '');
                     }}
                     disabled={isLoading}
-                    className="text-xs text-red-600 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30"
+                    className="text-xs text-destructive hover:bg-destructive/10"
                   >
                     Clear All
                   </Button>
@@ -754,7 +754,7 @@ export function TaskModal({
                       <button
                         type="button"
                         onClick={() => handleProjectRemove(project.id!)}
-                        className="text-red-500 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30 rounded p-1 ml-1 transition-colors"
+                        className="text-destructive hover:bg-destructive/10 rounded p-1 ml-1 transition-colors"
                         disabled={isLoading}
                         aria-label={`Remove ${project.projectName}`}
                       >
@@ -767,7 +767,7 @@ export function TaskModal({
             )}
 
             {errors.contactId && (
-              <p className="text-sm text-red-600 mt-1">{errors.contactId.message}</p>
+              <p className="text-sm text-destructive mt-1">{errors.contactId.message}</p>
             )}
           </div>
 

@@ -237,7 +237,7 @@ export default function AttendancePage() {
   if (authLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-foreground"></div>
       </div>
     );
   }
@@ -247,8 +247,8 @@ export default function AttendancePage() {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <Card className="p-8 text-center">
-          <div className="mx-auto h-12 w-12 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center mb-4">
-            <ClockIcon className="h-6 w-6 text-blue-600" />
+          <div className="mx-auto h-12 w-12 rounded-full bg-info/15 flex items-center justify-center mb-4">
+            <ClockIcon className="h-6 w-6 text-info" />
           </div>
           <h2 className="text-2xl font-bold text-foreground mb-2">Attendance Access Required</h2>
           <p className="text-muted-foreground mb-6">Please sign in to access the attendance tracking system.</p>
@@ -304,9 +304,9 @@ export default function AttendancePage() {
       <div className="grid grid-cols-1 gap-6">
         {/* Pending Approval Section (Managers Only) */}
         {(isManager || isAdmin) && pendingLeaves.length > 0 && (
-          <Card className="border-yellow-200 dark:border-yellow-900">
-            <CardHeader className="bg-yellow-50 dark:bg-yellow-900/10">
-              <CardTitle className="flex items-center gap-2 text-yellow-800 dark:text-yellow-500">
+          <Card className="border-warning/30">
+            <CardHeader className="bg-warning/10">
+              <CardTitle className="flex items-center gap-2 text-warning">
                 <ClockIconBox className="h-5 w-5" />
                 Pending Approvals ({pendingLeaves.length})
               </CardTitle>
@@ -320,7 +320,7 @@ export default function AttendancePage() {
                         <p className="font-semibold text-lg">{request.employeeName}</p>
                         <Badge variant="outline">{request.leaveTypeName}</Badge>
                         {request.halfDay && (
-                          <Badge className="bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900/30">Half Day</Badge>
+                          <Badge variant="info">Half Day</Badge>
                         )}
                       </div>
                       <p className="text-sm text-muted-foreground mt-1">
@@ -332,7 +332,7 @@ export default function AttendancePage() {
                       <Button
                         size="sm"
                         variant="default"
-                        className="bg-green-600 hover:bg-green-700 flex-1 sm:flex-none"
+                        className="bg-success hover:bg-success/90 flex-1 sm:flex-none"
                         onClick={() => handleApproveLeave(request.id)}
                         disabled={processingId === request.id}
                       >
@@ -394,7 +394,7 @@ export default function AttendancePage() {
                       <Button
                         size="sm"
                         variant="default"
-                        className="bg-green-600 hover:bg-green-700 flex-1 sm:flex-none"
+                        className="bg-success hover:bg-success/90 flex-1 sm:flex-none"
                         onClick={() => handleApproveLeave(request.id)}
                         disabled={processingId === request.id}
                       >
@@ -450,7 +450,7 @@ export default function AttendancePage() {
                         <span className="font-medium text-lg">{request.leaveTypeName}</span>
                         {getStatusBadge(request.status)}
                         {request.halfDay && (
-                          <Badge className="bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 hover:bg-purple-100 dark:hover:bg-purple-900/30">Half Day</Badge>
+                          <Badge variant="info">Half Day</Badge>
                         )}
                       </div>
                       <div className="flex items-center gap-2 text-sm text-muted-foreground">
@@ -461,12 +461,12 @@ export default function AttendancePage() {
 
                       {/* Show rejection reason if rejected */}
                       {request.status === 'rejected' && request.rejectionReason && (
-                        <div className="mt-3 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
+                        <div className="mt-3 p-3 bg-destructive/10 border border-destructive/30 rounded-md">
                           <div className="flex items-start gap-2">
-                            <XCircle className="h-4 w-4 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
+                            <XCircle className="h-4 w-4 text-destructive mt-0.5 flex-shrink-0" />
                             <div>
-                              <p className="text-xs font-semibold text-red-800 dark:text-red-300 mb-1">Admin Remarks:</p>
-                              <p className="text-sm text-red-700 dark:text-red-400">{request.rejectionReason}</p>
+                              <p className="text-xs font-semibold text-destructive mb-1">Admin Remarks:</p>
+                              <p className="text-sm text-destructive">{request.rejectionReason}</p>
                             </div>
                           </div>
                         </div>
@@ -474,12 +474,12 @@ export default function AttendancePage() {
 
                       {/* Show approval reason if approved */}
                       {request.status === 'approved' && request.approvalReason && (
-                        <div className="mt-3 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md">
+                        <div className="mt-3 p-3 bg-success/10 border border-success/30 rounded-md">
                           <div className="flex items-start gap-2">
-                            <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+                            <CheckCircle className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
                             <div>
-                              <p className="text-xs font-semibold text-green-800 dark:text-green-300 mb-1">Admin Note:</p>
-                              <p className="text-sm text-green-700 dark:text-green-400">{request.approvalReason}</p>
+                              <p className="text-xs font-semibold text-success mb-1">Admin Note:</p>
+                              <p className="text-sm text-success">{request.approvalReason}</p>
                             </div>
                           </div>
                         </div>
@@ -489,7 +489,7 @@ export default function AttendancePage() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="text-red-500 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30 mt-2 sm:mt-0"
+                        className="text-destructive hover:bg-destructive/10 mt-2 sm:mt-0"
                         onClick={() => {
                           if (confirm('Are you sure you want to cancel this request?')) {
                             leaveService.cancelLeaveRequest(request.id).then(() => {
@@ -541,12 +541,12 @@ export default function AttendancePage() {
 
                       {/* Show rejection reason if rejected */}
                       {request.status === 'rejected' && request.rejectionReason && (
-                        <div className="mt-3 p-3 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-md">
+                        <div className="mt-3 p-3 bg-destructive/10 border border-destructive/30 rounded-md">
                           <div className="flex items-start gap-2">
-                            <XCircle className="h-4 w-4 text-red-600 dark:text-red-400 mt-0.5 flex-shrink-0" />
+                            <XCircle className="h-4 w-4 text-destructive mt-0.5 flex-shrink-0" />
                             <div>
-                              <p className="text-xs font-semibold text-red-800 dark:text-red-300 mb-1">Admin Remarks:</p>
-                              <p className="text-sm text-red-700 dark:text-red-400">{request.rejectionReason}</p>
+                              <p className="text-xs font-semibold text-destructive mb-1">Admin Remarks:</p>
+                              <p className="text-sm text-destructive">{request.rejectionReason}</p>
                             </div>
                           </div>
                         </div>
@@ -554,12 +554,12 @@ export default function AttendancePage() {
 
                       {/* Show approval reason if approved */}
                       {request.status === 'approved' && request.approvalReason && (
-                        <div className="mt-3 p-3 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-md">
+                        <div className="mt-3 p-3 bg-success/10 border border-success/30 rounded-md">
                           <div className="flex items-start gap-2">
-                            <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400 mt-0.5 flex-shrink-0" />
+                            <CheckCircle className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
                             <div>
-                              <p className="text-xs font-semibold text-green-800 dark:text-green-300 mb-1">Admin Note:</p>
-                              <p className="text-sm text-green-700 dark:text-green-400">{request.approvalReason}</p>
+                              <p className="text-xs font-semibold text-success mb-1">Admin Note:</p>
+                              <p className="text-sm text-success">{request.approvalReason}</p>
                             </div>
                           </div>
                         </div>
@@ -569,7 +569,7 @@ export default function AttendancePage() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="text-red-500 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30 mt-2 sm:mt-0"
+                        className="text-destructive hover:bg-destructive/10 mt-2 sm:mt-0"
                         onClick={() => {
                           if (confirm('Are you sure you want to cancel this WFH request?')) {
                             leaveService.cancelLeaveRequest(request.id).then(() => {
@@ -605,28 +605,28 @@ export default function AttendancePage() {
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-sm">
             <div className="flex items-start gap-2">
-              <div className="w-2 h-2 bg-green-500 rounded-full mt-1.5 flex-shrink-0"></div>
+              <div className="w-2 h-2 bg-success rounded-full mt-1.5 flex-shrink-0"></div>
               <div>
                 <p className="font-medium">Location Required</p>
                 <p className="text-muted-foreground text-xs sm:text-sm">Browser location permission is needed for clock-in/out</p>
               </div>
             </div>
             <div className="flex items-start gap-2">
-              <div className="w-2 h-2 bg-blue-500 rounded-full mt-1.5 flex-shrink-0"></div>
+              <div className="w-2 h-2 bg-info rounded-full mt-1.5 flex-shrink-0"></div>
               <div>
                 <p className="font-medium">Privacy Protected</p>
                 <p className="text-muted-foreground text-xs sm:text-sm">Location data is only stored for attendance records</p>
               </div>
             </div>
             <div className="flex items-start gap-2">
-              <div className="w-2 h-2 bg-yellow-500 rounded-full mt-1.5 flex-shrink-0"></div>
+              <div className="w-2 h-2 bg-warning rounded-full mt-1.5 flex-shrink-0"></div>
               <div>
                 <p className="font-medium">Real-time Tracking</p>
                 <p className="text-muted-foreground text-xs sm:text-sm">Instant status updates and location verification</p>
               </div>
             </div>
             <div className="flex items-start gap-2">
-              <div className="w-2 h-2 bg-purple-500 rounded-full mt-1.5 flex-shrink-0"></div>
+              <div className="w-2 h-2 bg-accent rounded-full mt-1.5 flex-shrink-0"></div>
               <div>
                 <p className="font-medium">Mobile Friendly</p>
                 <p className="text-muted-foreground text-xs sm:text-sm">Works on smartphones and tablets for remote workers</p>
@@ -671,14 +671,14 @@ export default function AttendancePage() {
             <textarea
               value={approvalReason}
               onChange={(e) => setApprovalReason(e.target.value)}
-              className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-green-500"
+              className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring"
               rows={3}
               placeholder="e.g., Approved. Enjoy your time off!"
             />
             <div className="flex gap-2 mt-4">
               <Button
                 onClick={() => handleApproveLeave(selectedLeaveRequest.id, approvalReason || undefined)}
-                className="flex-1 bg-green-600 hover:bg-green-700 text-white"
+                className="flex-1 bg-success hover:bg-success/90 text-white"
                 disabled={processingId === selectedLeaveRequest.id}
               >
                 {processingId === selectedLeaveRequest.id ? 'Approving...' : 'Approve'}

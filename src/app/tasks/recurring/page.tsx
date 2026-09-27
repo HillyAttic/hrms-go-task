@@ -376,7 +376,7 @@ export default function RecurringTasksPage() {
 
         {/* Error Display */}
         {error && (
-          <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-700 text-red-700 dark:text-red-300 px-4 py-3 rounded-lg">
+          <div className="bg-destructive/10 border border-destructive/30 text-destructive px-4 py-3 rounded-lg">
             <p className="font-medium">Error loading recurring tasks</p>
             <p className="text-sm">{error.message}</p>
           </div>

@@ -388,14 +388,14 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
                 key={index}
                 className={`min-h-24 p-3 md:p-1 border rounded flex flex-col ${
                   day ? 'border-border hover:bg-muted/50 cursor-pointer' : 'border-transparent'
-                } ${isToday ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-300 dark:border-blue-700' : ''} ${
-                  isSelected ? 'bg-blue-100 dark:bg-blue-900/30 border-blue-400' : ''
+                } ${isToday ? 'bg-info/15 border-info/30' : ''} ${
+                  isSelected ? 'bg-muted border-ring' : ''
                 }`}
                 onClick={() => day && setSelectedDate(day)}
               >
                 {/* Mobile: Show full date with day name */}
                 <div className="md:hidden flex items-center justify-between mb-2">
-                  <div className={`text-base font-semibold ${isToday ? 'text-blue-700 dark:text-blue-400' : 'text-foreground'}`}>
+                  <div className={`text-base font-semibold ${isToday ? 'text-info' : 'text-foreground'}`}>
                     {day.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
                   </div>
                   {isToday && (
@@ -404,7 +404,7 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
                 </div>
 
                 {/* Desktop: Show just day number */}
-                <div className={`hidden md:block text-sm font-medium ${isToday ? 'text-blue-700 dark:text-blue-400' : 'text-foreground'}`}>
+                <div className={`hidden md:block text-sm font-medium ${isToday ? 'text-info' : 'text-foreground'}`}>
                   {day.getDate()}
                 </div>
 
@@ -480,14 +480,14 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
                         <div className="flex-1">
                           <div className="flex items-center gap-2">
                             {isLoading && (
-                              <svg className="animate-spin h-4 w-4 shrink-0 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                              <svg className="animate-spin h-4 w-4 shrink-0 text-foreground" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                               </svg>
                             )}
                             <h4 className="font-medium">{task.title}</h4>
                             {task.isRecurring && !isLoading && (
-                              <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300">
+                              <span className="inline-flex items-center gap-1 text-xs px-2 py-0.5 rounded-full bg-muted text-foreground">
                                 <ArrowPathIcon className="w-3 h-3" />
                                 {task.recurrencePattern?.replace('-', ' ')}
                               </span>
@@ -497,9 +497,9 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
                             <p className="text-sm text-muted-foreground mt-1">{task.description}</p>
                           )}
                         </div>
-                        <span className={`text-xs px-2 py-1 rounded-full whitespace-nowrap ml-2 ${task.status === 'completed' ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300' :
-                            task.status === 'in-progress' ? 'bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300' :
-                              'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300'
+                        <span className={`text-xs px-2 py-1 rounded-full whitespace-nowrap ml-2 ${task.status === 'completed' ? 'bg-success/15 text-success' :
+                            task.status === 'in-progress' ? 'bg-warning/15 text-warning' :
+                              'bg-warning/15 text-warning'
                           }`}>
                           {task.status.replace('-', ' ')}
                         </span>

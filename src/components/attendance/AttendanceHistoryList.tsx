@@ -222,9 +222,9 @@ export function AttendanceHistoryList({
     if (!record.clockIn) {
       return <Badge variant="secondary">Not Clocked In</Badge>;
     } else if (record.clockOut) {
-      return <Badge variant="default" className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 hover:bg-green-100 dark:hover:bg-green-900/30">Completed</Badge>;
+      return <Badge variant="success">Completed</Badge>;
     } else {
-      return <Badge variant="default" className="bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 hover:bg-blue-100 dark:hover:bg-blue-900/30">Active</Badge>;
+      return <Badge variant="info">Active</Badge>;
     }
   };
 
@@ -295,8 +295,8 @@ export function AttendanceHistoryList({
                   {/* Clock In Section */}
                   <div className="flex items-start space-x-3">
                     <div className="flex-shrink-0 mt-1">
-                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
-                        <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-green-600" />
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-success/15 flex items-center justify-center">
+                        <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-success" />
                       </div>
                     </div>
                     <div className="flex-1 min-w-0">
@@ -309,7 +309,7 @@ export function AttendanceHistoryList({
                             record.location!.clockIn!.longitude,
                             `Clock In Location - ${formatDate(record.clockIn)}`
                           )}
-                          className="flex items-center gap-1 mt-1 text-blue-600 hover:text-blue-800 dark:hover:text-blue-300 hover:underline cursor-pointer"
+                          className="flex items-center gap-1 mt-1 text-foreground hover:underline cursor-pointer"
                         >
                           <MapPin className="h-3 w-3 flex-shrink-0" />
                           <span className="text-xs truncate">
@@ -323,8 +323,8 @@ export function AttendanceHistoryList({
                   {/* Clock Out Section */}
                   <div className="flex items-start space-x-3">
                     <div className="flex-shrink-0 mt-1">
-                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center">
-                        <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-red-600 rotate-180" />
+                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-destructive/15 flex items-center justify-center">
+                        <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-destructive rotate-180" />
                       </div>
                     </div>
                     <div className="flex-1 min-w-0">
@@ -337,7 +337,7 @@ export function AttendanceHistoryList({
                             record.location!.clockOut!.longitude,
                             `Clock Out Location - ${formatDate(record.clockIn)}`
                           )}
-                          className="flex items-center gap-1 mt-1 text-blue-600 hover:text-blue-800 dark:hover:text-blue-300 hover:underline cursor-pointer"
+                          className="flex items-center gap-1 mt-1 text-foreground hover:underline cursor-pointer"
                         >
                           <MapPin className="h-3 w-3 flex-shrink-0" />
                           <span className="text-xs truncate">
@@ -415,7 +415,7 @@ export function AttendanceHistoryList({
           {loading && (
             <div className="text-center py-8">
               <div className="inline-flex items-center gap-2">
-                <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
+                <Loader2 className="h-5 w-5 animate-spin text-foreground" />
                 <span className="text-sm sm:text-base text-muted-foreground">Loading records...</span>
               </div>
             </div>

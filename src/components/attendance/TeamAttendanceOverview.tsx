@@ -20,13 +20,13 @@ export function TeamAttendanceOverview({
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'clocked-in':
-        return <Clock className="h-4 w-4 text-green-600" />;
+        return <Clock className="h-4 w-4 text-success" />;
       case 'on-break':
-        return <Coffee className="h-4 w-4 text-yellow-600" />;
+        return <Coffee className="h-4 w-4 text-warning" />;
       case 'on-leave':
-        return <Plane className="h-4 w-4 text-blue-600" />;
+        return <Plane className="h-4 w-4 text-info" />;
       case 'absent':
-        return <AlertCircle className="h-4 w-4 text-red-600" />;
+        return <AlertCircle className="h-4 w-4 text-destructive" />;
       default:
         return <Clock className="h-4 w-4 text-muted-foreground" />;
     }
@@ -34,11 +34,11 @@ export function TeamAttendanceOverview({
 
   const getStatusBadge = (status: string) => {
     const colors = {
-      'clocked-in': 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300',
+      'clocked-in': 'bg-success/15 text-success',
       'clocked-out': 'bg-muted text-foreground',
-      'on-break': 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300',
+      'on-break': 'bg-warning/15 text-warning',
       'on-leave': 'bg-foreground text-background',
-      'absent': 'bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300',
+      'absent': 'bg-destructive/15 text-destructive',
     };
     return colors[status as keyof typeof colors] || 'bg-muted text-foreground';
   };
@@ -74,10 +74,10 @@ export function TeamAttendanceOverview({
                     {member.status.replace('-', ' ')}
                   </Badge>
                   {member.isLate && (
-                    <Badge className="bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300">Late</Badge>
+                    <Badge variant="warning">Late</Badge>
                   )}
                   {member.isEarlyDeparture && (
-                    <Badge className="bg-orange-100 dark:bg-orange-900/30 text-orange-800 dark:text-orange-300">Early</Badge>
+                    <Badge variant="warning">Early</Badge>
                   )}
                 </div>
               </div>

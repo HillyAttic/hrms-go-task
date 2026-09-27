@@ -201,12 +201,12 @@ export function AttendanceCalendarModal({
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'present': return 'bg-green-500';
-      case 'absent': return 'bg-red-500';
-      case 'approved-leave': return 'bg-purple-500';
-      case 'unapproved-leave': return 'bg-red-500';
-      case 'half-day': return 'bg-orange-500';
-      case 'holiday': return 'bg-blue-500';
+      case 'present': return 'bg-success';
+      case 'absent': return 'bg-destructive';
+      case 'approved-leave': return 'bg-info';
+      case 'unapproved-leave': return 'bg-destructive';
+      case 'half-day': return 'bg-warning';
+      case 'holiday': return 'bg-accent';
       case 'upcoming': return 'bg-muted';
       case 'wfh': return 'bg-black';
       default: return 'bg-muted';
@@ -303,38 +303,38 @@ export function AttendanceCalendarModal({
 
         {loading ? (
           <div className="flex items-center justify-center py-16">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-foreground"></div>
           </div>
         ) : (
           <>
             {/* Stats Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4 mb-4 sm:mb-6">
-              <div className="bg-green-50 dark:bg-green-900/20 p-2 sm:p-4 rounded-lg">
-                <div className="text-lg sm:text-2xl font-bold text-green-600">{stats.present}</div>
+              <div className="bg-success/10 p-2 sm:p-4 rounded-lg">
+                <div className="text-lg sm:text-2xl font-bold text-success">{stats.present}</div>
                 <div className="text-xs sm:text-sm text-muted-foreground">Present</div>
               </div>
-              <div className="bg-red-50 dark:bg-red-900/20 p-2 sm:p-4 rounded-lg">
-                <div className="text-lg sm:text-2xl font-bold text-red-600">{stats.absent}</div>
+              <div className="bg-destructive/10 p-2 sm:p-4 rounded-lg">
+                <div className="text-lg sm:text-2xl font-bold text-destructive">{stats.absent}</div>
                 <div className="text-xs sm:text-sm text-muted-foreground">Absent</div>
               </div>
-              <div className="bg-purple-50 dark:bg-purple-900/20 p-2 sm:p-4 rounded-lg">
-                <div className="text-lg sm:text-2xl font-bold text-purple-600">{stats.approvedLeave}</div>
+              <div className="bg-info/10 p-2 sm:p-4 rounded-lg">
+                <div className="text-lg sm:text-2xl font-bold text-info">{stats.approvedLeave}</div>
                 <div className="text-xs sm:text-sm text-muted-foreground">Approved Leave</div>
               </div>
-              <div className="bg-orange-50 dark:bg-orange-900/20 p-2 sm:p-4 rounded-lg">
-                <div className="text-lg sm:text-2xl font-bold text-orange-600">{stats.halfDay}</div>
+              <div className="bg-warning/10 p-2 sm:p-4 rounded-lg">
+                <div className="text-lg sm:text-2xl font-bold text-warning">{stats.halfDay}</div>
                 <div className="text-xs sm:text-sm text-muted-foreground">Half Day</div>
               </div>
               <div className="bg-muted p-2 sm:p-4 rounded-lg">
                 <div className="text-lg sm:text-2xl font-bold text-foreground">{stats.wfh}</div>
                 <div className="text-xs sm:text-sm text-muted-foreground">WFH</div>
               </div>
-              <div className="bg-red-50 dark:bg-red-900/20 p-2 sm:p-4 rounded-lg">
-                <div className="text-lg sm:text-2xl font-bold text-red-600">{stats.unapprovedLeave}</div>
+              <div className="bg-destructive/10 p-2 sm:p-4 rounded-lg">
+                <div className="text-lg sm:text-2xl font-bold text-destructive">{stats.unapprovedLeave}</div>
                 <div className="text-xs sm:text-sm text-muted-foreground">Unapproved</div>
               </div>
-              <div className="bg-blue-50 dark:bg-blue-900/20 p-2 sm:p-4 rounded-lg">
-                <div className="text-lg sm:text-2xl font-bold text-blue-600">{stats.holidays}</div>
+              <div className="bg-accent/10 p-2 sm:p-4 rounded-lg">
+                <div className="text-lg sm:text-2xl font-bold text-accent">{stats.holidays}</div>
                 <div className="text-xs sm:text-sm text-muted-foreground">Holidays</div>
               </div>
               <div className="bg-muted p-2 sm:p-4 rounded-lg col-span-2">
@@ -390,13 +390,13 @@ export function AttendanceCalendarModal({
             {/* Legend */}
             <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-[10px] sm:text-sm mt-4">
               {[
-                { color: 'bg-green-500', label: 'Present' },
-                { color: 'bg-red-500', label: 'Absent' },
-                { color: 'bg-purple-500', label: 'Approved Leave' },
-                { color: 'bg-orange-500', label: 'Half Day' },
+                { color: 'bg-success', label: 'Present' },
+                { color: 'bg-destructive', label: 'Absent' },
+                { color: 'bg-info', label: 'Approved Leave' },
+                { color: 'bg-warning', label: 'Half Day' },
                 { color: 'bg-black', label: 'WFH' },
-                { color: 'bg-red-500', label: 'Unapproved' },
-                { color: 'bg-blue-500', label: 'Holiday' },
+                { color: 'bg-destructive', label: 'Unapproved' },
+                { color: 'bg-accent', label: 'Holiday' },
                 { color: 'bg-muted', label: 'Upcoming' },
               ].map(({ color, label }) => (
                 <div key={label} className="flex items-center gap-1 sm:gap-2">

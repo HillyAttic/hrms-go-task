@@ -88,7 +88,7 @@ export function LocationMapModal({
             href={`https://www.google.com/maps?q=${latitude},${longitude}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 hover:underline"
+            className="text-sm text-foreground hover:underline"
           >
             Open in Google Maps
           </a>

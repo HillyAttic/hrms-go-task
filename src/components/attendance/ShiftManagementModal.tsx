@@ -70,7 +70,7 @@ export function ShiftManagementModal({
             <Label htmlFor="name">Shift Name</Label>
             <Input id="name" {...register('name')} placeholder="Morning Shift" />
             {errors.name && (
-              <p className="text-sm text-red-600 mt-1">{errors.name.message}</p>
+              <p className="text-sm text-destructive mt-1">{errors.name.message}</p>
             )}
           </div>
 
@@ -79,7 +79,7 @@ export function ShiftManagementModal({
               <Label htmlFor="startTime">Start Time</Label>
               <Input id="startTime" type="time" {...register('startTime')} />
               {errors.startTime && (
-                <p className="text-sm text-red-600 mt-1">{errors.startTime.message}</p>
+                <p className="text-sm text-destructive mt-1">{errors.startTime.message}</p>
               )}
             </div>
 
@@ -87,7 +87,7 @@ export function ShiftManagementModal({
               <Label htmlFor="endTime">End Time</Label>
               <Input id="endTime" type="time" {...register('endTime')} />
               {errors.endTime && (
-                <p className="text-sm text-red-600 mt-1">{errors.endTime.message}</p>
+                <p className="text-sm text-destructive mt-1">{errors.endTime.message}</p>
               )}
             </div>
           </div>
@@ -108,7 +108,7 @@ export function ShiftManagementModal({
               ))}
             </div>
             {errors.daysOfWeek && (
-              <p className="text-sm text-red-600 mt-1">{errors.daysOfWeek.message}</p>
+              <p className="text-sm text-destructive mt-1">{errors.daysOfWeek.message}</p>
             )}
           </div>
 
@@ -121,7 +121,7 @@ export function ShiftManagementModal({
                 {...register('breakDuration', { valueAsNumber: true })}
               />
               {errors.breakDuration && (
-                <p className="text-sm text-red-600 mt-1">{errors.breakDuration.message}</p>
+                <p className="text-sm text-destructive mt-1">{errors.breakDuration.message}</p>
               )}
             </div>
 
@@ -133,7 +133,7 @@ export function ShiftManagementModal({
                 {...register('overtimeThreshold', { valueAsNumber: true })}
               />
               {errors.overtimeThreshold && (
-                <p className="text-sm text-red-600 mt-1">{errors.overtimeThreshold.message}</p>
+                <p className="text-sm text-destructive mt-1">{errors.overtimeThreshold.message}</p>
               )}
             </div>
           </div>
@@ -142,7 +142,7 @@ export function ShiftManagementModal({
             <Label htmlFor="color">Color</Label>
             <Input id="color" type="color" {...register('color')} />
             {errors.color && (
-              <p className="text-sm text-red-600 mt-1">{errors.color.message}</p>
+              <p className="text-sm text-destructive mt-1">{errors.color.message}</p>
             )}
           </div>
 
