@@ -47,8 +47,13 @@ const STATUS_VARIANT = {
 function DetailPanelWrapper({ children, onClose }: { children: React.ReactNode; onClose: () => void }) {
   return (
     <Dialog open onOpenChange={(open) => !open && onClose()}>
-      <DialogContent size="lg" className="max-h-[70vh] overflow-y-auto">
-        {children}
+      <DialogContent size="lg" className="p-0">
+        {/* Scroll lives on this inner div so the dialog's close button stays pinned
+            and the scrollbar sits flush with the dialog edge. `pt-14` keeps the
+            first card clear of that button. */}
+        <div className="slim-scrollbar max-h-[70vh] overflow-y-auto p-6 pt-14">
+          {children}
+        </div>
       </DialogContent>
     </Dialog>
   );
@@ -503,7 +508,6 @@ export default function TeamsPage() {
             <TeamDetailPanel
               team={detailTeam}
               onTeamUpdate={handleTeamUpdate}
-              onClose={handleCloseDetailPanel}
             />
           </DetailPanelWrapper>
         )}

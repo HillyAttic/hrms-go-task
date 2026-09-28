@@ -195,7 +195,41 @@
     scrollbar-width: none; /* Firefox */
   }
 
-   .custom-scrollbar {
+  /*
+   * Modal/panel scroll areas: slim theme-aware pill thumb, transparent track, no
+   * stepper arrows — the default Windows scrollbar is a 17px grey slab with
+   * buttons that reads as broken chrome inside a card. Applied by DialogContent
+   * to every dialog, and by hand-rolled panels that scroll themselves.
+   */
+  .slim-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--muted-foreground) / 0.35) transparent;
+  }
+
+  .slim-scrollbar::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  .slim-scrollbar::-webkit-scrollbar-track,
+  .slim-scrollbar::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
+  .slim-scrollbar::-webkit-scrollbar-button {
+    display: none;
+  }
+
+  .slim-scrollbar::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-muted-foreground/35;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+
+  .slim-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/50;
+  }
+
+  .custom-scrollbar {
     @apply overflow-auto;
   }
 

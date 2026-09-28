@@ -630,7 +630,7 @@ export function RecurringTaskClientModal({
   if (!isOpen || !task) return null;
 
   return (
-    <div className="fixed inset-0 z-[60] overflow-y-auto">
+    <div className="fixed inset-0 z-[60] overflow-y-auto slim-scrollbar">
       <div className="flex min-h-screen items-center justify-center p-4 pb-20 sm:pb-4">
         {/* Backdrop */}
         <div
@@ -664,7 +664,7 @@ export function RecurringTaskClientModal({
           </div>
 
           {/* Content */}
-          <div className="overflow-auto flex-1 max-h-[calc(90vh-180px)]">
+          <div className="overflow-auto slim-scrollbar flex-1 max-h-[calc(90vh-180px)]">
             <div className="p-4 sm:p-6">
               {loading ? (
                 <div className="flex items-center justify-center py-12">
@@ -779,7 +779,7 @@ export function RecurringTaskClientModal({
 
       {/* ARN Dialog */}
       {showArnDialog && (
-        <div className="fixed inset-0 z-[60] overflow-y-auto">
+        <div className="fixed inset-0 z-[60] overflow-y-auto slim-scrollbar">
           <div className="flex min-h-screen items-center justify-center p-4">
             {/* Backdrop */}
             <div 
@@ -869,7 +869,7 @@ export function RecurringTaskClientModal({
 
       {/* Remark Dialog */}
       {showRemarkDialog && (
-        <div className="fixed inset-0 z-[60] overflow-y-auto">
+        <div className="fixed inset-0 z-[60] overflow-y-auto slim-scrollbar">
           <div className="flex min-h-screen items-center justify-center p-4">
             <div
               className="fixed inset-0 bg-black bg-opacity-50 transition-opacity"

@@ -11,13 +11,11 @@ import {
   UserIcon,
   PlusIcon,
   TrashIcon,
-  XMarkIcon,
 } from '@heroicons/react/24/outline';
 
 interface TeamDetailPanelProps {
   team: Team;
   onTeamUpdate?: (updatedTeam: Team) => void;
-  onClose?: () => void;
 }
 
 /**
@@ -29,7 +27,7 @@ interface TeamDetailPanelProps {
  * `No team members yet` / `Add members to build your team` empty state are
  * asserted by src/__tests__/team-member-management.test.tsx — keep them.
  */
-export function TeamDetailPanel({ team, onTeamUpdate, onClose }: TeamDetailPanelProps) {
+export function TeamDetailPanel({ team, onTeamUpdate }: TeamDetailPanelProps) {
   const [currentTeam, setCurrentTeam] = useState<Team>(team);
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [loading, setLoading] = useState(false);
@@ -106,18 +104,11 @@ export function TeamDetailPanel({ team, onTeamUpdate, onClose }: TeamDetailPanel
 
       {/* Team Overview - Requirement 4.4 */}
       <Card>
-        <CardHeader className="flex flex-row items-center justify-between gap-3">
-          <div className="flex items-center gap-3 min-w-0">
-            <CardTitle className="truncate">{currentTeam.name}</CardTitle>
-            <Badge variant={getStatusVariant(currentTeam.status)}>
-              {currentTeam.status}
-            </Badge>
-          </div>
-          {onClose && (
-            <Button variant="ghost" size="icon" onClick={onClose} aria-label="Close panel">
-              <XMarkIcon className="w-5 h-5" />
-            </Button>
-          )}
+        <CardHeader className="flex flex-row items-center gap-3">
+          <CardTitle className="truncate">{currentTeam.name}</CardTitle>
+          <Badge variant={getStatusVariant(currentTeam.status)}>
+            {currentTeam.status}
+          </Badge>
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Description */}

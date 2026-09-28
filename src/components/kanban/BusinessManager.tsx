@@ -141,7 +141,7 @@ export function BusinessManager({
       {/* Add/Edit Business Modal */}
       {showAddModal && createPortal(
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onClick={handleCancel}>
-          <div className="m-4 bg-card rounded-lg shadow-xl max-w-md w-full p-4 sm:p-6 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+          <div className="m-4 bg-card rounded-lg shadow-xl max-w-md w-full p-4 sm:p-6 max-h-[90vh] overflow-y-auto slim-scrollbar" onClick={(e) => e.stopPropagation()}>
             <h3 className="text-lg sm:text-xl font-bold text-foreground mb-3 sm:mb-4">
               {editingBusiness ? 'Edit Business' : 'Add New Business'}
             </h3>

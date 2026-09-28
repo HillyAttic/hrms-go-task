@@ -83,7 +83,7 @@ export const TaskCreationModal: React.FC<TaskCreationModalProps> = ({
   return createPortal(
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div
-        className="m-4 bg-card rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+        className="m-4 bg-card rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto slim-scrollbar"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-6">

@@ -13,7 +13,9 @@ import { useModal } from "@/contexts/modal-context"
  * Sizes are viewport-aware (the vw term keeps them inside the screen on mobile).
  */
 export const dialogContentVariants = cva(
-  "fixed left-[50%] top-[50%] z-[100] grid w-[calc(100vw-2rem)] max-w-[var(--dialog-max)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border-2 border-border bg-card p-6 text-card-foreground shadow-hard duration-200",
+  // `slim-scrollbar` styles the scroll area for the many dialogs that carry
+  // `overflow-y-auto` themselves — see src/css/style.css.
+  "fixed left-[50%] top-[50%] z-[100] grid w-[calc(100vw-2rem)] max-w-[var(--dialog-max)] translate-x-[-50%] translate-y-[-50%] gap-4 rounded-lg border-2 border-border bg-card p-6 text-card-foreground shadow-hard duration-200 slim-scrollbar",
   {
     variants: {
       size: {
@@ -93,7 +95,8 @@ const DialogContent = React.forwardRef<
       {...props}
     >
       {children}
-      <DialogPrimitive.Close className="absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-md text-foreground opacity-60 transition-opacity hover:bg-muted hover:opacity-100 focus:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/45 disabled:pointer-events-none">
+      {/* Opaque surface + fixed z so it stays readable over scrolled content and scrollbars. */}
+      <DialogPrimitive.Close className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-md border-2 border-border bg-card text-foreground shadow-sm transition-colors hover:bg-muted focus:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/45 disabled:pointer-events-none">
         <X className="h-4 w-4" />
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>

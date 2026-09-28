@@ -777,7 +777,7 @@ export default function UpdateSchedulePage() {
           onClick={handleCloseModal}
         >
           <div
-            className="bg-card rounded-lg shadow-xl w-full max-w-md m-2 sm:m-4 mx-auto p-4 sm:p-6 max-h-[90vh] overflow-y-auto pb-safe"
+            className="bg-card rounded-lg shadow-xl w-full max-w-md m-2 sm:m-4 mx-auto p-4 sm:p-6 max-h-[90vh] overflow-y-auto slim-scrollbar pb-safe"
             onClick={(e) => e.stopPropagation()}
           >
             <h3 className="text-lg sm:text-xl font-bold text-foreground mb-3 sm:mb-4">
@@ -1177,7 +1177,7 @@ export default function UpdateSchedulePage() {
           onClick={handleCloseTaskTable}
         >
           <div
-            className="bg-card rounded-lg shadow-xl max-w-4xl w-full m-4 p-6 max-h-[90vh] overflow-y-auto"
+            className="bg-card rounded-lg shadow-xl max-w-4xl w-full m-4 p-6 max-h-[90vh] overflow-y-auto slim-scrollbar"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-center mb-4 gap-2">

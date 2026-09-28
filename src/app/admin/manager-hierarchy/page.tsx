@@ -207,7 +207,7 @@ export default function ManagerHierarchyPage() {
       {/* Add/Edit Modal */}
       {showModal && createPortal(
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-card rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto m-4">
+          <div className="bg-card rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto slim-scrollbar m-4">
             <h3 className="text-xl font-bold mb-4 text-foreground">
               {selectedManager ? 'Edit' : 'Add'} Manager Hierarchy
             </h3>
@@ -236,7 +236,7 @@ export default function ManagerHierarchyPage() {
               <label className="block text-sm font-medium text-muted-foreground mb-2">
                 Select Employees ({selectedEmployees.length} selected)
               </label>
-              <div className="border border-border rounded-lg max-h-64 overflow-y-auto">
+              <div className="border border-border rounded-lg max-h-64 overflow-y-auto slim-scrollbar">
                 {employees.map((employee) => (
                   <label
                     key={employee.uid}

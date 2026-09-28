@@ -1296,7 +1296,7 @@ export default function DashboardPage() {
                 </button>
               </div>
             </div>
-            <div className="flex-1 min-h-0 p-4 overflow-y-auto">
+            <div className="flex-1 min-h-0 p-4 overflow-y-auto slim-scrollbar">
               {tasks.length === 0 ? (
                 <p className="text-center text-muted-foreground py-8">
                   No tasks found
@@ -1453,7 +1453,7 @@ export default function DashboardPage() {
                 </button>
               </div>
             </div>
-            <div className="flex-1 min-h-0 p-4 overflow-y-auto">
+            <div className="flex-1 min-h-0 p-4 overflow-y-auto slim-scrollbar">
               {completedTasks.length === 0 ? (
                 <p className="text-center text-muted-foreground py-8">
                   No completed tasks
@@ -1556,7 +1556,7 @@ export default function DashboardPage() {
                 </button>
               </div>
             </div>
-            <div className="flex-1 min-h-0 p-4 overflow-y-auto">
+            <div className="flex-1 min-h-0 p-4 overflow-y-auto slim-scrollbar">
               {inProgressTasks.length === 0 ? (
                 <p className="text-center text-muted-foreground py-8">
                   No tasks in progress
@@ -1677,7 +1677,7 @@ export default function DashboardPage() {
                 </button>
               </div>
             </div>
-            <div className="flex-1 min-h-0 p-4 overflow-y-auto">
+            <div className="flex-1 min-h-0 p-4 overflow-y-auto slim-scrollbar">
               {todoTasks.length === 0 ? (
                 <p className="text-center text-muted-foreground py-8">
                   No pending tasks
@@ -1800,7 +1800,7 @@ export default function DashboardPage() {
                 </button>
               </div>
             </div>
-            <div className="flex-1 min-h-0 p-4 overflow-y-auto">
+            <div className="flex-1 min-h-0 p-4 overflow-y-auto slim-scrollbar">
               {overdueTasks.length === 0 ? (
                 <p className="text-center text-muted-foreground py-8">
                   No overdue tasks

@@ -389,7 +389,7 @@ export function RosterMobileCalendarView({
             </div>
 
             {/* Tasks List */}
-            <div className="overflow-y-auto max-h-[45vh] px-4 py-3">
+            <div className="overflow-y-auto slim-scrollbar max-h-[45vh] px-4 py-3">
               {getSelectedDayTasks().length > 0 ? (
                 <div className="space-y-2">
                   {getSelectedDayTasks().map((task) => {

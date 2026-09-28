@@ -149,7 +149,7 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
   return createPortal(
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div
-        className="m-4 bg-card rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+        className="m-4 bg-card rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto slim-scrollbar"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-6">
@@ -249,7 +249,7 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
                 <div className="animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-blue-500"></div>
               </div>
             ) : (
-              <div className="space-y-4 max-h-60 overflow-y-auto pr-2">
+              <div className="space-y-4 max-h-60 overflow-y-auto slim-scrollbar pr-2">
                 {comments.map((comment) => (
                   <div key={comment.id} className="bg-muted p-4 rounded-lg">
                     <div className="flex items-start">

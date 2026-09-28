@@ -433,7 +433,7 @@ export default function AttendanceRosterPage() {
       {/* Employee Detail Modal */}
       {showEmployeeModal && selectedEmployee && createPortal(
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-          <Card className="max-h-[90vh] w-full max-w-4xl overflow-y-auto p-3 sm:p-6 m-2 sm:m-4">
+          <Card className="max-h-[90vh] w-full max-w-4xl overflow-y-auto slim-scrollbar p-3 sm:p-6 m-2 sm:m-4">
             <div className="mb-4 flex items-start justify-between gap-2 sm:mb-6">
               <div className="min-w-0 flex-1">
                 <h3 className="truncate font-display text-lg font-bold text-foreground sm:text-xl">{selectedEmployee.employeeName}</h3>

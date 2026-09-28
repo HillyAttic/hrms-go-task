@@ -272,7 +272,7 @@ export function TemplateManager() {
             // A stray click outside must not discard an unsaved template.
             onPointerDownOutside={(event) => event.preventDefault()}
             onInteractOutside={(event) => event.preventDefault()}
-            className="fixed inset-y-0 right-0 w-full max-w-2xl bg-card z-[100] overflow-y-auto shadow-hard-lg border-l-2 border-border"
+            className="fixed inset-y-0 right-0 w-full max-w-2xl bg-card z-[100] overflow-y-auto slim-scrollbar shadow-hard-lg border-l-2 border-border"
           >
             <div className="sticky top-0 z-10 flex items-center justify-between border-b-2 border-border bg-card px-4 py-3">
               <DialogPrimitive.Title className="text-base font-semibold text-foreground">

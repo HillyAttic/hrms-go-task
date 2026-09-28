@@ -855,7 +855,7 @@ export function GeolocationAttendanceTracker() {
       {/* Persistent Location Denied Modal */}
       {showLocationDeniedModal && createPortal(
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="m-4 bg-card rounded-lg p-4 sm:p-6 max-w-md w-full shadow-xl max-h-[90vh] overflow-y-auto">
+          <div className="m-4 bg-card rounded-lg p-4 sm:p-6 max-w-md w-full shadow-xl max-h-[90vh] overflow-y-auto slim-scrollbar">
             <div className="flex items-center gap-3 mb-4">
               <div className="bg-destructive/15 p-3 rounded-full shrink-0">
                 <MapPin className="h-6 w-6 text-destructive" />

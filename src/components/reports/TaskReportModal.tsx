@@ -657,7 +657,7 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
         </div>
 
         {/* Scrollable content */}
-        <div className="flex-1 overflow-y-auto overflow-x-auto min-h-0 overscroll-x-contain">
+        <div className="flex-1 overflow-y-auto slim-scrollbar overflow-x-auto min-h-0 overscroll-x-contain">
           <div className="sm:hidden px-4 py-1.5 bg-blue-50 dark:bg-blue-900/20 text-xs text-blue-600 dark:text-blue-400 text-center">
             ← Swipe left/right to see monthly data →
           </div>
@@ -823,7 +823,7 @@ function RegularTaskReportModal({ task, clients, completions, onClose }: TaskRep
         </div>
 
         {/* Scrollable table */}
-        <div className="flex-1 overflow-y-auto overflow-x-auto min-h-0 overscroll-x-contain">
+        <div className="flex-1 overflow-y-auto slim-scrollbar overflow-x-auto min-h-0 overscroll-x-contain">
           <div className="sm:hidden px-4 py-1.5 bg-blue-50 dark:bg-blue-900/20 text-xs text-blue-600 dark:text-blue-400 text-center">
             ← Swipe left/right to see monthly data →
           </div>
