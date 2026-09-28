@@ -384,7 +384,7 @@ export function ScheduleTaskModal({
                           id="schedStartTime"
                           value={startTime}
                           onChange={(e) => setStartTime(e.target.value)}
-                          className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring text-sm"
+                          className="w-full px-3 py-2 border border-border rounded-md focus:outline-none text-sm"
                         />
                       </div>
                       <div>
@@ -396,7 +396,7 @@ export function ScheduleTaskModal({
                           id="schedEndTime"
                           value={endTime}
                           onChange={(e) => setEndTime(e.target.value)}
-                          className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring text-sm"
+                          className="w-full px-3 py-2 border border-border rounded-md focus:outline-none text-sm"
                         />
                       </div>
                     </div>

@@ -64,7 +64,7 @@ export function FilterSortModal({
               <select
                 value={filters.dueDate || 'all'}
                 onChange={(e) => setFilters({ ...filters, dueDate: e.target.value as any })}
-                className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                className="w-full px-3 py-2 border border-border rounded-md focus:outline-none"
               >
                 <option value="all">All</option>
                 <option value="today">Today</option>
@@ -87,7 +87,7 @@ export function FilterSortModal({
                 <select
                   value={sort.field}
                   onChange={(e) => setSort({ ...sort, field: e.target.value as any })}
-                  className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="w-full px-3 py-2 border border-border rounded-md focus:outline-none"
                 >
                   <option value="dueDate">Due Date</option>
                   <option value="priority">Priority</option>
@@ -103,7 +103,7 @@ export function FilterSortModal({
                 <select
                   value={sort.direction}
                   onChange={(e) => setSort({ ...sort, direction: e.target.value as any })}
-                  className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="w-full px-3 py-2 border border-border rounded-md focus:outline-none"
                 >
                   <option value="asc">Ascending</option>
                   <option value="desc">Descending</option>

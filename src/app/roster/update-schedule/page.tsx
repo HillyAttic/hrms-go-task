@@ -827,7 +827,7 @@ export default function UpdateSchedulePage() {
                       type="text"
                       value={formData.activityName}
                       onChange={(e) => setFormData({ ...formData, activityName: e.target.value })}
-                      className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+                      className="w-full px-3 py-2 border border-border rounded-lg"
                       required
                       placeholder="e.g., Project planning, Sprint review, Team sync"
                     />
@@ -840,7 +840,7 @@ export default function UpdateSchedulePage() {
                       type="date"
                       value={formData.startDate}
                       onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
-                      className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+                      className="w-full px-3 py-2 border border-border rounded-lg"
                       required
                     />
                   </div>
@@ -852,7 +852,7 @@ export default function UpdateSchedulePage() {
                       type="date"
                       value={formData.endDate}
                       onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
-                      className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+                      className="w-full px-3 py-2 border border-border rounded-lg"
                       required
                     />
                   </div>
@@ -863,7 +863,7 @@ export default function UpdateSchedulePage() {
                     <textarea
                       value={formData.notes}
                       onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-                      className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+                      className="w-full px-3 py-2 border border-border rounded-lg"
                       rows={3}
                       placeholder="Additional details..."
                     />
@@ -879,7 +879,7 @@ export default function UpdateSchedulePage() {
                       type="text"
                       value={formData.taskDetail}
                       onChange={(e) => setFormData({ ...formData, taskDetail: e.target.value })}
-                      className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+                      className="w-full px-3 py-2 border border-border rounded-lg"
                       required
                       placeholder="e.g., Client visit, Project work, HR meeting"
                     />
@@ -892,7 +892,7 @@ export default function UpdateSchedulePage() {
                       type="date"
                       value={formData.taskDate}
                       onChange={(e) => setFormData({ ...formData, taskDate: e.target.value })}
-                      className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+                      className="w-full px-3 py-2 border border-border rounded-lg"
                       required
                     />
                   </div>
@@ -904,7 +904,7 @@ export default function UpdateSchedulePage() {
                       type="time"
                       value={formData.timeStart}
                       onChange={(e) => setFormData({ ...formData, timeStart: e.target.value })}
-                      className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+                      className="w-full px-3 py-2 border border-border rounded-lg"
                       required
                     />
                   </div>
@@ -916,7 +916,7 @@ export default function UpdateSchedulePage() {
                       type="time"
                       value={formData.timeEnd}
                       onChange={(e) => setFormData({ ...formData, timeEnd: e.target.value })}
-                      className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+                      className="w-full px-3 py-2 border border-border rounded-lg"
                       required
                     />
                   </div>

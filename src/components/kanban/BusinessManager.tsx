@@ -155,7 +155,7 @@ export function BusinessManager({
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3 py-2 text-sm sm:text-base border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+                  className="w-full px-3 py-2 text-sm sm:text-base border border-border rounded-lg"
                   placeholder="e.g., Tech Startup, Consulting Firm"
                   required
                 />
@@ -168,7 +168,7 @@ export function BusinessManager({
                 <textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-3 py-2 text-sm sm:text-base border border-border rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent"
+                  className="w-full px-3 py-2 text-sm sm:text-base border border-border rounded-lg"
                   placeholder="Brief description of this business"
                   rows={3}
                 />

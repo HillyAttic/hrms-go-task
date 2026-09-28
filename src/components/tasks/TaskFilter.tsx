@@ -106,7 +106,7 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
             id="status-filter"
             value={filters.status}
             onChange={handleStatusChange}
-            className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card text-foreground text-sm"
+            className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none bg-card text-foreground text-sm"
             aria-label="Filter by status"
           >
             <option value="all">All Statuses</option>
@@ -125,7 +125,7 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
             id="priority-filter"
             value={filters.priority}
             onChange={handlePriorityChange}
-            className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card text-foreground text-sm"
+            className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none bg-card text-foreground text-sm"
             aria-label="Filter by priority"
           >
             <option value="all">All Priorities</option>
@@ -152,7 +152,7 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
             onFocus={() => setIsMemberDropdownOpen(true)}
             placeholder="Search team member..."
             autoComplete="off"
-            className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card text-foreground text-sm"
+            className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none bg-card text-foreground text-sm"
             aria-label="Search team member"
           />
           {isMemberDropdownOpen && (
@@ -193,7 +193,7 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
             id="client-filter"
             value={filters.clientId || ''}
             onChange={handleClientChange}
-            className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card text-foreground text-sm"
+            className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none bg-card text-foreground text-sm"
             aria-label="Filter by client"
           >
             <option value="">All Clients</option>

@@ -46,7 +46,7 @@ export function TeamFilter({
   const hasActiveFilters = filters.status !== 'all' || filters.department !== 'all';
 
   const selectClass =
-    'w-full appearance-none px-3 py-2.5 pr-10 text-sm border-2 border-border rounded-md bg-input text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/45 transition-colors';
+    'w-full appearance-none px-3 py-2.5 pr-10 text-sm border-2 border-border rounded-md bg-input text-foreground focus-visible:outline-none transition-colors';
 
   return (
     <Card className="p-4 sm:p-5">

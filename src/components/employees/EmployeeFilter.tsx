@@ -78,7 +78,7 @@ export function EmployeeFilter({
               value={filters.search}
               onChange={handleSearchChange}
               placeholder="Search by name, email, position, or employee ID..."
-              className="w-full pl-10 pr-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card text-foreground text-sm placeholder:text-muted-foreground dark:placeholder:text-muted-foreground"
+              className="w-full pl-10 pr-3 py-2 border border-border rounded-md focus:outline-none bg-card text-foreground text-sm placeholder:text-muted-foreground dark:placeholder:text-muted-foreground"
               aria-label="Search employees"
             />
           </div>
@@ -94,7 +94,7 @@ export function EmployeeFilter({
               id="status-filter"
               value={filters.status}
               onChange={handleStatusChange}
-              className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card text-foreground text-sm"
+              className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none bg-card text-foreground text-sm"
               aria-label="Filter by status"
             >
               <option value="all">All Statuses</option>

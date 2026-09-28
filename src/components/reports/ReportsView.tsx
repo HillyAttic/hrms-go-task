@@ -243,7 +243,7 @@ export function ReportsView() {
             <select
               value={selectedFY}
               onChange={e => { setSelectedFY(e.target.value); setSelectedMonth('all'); }}
-              className="border border-border rounded-lg px-3 py-1.5 text-sm bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              className="border border-border rounded-lg px-3 py-1.5 text-sm bg-card text-foreground focus:outline-none"
             >
               {financialYears.map(fy => (
                 <option key={fy} value={fy}>FY {fy}</option>
@@ -252,7 +252,7 @@ export function ReportsView() {
             <select
               value={selectedMonth}
               onChange={e => setSelectedMonth(e.target.value)}
-              className="border border-border rounded-lg px-3 py-1.5 text-sm bg-card text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              className="border border-border rounded-lg px-3 py-1.5 text-sm bg-card text-foreground focus:outline-none"
             >
               <option value="all">All Months</option>
               {MONTH_NAMES.map(m => (

@@ -488,7 +488,7 @@ export default function AttendanceTrayPage() {
                   setSelectedEmployee(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                className="w-full px-3 py-2 border border-border rounded-md focus:outline-none"
               >
                 <option value="all">All Employees</option>
                 {employees.map((emp) => (
@@ -510,7 +510,7 @@ export default function AttendanceTrayPage() {
                   setSelectedStatus(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                className="w-full px-3 py-2 border border-border rounded-md focus:outline-none"
               >
                 <option value="all">All Status</option>
                 <option value="active">Active</option>
@@ -529,7 +529,7 @@ export default function AttendanceTrayPage() {
                   setDateFilter(e.target.value);
                   setCurrentPage(1);
                 }}
-                className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                className="w-full px-3 py-2 border border-border rounded-md focus:outline-none"
               >
                 <option value="all">All Time</option>
                 <option value="today">Today</option>

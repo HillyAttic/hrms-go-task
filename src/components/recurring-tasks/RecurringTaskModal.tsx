@@ -428,7 +428,7 @@ export function RecurringTaskModal({
             <select
               id="recurrencePattern"
               {...register('recurrencePattern')}
-              className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
+              className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isLoading}
             >
               <option value="monthly">Monthly</option>
@@ -708,7 +708,7 @@ export function RecurringTaskModal({
                 id="startDate"
                 type="date"
                 {...register('startDate')}
-                className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
+                className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={isLoading}
                 required
               />
@@ -724,7 +724,7 @@ export function RecurringTaskModal({
                 id="dueDate"
                 type="date"
                 {...register('dueDate')}
-                className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
+                className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={isLoading}
               />
               {errors.dueDate && (
@@ -739,7 +739,7 @@ export function RecurringTaskModal({
             <select
               id="priority"
               {...register('priority')}
-              className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
+              className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isLoading}
             >
               <option value="low">Low</option>

@@ -43,7 +43,7 @@ const currency = new Intl.NumberFormat('en-IN', {
 const cardClass =
   'bg-card rounded-xl shadow-sm border border-border';
 const inputClass =
-  'w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring';
+  'w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none';
 const thClass =
   'px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider';
 

@@ -360,7 +360,7 @@ export default function ClientAccessPage() {
                   setSearchQuery('');
                   setComplianceFilter('all');
                 }}
-                className="w-full px-4 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
+                className="w-full px-4 py-2 text-sm border border-border rounded-lg focus:outline-none"
               >
                 <option value="">Choose a user...</option>
                 {users.map((user) => (
@@ -379,7 +379,7 @@ export default function ClientAccessPage() {
                   placeholder="Search users by name, email, or role..."
                   value={userSearchQuery}
                   onChange={(e) => setUserSearchQuery(e.target.value)}
-                  className="w-full px-4 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="w-full px-4 py-2 text-sm border border-border rounded-lg focus:outline-none"
                 />
               </div>
 
@@ -456,12 +456,12 @@ export default function ClientAccessPage() {
                   placeholder="Search clients..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="flex-1 px-3 py-2 text-sm border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="flex-1 px-3 py-2 text-sm border border-border rounded-md focus:outline-none"
                 />
                 <select
                   value={complianceFilter}
                   onChange={(e) => setComplianceFilter(e.target.value)}
-                  className="px-3 py-2 text-sm border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="px-3 py-2 text-sm border border-border rounded-md focus:outline-none"
                 >
                   <option value="all">All Rows</option>
                   <option value="roc">ROC</option>

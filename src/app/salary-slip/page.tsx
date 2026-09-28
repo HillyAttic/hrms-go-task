@@ -584,7 +584,7 @@ export default function SalarySlipPage() {
                 setPanValue(event.target.value.toUpperCase());
                 setPanError('');
               }}
-              className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-mono uppercase text-foreground placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-ring"
+              className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm font-mono uppercase text-foreground placeholder-gray-400 focus:outline-none"
             />
             {panError && <p className="text-xs mt-1 text-destructive">{panError}</p>}
           </div>

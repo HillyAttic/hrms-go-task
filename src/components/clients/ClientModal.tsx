@@ -420,7 +420,7 @@ export function ClientModal({
             <select
               id="status"
               {...register('status')}
-              className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed"
+              className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isLoading}
             >
               <option value="active">Active</option>

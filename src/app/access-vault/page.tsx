@@ -219,7 +219,7 @@ export default function AccessVaultPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder={SEARCH_PLACEHOLDER[activeTab]}
-            className="w-full pl-9 pr-9 py-2 text-sm rounded-lg border border-border bg-card text-foreground placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-ring"
+            className="w-full pl-9 pr-9 py-2 text-sm rounded-lg border border-border bg-card text-foreground placeholder-gray-400 focus:outline-none"
           />
           {search && (
             <button

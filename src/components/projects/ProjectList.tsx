@@ -26,7 +26,7 @@ interface ProjectListProps {
 
 /** The one select style used by the toolbar and the pagination row. */
 const selectClass =
-  'h-10 px-3 text-sm border-2 border-border rounded-md bg-input text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/45 transition-colors';
+  'h-10 px-3 text-sm border-2 border-border rounded-md bg-input text-foreground focus-visible:outline-none transition-colors';
 
 export function ProjectList({
   projects,

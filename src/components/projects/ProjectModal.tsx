@@ -363,7 +363,7 @@ export function ProjectModal({
                   <select
                     id="status"
                     {...register('status')}
-                    className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/45 bg-input disabled:opacity-50"
+                    className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none bg-input disabled:opacity-50"
                     disabled={isLoading}
                   >
                     <option value="wip">WIP</option>
@@ -455,7 +455,7 @@ export function ProjectModal({
                   placeholder="Search team members..."
                   value={memberSearch}
                   onChange={(e) => setMemberSearch(e.target.value)}
-                  className="w-full pl-9 pr-3 py-1.5 text-sm border border-border rounded-md bg-input focus:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/45"
+                  className="w-full pl-9 pr-3 py-1.5 text-sm border border-border rounded-md bg-input focus:outline-none"
                 />
               </div>
               <div className="max-h-40 overflow-y-auto">
@@ -677,7 +677,7 @@ export function ProjectModal({
                         type="text"
                         {...register(`milestones.${index}.title` as const)}
                         placeholder="Milestone title"
-                        className={`flex-1 px-2 py-1 text-sm border border-border rounded bg-input focus:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/45 ${
+                        className={`flex-1 px-2 py-1 text-sm border border-border rounded bg-input focus:outline-none ${
                           watchedMilestones?.[index]?.completed ? 'line-through text-muted-foreground' : ''
                         }`}
                         disabled={isLoading}

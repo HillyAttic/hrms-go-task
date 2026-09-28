@@ -513,7 +513,7 @@ export default function LeaveApprovalsPage() {
             <textarea
               value={rejectionReason}
               onChange={(e) => setRejectionReason(e.target.value)}
-              className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring"
+              className="w-full px-3 py-2 border border-border rounded-lg"
               rows={4}
               placeholder="Enter rejection reason..."
             />
@@ -558,7 +558,7 @@ export default function LeaveApprovalsPage() {
             <textarea
               value={approvalReason}
               onChange={(e) => setApprovalReason(e.target.value)}
-              className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring"
+              className="w-full px-3 py-2 border border-border rounded-lg"
               rows={4}
               placeholder="Enter approval reason or note..."
             />

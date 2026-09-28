@@ -205,7 +205,7 @@ export function HolidayManagementModal({ isOpen, onClose, managerId, isManager, 
                   type="date"
                   value={holidayDate}
                   onChange={(e) => setHolidayDate(e.target.value)}
-                  className="mt-1 w-full rounded-md border-2 border-border bg-card px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="mt-1 w-full rounded-md border-2 border-border bg-card px-3 py-2 text-foreground focus:outline-none"
                 />
               </div>
 
@@ -217,7 +217,7 @@ export function HolidayManagementModal({ isOpen, onClose, managerId, isManager, 
                   value={holidayName}
                   onChange={(e) => setHolidayName(e.target.value)}
                   placeholder="e.g., Independence Day"
-                  className="mt-1 w-full rounded-md border-2 border-border bg-card px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="mt-1 w-full rounded-md border-2 border-border bg-card px-3 py-2 text-foreground focus:outline-none"
                 />
               </div>
 
@@ -229,7 +229,7 @@ export function HolidayManagementModal({ isOpen, onClose, managerId, isManager, 
                   value={holidayDescription}
                   onChange={(e) => setHolidayDescription(e.target.value)}
                   placeholder="e.g., National Holiday"
-                  className="mt-1 w-full rounded-md border-2 border-border bg-card px-3 py-2 text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="mt-1 w-full rounded-md border-2 border-border bg-card px-3 py-2 text-foreground focus:outline-none"
                 />
               </div>
             </div>

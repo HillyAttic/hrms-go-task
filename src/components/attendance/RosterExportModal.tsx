@@ -759,7 +759,7 @@ export function RosterExportModal({
                   id="export-month"
                   value={selectedMonth}
                   onChange={(e) => setSelectedMonth(Number(e.target.value))}
-                  className="mt-1 w-full rounded-lg border-2 border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="mt-1 w-full rounded-lg border-2 border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none"
                 >
                   <option value="0">January</option>
                   <option value="1">February</option>
@@ -781,7 +781,7 @@ export function RosterExportModal({
                   id="export-year"
                   value={selectedYear}
                   onChange={(e) => setSelectedYear(Number(e.target.value))}
-                  className="mt-1 w-full rounded-lg border-2 border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="mt-1 w-full rounded-lg border-2 border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none"
                 >
                   <option value="2024">2024</option>
                   <option value="2025">2025</option>
@@ -806,7 +806,7 @@ export function RosterExportModal({
                   type="date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="mt-1 w-full rounded-lg border-2 border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="mt-1 w-full rounded-lg border-2 border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none"
                 />
               </div>
               <div>
@@ -816,7 +816,7 @@ export function RosterExportModal({
                   type="date"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
-                  className="mt-1 w-full rounded-lg border-2 border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="mt-1 w-full rounded-lg border-2 border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none"
                 />
               </div>
             </div>

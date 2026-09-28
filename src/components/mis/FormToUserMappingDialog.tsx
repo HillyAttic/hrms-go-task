@@ -225,7 +225,7 @@ export function FormToUserMappingDialog({
                     placeholder="Search users..."
                     value={userSearch}
                     onChange={(e) => setUserSearch(e.target.value)}
-                    className="w-full pl-8 pr-3 h-9 rounded-md border border-input bg-background text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className="w-full pl-8 pr-3 h-9 rounded-md border border-input bg-background text-sm focus-visible:outline-none"
                   />
                 </div>
 

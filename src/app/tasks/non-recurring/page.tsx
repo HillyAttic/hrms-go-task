@@ -359,7 +359,7 @@ export default function NonRecurringTasksPage() {
             placeholder="Search tasks by title, description, or assignee..."
             value={searchQuery}
             onChange={handleSearchChange}
-            className="w-full h-10 pl-10 pr-3 py-2 rounded-md border border-border bg-card text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+            className="w-full h-10 pl-10 pr-3 py-2 rounded-md border border-border bg-card text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
             aria-label="Search tasks"
           />
         </div>

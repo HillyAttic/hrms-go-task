@@ -152,12 +152,17 @@
   /* Ensure keyboard focus is always visible */
   button:focus-visible,
   a:focus-visible,
-  input:focus-visible,
-  select:focus-visible,
-  textarea:focus-visible,
   [role="button"]:focus-visible,
   [tabindex]:not([tabindex="-1"]):focus-visible {
     @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+
+  /* ponytail: text fields get no ring — the caret plus the border is the focus cue.
+     Restore a ring here (or on Input/Textarea/Select) if WCAG 2.4.7 audits demand it. */
+  input:focus-visible,
+  select:focus-visible,
+  textarea:focus-visible {
+    @apply outline-none;
   }
 
   /* Screen reader only content */

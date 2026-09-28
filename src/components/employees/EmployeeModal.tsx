@@ -612,7 +612,7 @@ export function EmployeeModal({
               value={typeof slip === 'string' ? slip : ''}
               onChange={(e) => updateSalarySlipUrl(index, e.target.value)}
               placeholder={`Salary slip ${index + 1} URL (optional)`}
-              className="flex-1 px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card text-foreground text-sm"
+              className="flex-1 px-3 py-2 border border-border rounded-md focus:outline-none bg-card text-foreground text-sm"
               disabled={isUploading || isLoading}
             />
           </div>
@@ -837,7 +837,7 @@ export function EmployeeModal({
                   <select
                     id="role"
                     {...register('role')}
-                    className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed bg-card text-foreground"
+                    className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed bg-card text-foreground"
                     disabled={isLoading}
                   >
                     <option value="Employee">Employee</option>
@@ -855,7 +855,7 @@ export function EmployeeModal({
                   <select
                     id="status"
                     {...register('status')}
-                    className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed bg-card text-foreground"
+                    className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed bg-card text-foreground"
                     disabled={isLoading}
                   >
                     <option value="active">Active</option>
@@ -877,7 +877,7 @@ export function EmployeeModal({
                     <select
                       id="managerId"
                       {...register('managerId')}
-                      className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring disabled:opacity-50 disabled:cursor-not-allowed bg-card text-foreground"
+                      className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed bg-card text-foreground"
                       disabled={isLoading}
                       onChange={(e) => {
                         const selectedManager = managers.find(m => m.id === e.target.value);
@@ -1097,7 +1097,7 @@ export function EmployeeModal({
                           type="date"
                           value={change.date}
                           onChange={(e) => updateSalaryChange(index, 'date', e.target.value)}
-                          className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card text-foreground text-sm"
+                          className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none bg-card text-foreground text-sm"
                         />
                       </div>
                       <div>
@@ -1105,7 +1105,7 @@ export function EmployeeModal({
                         <select
                           value={change.reason}
                           onChange={(e) => updateSalaryChange(index, 'reason', e.target.value)}
-                          className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card text-foreground text-sm"
+                          className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none bg-card text-foreground text-sm"
                         >
                           <option value="probation">After Probation</option>
                           <option value="promotion">Promotion</option>
@@ -1118,7 +1118,7 @@ export function EmployeeModal({
                           type="number"
                           value={change.oldSalary}
                           onChange={(e) => updateSalaryChange(index, 'oldSalary', parseFloat(e.target.value) || 0)}
-                          className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card text-foreground text-sm"
+                          className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none bg-card text-foreground text-sm"
                         />
                       </div>
                       <div>
@@ -1127,7 +1127,7 @@ export function EmployeeModal({
                           type="number"
                           value={change.newSalary}
                           onChange={(e) => updateSalaryChange(index, 'newSalary', parseFloat(e.target.value) || 0)}
-                          className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card text-foreground text-sm"
+                          className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none bg-card text-foreground text-sm"
                         />
                       </div>
                       <div className="md:col-span-2">
@@ -1137,7 +1137,7 @@ export function EmployeeModal({
                           value={change.notes || ''}
                           onChange={(e) => updateSalaryChange(index, 'notes', e.target.value)}
                           placeholder="Reason or details about this change"
-                          className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card text-foreground text-sm"
+                          className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none bg-card text-foreground text-sm"
                         />
                       </div>
                     </div>

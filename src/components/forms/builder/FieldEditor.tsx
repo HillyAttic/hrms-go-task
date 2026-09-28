@@ -313,7 +313,7 @@ export function FieldEditor({ field, onUpdate, onDelete, onClose }: FieldEditorP
                     type="text"
                     value={typeof option === 'string' ? option : option.label}
                     onChange={(e) => handleUpdateOption(index, e.target.value)}
-                    className="flex-1 px-2 sm:px-3 py-1.5 sm:py-2 text-sm border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-ring focus:border-transparent"
+                    className="flex-1 px-2 sm:px-3 py-1.5 sm:py-2 text-sm border border-gray-300 dark:border-gray-700 rounded-lg focus:outline-none"
                     placeholder={`Option ${index + 1}`}
                   />
                   <button

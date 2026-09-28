@@ -814,7 +814,7 @@ export function RecurringTaskClientModal({
                     }}
                     placeholder="Enter 15-digit ARN"
                     maxLength={15}
-                    className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                    className="w-full px-3 py-2 border border-border rounded-md focus:outline-none"
                   />
                   <p className="text-xs text-muted-foreground mt-1">
                     {arnNumber.length}/15 digits
@@ -908,7 +908,7 @@ export function RecurringTaskClientModal({
                     }}
                     placeholder="Enter your remark..."
                     rows={3}
-                    className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring resize-none"
+                    className="w-full px-3 py-2 border border-border rounded-md focus:outline-none resize-none"
                   />
                 </div>
 

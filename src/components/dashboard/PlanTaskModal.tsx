@@ -433,7 +433,7 @@ export function PlanTaskModal({
                     value={currentVisit.scheduleDate}
                     onChange={(e) => setCurrentVisit({ ...currentVisit, scheduleDate: e.target.value })}
                     min={new Date().toISOString().split('T')[0]}
-                    className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                    className="w-full px-3 py-2 border border-border rounded-md focus:outline-none"
                   />
                 </div>
 
@@ -448,7 +448,7 @@ export function PlanTaskModal({
                     id="startTime"
                     value={currentVisit.startTime}
                     onChange={(e) => setCurrentVisit({ ...currentVisit, startTime: e.target.value })}
-                    className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                    className="w-full px-3 py-2 border border-border rounded-md focus:outline-none"
                   />
                 </div>
 
@@ -463,7 +463,7 @@ export function PlanTaskModal({
                     id="endTime"
                     value={currentVisit.endTime}
                     onChange={(e) => setCurrentVisit({ ...currentVisit, endTime: e.target.value })}
-                    className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                    className="w-full px-3 py-2 border border-border rounded-md focus:outline-none"
                   />
                 </div>
               </div>

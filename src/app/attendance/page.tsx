@@ -671,7 +671,7 @@ export default function AttendancePage() {
             <textarea
               value={approvalReason}
               onChange={(e) => setApprovalReason(e.target.value)}
-              className="w-full px-3 py-2 border border-border rounded-lg focus:ring-2 focus:ring-ring"
+              className="w-full px-3 py-2 border border-border rounded-lg"
               rows={3}
               placeholder="e.g., Approved. Enjoy your time off!"
             />

@@ -138,7 +138,7 @@ export function ClientList({
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as 'all' | 'active' | 'inactive')}
-            className="px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card"
+            className="px-3 py-2 border border-border rounded-md focus:outline-none bg-card"
             aria-label="Filter by status"
           >
             <option value="all">All Status</option>
@@ -162,7 +162,7 @@ export function ClientList({
               setItemsPerPage(Number(e.target.value));
               setCurrentPage(1);
             }}
-            className="px-2 py-1 text-sm border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring bg-card"
+            className="px-2 py-1 text-sm border border-border rounded-md focus:outline-none bg-card"
           >
             <option value={25}>25</option>
             <option value={50}>50</option>

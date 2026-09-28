@@ -267,7 +267,7 @@ export default function MISTrackerPage() {
               <select
                 value={selectedFormId || ''}
                 onChange={(e) => handleFormChange(e.target.value)}
-                className="flex-1 sm:flex-none sm:min-w-[250px] px-3 sm:px-4 py-2 text-xs sm:text-sm border border-border rounded-lg bg-card text-foreground focus:ring-2 focus:ring-ring focus:border-transparent"
+                className="flex-1 sm:flex-none sm:min-w-[250px] px-3 sm:px-4 py-2 text-xs sm:text-sm border border-border rounded-lg bg-card text-foreground"
               >
                 {availableForms.map((form) => (
                   <option key={form.id} value={form.id}>

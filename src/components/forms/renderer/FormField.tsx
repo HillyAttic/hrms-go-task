@@ -32,7 +32,7 @@ export function FormField({ field, register, error, setValue, watch }: FormField
 
   const renderField = () => {
     const baseClasses =
-      'w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg focus:ring-2 focus:ring-ring focus:border-transparent';
+      'w-full px-4 py-2 border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-lg';
     const errorClasses = error ? 'border-red-500' : '';
 
     switch (field.type) {

@@ -131,7 +131,7 @@ export function CategoryModal({
               id="description"
               {...register('description')}
               placeholder="Enter category description (optional)"
-              className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring min-h-[80px]"
+              className="mt-1 w-full px-3 py-2 border border-border rounded-md focus:outline-none min-h-[80px]"
             />
             {errors.description && (
               <p className="text-sm text-red-600 mt-1">{errors.description.message}</p>

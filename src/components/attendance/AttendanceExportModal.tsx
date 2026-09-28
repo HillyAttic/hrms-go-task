@@ -729,7 +729,7 @@ export function AttendanceExportModal({
                   id="export-month"
                   value={selectedMonth}
                   onChange={(e) => setSelectedMonth(Number(e.target.value))}
-                  className="w-full mt-1 px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="w-full mt-1 px-3 py-2 text-sm border border-border rounded-lg focus:outline-none"
                 >
                   <option value="0">January</option>
                   <option value="1">February</option>
@@ -751,7 +751,7 @@ export function AttendanceExportModal({
                   id="export-year"
                   value={selectedYear}
                   onChange={(e) => setSelectedYear(Number(e.target.value))}
-                  className="w-full mt-1 px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="w-full mt-1 px-3 py-2 text-sm border border-border rounded-lg focus:outline-none"
                 >
                   <option value="2024">2024</option>
                   <option value="2025">2025</option>
@@ -776,7 +776,7 @@ export function AttendanceExportModal({
                   type="date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full mt-1 px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="w-full mt-1 px-3 py-2 text-sm border border-border rounded-lg focus:outline-none"
                 />
               </div>
               <div>
@@ -786,7 +786,7 @@ export function AttendanceExportModal({
                   type="date"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full mt-1 px-3 py-2 text-sm border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
+                  className="w-full mt-1 px-3 py-2 text-sm border border-border rounded-lg focus:outline-none"
                 />
               </div>
             </div>
@@ -814,7 +814,7 @@ export function AttendanceExportModal({
                 placeholder="Search employees by name, email, or role..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 py-2 pl-10 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                className="w-full px-4 py-2 pl-10 border border-border rounded-md focus:outline-none"
               />
               <svg
                 xmlns="http://www.w3.org/2000/svg"

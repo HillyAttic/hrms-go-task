@@ -120,7 +120,7 @@ export default function AccessManagementModal({
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search users..."
-              className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none"
             />
 
             <div className="max-h-72 overflow-y-auto space-y-1 rounded-lg border border-border p-1">
