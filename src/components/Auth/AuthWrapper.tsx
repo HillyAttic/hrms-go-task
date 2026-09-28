@@ -118,8 +118,8 @@ export const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
   // For auth pages, render without sidebar and header
   if (isPublicRoute) {
     return (
-      <div className="min-h-screen bg-surface">
-        <main className="mx-auto w-full max-w-screen-2xl overflow-hidden p-4 md:p-6 2xl:p-10">
+      <div className="flex min-h-screen flex-col bg-surface">
+        <main className="mx-auto flex w-full max-w-screen-2xl flex-1 items-center justify-center overflow-hidden p-4 md:p-6 2xl:p-10">
           {children}
         </main>
       </div>

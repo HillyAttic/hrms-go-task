@@ -91,12 +91,14 @@ export async function authenticatedFetch(
     // This is much faster than getIdToken(true) which always makes a network call
     const token = await user.getIdToken(false);
 
-    // Add Authorization header
-    const headers = {
-      ...options.headers,
+    // Add Authorization header. FormData/Blob bodies must keep the browser-set
+    // Content-Type (it carries the multipart boundary), so leave it unset there.
+    const isFormData = typeof FormData !== 'undefined' && options.body instanceof FormData;
+    const headers: Record<string, string> = {
+      ...(options.headers as Record<string, string>),
       'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
     };
+    if (!isFormData) headers['Content-Type'] = 'application/json';
 
     return fetch(url, {
       ...options,
