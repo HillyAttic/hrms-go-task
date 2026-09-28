@@ -125,12 +125,16 @@ export const payrollService = {
     }
   },
 
-  async updateSlip(id: string, data: Record<string, unknown>): Promise<boolean> {
+  /**
+   * Saves an edited slip. Identity is (employee, month, year), not a slip id, so
+   * this also persists an edit to a row whose slip was never generated.
+   */
+  async saveSlip(payload: Record<string, unknown>): Promise<boolean> {
     try {
-      const response = await authenticatedFetch(`/api/payroll/slips/${id}`, {
-        method: 'PUT',
+      const response = await authenticatedFetch('/api/payroll/slips', {
+        method: 'POST',
         headers: JSON_HEADERS,
-        body: JSON.stringify(data),
+        body: JSON.stringify(payload),
       });
       return response.ok;
     } catch {

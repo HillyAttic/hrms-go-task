@@ -1,8 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 import { verifyAuthToken } from '@/lib/server-auth';
 import { ErrorResponses, handleApiError } from '@/lib/api-error-handler';
 import { payrollAdminService } from '@/services/payroll-admin.service';
 import { getAccessibleEmployeeIds, hasAccessToEmployee } from '@/lib/manager-access';
+import { attendanceBreakdownSchema, salaryBreakupSchema } from '@/lib/payroll-schemas';
+
+const slipWriteSchema = z.object({
+  employeeId: z.string().min(1),
+  name: z.string(),
+  employeeCode: z.string(),
+  month: z.number().int().min(0).max(11),
+  year: z.number().int().min(2020).max(2099),
+  totalDaysInMonth: z.number(),
+  paidDays: z.number(),
+  grossSalary: z.number(),
+  designation: z.string(),
+  department: z.string(),
+  pan: z.string().nullable(),
+  doj: z.string().nullable(),
+  attendanceBreakdown: attendanceBreakdownSchema,
+  salaryBreakup: salaryBreakupSchema,
+  /** Honoured only when the slip is being created; an existing grant is never revoked by an edit. */
+  accessGranted: z.boolean().optional(),
+});
 
 /**
  * GET /api/payroll/slips — the access-control hub for salary slips.
@@ -95,6 +116,45 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(slips);
   } catch (error) {
     console.error('[Payroll] Error fetching salary slips', error);
+    return handleApiError(error);
+  }
+}
+
+/**
+ * POST /api/payroll/slips — admin | manager.
+ *
+ * Creates or replaces the slip an employee has for a period. Slips are unique per
+ * (employee, month, year), so the period is the identity — which is what lets the
+ * editor save an employee whose slip was never generated. It never notifies.
+ */
+export async function POST(request: NextRequest) {
+  try {
+    const authResult = await verifyAuthToken(request);
+    if (!authResult.success || !authResult.user) return ErrorResponses.unauthorized();
+
+    const { uid, claims } = authResult.user;
+    if (claims.role !== 'admin' && claims.role !== 'manager') {
+      return ErrorResponses.forbidden('Only admins and managers can edit salary slips');
+    }
+
+    const validated = slipWriteSchema.parse(await request.json());
+
+    if (claims.role === 'manager' && validated.employeeId !== uid) {
+      const allowed = await hasAccessToEmployee(uid, claims.role, validated.employeeId);
+      if (!allowed) {
+        return ErrorResponses.forbidden('You can only manage slips for your assigned employees');
+      }
+    }
+
+    const { accessGranted, ...slip } = validated;
+    const saved = await payrollAdminService.upsertSlip(slip, {
+      accessGranted: accessGranted ?? false,
+      generatedBy: uid,
+    });
+
+    return NextResponse.json({ success: true, slip: saved });
+  } catch (error) {
+    console.error('[Payroll] Error saving salary slip', error);
     return handleApiError(error);
   }
 }

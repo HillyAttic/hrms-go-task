@@ -4,6 +4,7 @@ import { verifyAuthToken } from '@/lib/server-auth';
 import { ErrorResponses, handleApiError } from '@/lib/api-error-handler';
 import { payrollAdminService } from '@/services/payroll-admin.service';
 import { hasAccessToEmployee } from '@/lib/manager-access';
+import { attendanceBreakdownSchema, salaryBreakupSchema } from '@/lib/payroll-schemas';
 
 const updateSlipSchema = z.object({
   grossSalary: z.number().optional(),
@@ -12,36 +13,8 @@ const updateSlipSchema = z.object({
   department: z.string().optional(),
   pan: z.string().nullable().optional(),
   doj: z.string().nullable().optional(),
-  salaryBreakup: z
-    .object({
-      basic: z.number(),
-      hra: z.number(),
-      special: z.number(),
-      totalDeductions: z.number(),
-      netSalary: z.number(),
-      epf: z.number().optional(),
-      esi: z.number().optional(),
-      professionalTax: z.number().optional(),
-      tds: z.number().optional(),
-      loanRecovery: z.number().optional(),
-      otherDeduction: z.number().optional(),
-      leaveDeduction: z.number().optional(),
-    })
-    .optional(),
-  attendanceBreakdown: z
-    .object({
-      present: z.number(),
-      wfh: z.number(),
-      approvedLeave: z.number(),
-      unapprovedLeave: z.number(),
-      halfDay: z.number(),
-      holiday: z.number(),
-      paidLeave: z.number(),
-      leaveTaken: z.number(),
-      unpaidLeave: z.number(),
-      paidDays: z.number(),
-    })
-    .optional(),
+  salaryBreakup: salaryBreakupSchema.optional(),
+  attendanceBreakdown: attendanceBreakdownSchema.optional(),
 });
 
 const accessSchema = z.object({ accessGranted: z.boolean() });

@@ -185,13 +185,20 @@ export function EditSalarySlipModal({
   );
 
   const onSubmit = async (values: SlipFormValues) => {
-    if (!slip?.id) return;
-    const ok = await payrollService.updateSlip(slip.id, {
+    if (!slip) return;
+    const ok = await payrollService.saveSlip({
+      employeeId: slip.employeeId,
+      name: slip.name,
+      employeeCode: slip.employeeCode,
+      month: slip.month,
+      year: slip.year,
+      totalDaysInMonth: slip.totalDaysInMonth,
       grossSalary: values.grossSalary,
       designation: values.designation,
       department: values.department,
       pan: values.pan.trim() ? values.pan.trim().toUpperCase() : null,
       doj: values.doj || null,
+      paidDays: values.paidDays,
       attendanceBreakdown: {
         present: values.present,
         wfh: values.wfh,
@@ -201,7 +208,7 @@ export function EditSalarySlipModal({
         leaveTaken: values.leaveTaken,
         unpaidLeave: values.unpaidLeave,
         paidDays: values.paidDays,
-        // Not editable here — carried over so the PUT still satisfies the ten-field schema.
+        // Not editable here — carried over so the write still satisfies the ten-field schema.
         approvedLeave: slip.attendanceBreakdown?.approvedLeave ?? 0,
         unapprovedLeave: slip.attendanceBreakdown?.unapprovedLeave ?? 0,
       },
@@ -219,6 +226,9 @@ export function EditSalarySlipModal({
         otherDeduction: values.otherDeduction,
         leaveDeduction: values.leaveDeduction,
       },
+      // Only read when the slip does not exist yet — an existing grant is never
+      // revoked by an edit, so a saved slip omits the field entirely.
+      ...(slip.id ? {} : { accessGranted: slip.accessGranted === true }),
     });
     if (!ok) {
       toast.error('Failed to save the salary slip');

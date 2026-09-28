@@ -364,6 +364,9 @@ export function GenerateSlipsPanel({
               {employees.map((employee, index) => {
                 const slip = slips[employee.id];
                 const result = results[employee.id];
+                // Editing a calculated row is allowed too: saving it creates the
+                // slip, so the tweak survives a reload instead of being lost.
+                const editable = slip ?? slipFor(employee);
                 const granted = grantedFor(employee.id);
                 const netSalary = slip?.salaryBreakup?.netSalary ?? result?.salaryBreakup?.netSalary;
                 const paidDays = slip?.paidDays ?? result?.paidDays;
@@ -444,10 +447,10 @@ export function GenerateSlipsPanel({
                         <Button
                           variant="outline"
                           size="sm"
-                          disabled={!slip}
+                          disabled={!editable}
                           onClick={(event) => {
                             event.stopPropagation();
-                            setEditSlip(slip ?? null);
+                            setEditSlip(editable);
                           }}
                         >
                           Edit
@@ -455,10 +458,10 @@ export function GenerateSlipsPanel({
                         <Button
                           variant="outline"
                           size="sm"
-                          disabled={!slip && !result}
+                          disabled={!editable}
                           onClick={(event) => {
                             event.stopPropagation();
-                            setPreviewSlip(slipFor(employee));
+                            setPreviewSlip(editable);
                           }}
                         >
                           Preview

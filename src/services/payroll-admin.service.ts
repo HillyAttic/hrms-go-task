@@ -451,6 +451,49 @@ export const payrollAdminService = {
     await adminDb.collection(SLIPS).doc(slipId).update(data as Record<string, unknown>);
   },
 
+  /**
+   * Writes the one slip an employee may have for a period, creating it if it does
+   * not exist yet — `generateSlips` refuses to overwrite, so without this an edit of
+   * a calculated-but-unsaved row would have nothing to persist to.
+   *
+   * It deliberately does not notify: an admin correcting a figure is not the
+   * publication event that `generateSlips` is.
+   */
+  async upsertSlip(
+    slip: Omit<
+      EmployeeSalary,
+      'id' | 'slipNumber' | 'generatedAt' | 'generatedBy' | 'accessGranted'
+    >,
+    options: { accessGranted: boolean; generatedBy: string }
+  ): Promise<EmployeeSalary> {
+    const matches = await adminDb
+      .collection(SLIPS)
+      .where('employeeId', '==', slip.employeeId)
+      .where('month', '==', slip.month)
+      .where('year', '==', slip.year)
+      .limit(1)
+      .get();
+
+    // An existing slip keeps its number, generator and access grant: only the
+    // values the editor owns are written.
+    if (!matches.empty) {
+      const existing = matches.docs[0];
+      await adminDb.collection(SLIPS).doc(existing.id).update(slip as Record<string, unknown>);
+      return { ...(existing.data() as Omit<EmployeeSalary, 'id'>), ...slip, id: existing.id };
+    }
+
+    const created: EmployeeSalary = {
+      ...slip,
+      slipNumber: buildSlipNumber(slip.year, slip.month, slip.employeeCode),
+      generatedAt: Timestamp.now(),
+      generatedBy: options.generatedBy,
+      accessGranted: options.accessGranted,
+    };
+    const ref = adminDb.collection(SLIPS).doc();
+    await ref.set(created);
+    return { ...created, id: ref.id };
+  },
+
   /* ------------------------------------------------------------- templates */
 
   async getTemplates(): Promise<SalarySlipTemplate[]> {

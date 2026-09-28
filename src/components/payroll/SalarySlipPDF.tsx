@@ -4,6 +4,25 @@ import { SalarySlipPreview } from '@/components/payroll/SalarySlipPreview';
 const RENDER_DELAY_MS = 500;
 
 /**
+ * The sheet is A4-wide, so 3× puts ~2380px across the page — about 288dpi, i.e.
+ * print-sharp. 4× would clear 300dpi but doubles the canvas memory for a
+ * difference no page can show.
+ */
+const RASTER_SCALE = 3;
+
+/**
+ * The letterhead art is a photographic gradient, which a lossless PNG stores at
+ * ~32MB for one page — undownloadable, let alone emailable. At 288dpi a JPEG at
+ * this quality is visually identical here and around a hundredth the size.
+ */
+const RASTER_TYPE = 'JPEG' as const;
+const JPEG_QUALITY = 0.92;
+
+function encodeRaster(canvas: HTMLCanvasElement): string {
+  return canvas.toDataURL('image/jpeg', JPEG_QUALITY);
+}
+
+/**
  * Rasterises the slip preview and saves it as a PDF.
  *
  * react / react-dom / html2canvas / jspdf are all imported dynamically so none of
@@ -42,7 +61,7 @@ export async function generateSalarySlipPDF(
     if (!node) throw new Error('Salary slip preview did not render');
 
     const canvas = await html2canvas(node, {
-      scale: 2,
+      scale: RASTER_SCALE,
       useCORS: true,
       allowTaint: true,
       backgroundColor: null,
@@ -51,16 +70,19 @@ export async function generateSalarySlipPDF(
     const pdf = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
-    const margin = 10;
-    const pdfWidth = pageWidth - margin * 2;
-    const maxImageHeight = pageHeight - margin * 2;
+    // The sheet *is* a full A4 page of letterhead art, so it goes down edge to
+    // edge. Insetting it by a margin shrank the whole slip and floated it in
+    // white space with the art's own margins doubled up inside.
+    const pdfWidth = pageWidth;
     const imageHeight = (canvas.height * pdfWidth) / canvas.width;
 
-    if (imageHeight <= maxImageHeight) {
-      pdf.addImage(canvas.toDataURL('image/png'), 'PNG', margin, margin, pdfWidth, imageHeight);
+    // Half a millimetre of slack: a hair over one page would otherwise spill a
+    // near-blank second page.
+    if (imageHeight <= pageHeight + 0.5) {
+      pdf.addImage(encodeRaster(canvas), RASTER_TYPE, 0, 0, pdfWidth, imageHeight);
     } else {
       // Taller than one page: slice the canvas into page-height chunks.
-      const sliceHeightPx = Math.floor((maxImageHeight * canvas.width) / pdfWidth);
+      const sliceHeightPx = Math.floor((pageHeight * canvas.width) / pdfWidth);
       let offsetPx = 0;
       let isFirstPage = true;
 
@@ -79,10 +101,10 @@ export async function generateSalarySlipPDF(
 
         if (!isFirstPage) pdf.addPage();
         pdf.addImage(
-          pageCanvas.toDataURL('image/png'),
-          'PNG',
-          margin,
-          margin,
+          encodeRaster(pageCanvas),
+          RASTER_TYPE,
+          0,
+          0,
           pdfWidth,
           (chunkPx * pdfWidth) / canvas.width
         );

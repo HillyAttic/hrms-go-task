@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, type CSSProperties } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import {
   DEFAULT_SALARY_SLIP_TEMPLATE,
@@ -12,6 +12,7 @@ import {
   type SalarySlipTemplate,
   type SalarySlipTemplateSection,
 } from '@/types/payroll.types';
+import { cn } from '@/lib/utils';
 
 export interface SalarySlipPreviewProps {
   slip: EmployeeSalary;
@@ -29,6 +30,55 @@ const CURRENCY_FORMAT = new Intl.NumberFormat('en-IN', {
 
 const DEFAULT_FOOTER_NOTE =
   'This is a computer-generated salary slip and does not require a signature.';
+
+/**
+ * The sheet is the company letterhead art itself. The source is
+ * `public/images/Letter head.pdf` — one A4 page (210.06×297.05mm) with vector
+ * logo, address block and footer — baked once to this PNG at 300dpi because a
+ * PDF cannot be drawn as an image. Re-bake with:
+ *
+ *   pdfjs page.getViewport({ scale: 300 / 72 }) -> canvas -> toDataURL('image/png')
+ *
+ * Rendered as an <img> (z-index: -1), never a CSS background. html2canvas
+ * paints background-images through resizeImage(), which pre-resamples them to
+ * the CSS box size (~794px across the sheet) *before* its ctx.scale(3) runs —
+ * so the downloaded PDF magnifies those 96dpi pixels 3× and looks soft, while
+ * the on-screen preview, drawn by the browser at device resolution, looks
+ * sharp. <img> takes renderReplacedElement() instead: drawImage() straight
+ * from the full-resolution source into the scaled canvas. The bug is
+ * format-agnostic — it hits raster and SVG backgrounds alike.
+ *
+ * The art's header band ends ~21mm down and its footer band starts ~10mm from
+ * the bottom, so the content is padded clear of both; anything drawn over them
+ * would collide with the print.
+ */
+const LETTERHEAD_URL = '/images/Letter%20head.png';
+
+const LETTERHEAD_STYLE: CSSProperties = {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  width: '100%',
+  // Pinned to exactly one A4 so an over-long slip spills onto a bare second
+  // page rather than stretching the letterhead to fit both.
+  height: '297mm',
+  zIndex: -1,
+};
+
+const PAGE_STYLE: CSSProperties = {
+  width: '210mm',
+  minHeight: '297mm',
+  fontFamily: 'Arial, sans-serif',
+  backgroundColor: '#ffffff',
+  // A stacking context of its own: with z-index: auto this white background
+  // would paint over the letterhead img's z-index: -1 and hide the art.
+  position: 'relative',
+  zIndex: 0,
+  boxSizing: 'border-box',
+  // 40mm top clears the header art — its address block ends ~26mm down — giving
+  // a clear 14mm gap before SALARY SLIP instead of the title touching the art.
+  padding: '40mm 18mm 16mm',
+};
 
 function formatCurrency(value: number | undefined): string {
   const num = Number(value);
@@ -206,30 +256,15 @@ export function SalarySlipPreview({
   const deductionsVisible = isSectionVisible('deductions');
   const showBreakdownPanel = !forPDF && !hideBreakdown;
 
+  // The hairline is a screen-only affordance for seeing where the sheet ends —
+  // rasterised into the PDF it prints a grey box inside the letterhead.
   return (
     <div
       id="salary-slip-preview"
-      className="text-black"
-      style={{
-        width: '210mm',
-        minHeight: '297mm',
-        fontFamily: 'Arial, sans-serif',
-        background: '#ffffff',
-        border: '1px solid #d1d5db',
-        boxSizing: 'border-box',
-        padding: '60px',
-      }}
+      className={cn('text-black', !forPDF && 'border border-gray-300')}
+      style={PAGE_STYLE}
     >
-      {/* Letterhead substitute — this app ships no letterhead image. */}
-      <div className="border-b border-gray-300 pb-3 mb-6 text-center">
-        <p className="text-base font-bold">{safeSettings.companyName || 'Company'}</p>
-        {safeSettings.companyAddress ? (
-          <p className="text-xs text-gray-600 mt-1 whitespace-pre-line">
-            {safeSettings.companyAddress}
-          </p>
-        ) : null}
-      </div>
-
+      <img src={LETTERHEAD_URL} alt="" style={LETTERHEAD_STYLE} />
       <div className="border-b-2 border-gray-800 pb-2 mb-6 text-center">
         <h2 className="text-xl font-bold">SALARY SLIP</h2>
         <p className="text-sm">
