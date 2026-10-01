@@ -13,7 +13,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { PhotoIcon, PlusIcon, XMarkIcon, TrashIcon, EyeIcon, ArrowUpTrayIcon, DocumentIcon } from '@heroicons/react/24/outline';
+import { PhotoIcon, PlusIcon, XMarkIcon, TrashIcon, EyeIcon, EyeSlashIcon, ArrowUpTrayIcon, DocumentIcon } from '@heroicons/react/24/outline';
 import {
   uploadEmployeeDocument,
   deleteEmployeeDocument,
@@ -135,6 +135,10 @@ interface EmployeeModalProps {
   employee?: Employee | null;
   isLoading?: boolean;
   managers?: Employee[];
+  /** Admins can reveal the employee's stored password. Threaded as a prop
+   *  rather than read from useEnhancedAuth so the modal stays renderable in
+   *  tests without an auth provider. */
+  isAdmin?: boolean;
 }
 
 /**
@@ -148,11 +152,20 @@ export function EmployeeModal({
   employee,
   isLoading = false,
   managers = [],
+  isAdmin = false,
 }: EmployeeModalProps) {
   const [activeTab, setActiveTab] = useState<'personal' | 'employment' | 'probation' | 'documents'>('personal');
   const [salaryChanges, setSalaryChanges] = useState<SalaryChangeItem[]>(employee?.salaryChanges || []);
   const [documents, setDocuments] = useState<DocumentUrls>(employee?.documents || {});
   const [salarySlipUrls, setSalarySlipUrls] = useState<DocumentValue[]>(employee?.documents?.salarySlips || ['']);
+
+  // Admin-only view of the stored password. undefined = not fetched yet,
+  // null = fetched and nothing stored (employee predates the feature).
+  const [storedPassword, setStoredPassword] = useState<
+    { password: string; updatedAt: string | null } | null | undefined
+  >(undefined);
+  const [showStoredPassword, setShowStoredPassword] = useState(false);
+  const [isRevealingPassword, setIsRevealingPassword] = useState(false);
 
   // Upload progress tracking
   const [uploadProgress, setUploadProgress] = useState<Record<string, number>>({});
@@ -268,10 +281,58 @@ export function EmployeeModal({
     setUploadProgress({});
     setUploadingField(null);
     setUploadError(null);
+    setStoredPassword(undefined);
+    setShowStoredPassword(false);
   }, [employee, reset]);
+
+  /** Fetches the stored password on demand — it is never part of the employee payload. */
+  const loadStoredPassword = async (): Promise<string | null> => {
+    if (!employee?.id || !isAdmin) return null;
+    try {
+      // Imported lazily so the Firebase client SDK stays out of this module's
+      // import graph — tests render this modal without a Firebase environment.
+      const { authenticatedFetch } = await import('@/lib/api-client');
+      const response = await authenticatedFetch(`/api/employees/${employee.id}/password`);
+      if (!response.ok) return null;
+      const data = await response.json();
+      setStoredPassword(data.password ? { password: data.password, updatedAt: data.updatedAt } : null);
+      return data.password ?? null;
+    } catch {
+      setStoredPassword(null);
+      return null;
+    }
+  };
+
+  // Resolve it up front: which control the modal shows depends on whether a
+  // stored password exists, and an admin cannot type one they were never shown.
+  useEffect(() => {
+    if (isOpen && isAdmin && employee?.id) void loadStoredPassword();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isOpen, isAdmin, employee?.id]);
+
+  const handleToggleStoredPassword = async () => {
+    if (showStoredPassword) {
+      setShowStoredPassword(false);
+      return;
+    }
+    setIsRevealingPassword(true);
+    try {
+      if (storedPassword === undefined) await loadStoredPassword();
+      setShowStoredPassword(true);
+    } finally {
+      setIsRevealingPassword(false);
+    }
+  };
 
   const handleFormSubmit = async (data: EmployeeFormData) => {
     try {
+      // An admin can read the current password off the reveal endpoint rather
+      // than retyping it on the employee's behalf.
+      let currentPassword = data.currentPassword;
+      if (isAdmin && data.password && !currentPassword) {
+        currentPassword = storedPassword?.password ?? (await loadStoredPassword()) ?? undefined;
+      }
+
       // Validate password for new employees
       if (!employee) {
         if (!data.password || data.password.length < 6) {
@@ -282,20 +343,18 @@ export function EmployeeModal({
           alert('Passwords do not match');
           return;
         }
-      } else {
-        if (data.password) {
-          if (!data.currentPassword) {
-            alert('Current password is required to change password');
-            return;
-          }
-          if (data.password.length < 6) {
-            alert('Password must be at least 6 characters');
-            return;
-          }
-          if (data.password !== data.confirmPassword) {
-            alert('Passwords do not match');
-            return;
-          }
+      } else if (data.password) {
+        if (!currentPassword) {
+          alert('Current password is required to change password');
+          return;
+        }
+        if (data.password.length < 6) {
+          alert('Password must be at least 6 characters');
+          return;
+        }
+        if (data.password !== data.confirmPassword) {
+          alert('Passwords do not match');
+          return;
         }
       }
 
@@ -308,6 +367,7 @@ export function EmployeeModal({
       // Build submission payload
       const submissionData = {
         ...data,
+        currentPassword,
         name: [data.firstName, data.lastName].filter(Boolean).join(' '),
         salaryChanges: salaryChanges.length > 0 ? salaryChanges : undefined,
         documents: {
@@ -957,7 +1017,35 @@ export function EmployeeModal({
                   {employee ? 'Change Password (optional)' : 'Set Password'}
                 </h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {employee && (
+                  {employee && (isAdmin && storedPassword !== null ? (
+                    <div className="md:col-span-2">
+                      <Label htmlFor="storedPassword">Current Password</Label>
+                      <div className="mt-1 flex items-center gap-2">
+                        <div className="flex-1 min-w-0 truncate rounded-md border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 px-3 py-2 text-sm font-mono tracking-wider text-gray-900 dark:text-gray-100">
+                          {storedPassword === undefined ? (
+                            <span className="font-sans text-gray-400">Loading…</span>
+                          ) : showStoredPassword ? (
+                            storedPassword.password
+                          ) : (
+                            '••••••••'
+                          )}
+                        </div>
+                        <button
+                          type="button"
+                          onClick={handleToggleStoredPassword}
+                          disabled={isRevealingPassword || storedPassword === undefined}
+                          className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded transition-colors disabled:opacity-50"
+                          title={showStoredPassword ? 'Hide password' : 'Reveal password'}
+                        >
+                          {showStoredPassword ? <EyeSlashIcon className="w-5 h-5" /> : <EyeIcon className="w-5 h-5" />}
+                        </button>
+                      </div>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                        Only visible to admins.
+                        {storedPassword?.updatedAt && ` Last set ${new Date(storedPassword.updatedAt).toLocaleDateString()}.`}
+                      </p>
+                    </div>
+                  ) : (
                     <div className="md:col-span-2">
                       <Input
                         id="currentPassword"
@@ -969,10 +1057,12 @@ export function EmployeeModal({
                         disabled={isLoading}
                       />
                       <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                        Required only if you want to change the password
+                        {isAdmin
+                          ? 'No password on file for this employee — enter the current one to change it.'
+                          : 'Required only if you want to change the password'}
                       </p>
                     </div>
-                  )}
+                  ))}
                   <div>
                     <Input
                       id="password"

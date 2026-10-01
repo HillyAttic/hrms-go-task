@@ -13,7 +13,6 @@ const sampleEmployees: Omit<Employee, 'id' | 'createdAt' | 'updatedAt'>[] = [
     email: 'john.smith@company.com',
     phone: '+1-555-0101',
     role: 'Employee',
-    passwordHash: btoa('password123'),
     status: 'active',
   },
   {
@@ -22,7 +21,6 @@ const sampleEmployees: Omit<Employee, 'id' | 'createdAt' | 'updatedAt'>[] = [
     email: 'sarah.johnson@company.com',
     phone: '+1-555-0102',
     role: 'Manager',
-    passwordHash: btoa('password123'),
     status: 'active',
   },
   {
@@ -31,7 +29,6 @@ const sampleEmployees: Omit<Employee, 'id' | 'createdAt' | 'updatedAt'>[] = [
     email: 'michael.chen@company.com',
     phone: '+1-555-0103',
     role: 'Employee',
-    passwordHash: btoa('password123'),
     status: 'active',
   },
   {
@@ -40,7 +37,6 @@ const sampleEmployees: Omit<Employee, 'id' | 'createdAt' | 'updatedAt'>[] = [
     email: 'emily.davis@company.com',
     phone: '+1-555-0104',
     role: 'Admin',
-    passwordHash: btoa('password123'),
     status: 'active',
   },
   {
@@ -49,7 +45,6 @@ const sampleEmployees: Omit<Employee, 'id' | 'createdAt' | 'updatedAt'>[] = [
     email: 'david.wilson@company.com',
     phone: '+1-555-0105',
     role: 'Employee',
-    passwordHash: btoa('password123'),
     status: 'on-leave',
   },
 ];

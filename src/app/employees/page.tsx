@@ -70,7 +70,7 @@ type EmployeeFormData = z.infer<typeof employeeFormSchema>;
  * Validates Requirements: 5.1, 5.2, 10.1, 10.2, 10.3, 10.4
  */
 export default function EmployeesPage() {
-  const { user } = useEnhancedAuth();
+  const { user, isAdmin } = useEnhancedAuth();
   const {
     employees,
     loading,
@@ -699,6 +699,7 @@ export default function EmployeesPage() {
           onSubmit={handleSubmitEmployee}
           employee={editingEmployee}
           isLoading={isSubmitting}
+          isAdmin={isAdmin}
         />
 
         {/* Bulk Import Modal */}

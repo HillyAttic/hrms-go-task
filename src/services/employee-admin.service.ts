@@ -6,6 +6,7 @@
 
 import { adminDb } from '@/lib/firebase-admin';
 import { UserRole } from '@/types/auth.types';
+import { storePassword } from '@/services/employee-credential.service';
 
 export interface Employee {
   id?: string; // Firebase Auth UID
@@ -306,6 +307,13 @@ export const employeeAdminService = {
         const { adminAuth } = await import('@/lib/firebase-admin');
         await adminAuth.updateUser(id, { password });
         console.log('[EmployeeAdminService] Firebase Auth password updated');
+
+        // Best-effort copy for the admin reveal — never fail the update over it.
+        try {
+          await storePassword(id, password);
+        } catch (error) {
+          console.error('[EmployeeAdminService] Failed to store encrypted password copy:', error);
+        }
       }
 
       // Update Firebase Auth email if provided
@@ -515,6 +523,20 @@ export const employeeAdminService = {
       // Set custom claims
       console.log('[EmployeeAdminService] Setting custom claims...');
       await adminAuth.setCustomUserClaims(userRecord.uid, { role: userRole });
+
+      // Best-effort copy for the admin reveal. Backgrounded behind its own
+      // catch on purpose: this whole block is inside the try whose catch
+      // deletes the Auth user, and a missing ENCRYPTION_KEY must not roll back
+      // an otherwise valid employee. The POST route passes '' when no password
+      // was supplied, hence the truthiness guard.
+      if (password) {
+        try {
+          await storePassword(userRecord.uid, password);
+        } catch (error) {
+          console.error('[EmployeeAdminService] Failed to store encrypted password copy:', error);
+        }
+      }
+
       console.log('[EmployeeAdminService] Employee created successfully:', userRecord.uid);
 
       return {

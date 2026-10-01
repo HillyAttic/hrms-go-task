@@ -23,7 +23,6 @@ export interface Employee {
   dateOfJoining?: string; // DOJ - date string
   photoURL?: string;
   role: 'Manager' | 'Admin' | 'Employee';
-  passwordHash?: string; // Hashed password, not plain text
   status: 'active' | 'on-leave' | 'resigned';
   // Manager info
   managerId?: string;
@@ -263,7 +262,7 @@ export const employeeService = {
    * Create a new employee (creates user in users collection and Firebase Auth)
    */
   async create(
-    data: Omit<Employee, 'id' | 'createdAt' | 'updatedAt' | 'passwordHash'>,
+    data: Omit<Employee, 'id' | 'createdAt' | 'updatedAt'>,
     password?: string
   ): Promise<Employee> {
     // Check if employee ID already exists
