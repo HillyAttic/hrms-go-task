@@ -7,6 +7,7 @@
 import { collection, query, where, getDocs, doc, getDoc, updateDoc, deleteDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { userManagementService } from './user-management.service';
+import { EmployeeDocuments } from '@/types/employee.types';
 import { UserRole } from '@/types/auth.types';
 
 export interface Employee {
@@ -44,18 +45,12 @@ export interface Employee {
   promotionDetails?: string;
   // Attendance settings
   requireLocationTracking?: boolean;
+  // Bank details
+  bankName?: string;
+  bankAccountNumber?: string;
+  bankIfsc?: string;
   // Documents
-  documents?: {
-    addressProof?: string | { url: string; path?: string; name?: string; size?: number; mimeType?: string };
-    cancelledCheque?: string | { url: string; path?: string; name?: string; size?: number; mimeType?: string };
-    aadhaarCard?: string | { url: string; path?: string; name?: string; size?: number; mimeType?: string };
-    panCard?: string | { url: string; path?: string; name?: string; size?: number; mimeType?: string };
-    resignationLetter?: string | { url: string; path?: string; name?: string; size?: number; mimeType?: string };
-    salarySlips?: (string | { url: string; path?: string; name?: string; size?: number; mimeType?: string })[];
-    marksheet10th?: string | { url: string; path?: string; name?: string; size?: number; mimeType?: string };
-    marksheet12th?: string | { url: string; path?: string; name?: string; size?: number; mimeType?: string };
-    degree?: string | { url: string; path?: string; name?: string; size?: number; mimeType?: string };
-  };
+  documents?: EmployeeDocuments;
   createdAt?: Date;
   updatedAt?: Date;
 }

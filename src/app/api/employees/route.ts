@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { employeeAdminService } from '@/services/employee-admin.service';
 import { z } from 'zod';
 import { handleApiError, ErrorResponses } from '@/lib/api-error-handler';
+import { bankDetailFields, documentsSchema } from '@/lib/schemas/employee.schema';
 
 // Validation schema for employee creation
 const createEmployeeSchema = z.object({
@@ -39,72 +40,10 @@ const createEmployeeSchema = z.object({
   })).optional(),
   promotionDate: z.string().optional(),
   promotionDetails: z.string().optional(),
+  // Bank details
+  ...bankDetailFields,
   // Documents
-  documents: z.object({
-    addressProof: z.union([z.string(), z.object({
-      url: z.string(),
-      path: z.string().optional(),
-      name: z.string().optional(),
-      size: z.number().optional(),
-      mimeType: z.string().optional(),
-    })]).optional(),
-    cancelledCheque: z.union([z.string(), z.object({
-      url: z.string(),
-      path: z.string().optional(),
-      name: z.string().optional(),
-      size: z.number().optional(),
-      mimeType: z.string().optional(),
-    })]).optional(),
-    aadhaarCard: z.union([z.string(), z.object({
-      url: z.string(),
-      path: z.string().optional(),
-      name: z.string().optional(),
-      size: z.number().optional(),
-      mimeType: z.string().optional(),
-    })]).optional(),
-    panCard: z.union([z.string(), z.object({
-      url: z.string(),
-      path: z.string().optional(),
-      name: z.string().optional(),
-      size: z.number().optional(),
-      mimeType: z.string().optional(),
-    })]).optional(),
-    resignationLetter: z.union([z.string(), z.object({
-      url: z.string(),
-      path: z.string().optional(),
-      name: z.string().optional(),
-      size: z.number().optional(),
-      mimeType: z.string().optional(),
-    })]).optional(),
-    salarySlips: z.array(z.union([z.string(), z.object({
-      url: z.string(),
-      path: z.string().optional(),
-      name: z.string().optional(),
-      size: z.number().optional(),
-      mimeType: z.string().optional(),
-    })])).optional(),
-    marksheet10th: z.union([z.string(), z.object({
-      url: z.string(),
-      path: z.string().optional(),
-      name: z.string().optional(),
-      size: z.number().optional(),
-      mimeType: z.string().optional(),
-    })]).optional(),
-    marksheet12th: z.union([z.string(), z.object({
-      url: z.string(),
-      path: z.string().optional(),
-      name: z.string().optional(),
-      size: z.number().optional(),
-      mimeType: z.string().optional(),
-    })]).optional(),
-    degree: z.union([z.string(), z.object({
-      url: z.string(),
-      path: z.string().optional(),
-      name: z.string().optional(),
-      size: z.number().optional(),
-      mimeType: z.string().optional(),
-    })]).optional(),
-  }).optional(),
+  documents: documentsSchema.optional(),
 });
 
 /**

@@ -7,12 +7,24 @@
 import { ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
 import { storage } from '@/lib/firebase';
 
-export interface DocumentInfo {
-  url: string;
-  path: string;
-  name: string;
-  size?: number;
-  mimeType?: string;
+import { DocumentInfo, DocumentValue } from '@/types/employee.types';
+
+export type { DocumentInfo, DocumentValue };
+
+/** Downloadable URL from a stored document value. */
+export function docUrl(doc: DocumentValue | undefined | null): string {
+  if (!doc) return '';
+  return typeof doc === 'string' ? doc : doc.url || '';
+}
+
+/** Storage path from a stored document value, when it came from an upload. */
+export function docPath(doc: DocumentValue | undefined | null): string | undefined {
+  return doc && typeof doc !== 'string' ? doc.path : undefined;
+}
+
+/** Original file name from a stored document value, when it came from an upload. */
+export function docName(doc: DocumentValue | undefined | null): string | undefined {
+  return doc && typeof doc !== 'string' ? doc.name : undefined;
 }
 
 export type DocumentField =
@@ -162,6 +174,18 @@ export function formatFileSize(bytes?: number): string {
 /**
  * Get a display label for each document field
  */
+/** Uploadable document slots, in display order. Salary slips are handled separately. */
+export const DOCUMENT_FIELDS: DocumentField[] = [
+  'addressProof',
+  'cancelledCheque',
+  'aadhaarCard',
+  'panCard',
+  'resignationLetter',
+  'marksheet10th',
+  'marksheet12th',
+  'degree',
+];
+
 export const DOCUMENT_LABELS: Record<DocumentField, string> = {
   addressProof: 'Address Proof',
   cancelledCheque: 'Cancelled Cheque / Passbook',

@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Employee } from '@/services/employee.service';
+import { EmployeeDocuments } from '@/types/employee.types';
 import {
   Dialog,
   DialogContent,
@@ -13,18 +14,21 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { PhotoIcon, PlusIcon, XMarkIcon, TrashIcon, EyeIcon, ArrowUpTrayIcon, DocumentIcon } from '@heroicons/react/24/outline';
+import { PhotoIcon, PlusIcon, XMarkIcon, EyeIcon, ArrowUpTrayIcon, DocumentIcon } from '@heroicons/react/24/outline';
 import {
   uploadEmployeeDocument,
   deleteEmployeeDocument,
-  deleteMultipleEmployeeDocuments,
   validateDocumentFile,
   viewDocument,
-  formatFileSize,
-  DOCUMENT_LABELS,
+  DOCUMENT_FIELDS,
   DocumentInfo,
-  DocumentField,
+  DocumentValue,
+  docName,
+  docPath,
+  docUrl,
 } from '@/services/employee-document.service';
+import { bankDetailFields } from '@/lib/schemas/employee.schema';
+import { DocumentUploadField } from './DocumentUploadField';
 
 // Form schema with all new fields
 const employeeFormSchema = z.object({
@@ -63,6 +67,9 @@ const employeeFormSchema = z.object({
   promotionDate: z.string().optional(),
   promotionDetails: z.string().optional(),
 
+  // Bank details
+  ...bankDetailFields,
+
   // Password
   currentPassword: z.string().optional(),
   password: z.string().optional(),
@@ -90,37 +97,7 @@ interface SalaryChangeItem {
   notes?: string;
 }
 
-type DocumentValue = string | { url: string; path?: string; name?: string; size?: number; mimeType?: string };
-
-interface DocumentUrls {
-  addressProof?: DocumentValue;
-  cancelledCheque?: DocumentValue;
-  aadhaarCard?: DocumentValue;
-  panCard?: DocumentValue;
-  resignationLetter?: DocumentValue;
-  salarySlips?: DocumentValue[];
-  marksheet10th?: DocumentValue;
-  marksheet12th?: DocumentValue;
-  degree?: DocumentValue;
-}
-
-/** Extract a downloadable URL from a document value (string or object) */
-function docUrl(doc: DocumentValue | undefined | null): string {
-  if (!doc) return '';
-  return typeof doc === 'string' ? doc : doc.url || '';
-}
-
-/** Extract the storage path from a document value */
-function docPath(doc: DocumentValue | undefined | null): string | undefined {
-  if (!doc || typeof doc === 'string') return undefined;
-  return doc.path;
-}
-
-/** Extract the file name from a document value */
-function docName(doc: DocumentValue | undefined | null): string | undefined {
-  if (!doc || typeof doc === 'string') return undefined;
-  return doc.name;
-}
+type DocumentUrls = EmployeeDocuments;
 
 /** Get a display label for a salary slip */
 function getSalarySlipName(slip: DocumentValue, index: number): string {
@@ -190,6 +167,9 @@ export function EmployeeModal({
       workAnniversary: '',
       promotionDate: '',
       promotionDetails: '',
+      bankName: '',
+      bankAccountNumber: '',
+      bankIfsc: '',
     },
   });
 
@@ -231,6 +211,9 @@ export function EmployeeModal({
         workAnniversary: employee.workAnniversary || '',
         promotionDate: employee.promotionDate || '',
         promotionDetails: employee.promotionDetails || '',
+        bankName: employee.bankName || '',
+        bankAccountNumber: employee.bankAccountNumber || '',
+        bankIfsc: employee.bankIfsc || '',
         password: '',
         confirmPassword: '',
       });
@@ -257,6 +240,9 @@ export function EmployeeModal({
         workAnniversary: '',
         promotionDate: '',
         promotionDetails: '',
+        bankName: '',
+        bankAccountNumber: '',
+        bankIfsc: '',
         password: '',
         confirmPassword: '',
       });
@@ -355,57 +341,6 @@ export function EmployeeModal({
     setDocuments({ ...documents, [field]: value });
   };
 
-  // Handle file upload for a document field
-  const handleFileUpload = async (field: string, file: File) => {
-    if (!employee?.id) {
-      setUploadError('Please save the employee first before uploading documents.');
-      return;
-    }
-    const errorMsg = validateDocumentFile(file);
-    if (errorMsg) {
-      setUploadError(errorMsg);
-      return;
-    }
-    setUploadingField(field);
-    setUploadError(null);
-    setUploadProgress((prev) => ({ ...prev, [field]: 0 }));
-
-    try {
-      const docInfo = await uploadEmployeeDocument(
-        employee.id,
-        field,
-        file,
-        (progress) => setUploadProgress((prev) => ({ ...prev, [field]: progress }))
-      );
-      // Store as object — the parent can use docUrl() to extract URL for submission
-      setDocuments((prev) => ({ ...prev, [field]: docInfo }));
-      setUploadProgress((prev) => ({ ...prev, [field]: 100 }));
-    } catch (err: any) {
-      setUploadError(`Failed to upload ${DOCUMENT_LABELS[field as DocumentField] || field}: ${err.message}`);
-    } finally {
-      setUploadingField(null);
-    }
-  };
-
-  // Handle file delete for a document field
-  const handleDeleteDocument = async (field: string) => {
-    const currentDoc = (documents as any)[field];
-    const path = docPath(currentDoc);
-    if (!path) {
-      // If no storage path, just clear the field
-      setDocuments((prev) => ({ ...prev, [field]: undefined }));
-      return;
-    }
-    if (!window.confirm(`Delete this document? This action cannot be undone.`)) return;
-
-    try {
-      await deleteEmployeeDocument(path);
-      setDocuments((prev) => ({ ...prev, [field]: undefined }));
-    } catch (err: any) {
-      setUploadError(`Failed to delete document: ${err.message}`);
-    }
-  };
-
   const addSalarySlipUrl = () => {
     setSalarySlipUrls([...salarySlipUrls, '']);
   };
@@ -462,101 +397,11 @@ export function EmployeeModal({
     removeSalarySlipUrl(index);
   };
 
-  // File input change handler - triggers upload
-  const onFileInputChange = (field: string, e: React.ChangeEvent<HTMLInputElement>) => {
+  // File input change handler for salary slips, whose index is encoded in the field name
+  const onSalarySlipFileChange = (field: string, e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      // For salary slips, we need the index encoded in field name
-      if (field.startsWith('salarySlip_')) {
-        const idx = parseInt(field.split('_')[1], 10);
-        handleSalarySlipUpload(idx, file);
-      } else {
-        handleFileUpload(field, file);
-      }
-    }
+    if (file) handleSalarySlipUpload(parseInt(field.split('_')[1], 10), file);
     e.target.value = ''; // Allow re-selecting the same file
-  };
-
-  /** Render a document upload area with current file info, view and delete */
-  const renderDocumentField = (field: DocumentField, label?: string) => {
-    const displayLabel = label || DOCUMENT_LABELS[field];
-    const currentValue = documents[field] as DocumentValue | undefined;
-    const url = docUrl(currentValue);
-    const name = docName(currentValue);
-    const path = docPath(currentValue);
-    const isUploading = uploadingField === field;
-    const progress = uploadProgress[field] || 0;
-
-    return (
-      <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
-        <Label className="text-sm font-medium mb-2 block">{displayLabel}</Label>
-
-        {/* Existing file display */}
-        {url && (
-          <div className="flex items-center justify-between bg-gray-50 dark:bg-gray-800 rounded-md px-3 py-2 mb-2">
-            <div className="flex items-center gap-2 min-w-0 flex-1">
-              <DocumentIcon className="w-5 h-5 text-blue-500 flex-shrink-0" />
-              <span className="text-sm text-gray-700 dark:text-gray-300 truncate">
-                {name || 'Uploaded document'}
-              </span>
-            </div>
-            <div className="flex items-center gap-1 flex-shrink-0 ml-2">
-              <button
-                type="button"
-                onClick={() => viewDocument(url)}
-                className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded transition-colors"
-                title="View document"
-              >
-                <EyeIcon className="w-4 h-4" />
-              </button>
-              <button
-                type="button"
-                onClick={() => handleDeleteDocument(field)}
-                className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 rounded transition-colors"
-                title="Delete document"
-              >
-                <TrashIcon className="w-4 h-4" />
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Upload progress bar */}
-        {isUploading && (
-          <div className="mb-2">
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
-              <div
-                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-            <p className="text-xs text-gray-500 mt-1">{progress}% uploaded</p>
-          </div>
-        )}
-
-        {/* Upload button */}
-        <div className="flex items-center gap-2">
-          <label className={`flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md cursor-pointer transition-colors ${
-            isUploading
-              ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-              : 'bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50'
-          }`}>
-            <ArrowUpTrayIcon className="w-4 h-4" />
-            {url ? 'Replace' : 'Upload'}
-            <input
-              type="file"
-              accept=".jpg,.jpeg,.png,.pdf"
-              className="hidden"
-              disabled={isUploading || !employee?.id}
-              onChange={(e) => onFileInputChange(field, e)}
-            />
-          </label>
-          {!employee?.id && (
-            <span className="text-xs text-amber-600">Save employee first</span>
-          )}
-        </div>
-      </div>
-    );
   };
 
   /** Render a salary slip row with upload/view/delete */
@@ -644,7 +489,7 @@ export function EmployeeModal({
             accept=".jpg,.jpeg,.png,.pdf"
             className="hidden"
             disabled={isUploading || !employee?.id}
-            onChange={(e) => onFileInputChange(`salarySlip_${index}`, e)}
+            onChange={(e) => onSalarySlipFileChange(`salarySlip_${index}`, e)}
           />
         </label>
       </div>
@@ -865,6 +710,44 @@ export function EmployeeModal({
                   {errors.status && (
                     <p className="text-sm text-red-600 mt-1">{errors.status.message}</p>
                   )}
+                </div>
+              </div>
+
+              {/* Bank Details */}
+              <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
+                <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Bank Details</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <Input
+                      id="bankName"
+                      label="Bank Name"
+                      {...register('bankName')}
+                      placeholder="e.g., HDFC Bank"
+                      error={errors.bankName?.message}
+                      disabled={isLoading}
+                    />
+                  </div>
+                  <div>
+                    <Input
+                      id="bankAccountNumber"
+                      label="Account Number"
+                      inputMode="numeric"
+                      {...register('bankAccountNumber')}
+                      placeholder="e.g., 50100123456789"
+                      error={errors.bankAccountNumber?.message}
+                      disabled={isLoading}
+                    />
+                  </div>
+                  <div>
+                    <Input
+                      id="bankIfsc"
+                      label="IFSC Code"
+                      {...register('bankIfsc', { setValueAs: (v: string) => v.toUpperCase() })}
+                      placeholder="e.g., HDFC0001234"
+                      error={errors.bankIfsc?.message}
+                      disabled={isLoading}
+                    />
+                  </div>
                 </div>
               </div>
 
@@ -1177,14 +1060,17 @@ export function EmployeeModal({
               )}
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {renderDocumentField('addressProof')}
-                {renderDocumentField('cancelledCheque')}
-                {renderDocumentField('aadhaarCard')}
-                {renderDocumentField('panCard')}
-                {renderDocumentField('resignationLetter')}
-                {renderDocumentField('marksheet10th')}
-                {renderDocumentField('marksheet12th')}
-                {renderDocumentField('degree')}
+                {DOCUMENT_FIELDS.map((field) => (
+                  <DocumentUploadField
+                    key={field}
+                    field={field}
+                    employeeId={employee?.id}
+                    value={documents[field]}
+                    onChange={(value) => setDocuments((prev) => ({ ...prev, [field]: value }))}
+                    onError={setUploadError}
+                    disabled={isLoading}
+                  />
+                ))}
               </div>
 
               {/* Salary Slips (last 3 months) */}

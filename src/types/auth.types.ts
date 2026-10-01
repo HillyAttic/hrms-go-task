@@ -1,5 +1,6 @@
 import { User } from 'firebase/auth';
 import { Timestamp } from 'firebase/firestore';
+import { EmployeeDocuments } from './employee.types';
 
 export type UserRole = 'admin' | 'employee' | 'manager';
 
@@ -27,6 +28,22 @@ export interface UserProfile {
   // Present on every employee record; absent on bare logins (self-signup, seed/test
   // accounts). Its presence is what makes an account an employee — see verifyAuthToken.
   employeeId?: string;
+  // Employee record fields, all optional for the same reason as employeeId. The owner may
+  // self-edit only the subset listed in SELF_EDITABLE_FIELDS (src/app/api/auth/profile/route.ts);
+  // salary, role, status and managerId are deliberately absent — employees never see them.
+  firstName?: string;
+  lastName?: string;
+  dateOfBirth?: string;
+  dateOfJoining?: string;
+  workAnniversary?: string;
+  probationDuration?: number;
+  probationEndDate?: string;
+  promotionDate?: string;
+  promotionDetails?: string;
+  documents?: EmployeeDocuments;
+  bankName?: string;
+  bankAccountNumber?: string;
+  bankIfsc?: string;
 }
 
 export interface AuthResult {
