@@ -137,7 +137,7 @@ export function UserInfo() {
           >
             <UserIcon />
         
-            <span className="mr-auto text-base font-medium">View profile</span>
+            <span className="mr-auto text-base font-medium">Update profile</span>
           </Link>
 
           <Link
