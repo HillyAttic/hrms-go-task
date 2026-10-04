@@ -2,6 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { withAuth, AuthenticatedRequest } from '@/lib/server-auth';
 import { adminDb, adminStorage } from '@/lib/firebase-admin';
 import { Timestamp } from 'firebase-admin/firestore';
+import { profileUpdateSchema } from '@/lib/schemas/profile.schema';
+
+/** Trim strings, and store cleared fields as null rather than empty string. */
+function normalize(value: unknown) {
+  if (typeof value !== 'string') return value;
+  return value.trim() || null;
+}
 
 /**
  * GET /api/auth/profile - Get current user profile
@@ -47,19 +54,22 @@ export const PUT = withAuth(async (request: AuthenticatedRequest) => {
     }
 
     const body = await request.json();
-    const { displayName, department, phoneNumber } = body;
 
-    if (!displayName || displayName.trim().length === 0) {
-      return NextResponse.json({ error: 'Display name is required' }, { status: 400 });
+    const parsed = profileUpdateSchema.safeParse(body);
+    if (!parsed.success) {
+      return NextResponse.json(
+        { error: 'Validation failed', fields: parsed.error.flatten().fieldErrors },
+        { status: 400 }
+      );
     }
 
-    const updates: any = {
-      displayName: displayName.trim(),
-      updatedAt: Timestamp.now(),
-    };
-
-    if (department !== undefined) updates.department = department?.trim() ?? null;
-    if (phoneNumber !== undefined) updates.phoneNumber = phoneNumber?.trim() ?? null;
+    const updates: Record<string, unknown> = { updatedAt: Timestamp.now() };
+    for (const [key, value] of Object.entries(parsed.data)) {
+      if (value === undefined) continue;
+      updates[key] = key === 'documents' ? value : normalize(value);
+    }
+    // displayName is required and already trimmed by the schema
+    updates.displayName = parsed.data.displayName.trim();
 
     await adminDb.collection('users').doc(userId).update(updates);
 

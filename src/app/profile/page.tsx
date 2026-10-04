@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { useEnhancedAuth } from "@/contexts/enhanced-auth.context";
 import { Button } from "@/components/ui/button";
 import { PencilIcon } from "@heroicons/react/24/outline";
-import ProfileEditForm from "./_components/ProfileEditForm";
+import ProfileEditForm, { ProfileInitialData } from "./_components/ProfileEditForm";
 
 export default function Page() {
   const auth = useEnhancedAuth();
@@ -44,7 +44,7 @@ export default function Page() {
     }
   }, [auth.userProfile, auth.user]);
 
-  const handleEditSuccess = (updatedData: { displayName: string; department?: string; phoneNumber?: string; photoURL?: string }) => {
+  const handleEditSuccess = (updatedData: ProfileInitialData) => {
     setData(prev => ({
       ...prev,
       name: updatedData.displayName,
@@ -68,9 +68,25 @@ export default function Page() {
         <div className="rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-dark">
           <ProfileEditForm
             initialData={{
-              displayName: data.name,
+              uid: auth.user?.uid,
+              displayName: auth.userProfile?.displayName || data.name,
+              firstName: auth.userProfile?.firstName,
+              lastName: auth.userProfile?.lastName,
+              email: data.email,
+              employeeId: auth.userProfile?.employeeId,
               department: data.department,
-              phoneNumber: "",
+              phoneNumber: auth.userProfile?.phoneNumber,
+              dateOfBirth: auth.userProfile?.dateOfBirth,
+              dateOfJoining: auth.userProfile?.dateOfJoining,
+              workAnniversary: auth.userProfile?.workAnniversary,
+              probationDuration: auth.userProfile?.probationDuration,
+              probationEndDate: auth.userProfile?.probationEndDate,
+              promotionDate: auth.userProfile?.promotionDate,
+              promotionDetails: auth.userProfile?.promotionDetails,
+              bankName: auth.userProfile?.bankName,
+              bankAccountNumber: auth.userProfile?.bankAccountNumber,
+              bankIfsc: auth.userProfile?.bankIfsc,
+              documents: auth.userProfile?.documents,
               photoURL: data.photoURL,
             }}
             onSuccess={handleEditSuccess}

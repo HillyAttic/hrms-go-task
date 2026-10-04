@@ -1,6 +1,12 @@
 rules_version = '2';
 
 // Firebase Storage Security Rules
+//
+// Every path here is used by the client SDK (firebase/storage). Uploads that go through
+// the Admin SDK — e.g. profile photos in src/app/api/auth/profile/route.ts — bypass these
+// rules entirely and need no entry. Keep this list in sync with the `storagePath` values
+// in src/services/employee-document.service.ts, src/services/form-file-upload.service.ts
+// and src/lib/task-attachment.service.ts.
 service firebase.storage {
   match /b/{bucket}/o {
 
@@ -61,6 +67,36 @@ service firebase.storage {
 
       // Only managers can delete client documents
       allow delete: if isManager();
+    }
+
+    // Employee documents (Aadhaar, PAN, cheques...). An employee may only touch their
+    // own folder; managers and admins may touch anyone's.
+    match /employees/{employeeId}/documents/{fieldName}/{fileName} {
+      allow create, update: if isAuthenticated() &&
+                              (request.auth.uid == employeeId || isManager()) &&
+                              request.resource.size < 10 * 1024 * 1024; // Max 10MB
+
+      allow read: if isAuthenticated() &&
+                     (request.auth.uid == employeeId || isManager());
+
+      allow delete: if isAuthenticated() &&
+                       (request.auth.uid == employeeId || isManager());
+    }
+
+    // Task and task-comment attachments. Access is scoped by task, which these rules
+    // cannot see (it lives in Firestore), so any signed-in user may read and attach.
+    // Who may delete a given attachment is decided by the task API before it calls
+    // deleteTaskAttachment — see src/app/api/tasks/[id]/route.ts.
+    match /task-attachments/{taskId}/{fileName} {
+      allow create, update: if isAuthenticated() &&
+                              request.resource.size < 25 * 1024 * 1024; // Max 25MB
+      allow read, delete: if isAuthenticated();
+    }
+
+    match /task-comments/{taskId}/{fileName} {
+      allow create, update: if isAuthenticated() &&
+                              request.resource.size < 25 * 1024 * 1024; // Max 25MB
+      allow read, delete: if isAuthenticated();
     }
 
     // Deny all other paths

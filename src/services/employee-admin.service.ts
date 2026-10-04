@@ -5,6 +5,7 @@
  */
 
 import { adminDb } from '@/lib/firebase-admin';
+import { EmployeeDocuments } from '@/types/employee.types';
 import { UserRole } from '@/types/auth.types';
 import { storePassword } from '@/services/employee-credential.service';
 
@@ -48,18 +49,12 @@ export interface Employee {
   promotionDetails?: string;
   // Attendance settings
   requireLocationTracking?: boolean;
+  // Bank details — editable by the employee on their own profile
+  bankName?: string;
+  bankAccountNumber?: string;
+  bankIfsc?: string;
   // Documents
-  documents?: {
-    addressProof?: string | { url: string; path?: string; name?: string; size?: number; mimeType?: string };
-    cancelledCheque?: string | { url: string; path?: string; name?: string; size?: number; mimeType?: string };
-    aadhaarCard?: string | { url: string; path?: string; name?: string; size?: number; mimeType?: string };
-    panCard?: string | { url: string; path?: string; name?: string; size?: number; mimeType?: string };
-    resignationLetter?: string | { url: string; path?: string; name?: string; size?: number; mimeType?: string };
-    salarySlips?: (string | { url: string; path?: string; name?: string; size?: number; mimeType?: string })[];
-    marksheet10th?: string | { url: string; path?: string; name?: string; size?: number; mimeType?: string };
-    marksheet12th?: string | { url: string; path?: string; name?: string; size?: number; mimeType?: string };
-    degree?: string | { url: string; path?: string; name?: string; size?: number; mimeType?: string };
-  };
+  documents?: EmployeeDocuments;
   createdAt?: Date;
   updatedAt?: Date;
 }
@@ -129,6 +124,9 @@ export const employeeAdminService = {
           promotionDate: data.promotionDate || '',
           promotionDetails: data.promotionDetails || '',
           requireLocationTracking: data.requireLocationTracking ?? true,
+          bankName: data.bankName || '',
+          bankAccountNumber: data.bankAccountNumber || '',
+          bankIfsc: data.bankIfsc || '',
           documents: data.documents || {},
           createdAt: data.createdAt?.toDate?.() || new Date(),
           updatedAt: data.updatedAt?.toDate?.() || new Date(),
@@ -218,6 +216,9 @@ export const employeeAdminService = {
         promotionDate: data.promotionDate || '',
         promotionDetails: data.promotionDetails || '',
         requireLocationTracking: data.requireLocationTracking ?? true,
+        bankName: data.bankName || '',
+        bankAccountNumber: data.bankAccountNumber || '',
+        bankIfsc: data.bankIfsc || '',
         documents: data.documents || {},
         createdAt: data.createdAt?.toDate?.() || new Date(),
         updatedAt: data.updatedAt?.toDate?.() || new Date(),
@@ -274,6 +275,9 @@ export const employeeAdminService = {
         promotionDate: data.promotionDate || '',
         promotionDetails: data.promotionDetails || '',
         requireLocationTracking: data.requireLocationTracking ?? true,
+        bankName: data.bankName || '',
+        bankAccountNumber: data.bankAccountNumber || '',
+        bankIfsc: data.bankIfsc || '',
         documents: data.documents || {},
         createdAt: data.createdAt?.toDate?.() || new Date(),
         updatedAt: data.updatedAt?.toDate?.() || new Date(),
@@ -412,6 +416,15 @@ export const employeeAdminService = {
       if (data.requireLocationTracking !== undefined) {
         updatePayload.requireLocationTracking = data.requireLocationTracking;
       }
+      if (data.bankName !== undefined) {
+        updatePayload.bankName = data.bankName;
+      }
+      if (data.bankAccountNumber !== undefined) {
+        updatePayload.bankAccountNumber = data.bankAccountNumber;
+      }
+      if (data.bankIfsc !== undefined) {
+        updatePayload.bankIfsc = data.bankIfsc;
+      }
 
       // Update user document
       await userRef.update(updatePayload);
@@ -513,6 +526,9 @@ export const employeeAdminService = {
         salaryChanges: data.salaryChanges || [],
         promotionDate: data.promotionDate || '',
         promotionDetails: data.promotionDetails || '',
+        bankName: data.bankName || '',
+        bankAccountNumber: data.bankAccountNumber || '',
+        bankIfsc: data.bankIfsc || '',
         documents: data.documents || {},
         requireLocationTracking: data.requireLocationTracking ?? true,
         createdAt: now,
