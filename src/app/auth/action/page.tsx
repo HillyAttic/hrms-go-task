@@ -6,7 +6,7 @@ import { verifyPasswordResetCode, confirmPasswordReset } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { Input } from '@/components/Form/Input';
 import { Button } from '@/components/Form/Button';
-import { Logo } from '@/components/logo';
+import Image from 'next/image';
 import Link from 'next/link';
 
 function AuthActionContent() {
@@ -78,8 +78,13 @@ function AuthActionContent() {
         <div className="flex flex-wrap items-center">
           <div className="hidden xl:block xl:w-1/2">
             <div className="px-26 py-17.5 text-center">
-              <div className="mb-8">
-                <Logo />
+              <div className="mb-8 flex justify-center">
+                <Image
+                  src="/images/logo/logo-512.png"
+                  alt="EdVentureHub logo"
+                  width={176}
+                  height={176}
+                />
               </div>
               <h2 className="mb-2 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
                 EdVentureHub Admin Dashboard
@@ -93,8 +98,7 @@ function AuthActionContent() {
           <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
               <div className="mb-8 text-center">
-                <Logo />
-                <h2 className="mt-6 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
+                <h2 className="text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
                   Verifying Reset Link
                 </h2>
                 <p className="mt-4 text-black dark:text-white">
@@ -114,8 +118,13 @@ function AuthActionContent() {
         <div className="flex flex-wrap items-center">
           <div className="hidden xl:block xl:w-1/2">
             <div className="px-26 py-17.5 text-center">
-              <div className="mb-8">
-                <Logo />
+              <div className="mb-8 flex justify-center">
+                <Image
+                  src="/images/logo/logo-512.png"
+                  alt="EdVentureHub logo"
+                  width={176}
+                  height={176}
+                />
               </div>
               <h2 className="mb-2 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
                 EdVentureHub Admin Dashboard
@@ -129,8 +138,7 @@ function AuthActionContent() {
           <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
               <div className="mb-8 text-center">
-                <Logo />
-                <h2 className="mt-6 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
+                <h2 className="text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
                   Reset Link Error
                 </h2>
               </div>
@@ -162,8 +170,13 @@ function AuthActionContent() {
       <div className="flex flex-wrap items-center">
         <div className="hidden xl:block xl:w-1/2">
           <div className="px-26 py-17.5 text-center">
-            <div className="mb-8">
-              <Logo />
+            <div className="mb-8 flex justify-center">
+              <Image
+                src="/images/logo/logo-512.png"
+                alt="EdVentureHub logo"
+                width={176}
+                height={176}
+              />
             </div>
             <h2 className="mb-2 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
               EdVentureHub Admin Dashboard
@@ -177,8 +190,7 @@ function AuthActionContent() {
         <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
           <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
             <div className="mb-8 text-center">
-              <Logo />
-              <h2 className="mt-6 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
+              <h2 className="text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
                 Reset Your Password
               </h2>
               <p className="text-black dark:text-white">

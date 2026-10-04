@@ -18,19 +18,15 @@ export default function SignIn() {
           <div className="hidden w-full p-7.5 xl:block xl:w-1/2">
             <div className="custom-gradient-1 overflow-hidden rounded-2xl px-12.5 pt-12.5 dark:!bg-dark-2 dark:bg-none">
               <Link className="mb-10 inline-block" href="/">
+                {/* logo-512.png is the same mark pre-cut to transparency; the
+                    /images/logo/*.svg files are a base64 PNG with a white
+                    matte baked in, which shows as a white box on this panel. */}
                 <Image
-                  className="hidden dark:block"
-                  src={"/images/logo/logo.svg"}
+                  src={"/images/logo/logo-512.png"}
                   alt="Logo"
                   width={176}
-                  height={32}
-                />
-                <Image
-                  className="dark:hidden"
-                  src={"/images/logo/logo-dark.svg"}
-                  alt="Logo"
-                  width={176}
-                  height={32}
+                  height={176}
+                  priority
                 />
               </Link>
               <p className="mb-3 text-xl font-medium text-dark dark:text-white">

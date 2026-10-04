@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
-import { Logo } from '@/components/logo';
 import { Input } from '@/components/Form/Input';
 import { Button } from '@/components/Form/Button';
 import { useNotification } from '@/contexts/notification.context';
@@ -110,8 +110,13 @@ const SignUpPage = () => {
       <div className="flex flex-wrap items-center">
         <div className="hidden xl:block xl:w-1/2">
           <div className="px-26 py-17.5 text-center">
-            <div className="mb-8">
-              <Logo />
+            <div className="mb-8 flex justify-center">
+              <Image
+                src="/images/logo/logo-512.png"
+                alt="EdVentureHub logo"
+                width={176}
+                height={176}
+              />
             </div>
             <h2 className="mb-2 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
               Join EdVentureHub Today
@@ -125,8 +130,7 @@ const SignUpPage = () => {
         <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
           <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
             <div className="mb-8 text-center">
-              <Logo />
-              <h2 className="mt-6 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
+              <h2 className="text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
                 Sign Up
               </h2>
               <p className="text-black dark:text-white">
