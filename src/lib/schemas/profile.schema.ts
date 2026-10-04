@@ -4,10 +4,13 @@ import { bankDetailFields, documentsSchema } from './employee.schema';
 /**
  * What a user may change on their own record via PUT /api/auth/profile.
  *
- * Anything absent here is admin-only — notably salary, role, status, managerId,
- * employeeId and email. All of those live on this same document and feed payroll and
- * access control, so a self-service request must never be able to set them. zod strips
- * unknown keys, so a client that posts one is ignored rather than trusted.
+ * Anything absent here is admin-only — notably role, status, managerId, employeeId and
+ * email. All of those live on this same document and feed payroll and access control, so
+ * a self-service request must never be able to set them. zod strips unknown keys, so a
+ * client that posts one is ignored rather than trusted.
+ *
+ * ponytail: salary is self-editable by request. It still feeds payroll, so any future
+ * approval workflow should move it back out of this schema and behind an admin route.
  */
 export const profileUpdateSchema = z.object({
   displayName: z.string().min(1, 'Display name is required').max(100),
@@ -21,6 +24,12 @@ export const profileUpdateSchema = z.object({
     .or(z.literal('')),
   dateOfBirth: z.string().optional(),
   dateOfJoining: z.string().optional(),
+  // Blank input means "leave it alone", not zero — an employee who clears the box should
+  // not silently reset their own pay to 0.
+  salary: z.preprocess(
+    (v) => (v === '' || v === null ? undefined : v),
+    z.coerce.number().nonnegative().optional()
+  ),
   workAnniversary: z.string().optional(),
   probationDuration: z.coerce.number().optional(),
   probationEndDate: z.string().optional(),

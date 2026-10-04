@@ -28,8 +28,12 @@ const profileFormSchema = z.object({
     .optional()
     .or(z.literal('')),
   dateOfBirth: z.string().optional(),
-  // Employment — employeeId and salary are admin-only, so they never appear here.
+  // Employment — employeeId is admin-only, so it never appears here.
   dateOfJoining: z.string().optional(),
+  salary: z.preprocess(
+    (v) => (v === '' || v === null ? undefined : v),
+    z.coerce.number().nonnegative().optional()
+  ),
   workAnniversary: z.string().optional(),
   // Probation & Promotion
   probationDuration: z.coerce.number().optional(),
@@ -48,7 +52,7 @@ type ProfileFormData = z.infer<typeof profileFormSchema>;
 
 /** Tab holding each field, so an invalid submit can reveal itself instead of no-op'ing. */
 const TAB_FOR_FIELD: Record<string, Tab> = {
-  dateOfJoining: 'employment', workAnniversary: 'employment',
+  dateOfJoining: 'employment', salary: 'employment', workAnniversary: 'employment',
   bankName: 'employment', bankAccountNumber: 'employment', bankIfsc: 'employment',
   currentPassword: 'employment', newPassword: 'employment', confirmPassword: 'employment',
   probationDuration: 'probation', probationEndDate: 'probation',
@@ -69,6 +73,7 @@ export interface ProfileInitialData {
   phoneNumber?: string;
   dateOfBirth?: string;
   dateOfJoining?: string;
+  salary?: number;
   workAnniversary?: string;
   probationDuration?: number;
   probationEndDate?: string;
@@ -121,6 +126,7 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
       phoneNumber: initialData.phoneNumber || '',
       dateOfBirth: initialData.dateOfBirth || '',
       dateOfJoining: initialData.dateOfJoining || '',
+      salary: initialData.salary,
       workAnniversary: initialData.workAnniversary || '',
       probationDuration: initialData.probationDuration,
       probationEndDate: initialData.probationEndDate || '',
@@ -424,6 +430,15 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
               type="date"
               label="Date of Joining (DOJ)"
               {...register('dateOfJoining')}
+              disabled={isSubmitting}
+            />
+            <Input
+              id="salary"
+              type="number"
+              label="Salary (₹)"
+              {...register('salary')}
+              placeholder="Enter salary amount"
+              error={errors.salary?.message}
               disabled={isSubmitting}
             />
             <Input

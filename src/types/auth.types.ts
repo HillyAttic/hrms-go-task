@@ -29,12 +29,13 @@ export interface UserProfile {
   // accounts). Its presence is what makes an account an employee — see verifyAuthToken.
   employeeId?: string;
   // Employee record fields, all optional for the same reason as employeeId. The owner may
-  // self-edit only the subset listed in SELF_EDITABLE_FIELDS (src/app/api/auth/profile/route.ts);
-  // salary, role, status and managerId are deliberately absent — employees never see them.
+  // self-edit only the subset listed in profileUpdateSchema (src/lib/schemas/profile.schema.ts);
+  // role, status and managerId are deliberately absent — employees never see them.
   firstName?: string;
   lastName?: string;
   dateOfBirth?: string;
   dateOfJoining?: string;
+  salary?: number;
   workAnniversary?: string;
   probationDuration?: number;
   probationEndDate?: string;

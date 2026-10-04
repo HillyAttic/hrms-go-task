@@ -78,6 +78,7 @@ export default function Page() {
               phoneNumber: auth.userProfile?.phoneNumber,
               dateOfBirth: auth.userProfile?.dateOfBirth,
               dateOfJoining: auth.userProfile?.dateOfJoining,
+              salary: auth.userProfile?.salary,
               workAnniversary: auth.userProfile?.workAnniversary,
               probationDuration: auth.userProfile?.probationDuration,
               probationEndDate: auth.userProfile?.probationEndDate,
