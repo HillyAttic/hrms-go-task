@@ -19,6 +19,7 @@ import { ManagerGuard } from '@/components/Auth/PermissionGuard';
 import { authenticatedFetch } from '@/lib/api-client';
 import { useEnhancedAuth } from '@/contexts/enhanced-auth.context';
 import { PlusIcon, ArrowUpTrayIcon, ShieldExclamationIcon } from '@heroicons/react/24/outline';
+import { toast } from 'react-toastify';
 import { z } from 'zod';
 
 // Form schema for employee data
@@ -170,7 +171,7 @@ export default function EmployeesPage() {
   const handleDeleteEmployee = async (id: string) => {
     // Your own row is your login — the API refuses it, so don't even ask
     if (id === user?.uid) {
-      alert("You can't delete your own account — that's the row you're signed in as.");
+      toast.error("You can't delete your own account — that's the row you're signed in as.");
       return;
     }
     if (window.confirm('Are you sure you want to delete this employee? This action cannot be undone.')) {
@@ -178,7 +179,7 @@ export default function EmployeesPage() {
         await deleteEmployee(id);
       } catch (error) {
         console.error('Error deleting employee:', error);
-        alert(error instanceof Error ? error.message : 'Failed to delete employee. Please try again.');
+        toast.error(error instanceof Error ? error.message : 'Failed to delete employee. Please try again.');
       }
     }
   };
@@ -189,7 +190,7 @@ export default function EmployeesPage() {
         await deactivateEmployee(id);
       } catch (error) {
         console.error('Error deactivating employee:', error);
-        alert('Failed to deactivate employee. Please try again.');
+        toast.error('Failed to deactivate employee. Please try again.');
       }
     }
   };
@@ -231,7 +232,7 @@ export default function EmployeesPage() {
           data.password || undefined,
           data.currentPassword || undefined
         );
-        alert('Employee updated successfully!');
+        toast.success('Employee updated successfully!');
       } else {
         // Create new employee
         const employeeData: any = {
@@ -259,7 +260,7 @@ export default function EmployeesPage() {
           requireLocationTracking: (data as any).requireLocationTracking ?? true,
         };
         await createEmployee(employeeData, data.password || '');
-        alert('Employee created successfully!');
+        toast.success('Employee created successfully!');
       }
 
       setIsModalOpen(false);
@@ -267,7 +268,7 @@ export default function EmployeesPage() {
     } catch (error) {
       console.error('Error submitting employee:', error);
       const errorMessage = error instanceof Error ? error.message : 'Failed to save employee';
-      alert(errorMessage);
+      toast.error(errorMessage);
       throw error;
     } finally {
       setIsSubmitting(false);
@@ -319,13 +320,13 @@ export default function EmployeesPage() {
 
       // Show results
       if (result.results.failed.length > 0) {
-        alert(
+        toast.warn(
           `Deleted ${result.results.success.length} employees.\n` +
           `Failed to delete ${result.results.failed.length} employees.\n\n` +
           `Failed IDs: ${result.results.failed.map((f: any) => f.id).join(', ')}`
         );
       } else {
-        alert(`Successfully deleted ${result.results.success.length} employees.`);
+        toast.success(`Successfully deleted ${result.results.success.length} employees.`);
       }
 
       // Refresh the employee list
@@ -334,7 +335,7 @@ export default function EmployeesPage() {
       setIsBulkDeleteDialogOpen(false);
     } catch (error) {
       console.error('Error deleting employees:', error);
-      alert('Failed to delete employees. Please try again.');
+      toast.error('Failed to delete employees. Please try again.');
     } finally {
       setIsBulkDeleting(false);
     }
@@ -381,7 +382,7 @@ export default function EmployeesPage() {
       console.log('Bulk delete all result:', result);
 
       // Show results
-      alert(
+      toast.success(
         `Deletion complete!\n\n` +
         `Successfully deleted: ${result.results.success.length}\n` +
         `Failed: ${result.results.failed.length}`
@@ -391,7 +392,7 @@ export default function EmployeesPage() {
       await refreshEmployees();
     } catch (error) {
       console.error('Error deleting all employees:', error);
-      alert('Failed to delete all employees. Please try again.');
+      toast.error('Failed to delete all employees. Please try again.');
     } finally {
       setIsBulkDeleting(false);
     }

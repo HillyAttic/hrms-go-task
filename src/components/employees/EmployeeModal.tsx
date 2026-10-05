@@ -28,6 +28,7 @@ import {
   docUrl,
 } from '@/services/employee-document.service';
 import { bankDetailFields } from '@/lib/schemas/employee.schema';
+import { toast } from 'react-toastify';
 import { DocumentUploadField } from './DocumentUploadField';
 
 // Form schema with all new fields
@@ -85,6 +86,9 @@ const TAB_FOR_FIELD: Record<string, 'employment' | 'probation'> = {
   workAnniversary: 'employment', role: 'employment', status: 'employment',
   managerId: 'employment', managerName: 'employment', requireLocationTracking: 'employment',
   currentPassword: 'employment', password: 'employment', confirmPassword: 'employment',
+  // Bank details are on the Employment tab too — without these an invalid IFSC or
+  // account number leaves the modal sitting on Personal Info with nothing visible.
+  bankName: 'employment', bankAccountNumber: 'employment', bankIfsc: 'employment',
   probationDuration: 'probation', probationEndDate: 'probation',
   promotionDate: 'probation', promotionDetails: 'probation',
 };
@@ -374,6 +378,7 @@ export function EmployeeModal({
   const handleInvalidSubmit = (fieldErrors: Record<string, any>) => {
     const firstField = Object.keys(fieldErrors)[0];
     setActiveTab(TAB_FOR_FIELD[firstField] || 'personal');
+    toast.error(fieldErrors[firstField]?.message || 'Please fix the highlighted field before saving.');
   };
 
   const handleClose = () => {
