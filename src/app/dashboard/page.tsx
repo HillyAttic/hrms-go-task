@@ -49,6 +49,7 @@ import { DelegateTaskModal } from '@/components/dashboard/DelegateTaskModal';
 import { ScheduleTaskModal } from '@/components/dashboard/ScheduleTaskModal';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { ProgressiveHydration, SkeletonLoader } from '@/components/ProgressiveHydration';
 import { useOptimizedFetch, batchFetch } from '@/hooks/use-optimized-fetch';
 import { useDeferredRender } from '@/hooks/use-deferred-value';
@@ -810,18 +811,19 @@ export default function DashboardPage() {
             </div>
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <div
-                className="bg-green-500 h-2 rounded-full transition-all"
+                className="bg-green-500 h-2 rounded-full transition-[width]"
                 style={{ width: `${completionPct}%` }}
               />
             </div>
           </div>
         )}
 
-      <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 flex flex-wrap gap-2">
+      <div className="pointer-events-auto mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 flex flex-wrap gap-2">
         {/* Clients Button - Show client count for user's assigned clients */}
         {hasClientsButton && (
           <button
             onClick={(e) => {
+              e.preventDefault();
               e.stopPropagation();
               setSelectedTaskForClients(task);
               setShowClientListModal(true);
@@ -838,6 +840,7 @@ export default function DashboardPage() {
         {hasTeamButton && (
           <button
             onClick={(e) => {
+              e.preventDefault();
               e.stopPropagation();
               setSelectedTaskForTeam(task);
               setShowTeamMembersModal(true);
@@ -854,6 +857,7 @@ export default function DashboardPage() {
         {hasPlanButton && (
           <button
             onClick={(e) => {
+              e.preventDefault();
               e.stopPropagation();
               setSelectedTaskForPlanning(task);
               setShowPlanTaskModal(true);
@@ -870,6 +874,7 @@ export default function DashboardPage() {
         {hasDelegateButton && (
           <button
             onClick={(e) => {
+              e.preventDefault();
               e.stopPropagation();
               setSelectedTaskForDelegate(task);
               setShowDelegateModal(true);
@@ -886,6 +891,7 @@ export default function DashboardPage() {
         {hasScheduleButton && (
           <button
             onClick={(e) => {
+              e.preventDefault();
               e.stopPropagation();
               setSelectedTaskForSchedule(task);
               setShowScheduleModal(true);
@@ -902,6 +908,7 @@ export default function DashboardPage() {
         {hasViewReportButton && (
           <button
             onClick={(e) => {
+              e.preventDefault();
               e.stopPropagation();
               openReportModal(task);
             }}
@@ -916,6 +923,7 @@ export default function DashboardPage() {
         {hasGoToReportsButton && (
           <button
             onClick={(e) => {
+              e.preventDefault();
               e.stopPropagation();
               router.push('/reports');
             }}
@@ -938,7 +946,7 @@ export default function DashboardPage() {
 
     // Admin/Manager see all assigned users
     if (canViewAllTasks) {
-      return task.assignedTo.map(id => userNamesCache[id] || 'Loading...').join(', ');
+      return task.assignedTo.map(id => userNamesCache[id] || 'Loading…').join(', ');
     }
 
     // Employees only see their own name if they're assigned
@@ -1218,7 +1226,7 @@ export default function DashboardPage() {
                   closeModal(); // Close modal context to show header
                   router.push('/tasks/non-recurring');
                 }}
-                className="w-full p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 transition-all text-left"
+                className="w-full p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 transition-colors text-left"
               >
                 <h4 className="font-semibold">Non-Recurring Task</h4>
                 <p className="text-sm text-gray-600">One-time task with a single due date</p>
@@ -1229,7 +1237,7 @@ export default function DashboardPage() {
                   closeModal(); // Close modal context to show header
                   router.push('/tasks/recurring');
                 }}
-                className="w-full p-4 border-2 border-gray-200 rounded-lg hover:border-green-500 transition-all text-left"
+                className="w-full p-4 border-2 border-gray-200 rounded-lg hover:border-green-500 transition-colors text-left"
               >
                 <h4 className="font-semibold">Recurring Task</h4>
                 <p className="text-sm text-gray-600">Task that repeats on a schedule</p>
@@ -1311,14 +1319,19 @@ export default function DashboardPage() {
                     return (
                       <div
                         key={task.id}
-                        className={`p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-blue-300 ${
+                        style={{ contentVisibility: 'auto', containIntrinsicSize: '0 80px' }}
+                        className={`relative p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-blue-300 ${
                           task.status === 'pending' ? 'border-yellow-200 bg-yellow-50 dark:bg-yellow-900/10' :
                           task.status === 'in-progress' ? 'border-orange-200 bg-orange-50 dark:bg-orange-900/10' :
                           'border-green-200 bg-green-50 dark:bg-green-900/10'
                         }`}
-                        onClick={() => router.push(`/tasks/${task.isRecurring ? 'recurring' : 'non-recurring'}`)}
                       >
-                        <div className="flex items-start justify-between gap-3">
+                        <Link
+                          href={`/tasks/${task.isRecurring ? 'recurring' : 'non-recurring'}`}
+                          aria-label={`Open ${task.title}`}
+                          className="absolute inset-0 rounded-lg"
+                        />
+                        <div className="pointer-events-none relative flex items-start justify-between gap-3">
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between gap-2 mb-1 flex-wrap">
                               <div className="flex items-center gap-2">
@@ -1374,7 +1387,7 @@ export default function DashboardPage() {
                               {task.createdBy && (
                                 <span className="flex items-center gap-0.5 sm:gap-1 whitespace-nowrap overflow-hidden">
                                   <span className="font-medium flex-shrink-0">Created By:</span>
-                                  <span className="text-gray-900 dark:text-white truncate">{userNamesCache[task.createdBy] || 'Loading...'}</span>
+                                  <span className="text-gray-900 dark:text-white truncate">{userNamesCache[task.createdBy] || 'Loading…'}</span>
                                 </span>
                               )}
                               {task.assignedTo && task.assignedTo.length > 0 && renderAssignedTo(task) && (
@@ -1456,10 +1469,14 @@ export default function DashboardPage() {
                     return (
                       <div
                         key={task.id}
-                        className="p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-blue-300 border-green-200 bg-green-50 dark:bg-green-900/10"
-                        onClick={() => router.push(`/tasks/${task.isRecurring ? 'recurring' : 'non-recurring'}`)}
+                        className="relative p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-blue-300 border-green-200 bg-green-50 dark:bg-green-900/10"
                       >
-                        <div className="flex items-start justify-between gap-3">
+                        <Link
+                          href={`/tasks/${task.isRecurring ? 'recurring' : 'non-recurring'}`}
+                          aria-label={`Open ${task.title}`}
+                          className="absolute inset-0 rounded-lg"
+                        />
+                        <div className="pointer-events-none relative flex items-start justify-between gap-3">
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between gap-2 mb-1 flex-wrap">
                               <div className="flex items-center gap-2">
@@ -1489,7 +1506,7 @@ export default function DashboardPage() {
                               {task.createdBy && (
                                 <span className="flex items-center gap-0.5 sm:gap-1 whitespace-nowrap overflow-hidden">
                                   <span className="font-medium flex-shrink-0">Created By:</span>
-                                  <span className="text-gray-900 dark:text-white truncate">{userNamesCache[task.createdBy] || 'Loading...'}</span>
+                                  <span className="text-gray-900 dark:text-white truncate">{userNamesCache[task.createdBy] || 'Loading…'}</span>
                                 </span>
                               )}
                               {task.assignedTo && task.assignedTo.length > 0 && renderAssignedTo(task) && (
@@ -1539,6 +1556,7 @@ export default function DashboardPage() {
                     closeModal();
                   }}
                   className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                  aria-label="Close modal"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -1562,10 +1580,14 @@ export default function DashboardPage() {
                     return (
                       <div
                         key={task.id}
-                        className="p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-blue-300 border-orange-200 bg-orange-50 dark:bg-orange-900/10"
-                        onClick={() => router.push(`/tasks/${task.isRecurring ? 'recurring' : 'non-recurring'}`)}
+                        className="relative p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-blue-300 border-orange-200 bg-orange-50 dark:bg-orange-900/10"
                       >
-                        <div className="flex items-start justify-between gap-3">
+                        <Link
+                          href={`/tasks/${task.isRecurring ? 'recurring' : 'non-recurring'}`}
+                          aria-label={`Open ${task.title}`}
+                          className="absolute inset-0 rounded-lg"
+                        />
+                        <div className="pointer-events-none relative flex items-start justify-between gap-3">
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between gap-2 mb-1 flex-wrap">
                               <div className="flex items-center gap-2">
@@ -1610,7 +1632,7 @@ export default function DashboardPage() {
                               {task.createdBy && (
                                 <span className="flex items-center gap-0.5 sm:gap-1 whitespace-nowrap overflow-hidden">
                                   <span className="font-medium flex-shrink-0">Created By:</span>
-                                  <span className="text-gray-900 dark:text-white truncate">{userNamesCache[task.createdBy] || 'Loading...'}</span>
+                                  <span className="text-gray-900 dark:text-white truncate">{userNamesCache[task.createdBy] || 'Loading…'}</span>
                                 </span>
                               )}
                               {task.assignedTo && task.assignedTo.length > 0 && renderAssignedTo(task) && (
@@ -1660,6 +1682,7 @@ export default function DashboardPage() {
                     closeModal();
                   }}
                   className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                  aria-label="Close modal"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -1683,10 +1706,14 @@ export default function DashboardPage() {
                     return (
                       <div
                         key={task.id}
-                        className="p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-blue-300 border-yellow-200 bg-yellow-50 dark:bg-yellow-900/10"
-                        onClick={() => router.push(`/tasks/${task.isRecurring ? 'recurring' : 'non-recurring'}`)}
+                        className="relative p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-blue-300 border-yellow-200 bg-yellow-50 dark:bg-yellow-900/10"
                       >
-                        <div className="flex items-start justify-between gap-3">
+                        <Link
+                          href={`/tasks/${task.isRecurring ? 'recurring' : 'non-recurring'}`}
+                          aria-label={`Open ${task.title}`}
+                          className="absolute inset-0 rounded-lg"
+                        />
+                        <div className="pointer-events-none relative flex items-start justify-between gap-3">
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between gap-2 mb-1 flex-wrap">
                               <div className="flex items-center gap-2">
@@ -1731,7 +1758,7 @@ export default function DashboardPage() {
                               {task.createdBy && (
                                 <span className="flex items-center gap-0.5 sm:gap-1 whitespace-nowrap overflow-hidden">
                                   <span className="font-medium flex-shrink-0">Created By:</span>
-                                  <span className="text-gray-900 dark:text-white truncate">{userNamesCache[task.createdBy] || 'Loading...'}</span>
+                                  <span className="text-gray-900 dark:text-white truncate">{userNamesCache[task.createdBy] || 'Loading…'}</span>
                                 </span>
                               )}
                               {task.assignedTo && task.assignedTo.length > 0 && renderAssignedTo(task) && (
@@ -1783,6 +1810,7 @@ export default function DashboardPage() {
                     closeModal();
                   }}
                   className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                  aria-label="Close modal"
                 >
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -1805,10 +1833,14 @@ export default function DashboardPage() {
                     return (
                       <div
                         key={task.id}
-                        className="p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-blue-300 border-red-200 bg-red-50 dark:bg-red-900/10"
-                        onClick={() => router.push(`/tasks/${task.isRecurring ? 'recurring' : 'non-recurring'}`)}
+                        className="relative p-4 border-2 rounded-lg transition-colors cursor-pointer hover:border-blue-300 border-red-200 bg-red-50 dark:bg-red-900/10"
                       >
-                        <div className="flex items-start justify-between gap-3">
+                        <Link
+                          href={`/tasks/${task.isRecurring ? 'recurring' : 'non-recurring'}`}
+                          aria-label={`Open ${task.title}`}
+                          className="absolute inset-0 rounded-lg"
+                        />
+                        <div className="pointer-events-none relative flex items-start justify-between gap-3">
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between gap-2 mb-1 flex-wrap">
                               <div className="flex items-center gap-2">
@@ -1846,7 +1878,7 @@ export default function DashboardPage() {
                               {task.createdBy && (
                                 <span className="flex items-center gap-0.5 sm:gap-1 whitespace-nowrap overflow-hidden">
                                   <span className="font-medium flex-shrink-0">Created By:</span>
-                                  <span className="text-gray-900 dark:text-white truncate">{userNamesCache[task.createdBy] || 'Loading...'}</span>
+                                  <span className="text-gray-900 dark:text-white truncate">{userNamesCache[task.createdBy] || 'Loading…'}</span>
                                 </span>
                               )}
                               {task.assignedTo && task.assignedTo.length > 0 && renderAssignedTo(task) && (
@@ -1984,7 +2016,7 @@ export default function DashboardPage() {
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white dark:bg-gray-dark rounded-lg p-8 flex flex-col items-center gap-3">
               <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-cyan-600" />
-              <span className="text-sm text-gray-600 dark:text-gray-400">Loading report...</span>
+              <span className="text-sm text-gray-600 dark:text-gray-400">Loading report…</span>
             </div>
           </div>
         ) : (

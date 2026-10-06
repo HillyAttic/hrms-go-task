@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Client } from '@/services/client.service';
 import { ClientCard } from './ClientCard';
 import { ClientListView } from './ClientListView';
@@ -24,19 +25,32 @@ interface ClientListProps {
  * Displays clients in a responsive grid with search, filter, and pagination
  * Validates Requirements: 1.1, 1.7, 1.10
  */
-export function ClientList({ 
-  clients, 
-  onEdit, 
-  onDelete, 
+export function ClientList(props: ClientListProps) {
+  return (
+    <Suspense fallback={null}>
+      <ClientListContent {...props} />
+    </Suspense>
+  );
+}
+
+function ClientListContent({
+  clients,
+  onEdit,
+  onDelete,
   isLoading = false,
   viewMode = 'list',
   selectedIds = new Set(),
   onToggleSelection,
   onToggleSelectAll,
 }: ClientListProps) {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive'>('all');
-  const [currentPage, setCurrentPage] = useState(1);
+  const searchParams = useSearchParams();
+  const perPageId = React.useId();
+  const statusParam = searchParams?.get('statusFilter');
+  const [searchQuery, setSearchQuery] = useState(searchParams?.get('q') ?? '');
+  const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive'>(
+    statusParam === 'active' || statusParam === 'inactive' ? statusParam : 'all'
+  );
+  const [currentPage, setCurrentPage] = useState(Number(searchParams?.get('page')) || 1);
   const [itemsPerPage, setItemsPerPage] = useState(50); // Increased from 20 to 50
 
   // Filter and search clients
@@ -72,10 +86,27 @@ export function ClientList({
   const paginatedClients = filteredClients.slice(startIndex, endIndex);
   const showPagination = filteredClients.length > itemsPerPage;
 
-  // Reset to page 1 when filters change
+  // Reset to page 1 when filters change (but keep any page restored from the URL on first render)
+  const filtersInitialized = React.useRef(false);
   React.useEffect(() => {
+    if (!filtersInitialized.current) {
+      filtersInitialized.current = true;
+      return;
+    }
     setCurrentPage(1);
   }, [searchQuery, statusFilter]);
+
+  // Keep search, status, and page in the URL so the view is shareable
+  React.useEffect(() => {
+    if (typeof window === 'undefined') return;
+    // Preserve params owned by other components on the page
+    const params = new URLSearchParams(window.location.search);
+    if (searchQuery) params.set('q', searchQuery); else params.delete('q');
+    if (statusFilter !== 'all') params.set('statusFilter', statusFilter); else params.delete('statusFilter');
+    if (currentPage > 1) params.set('page', String(currentPage)); else params.delete('page');
+    const qs = params.toString();
+    window.history.replaceState(null, '', qs ? `?${qs}` : window.location.pathname);
+  }, [searchQuery, statusFilter, currentPage]);
 
   const handlePreviousPage = () => {
     setCurrentPage(prev => Math.max(1, prev - 1));
@@ -93,7 +124,7 @@ export function ClientList({
           <div className="flex-1">
             <Input
               type="text"
-              placeholder="Search by S.No, name, email, business, phone, GSTIN, or PAN..."
+              placeholder="Search by S.No, name, email, business, phone, GSTIN, or PAN…"
               disabled
               className="pl-10"
             />
@@ -124,7 +155,9 @@ export function ClientList({
           <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
           <Input
             type="text"
-            placeholder="Search by S.No, name, email, business, phone, GSTIN, or PAN..."
+            name="clientSearch"
+            autoComplete="off"
+            placeholder="Search by S.No, name, email, business, phone, GSTIN, or PAN…"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="pl-10"
@@ -136,9 +169,10 @@ export function ClientList({
         <div className="flex items-center gap-2">
           <FunnelIcon className="w-5 h-5 text-gray-400" />
           <select
+            name="statusFilter"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as 'all' | 'active' | 'inactive')}
-            className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-dark"
+            className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 bg-white dark:bg-gray-dark"
             aria-label="Filter by status"
           >
             <option value="all">All Status</option>
@@ -152,17 +186,19 @@ export function ClientList({
       <div className="flex items-center justify-between">
         <div className="text-sm text-gray-600 dark:text-gray-400">
           Showing {startIndex + 1}-{Math.min(endIndex, filteredClients.length)} of {filteredClients.length} client{filteredClients.length !== 1 ? 's' : ''}
-          {searchQuery && ` matching "${searchQuery}"`}
+          {searchQuery && ` matching “${searchQuery}”`}
         </div>
         <div className="flex items-center gap-2">
-          <label className="text-sm text-gray-600 dark:text-gray-400">Show:</label>
+          <label htmlFor={perPageId} className="text-sm text-gray-600 dark:text-gray-400">Show:</label>
           <select
+            id={perPageId}
+            name="itemsPerPage"
             value={itemsPerPage}
             onChange={(e) => {
               setItemsPerPage(Number(e.target.value));
               setCurrentPage(1);
             }}
-            className="px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-dark"
+            className="px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 bg-white dark:bg-gray-dark"
           >
             <option value={25}>25</option>
             <option value={50}>50</option>

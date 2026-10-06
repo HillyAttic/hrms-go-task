@@ -60,7 +60,7 @@ export function LocationDiagnostic() {
       </CardHeader>
       <CardContent className="space-y-4">
         <Button onClick={runDiagnostic} disabled={loading}>
-          {loading ? 'Running Diagnostic...' : 'Check Location Data'}
+          {loading ? 'Running Diagnostic…' : 'Check Location Data'}
         </Button>
         
         {diagnosticData && (

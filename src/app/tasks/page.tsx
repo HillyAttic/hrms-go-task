@@ -143,8 +143,8 @@ export default function TasksPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div className="flex items-center justify-center h-64" role="status" aria-label="Loading…">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" aria-hidden="true"></div>
       </div>
     );
   }
@@ -155,7 +155,8 @@ export default function TasksPage() {
       <div className="flex flex-wrap gap-2">
         <button
           onClick={() => setDateFilter('all')}
-          className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 border ${
+          aria-pressed={dateFilter === 'all'}
+          className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition duration-200 border ${
             dateFilter === 'all'
               ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/25 scale-105'
               : 'bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500'
@@ -165,7 +166,8 @@ export default function TasksPage() {
         </button>
         <button
           onClick={() => setDateFilter('today')}
-          className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 border ${
+          aria-pressed={dateFilter === 'today'}
+          className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition duration-200 border ${
             dateFilter === 'today'
               ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/25 scale-105'
               : 'bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500'
@@ -175,7 +177,8 @@ export default function TasksPage() {
         </button>
         <button
           onClick={() => setDateFilter('yesterday')}
-          className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 border ${
+          aria-pressed={dateFilter === 'yesterday'}
+          className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition duration-200 border ${
             dateFilter === 'yesterday'
               ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/25 scale-105'
               : 'bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500'
@@ -185,7 +188,8 @@ export default function TasksPage() {
         </button>
         <button
           onClick={() => setDateFilter('thisWeek')}
-          className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 border ${
+          aria-pressed={dateFilter === 'thisWeek'}
+          className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition duration-200 border ${
             dateFilter === 'thisWeek'
               ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/25 scale-105'
               : 'bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500'
@@ -195,7 +199,8 @@ export default function TasksPage() {
         </button>
         <button
           onClick={() => setDateFilter('lastWeek')}
-          className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 border ${
+          aria-pressed={dateFilter === 'lastWeek'}
+          className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition duration-200 border ${
             dateFilter === 'lastWeek'
               ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/25 scale-105'
               : 'bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500'
@@ -205,7 +210,8 @@ export default function TasksPage() {
         </button>
         <button
           onClick={() => setDateFilter('thisMonth')}
-          className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 border ${
+          aria-pressed={dateFilter === 'thisMonth'}
+          className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition duration-200 border ${
             dateFilter === 'thisMonth'
               ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/25 scale-105'
               : 'bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500'
@@ -215,7 +221,8 @@ export default function TasksPage() {
         </button>
         <button
           onClick={() => setDateFilter('lastMonth')}
-          className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 border ${
+          aria-pressed={dateFilter === 'lastMonth'}
+          className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition duration-200 border ${
             dateFilter === 'lastMonth'
               ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/25 scale-105'
               : 'bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500'
@@ -225,7 +232,8 @@ export default function TasksPage() {
         </button>
         <button
           onClick={() => setDateFilter('older')}
-          className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 border ${
+          aria-pressed={dateFilter === 'older'}
+          className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition duration-200 border ${
             dateFilter === 'older'
               ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/25 scale-105'
               : 'bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500'
@@ -246,8 +254,8 @@ export default function TasksPage() {
       <div className="bg-white dark:bg-gray-dark rounded-lg shadow border border-gray-200 dark:border-gray-700">
         <div className="p-6">
           {loading ? (
-            <div className="flex items-center justify-center h-64">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400"></div>
+            <div className="flex items-center justify-center h-64" role="status" aria-label="Loading…">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 dark:border-blue-400" aria-hidden="true"></div>
             </div>
           ) : (
             <TaskList 

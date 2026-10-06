@@ -279,7 +279,7 @@ export function AttendanceCalendarModal({
 
         {/* Month Navigation + Export */}
         <div className="flex items-center justify-between gap-2 mb-4 sm:mb-6">
-          <Button variant="outline" size="sm" onClick={previousMonth} className="flex items-center gap-1 text-xs sm:text-sm">
+          <Button variant="outline" size="sm" onClick={previousMonth} className="flex items-center gap-1 text-xs sm:text-sm" aria-label="Previous month">
             <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
             <span className="hidden sm:inline">Previous</span>
           </Button>
@@ -294,7 +294,7 @@ export function AttendanceCalendarModal({
           </div>
 
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={nextMonth} className="flex items-center gap-1 text-xs sm:text-sm">
+            <Button variant="outline" size="sm" onClick={nextMonth} className="flex items-center gap-1 text-xs sm:text-sm" aria-label="Next month">
               <span className="hidden sm:inline">Next</span>
               <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
             </Button>

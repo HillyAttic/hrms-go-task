@@ -139,6 +139,7 @@ export function RosterExportModal({
   const [excludeAdmins, setExcludeAdmins] = useState(true);
   const [excludeManagers, setExcludeManagers] = useState(false);
   const [progressMsg, setProgressMsg] = useState('');
+  const [formError, setFormError] = useState('');
 
   React.useEffect(() => {
     if (isOpen) {
@@ -169,7 +170,7 @@ export function RosterExportModal({
   const buildEmployeeAttendanceData = async (): Promise<EmployeeAttendance[]> => {
     const { authenticatedFetch } = await import('@/lib/api-client');
 
-    setProgressMsg('Fetching employee data...');
+    setProgressMsg('Fetching employee data…');
 
     // Parse dates in local timezone
     const [startYear, startMonth, startDay] = startDate.split('-').map(Number);
@@ -209,7 +210,7 @@ export function RosterExportModal({
 
     console.log(`[buildEmployeeAttendanceData] After role filtering: ${filteredEmployees.length} employees`);
 
-    setProgressMsg('Building attendance data...');
+    setProgressMsg('Building attendance data…');
 
     // Build lookups
     const attMap = new Map<string, Map<string, any>>();
@@ -422,7 +423,7 @@ export function RosterExportModal({
       const coordList = [...uniqueCoords.entries()];
       for (let i = 0; i < coordList.length; i++) {
         const [key, { lat, lon }] = coordList[i];
-        setProgressMsg(`Resolving address ${i + 1} of ${coordList.length}...`);
+        setProgressMsg(`Resolving address ${i + 1} of ${coordList.length}…`);
 
         if (geocodeCache.has(key)) {
           console.log(`[Geocode] Cache hit for ${key}`);
@@ -696,16 +697,17 @@ export function RosterExportModal({
   // ═══════════════════════════════════════════════════════════════════════
   const handleExport = async () => {
     if (!startDate || !endDate) {
-      alert('Please select start and end dates');
+      setFormError('Please select start and end dates');
       return;
     }
     if (new Date(startDate) > new Date(endDate)) {
-      alert('Start date must be before end date');
+      setFormError('Start date must be before end date');
       return;
     }
 
+    setFormError('');
     setExporting(true);
-    setProgressMsg('Fetching attendance records...');
+    setProgressMsg('Fetching attendance records…');
 
     try {
       const { detailRows, geocodeErrors } = await buildExportData();
@@ -713,7 +715,7 @@ export function RosterExportModal({
       // Get the employee data that was built during buildExportData
       const employeeData = await buildEmployeeAttendanceData();
 
-      setProgressMsg(`Building ${exportFormat === 'excel' ? 'Excel' : 'PDF'} file...`);
+      setProgressMsg(`Building ${exportFormat === 'excel' ? 'Excel' : 'PDF'} file…`);
 
       if (exportFormat === 'excel') {
         exportExcel(detailRows, employeeData);
@@ -759,7 +761,7 @@ export function RosterExportModal({
                   id="export-month"
                   value={selectedMonth}
                   onChange={(e) => setSelectedMonth(Number(e.target.value))}
-                  className="w-full mt-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                  className="w-full mt-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:bg-gray-700 dark:text-white"
                 >
                   <option value="0">January</option>
                   <option value="1">February</option>
@@ -781,7 +783,7 @@ export function RosterExportModal({
                   id="export-year"
                   value={selectedYear}
                   onChange={(e) => setSelectedYear(Number(e.target.value))}
-                  className="w-full mt-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                  className="w-full mt-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:bg-gray-700 dark:text-white"
                 >
                   <option value="2024">2024</option>
                   <option value="2025">2025</option>
@@ -806,7 +808,7 @@ export function RosterExportModal({
                   type="date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full mt-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                  className="w-full mt-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:bg-gray-700 dark:text-white"
                 />
               </div>
               <div>
@@ -816,7 +818,7 @@ export function RosterExportModal({
                   type="date"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full mt-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:text-white"
+                  className="w-full mt-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 dark:bg-gray-700 dark:text-white"
                 />
               </div>
             </div>
@@ -827,8 +829,10 @@ export function RosterExportModal({
             <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Export Format</p>
             <div className="grid grid-cols-2 gap-2 sm:gap-3">
               <button
+                type="button"
                 onClick={() => setExportFormat('excel')}
-                className={`flex items-center gap-2 sm:gap-3 p-2 sm:p-3 border-2 rounded-lg transition-all ${
+                aria-pressed={exportFormat === 'excel'}
+                className={`flex items-center gap-2 sm:gap-3 p-2 sm:p-3 border-2 rounded-lg transition-colors ${
                   exportFormat === 'excel'
                     ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
                     : 'border-gray-200 dark:border-gray-600 hover:border-green-300'
@@ -841,8 +845,10 @@ export function RosterExportModal({
                 </div>
               </button>
               <button
+                type="button"
                 onClick={() => setExportFormat('pdf')}
-                className={`flex items-center gap-2 sm:gap-3 p-2 sm:p-3 border-2 rounded-lg transition-all ${
+                aria-pressed={exportFormat === 'pdf'}
+                className={`flex items-center gap-2 sm:gap-3 p-2 sm:p-3 border-2 rounded-lg transition-colors ${
                   exportFormat === 'pdf'
                     ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
                     : 'border-gray-200 dark:border-gray-600 hover:border-red-300'
@@ -924,12 +930,16 @@ export function RosterExportModal({
 
           {/* Progress */}
           {exporting && progressMsg && (
-            <div className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 rounded-lg px-3 py-2.5 sm:px-4 sm:py-3">
-              <Loader2 className="w-4 h-4 animate-spin flex-shrink-0 text-blue-600" />
+            <div role="status" aria-label="Loading…" className="flex items-center gap-2 text-xs sm:text-sm text-gray-600 dark:text-gray-400 bg-gray-50 dark:bg-gray-700 rounded-lg px-3 py-2.5 sm:px-4 sm:py-3">
+              <Loader2 aria-hidden="true" className="w-4 h-4 animate-spin flex-shrink-0 text-blue-600" />
               <span className="break-words">{progressMsg}</span>
             </div>
           )}
         </div>
+
+        {formError && (
+          <p role="alert" className="text-sm text-red-600 px-1">{formError}</p>
+        )}
 
         <DialogFooter className="flex-col sm:flex-row gap-2 sm:gap-0">
           <Button 
@@ -951,8 +961,8 @@ export function RosterExportModal({
           >
             {exporting ? (
               <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                <span className="text-sm">Exporting...</span>
+                <Loader2 aria-hidden="true" className="w-4 h-4 mr-2 animate-spin" />
+                <span className="text-sm">Exporting…</span>
               </>
             ) : (
               <>

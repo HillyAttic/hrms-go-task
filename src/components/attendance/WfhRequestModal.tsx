@@ -116,7 +116,7 @@ export function WfhRequestModal({
               Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting || loading} className="text-white">
-              {isSubmitting || loading ? 'Submitting...' : 'Submit WFH Request'}
+              {isSubmitting || loading ? 'Submitting…' : 'Submit WFH Request'}
             </Button>
           </div>
         </form>

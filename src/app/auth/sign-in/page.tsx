@@ -45,7 +45,7 @@ export default function SignIn() {
               <div className="mt-31">
                 <Image
                   src={"/images/grids/grid-02.svg"}
-                  alt="Logo"
+                  alt=""
                   width={405}
                   height={325}
                   className="mx-auto dark:opacity-30"

@@ -8,7 +8,7 @@ import { Card } from '@/components/ui/card';
 
 export const UnauthorizedPage: React.FC = () => {
   const router = useRouter();
-  const { user, getRoleDisplayName } = useAuthEnhanced();
+  const { user, getRoleDisplayName, signOut } = useAuthEnhanced();
 
   const handleGoBack = () => {
     router.back();
@@ -18,7 +18,8 @@ export const UnauthorizedPage: React.FC = () => {
     router.push('/dashboard');
   };
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
+    await signOut();
     router.push('/auth/sign-in');
   };
 
@@ -34,6 +35,8 @@ export const UnauthorizedPage: React.FC = () => {
               stroke="currentColor"
               viewBox="0 0 24 24"
               xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              focusable="false"
             >
               <path
                 strokeLinecap="round"
@@ -44,12 +47,12 @@ export const UnauthorizedPage: React.FC = () => {
             </svg>
           </div>
 
-          <h2 className="mt-6 text-3xl font-extrabold text-gray-900 dark:text-white">
+          <h1 className="mt-6 text-3xl font-extrabold text-gray-900 dark:text-white">
             Access Denied
-          </h2>
-          
+          </h1>
+
           <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-            You don't have permission to access this page.
+            You don’t have permission to access this page.
           </p>
 
           {user && (

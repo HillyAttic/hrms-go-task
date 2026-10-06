@@ -1,9 +1,10 @@
   'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useId } from 'react';
+import Link from 'next/link';
 import { useModal } from '@/contexts/modal-context';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { GeolocationAttendanceTracker, LeaveRequestModal, WfhRequestModal } from '@/components/attendance';
 import { History, ArrowRight, Calendar as CalendarIcon, CheckCircle, XCircle, Clock as ClockIconBox } from 'lucide-react';
@@ -15,7 +16,8 @@ import { toast } from 'react-toastify';
 
 export default function AttendancePage() {
   const { user, userProfile, loading: authLoading, isManager, isAdmin } = useEnhancedAuth();
-  const searchParams = typeof window !== 'undefined' ? new URLSearchParams(window.location.search) : null;
+  const approvalReasonId = useId();
+  const rejectReasonId = useId();
 
   // Leave State
   const [showLeaveModal, setShowLeaveModal] = useState(false);
@@ -29,30 +31,34 @@ export default function AttendancePage() {
   const [showApproveModal, setShowApproveModal] = useState(false);
   const [approvalReason, setApprovalReason] = useState('');
   const [selectedLeaveRequest, setSelectedLeaveRequest] = useState<LeaveRequest | null>(null);
+  const [showRejectModal, setShowRejectModal] = useState(false);
+  const [rejectReason, setRejectReason] = useState('');
+  const [selectedRejectRequest, setSelectedRejectRequest] = useState<LeaveRequest | null>(null);
 
   const { openModal, closeModal } = useModal();
   useEffect(() => {
-    if (showApproveModal) openModal();
+    if (showApproveModal || showRejectModal) openModal();
     else closeModal();
-  }, [showApproveModal, openModal, closeModal]);
+  }, [showApproveModal, showRejectModal, openModal, closeModal]);
 
   // WFH State
   const [showWfhModal, setShowWfhModal] = useState(false);
   const [myWfhRequests, setMyWfhRequests] = useState<LeaveRequest[]>([]);
   const [pendingWfhRequests, setPendingWfhRequests] = useState<LeaveRequest[]>([]);
 
-  // Auto-open leave modal if query parameter is present
+  // Auto-open leave modal if query parameter is present (client-only, avoids hydration mismatch)
   useEffect(() => {
-    if (searchParams?.get('openLeaveModal') === 'true') {
+    const searchParams = new URLSearchParams(window.location.search);
+    if (searchParams.get('openLeaveModal') === 'true') {
       setShowLeaveModal(true);
       // Clean up URL
       window.history.replaceState({}, '', '/attendance');
     }
-    if (searchParams?.get('openWfhModal') === 'true') {
+    if (searchParams.get('openWfhModal') === 'true') {
       setShowWfhModal(true);
       window.history.replaceState({}, '', '/attendance');
     }
-  }, [searchParams]);
+  }, []);
 
   const fetchData = useCallback(async () => {
     if (!user) return;
@@ -184,11 +190,14 @@ export default function AttendancePage() {
     }
   };
 
-  const handleRejectLeave = async (id: string) => {
-    if (!user) return;
-    // For simplicity, using a prompt. ideally a modal
-    const reason = window.prompt('Enter rejection reason:');
-    if (!reason) return;
+  const openRejectModal = (request: LeaveRequest) => {
+    setSelectedRejectRequest(request);
+    setRejectReason('');
+    setShowRejectModal(true);
+  };
+
+  const handleRejectLeave = async (id: string, reason: string) => {
+    if (!user || !reason.trim()) return;
 
     try {
       setProcessingId(id);
@@ -208,6 +217,9 @@ export default function AttendancePage() {
 
       toast.success('Leave rejected');
       fetchData();
+      setShowRejectModal(false);
+      setRejectReason('');
+      setSelectedRejectRequest(null);
     } catch (error) {
       console.error('Error rejecting leave:', error);
       toast.error('Failed to reject leave');
@@ -250,12 +262,12 @@ export default function AttendancePage() {
           </div>
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Attendance Access Required</h2>
           <p className="text-gray-600 dark:text-gray-400 mb-6">Please sign in to access the attendance tracking system.</p>
-          <Button
-            onClick={() => window.location.href = '/auth/signin'}
-            className="bg-blue-600 hover:bg-blue-700 text-white"
+          <Link
+            href="/auth/signin"
+            className={buttonVariants({ className: 'bg-blue-600 hover:bg-blue-700 text-white' })}
           >
             Sign In to Continue
-          </Button>
+          </Link>
         </Card>
       </div>
     );
@@ -293,14 +305,14 @@ export default function AttendancePage() {
             Apply WFH
           </Button>
 
-          <Button
-            onClick={() => window.location.href = '/attendance/history'}
-            variant="outline"
-            className="flex items-center gap-2"
+          <Link
+            href="/attendance/history"
+            className={buttonVariants({ variant: 'outline', className: 'flex items-center gap-2' })}
+            aria-label="View attendance history"
           >
-            <History className="h-4 w-4" />
+            <History aria-hidden="true" className="h-4 w-4" />
             <span className="hidden sm:inline">History</span>
-          </Button>
+          </Link>
         </div>
       </div>
 
@@ -333,7 +345,7 @@ export default function AttendancePage() {
                       <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                         <span className="font-medium">{request.duration} days</span> • {request.startDate instanceof Date ? request.startDate.toLocaleDateString() : new Date(request.startDate).toLocaleDateString()} to {request.endDate instanceof Date ? request.endDate.toLocaleDateString() : new Date(request.endDate).toLocaleDateString()}
                       </p>
-                      <p className="text-sm mt-2 italic text-gray-700 dark:text-gray-300">"{request.reason}"</p>
+                      <p className="text-sm mt-2 italic text-gray-700 dark:text-gray-300">“{request.reason}”</p>
                     </div>
                     <div className="flex gap-2 w-full sm:w-auto">
                       <Button
@@ -360,7 +372,7 @@ export default function AttendancePage() {
                         size="sm"
                         variant="destructive"
                         className="flex-1 sm:flex-none"
-                        onClick={() => handleRejectLeave(request.id)}
+                        onClick={() => openRejectModal(request)}
                         disabled={processingId === request.id}
                       >
                         <XCircle className="h-4 w-4 mr-1" />
@@ -395,7 +407,7 @@ export default function AttendancePage() {
                       <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
                         <span className="font-medium">{request.duration} days</span> • {request.startDate instanceof Date ? request.startDate.toLocaleDateString() : new Date(request.startDate).toLocaleDateString()} to {request.endDate instanceof Date ? request.endDate.toLocaleDateString() : new Date(request.endDate).toLocaleDateString()}
                       </p>
-                      <p className="text-sm mt-2 italic text-gray-700 dark:text-gray-300">"{request.reason}"</p>
+                      <p className="text-sm mt-2 italic text-gray-700 dark:text-gray-300">“{request.reason}”</p>
                     </div>
                     <div className="flex gap-2 w-full sm:w-auto">
                       <Button
@@ -422,7 +434,7 @@ export default function AttendancePage() {
                         size="sm"
                         variant="destructive"
                         className="flex-1 sm:flex-none"
-                        onClick={() => handleRejectLeave(request.id)}
+                        onClick={() => openRejectModal(request)}
                         disabled={processingId === request.id}
                       >
                         <XCircle className="h-4 w-4 mr-1" />
@@ -460,11 +472,11 @@ export default function AttendancePage() {
                           <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-100">Half Day</Badge>
                         )}
                       </div>
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
                         <CalendarIcon className="h-3 w-3" />
                         {request.startDate instanceof Date ? request.startDate.toLocaleDateString() : new Date(request.startDate).toLocaleDateString()} - {request.endDate instanceof Date ? request.endDate.toLocaleDateString() : new Date(request.endDate).toLocaleDateString()}
                       </div>
-                      <p className="text-xs text-muted-foreground mt-1">Duration: {request.duration} days</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Duration: {request.duration} days</p>
 
                       {/* Show rejection reason if rejected */}
                       {request.status === 'rejected' && request.rejectionReason && (
@@ -540,11 +552,11 @@ export default function AttendancePage() {
                         <span className="font-medium text-lg">WFH</span>
                         {getStatusBadge(request.status)}
                       </div>
-                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
                         <CalendarIcon className="h-3 w-3" />
                         {request.startDate instanceof Date ? request.startDate.toLocaleDateString() : new Date(request.startDate).toLocaleDateString()} - {request.endDate instanceof Date ? request.endDate.toLocaleDateString() : new Date(request.endDate).toLocaleDateString()}
                       </div>
-                      <p className="text-xs text-muted-foreground mt-1">Duration: {request.duration} days</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Duration: {request.duration} days</p>
 
                       {/* Show rejection reason if rejected */}
                       {request.status === 'rejected' && request.rejectionReason && (
@@ -672,13 +684,14 @@ export default function AttendancePage() {
                 {selectedLeaveRequest.startDate instanceof Date ? selectedLeaveRequest.startDate.toLocaleDateString() : new Date(selectedLeaveRequest.startDate).toLocaleDateString()} to {selectedLeaveRequest.endDate instanceof Date ? selectedLeaveRequest.endDate.toLocaleDateString() : new Date(selectedLeaveRequest.endDate).toLocaleDateString()}
               </p>
             </div>
-            <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+            <label htmlFor={approvalReasonId} className="block text-sm text-gray-600 dark:text-gray-400 mb-2">
               Add an optional note for the employee (optional):
-            </p>
+            </label>
             <textarea
+              id={approvalReasonId}
               value={approvalReason}
               onChange={(e) => setApprovalReason(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-green-500 dark:bg-gray-700 dark:text-white"
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus-visible:ring-2 focus-visible:ring-green-500 dark:bg-gray-700 dark:text-white"
               rows={3}
               placeholder="e.g., Approved. Enjoy your time off!"
             />
@@ -688,13 +701,58 @@ export default function AttendancePage() {
                 className="flex-1 bg-green-600 hover:bg-green-700 text-white"
                 disabled={processingId === selectedLeaveRequest.id}
               >
-                {processingId === selectedLeaveRequest.id ? 'Approving...' : 'Approve'}
+                {processingId === selectedLeaveRequest.id ? 'Approving…' : 'Approve'}
               </Button>
               <Button
                 onClick={() => {
                   setShowApproveModal(false);
                   setApprovalReason('');
                   setSelectedLeaveRequest(null);
+                }}
+                variant="outline"
+                className="flex-1"
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Reject Leave Request Modal */}
+      {showRejectModal && selectedRejectRequest && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div role="dialog" aria-modal="true" aria-labelledby={`${rejectReasonId}-title`} className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full">
+            <h3 id={`${rejectReasonId}-title`} className="text-lg font-bold mb-4 text-gray-900 dark:text-white">Reject Leave Request</h3>
+            <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                <span className="font-semibold">{selectedRejectRequest.employeeName}</span> - {selectedRejectRequest.leaveTypeName}
+              </p>
+            </div>
+            <label htmlFor={rejectReasonId} className="block text-sm text-gray-600 dark:text-gray-400 mb-2">
+              Rejection reason
+            </label>
+            <textarea
+              id={rejectReasonId}
+              value={rejectReason}
+              onChange={(e) => setRejectReason(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus-visible:ring-2 focus-visible:ring-red-500 dark:bg-gray-700 dark:text-white"
+              rows={3}
+              placeholder="Enter rejection reason"
+            />
+            <div className="flex gap-2 mt-4">
+              <Button
+                onClick={() => handleRejectLeave(selectedRejectRequest.id, rejectReason)}
+                className="flex-1 bg-red-600 hover:bg-red-700 text-white"
+                disabled={processingId === selectedRejectRequest.id || !rejectReason.trim()}
+              >
+                {processingId === selectedRejectRequest.id ? 'Rejecting…' : 'Reject'}
+              </Button>
+              <Button
+                onClick={() => {
+                  setShowRejectModal(false);
+                  setRejectReason('');
+                  setSelectedRejectRequest(null);
                 }}
                 variant="outline"
                 className="flex-1"

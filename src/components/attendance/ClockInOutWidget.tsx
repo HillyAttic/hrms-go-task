@@ -98,7 +98,7 @@ export function ClockInOutWidget({
         {/* Status Display */}
         <div className="text-center">
           <div className="flex items-center justify-center gap-2 mb-2">
-            <Clock className="h-5 w-5 text-muted-foreground" />
+            <Clock className="h-5 w-5 text-gray-500 dark:text-gray-400" />
             <h3 className="text-lg font-semibold">
               {currentStatus?.isClockedIn
                 ? currentStatus.isOnBreak
@@ -113,11 +113,11 @@ export function ClockInOutWidget({
               <div className="text-4xl font-bold text-primary">
                 {formatDuration(elapsedTime)}
               </div>
-              <div className="text-sm text-muted-foreground">
+              <div className="text-sm text-gray-500 dark:text-gray-400">
                 Work Time
               </div>
               {breakTime > 0 && (
-                <div className="text-sm text-muted-foreground">
+                <div className="text-sm text-gray-500 dark:text-gray-400">
                   Break: {formatDuration(breakTime)}
                 </div>
               )}
@@ -182,7 +182,7 @@ export function ClockInOutWidget({
 
         {/* Clock In Time */}
         {currentStatus?.clockInTime && (
-          <div className="text-center text-sm text-muted-foreground">
+          <div className="text-center text-sm text-gray-500 dark:text-gray-400">
             Clocked in at{' '}
             {currentStatus.clockInTime.toLocaleTimeString('en-US', {
               hour: '2-digit',

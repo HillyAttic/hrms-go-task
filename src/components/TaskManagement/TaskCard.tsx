@@ -33,23 +33,26 @@ const getPriorityColor = (priority: TaskPriority) => {
   }
 };
 
+const dateFormatter = new Intl.DateTimeFormat(undefined, {
+  month: 'short',
+  day: 'numeric',
+});
+
 export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
   const formatDate = (date?: Date) => {
     if (!date) return '';
-    return new Date(date).toLocaleDateString('en-US', {
-      month: 'short',
-      day: 'numeric',
-    });
+    return dateFormatter.format(new Date(date));
   };
 
   return (
-    <div 
-      className="bg-white dark:bg-boxdark rounded-lg border border-stroke dark:border-strokedark p-4 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer transform hover:-translate-y-0.5"
+    <button
+      type="button"
+      className="w-full text-left bg-white dark:bg-gray-800 rounded-lg border border-stroke dark:border-gray-700 p-4 shadow-sm hover:shadow-md transition duration-200 cursor-pointer transform hover:-translate-y-0.5"
       onClick={onClick}
     >
-      <div className="flex justify-between items-start mb-2">
-        <h3 className="font-semibold text-black dark:text-white truncate">{task.title}</h3>
-        <span className={`text-xs px-2 py-1 rounded-full ${getPriorityColor(task.priority)}`}>
+      <div className="flex justify-between items-start mb-2 gap-2 min-w-0">
+        <span className="block font-semibold text-black dark:text-white truncate min-w-0">{task.title}</span>
+        <span className={`text-xs px-2 py-1 rounded-full shrink-0 ${getPriorityColor(task.priority)}`}>
           {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
         </span>
       </div>
@@ -81,10 +84,13 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
         </div>
         
         <div className="flex items-center text-gray-500 dark:text-gray-400">
-          <span className="mr-1">💬</span>
-          <span className="text-xs">{task.commentCount}</span>
+          <span className="mr-1" aria-hidden="true">💬</span>
+          <span className="text-xs tabular-nums">
+            {task.commentCount}
+            <span className="sr-only"> comments</span>
+          </span>
         </div>
       </div>
-    </div>
+    </button>
   );
 };

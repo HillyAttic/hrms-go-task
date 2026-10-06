@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useId } from 'react';
 
 type SortOption = 'dueDate' | 'priority' | 'title' | 'status' | 'createdAt';
 type SortOrder = 'asc' | 'desc';
@@ -10,6 +10,7 @@ interface SortComponentProps {
 export const SortComponent: React.FC<SortComponentProps> = ({ onSortChange }) => {
   const [selectedOption, setSelectedOption] = useState<SortOption>('dueDate');
   const [sortOrder, setSortOrder] = useState<SortOrder>('asc');
+  const sortById = useId();
 
   const handleOptionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const option = e.target.value as SortOption;
@@ -26,13 +27,15 @@ export const SortComponent: React.FC<SortComponentProps> = ({ onSortChange }) =>
   return (
     <div className="flex items-center space-x-4 mb-6">
       <div>
-        <label className="block text-sm font-medium text-black dark:text-white mb-2">
+        <label htmlFor={sortById} className="block text-sm font-medium text-black dark:text-white mb-2">
           Sort By
         </label>
         <select
+          id={sortById}
+          name="sortBy"
           value={selectedOption}
           onChange={handleOptionChange}
-          className="rounded-lg border border-stroke bg-transparent py-2 px-4 text-black dark:text-white outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input"
+          className="rounded-lg border border-stroke bg-transparent py-2 px-4 text-black dark:text-white outline-none transition focus-visible:border-primary dark:border-gray-700 dark:bg-gray-800"
         >
           <option value="dueDate">Due Date</option>
           <option value="priority">Priority</option>
@@ -43,16 +46,18 @@ export const SortComponent: React.FC<SortComponentProps> = ({ onSortChange }) =>
       </div>
       
       <div>
-        <label className="block text-sm font-medium text-black dark:text-white mb-2">
+        <span className="block text-sm font-medium text-black dark:text-white mb-2">
           Order
-        </label>
+        </span>
         <div className="flex items-center">
           <button
             onClick={handleOrderChange}
+            aria-pressed={sortOrder === 'desc'}
+            aria-label={`Order: ${sortOrder === 'asc' ? 'Ascending' : 'Descending'}`}
             className={`px-4 py-2 rounded-lg ${
               sortOrder === 'asc'
                 ? 'bg-primary text-white'
-                : 'bg-gray-200 dark:bg-boxdark-2 text-black dark:text-white'
+                : 'bg-gray-200 dark:bg-gray-800 text-black dark:text-white'
             }`}
           >
             {sortOrder === 'asc' ? 'Ascending' : 'Descending'}

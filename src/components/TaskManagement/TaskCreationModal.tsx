@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useId, useRef } from 'react';
 import { Task, TaskStatus, TaskPriority } from '@/types/task.types';
 import { useNotification } from '@/contexts/notification.context';
 import { useModal } from '@/contexts/modal-context';
@@ -27,6 +27,37 @@ export const TaskCreationModal: React.FC<TaskCreationModalProps> = ({
     if (isOpen) openModal();
     else closeModal();
   }, [isOpen, openModal, closeModal]);
+
+  const titleId = useId();
+  const titleInputId = useId();
+  const descriptionInputId = useId();
+  const dueDateInputId = useId();
+  const categoryInputId = useId();
+  const assigneeIdBase = useId();
+  const statusInputId = useId();
+  const priorityInputId = useId();
+  const previouslyFocused = useRef<HTMLElement | null>(null);
+  const onCloseRef = useRef(onClose);
+  const titleInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
+  // Escape-to-close, initial focus, and focus restoration for the modal
+  useEffect(() => {
+    if (!isOpen) return;
+    previouslyFocused.current = document.activeElement as HTMLElement | null;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onCloseRef.current();
+    };
+    document.addEventListener('keydown', onKey);
+    titleInputRef.current?.focus();
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      previouslyFocused.current?.focus?.();
+    };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -81,19 +112,23 @@ export const TaskCreationModal: React.FC<TaskCreationModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div 
-        className="bg-white dark:bg-boxdark rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto overscroll-contain"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-6">
           {/* Header */}
           <div className="flex justify-between items-start mb-4">
-            <h2 className="text-2xl font-bold text-black dark:text-white">Create New Task</h2>
+            <h2 id={titleId} className="text-2xl font-bold text-black dark:text-white">Create New Task</h2>
             <button
               onClick={onClose}
+              aria-label="Close dialog"
               className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
               </svg>
             </button>
@@ -102,72 +137,87 @@ export const TaskCreationModal: React.FC<TaskCreationModalProps> = ({
           <form onSubmit={handleSubmit}>
             {/* Title */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-black dark:text-white mb-2">
+              <label htmlFor={titleInputId} className="block text-sm font-medium text-black dark:text-white mb-2">
                 Title *
               </label>
               <input
+                ref={titleInputRef}
+                id={titleInputId}
                 type="text"
+                name="title"
+                autoComplete="off"
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="w-full p-3 bg-gray-50 dark:bg-boxdark-2 border border-stroke dark:border-strokedark rounded-lg text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="Enter task title"
+                className="w-full p-3 bg-gray-50 dark:bg-gray-800 border border-stroke dark:border-gray-700 rounded-lg text-black dark:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                placeholder="e.g. Review Q3 compliance report…"
               />
             </div>
 
             {/* Description */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-black dark:text-white mb-2">
+              <label htmlFor={descriptionInputId} className="block text-sm font-medium text-black dark:text-white mb-2">
                 Description
               </label>
               <textarea
+                id={descriptionInputId}
+                name="description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 rows={3}
-                className="w-full p-3 bg-gray-50 dark:bg-boxdark-2 border border-stroke dark:border-strokedark rounded-lg text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="Enter task description"
+                className="w-full p-3 bg-gray-50 dark:bg-gray-800 border border-stroke dark:border-gray-700 rounded-lg text-black dark:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                placeholder="Enter task description…"
               />
             </div>
 
             {/* Due Date */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-black dark:text-white mb-2">
+              <label htmlFor={dueDateInputId} className="block text-sm font-medium text-black dark:text-white mb-2">
                 Due Date
               </label>
               <input
+                id={dueDateInputId}
                 type="date"
+                name="dueDate"
                 value={dueDate}
                 onChange={(e) => setDueDate(e.target.value)}
-                className="w-full p-3 bg-gray-50 dark:bg-boxdark-2 border border-stroke dark:border-strokedark rounded-lg text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full p-3 bg-gray-50 dark:bg-gray-800 border border-stroke dark:border-gray-700 rounded-lg text-black dark:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
               />
             </div>
 
             {/* Category */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-black dark:text-white mb-2">
+              <label htmlFor={categoryInputId} className="block text-sm font-medium text-black dark:text-white mb-2">
                 Category
               </label>
               <input
+                id={categoryInputId}
                 type="text"
+                name="category"
+                autoComplete="off"
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
-                className="w-full p-3 bg-gray-50 dark:bg-boxdark-2 border border-stroke dark:border-strokedark rounded-lg text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="Enter category (optional)"
+                className="w-full p-3 bg-gray-50 dark:bg-gray-800 border border-stroke dark:border-gray-700 rounded-lg text-black dark:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                placeholder="Enter category (optional)…"
               />
             </div>
 
             {/* Assignees */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-black dark:text-white mb-2">
+              <label htmlFor={`${assigneeIdBase}-0`} className="block text-sm font-medium text-black dark:text-white mb-2">
                 Assign To
               </label>
               {assignedUsers.map((assignee, index) => (
                 <div key={index} className="flex items-center mb-2">
                   <input
+                    id={`${assigneeIdBase}-${index}`}
                     type="text"
+                    name={`assignee-${index}`}
+                    autoComplete="off"
+                    aria-label={`Assignee ${index + 1}`}
                     value={assignee}
                     onChange={(e) => updateAssignee(index, e.target.value)}
-                    className="flex-1 p-3 bg-gray-50 dark:bg-boxdark-2 border border-stroke dark:border-strokedark rounded-lg text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
-                    placeholder="Enter assignee name"
+                    className="flex-1 p-3 bg-gray-50 dark:bg-gray-800 border border-stroke dark:border-gray-700 rounded-lg text-black dark:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                    placeholder="Enter assignee name…"
                   />
                   {assignedUsers.length > 1 && (
                     <button
@@ -183,7 +233,7 @@ export const TaskCreationModal: React.FC<TaskCreationModalProps> = ({
               <button
                 type="button"
                 onClick={addAssigneeField}
-                className="mt-2 px-4 py-2 bg-gray-200 dark:bg-boxdark-2 text-black dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-boxdark"
+                className="mt-2 px-4 py-2 bg-gray-200 dark:bg-gray-800 text-black dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700"
               >
                 + Add Assignee
               </button>
@@ -192,13 +242,15 @@ export const TaskCreationModal: React.FC<TaskCreationModalProps> = ({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
               {/* Status */}
               <div>
-                <label className="block text-sm font-medium text-black dark:text-white mb-2">
+                <label htmlFor={statusInputId} className="block text-sm font-medium text-black dark:text-white mb-2">
                   Status
                 </label>
                 <select
+                  id={statusInputId}
+                  name="status"
                   value={status}
                   onChange={(e) => setStatus(e.target.value as TaskStatus)}
-                  className="w-full p-3 bg-gray-50 dark:bg-boxdark-2 border border-stroke dark:border-strokedark rounded-lg text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full p-3 bg-gray-50 dark:bg-gray-800 border border-stroke dark:border-gray-700 rounded-lg text-black dark:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >
                   <option value={TaskStatus.TODO}>To Do</option>
                   <option value={TaskStatus.IN_PROGRESS}>In Progress</option>
@@ -208,13 +260,15 @@ export const TaskCreationModal: React.FC<TaskCreationModalProps> = ({
 
               {/* Priority */}
               <div>
-                <label className="block text-sm font-medium text-black dark:text-white mb-2">
+                <label htmlFor={priorityInputId} className="block text-sm font-medium text-black dark:text-white mb-2">
                   Priority
                 </label>
                 <select
+                  id={priorityInputId}
+                  name="priority"
                   value={priority}
                   onChange={(e) => setPriority(e.target.value as TaskPriority)}
-                  className="w-full p-3 bg-gray-50 dark:bg-boxdark-2 border border-stroke dark:border-strokedark rounded-lg text-black dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full p-3 bg-gray-50 dark:bg-gray-800 border border-stroke dark:border-gray-700 rounded-lg text-black dark:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 >
                   <option value={TaskPriority.LOW}>Low</option>
                   <option value={TaskPriority.MEDIUM}>Medium</option>
@@ -224,11 +278,11 @@ export const TaskCreationModal: React.FC<TaskCreationModalProps> = ({
             </div>
 
             {/* Actions */}
-            <div className="flex justify-end space-x-3 pt-4 border-t border-stroke dark:border-strokedark">
+            <div className="flex justify-end space-x-3 pt-4 border-t border-stroke dark:border-gray-700">
               <button
                 type="button"
                 onClick={onClose}
-                className="px-6 py-3 bg-gray-200 dark:bg-boxdark-2 text-black dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-boxdark"
+                className="px-6 py-3 bg-gray-200 dark:bg-gray-800 text-black dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700"
               >
                 Cancel
               </button>

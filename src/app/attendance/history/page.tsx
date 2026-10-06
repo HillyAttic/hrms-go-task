@@ -1,6 +1,8 @@
 'use client';
 
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, Suspense } from 'react';
+import Link from 'next/link';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { useModal } from '@/contexts/modal-context';
 import {
   collection,
@@ -15,7 +17,7 @@ import { db } from '@/lib/firebase';
 import { useEnhancedAuth } from '@/contexts/enhanced-auth.context';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { LocationMapModal } from '@/components/attendance/LocationMapModal';
 import { 
   Clock, 
@@ -46,12 +48,18 @@ interface AttendanceRecord {
   updatedAt: Date;
 }
 
-export default function AttendanceHistoryPage() {
+function AttendanceHistoryPageInner() {
   const { user } = useEnhancedAuth();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [attendances, setAttendances] = useState<AttendanceRecord[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasMoreData, setHasMoreData] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(() => {
+    const p = Number(searchParams.get('page'));
+    return Number.isFinite(p) && p >= 1 ? Math.floor(p) : 1;
+  });
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const itemsPerPage = 10;
   
@@ -211,12 +219,23 @@ export default function AttendanceHistoryPage() {
     }
   }, [user?.uid]);
 
-  // Load initial data
+  // Load data for the current page
   useEffect(() => {
     if (user?.uid) {
-      fetchAttendanceHistory();
+      fetchAttendanceHistory(currentPage);
     }
-  }, [user?.uid, fetchAttendanceHistory]);
+  }, [user?.uid, currentPage, fetchAttendanceHistory]);
+
+  // Change page and keep it in the URL
+  const goToPage = (page: number) => {
+    const next = Math.max(1, page);
+    setCurrentPage(next);
+    const params = new URLSearchParams(searchParams.toString());
+    if (next <= 1) params.delete('page');
+    else params.set('page', String(next));
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+  };
 
 
 
@@ -319,12 +338,12 @@ export default function AttendanceHistoryPage() {
           </div>
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Authentication Required</h2>
           <p className="text-gray-600 dark:text-gray-400 mb-6">Please sign in to view attendance history.</p>
-          <Button 
-            onClick={() => window.location.href = '/auth/signin'}
-            className="bg-blue-600 hover:bg-blue-700 text-white"
+          <Link
+            href="/auth/signin"
+            className={buttonVariants({ className: 'bg-blue-600 hover:bg-blue-700 text-white' })}
           >
             Sign In to Continue
-          </Button>
+          </Link>
         </Card>
       </div>
     );
@@ -347,17 +366,19 @@ export default function AttendanceHistoryPage() {
               size="sm"
               onClick={() => fetchAttendanceHistory(currentPage)}
               className="flex items-center gap-1"
+              aria-label="Refresh"
             >
-              <Loader2 className="h-4 w-4" />
+              <Loader2 aria-hidden="true" className="h-4 w-4" />
               <span className="hidden sm:inline">Refresh</span>
             </Button>
-            <Button 
+            <Button
               variant="outline"
               size="sm"
               onClick={() => window.history.back()}
               className="flex items-center gap-1"
+              aria-label="Go back"
             >
-              <ChevronLeft className="h-4 w-4" />
+              <ChevronLeft aria-hidden="true" className="h-4 w-4" />
               <span className="hidden sm:inline">Back</span>
             </Button>
           </div>
@@ -398,6 +419,7 @@ export default function AttendanceHistoryPage() {
                       size="sm"
                       onClick={() => confirmDelete(record)}
                       className="text-red-600 hover:text-red-700 hover:bg-red-50 p-1 sm:p-2 h-7 w-7 sm:h-auto sm:w-auto"
+                      aria-label="Delete record"
                     >
                       <Trash2 className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                     </Button>
@@ -492,12 +514,8 @@ export default function AttendanceHistoryPage() {
           
           {/* Pagination Controls - Mobile Responsive */}
           <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-0 mt-6 sm:mt-8">
-            <Button 
-              onClick={() => {
-                const prevPage = Math.max(1, currentPage - 1);
-                setCurrentPage(prevPage);
-                fetchAttendanceHistory(prevPage);
-              }}
+            <Button
+              onClick={() => goToPage(currentPage - 1)}
               disabled={currentPage <= 1 || loading}
               variant="outline"
               className="w-full sm:w-auto"
@@ -512,12 +530,8 @@ export default function AttendanceHistoryPage() {
               </span>
             </div>
           
-            <Button 
-              onClick={() => {
-                const nextPage = currentPage + 1;
-                setCurrentPage(nextPage);
-                fetchAttendanceHistory(nextPage);
-              }}
+            <Button
+              onClick={() => goToPage(currentPage + 1)}
               disabled={!hasMoreData || loading}
               variant="outline"
               className="w-full sm:w-auto"
@@ -529,9 +543,9 @@ export default function AttendanceHistoryPage() {
           
           {loading && (
             <div className="text-center py-8">
-              <div className="inline-flex items-center gap-2">
-                <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
-                <span className="text-gray-600 dark:text-gray-400">Loading records...</span>
+              <div className="inline-flex items-center gap-2" role="status" aria-label="Loading…">
+                <Loader2 aria-hidden="true" className="h-5 w-5 animate-spin text-blue-600" />
+                <span className="text-gray-600 dark:text-gray-400">Loading records…</span>
               </div>
             </div>
           )}
@@ -576,8 +590,8 @@ export default function AttendanceHistoryPage() {
               >
                 {deletingRecordId ? (
                   <>
-                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Deleting...
+                    <Loader2 aria-hidden="true" className="h-4 w-4 mr-2 animate-spin" />
+                    Deleting…
                   </>
                 ) : (
                   <>
@@ -605,5 +619,13 @@ export default function AttendanceHistoryPage() {
         />
       )}
     </div>
+  );
+}
+
+export default function AttendanceHistoryPage() {
+  return (
+    <Suspense fallback={null}>
+      <AttendanceHistoryPageInner />
+    </Suspense>
   );
 }

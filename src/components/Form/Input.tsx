@@ -77,7 +77,9 @@ export const Input: React.FC<InputProps> = ({
           {...props}
           id={inputId}
           type={isPassword && isRevealed ? 'text' : type}
-          className={`w-full rounded-lg border border-stroke bg-transparent py-3 px-5 font-medium outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary ${
+          aria-invalid={error ? true : undefined}
+          aria-describedby={error ? `${inputId}-error` : undefined}
+          className={`w-full rounded-lg border border-stroke bg-transparent py-3 px-5 font-medium text-dark outline-none transition placeholder:text-gray-400 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:focus:border-primary dark:disabled:bg-gray-900 ${
             error ? '!border-red' : ''
           } ${isPassword ? 'pr-12' : ''} ${className}`}
         />
@@ -93,7 +95,11 @@ export const Input: React.FC<InputProps> = ({
           </button>
         )}
       </div>
-      {error && <p className="mt-1 text-sm text-red">{error}</p>}
+      {error && (
+        <p id={`${inputId}-error`} role="alert" className="mt-1 text-sm text-red">
+          {error}
+        </p>
+      )}
     </div>
   );
 };

@@ -239,7 +239,7 @@ export default function DiagnosticPage() {
         </button>
         <a
           href="/notifications"
-          className="px-6 py-3 bg-secondary text-white rounded-lg hover:bg-secondary/90 inline-block"
+          className="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 inline-block"
         >
           Go to Notifications Page
         </a>

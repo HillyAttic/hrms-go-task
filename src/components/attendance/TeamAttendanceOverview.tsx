@@ -60,10 +60,11 @@ export function TeamAttendanceOverview({
       <h3 className="text-lg font-semibold mb-4">Team Attendance</h3>
       <div className="space-y-3">
         {teamMembers.map((member) => (
-          <div
+          <button
+            type="button"
             key={member.employeeId}
             onClick={() => onEmployeeClick(member.employeeId)}
-            className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:bg-gray-800 cursor-pointer transition-colors"
+            className="flex w-full text-left items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:bg-gray-800 cursor-pointer transition-colors"
           >
             <div className="flex items-center gap-3">
               {getStatusIcon(member.status)}
@@ -84,7 +85,7 @@ export function TeamAttendanceOverview({
             </div>
             <div className="text-right">
               {member.clockInTime && (
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
                   {member.clockInTime.toLocaleTimeString('en-US', {
                     hour: '2-digit',
                     minute: '2-digit',
@@ -97,10 +98,10 @@ export function TeamAttendanceOverview({
                 </p>
               )}
             </div>
-          </div>
+          </button>
         ))}
         {teamMembers.length === 0 && (
-          <p className="text-center text-muted-foreground py-8">
+          <p className="text-center text-gray-500 dark:text-gray-400 py-8">
             No team members found
           </p>
         )}

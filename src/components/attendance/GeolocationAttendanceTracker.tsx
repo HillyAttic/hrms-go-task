@@ -561,7 +561,7 @@ export function GeolocationAttendanceTracker() {
   const getStatusMessage = () => {
     switch (status.status) {
       case 'loading':
-        return 'Loading attendance status...';
+        return 'Loading attendance status…';
       case 'NOT_CLOCKED_IN':
         return 'Ready to clock in';
       case 'CLOCKED_IN':
@@ -596,8 +596,8 @@ export function GeolocationAttendanceTracker() {
     return (
       <Card className="w-full max-w-md mx-auto">
         <CardContent className="p-6 text-center">
-          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
-          <p>Loading authentication...</p>
+          <Loader2 aria-hidden="true" className="h-8 w-8 animate-spin mx-auto mb-4" />
+          <p>Loading authentication…</p>
         </CardContent>
       </Card>
     );
@@ -680,7 +680,7 @@ export function GeolocationAttendanceTracker() {
           )}
           
           {error && (
-            <div className="mt-2 p-3 bg-red-50 border border-red-200 rounded-md">
+            <div role="alert" className="mt-2 p-3 bg-red-50 border border-red-200 rounded-md">
               <p className="text-sm text-red-700">{error}</p>
               
               {/* Show permission instructions if location was denied */}
@@ -701,15 +701,21 @@ export function GeolocationAttendanceTracker() {
                       <div className="mt-3 p-2 bg-white dark:bg-gray-dark rounded border border-red-300">
                         <p className="text-xs text-red-800 font-medium mb-2">Visual Guide:</p>
                         <div className="space-y-2">
-                          <img 
-                            src="/images/icons/tune_icon_chrome.webp" 
+                          <img
+                            src="/images/icons/tune_icon_chrome.webp"
                             alt="Step 1: Click the lock icon in browser address bar"
-                            className="w-full rounded border border-gray-200 dark:border-gray-700"
+                            width={640}
+                            height={180}
+                            loading="lazy"
+                            className="w-full h-auto rounded border border-gray-200 dark:border-gray-700"
                           />
-                          <img 
-                            src="/images/icons/location_allow.jpg" 
+                          <img
+                            src="/images/icons/location_allow.jpg"
                             alt="Step 2: Allow location access"
-                            className="w-full rounded border border-gray-200 dark:border-gray-700"
+                            width={827}
+                            height={982}
+                            loading="lazy"
+                            className="w-full h-auto rounded border border-gray-200 dark:border-gray-700"
                           />
                         </div>
                       </div>
@@ -769,8 +775,8 @@ export function GeolocationAttendanceTracker() {
             >
               {loading ? (
                 <>
-                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                  Recording Clock In...
+                  <Loader2 aria-hidden="true" className="mr-2 h-5 w-5 animate-spin" />
+                  Recording Clock In…
                 </>
               ) : (
                 <>
@@ -792,8 +798,8 @@ export function GeolocationAttendanceTracker() {
               >
                 {loading ? (
                   <>
-                    <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-                    Recording Clock Out...
+                    <Loader2 aria-hidden="true" className="mr-2 h-5 w-5 animate-spin" />
+                    Recording Clock Out…
                   </>
                 ) : (
                   <>
@@ -819,7 +825,7 @@ export function GeolocationAttendanceTracker() {
                         href="/dashboard"
                         className="text-xs text-blue-600 dark:text-blue-400 hover:underline mt-2 inline-block font-bold"
                       >
-                        Click here to go to dashboard
+                        Go to dashboard
                       </a>
                     </div>
                   </div>

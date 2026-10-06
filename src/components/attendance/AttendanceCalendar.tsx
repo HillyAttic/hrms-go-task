@@ -55,10 +55,10 @@ export function AttendanceCalendar({
           {month.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
         </h3>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" onClick={previousMonth}>
+          <Button variant="outline" size="sm" onClick={previousMonth} aria-label="Previous month">
             <ChevronLeft className="h-4 w-4" />
           </Button>
-          <Button variant="outline" size="sm" onClick={nextMonth}>
+          <Button variant="outline" size="sm" onClick={nextMonth} aria-label="Next month">
             <ChevronRight className="h-4 w-4" />
           </Button>
         </div>
@@ -66,7 +66,7 @@ export function AttendanceCalendar({
 
       <div className="grid grid-cols-7 gap-2">
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-          <div key={day} className="text-center text-sm font-medium text-muted-foreground p-2">
+          <div key={day} className="text-center text-sm font-medium text-gray-500 dark:text-gray-400 p-2">
             {day}
           </div>
         ))}

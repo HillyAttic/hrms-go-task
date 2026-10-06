@@ -277,13 +277,13 @@ export function TeamMemberMappingDialog({
                       placeholder="Search clients..."
                       value={clientSearch}
                       onChange={(e) => setClientSearch(e.target.value)}
-                      className="w-full pl-8 pr-3 h-9 rounded-md border border-input bg-background text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                      className="w-full pl-8 pr-3 h-9 rounded-md border border-stroke bg-white text-sm text-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                     />
                   </div>
                   <select
                     value={complianceFilter}
                     onChange={(e) => setComplianceFilter(e.target.value)}
-                    className="h-9 rounded-md border border-input bg-background px-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                    className="h-9 rounded-md border border-stroke bg-white px-2 text-sm text-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
                   >
                     {COMPLIANCE_FILTERS.map(f => (
                       <option key={f.value} value={f.value}>{f.label}</option>

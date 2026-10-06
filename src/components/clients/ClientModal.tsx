@@ -234,8 +234,9 @@ export function ClientModal({
             <Input
               id="clientName"
               label="Client Name"
+              autoComplete="off"
               {...register('clientName')}
-              placeholder="Enter client name"
+              placeholder="e.g. ABC Pvt Ltd"
               error={errors.clientName?.message}
               required
               disabled={isLoading}
@@ -247,6 +248,7 @@ export function ClientModal({
             <Input
               id="serialNumber"
               label="S.No"
+              autoComplete="off"
               {...register('serialNumber')}
               placeholder="Enter serial number (e.g., 001, 002)"
               error={errors.serialNumber?.message}
@@ -259,6 +261,7 @@ export function ClientModal({
             <Input
               id="businessName"
               label="Business Name"
+              autoComplete="off"
               {...register('businessName')}
               placeholder="Enter business name"
               error={errors.businessName?.message}
@@ -272,6 +275,8 @@ export function ClientModal({
               id="email"
               type="email"
               label="Email"
+              autoComplete="email"
+              spellCheck={false}
               {...register('email')}
               placeholder="client@example.com"
               error={errors.email?.message}
@@ -285,6 +290,7 @@ export function ClientModal({
               id="phone"
               type="tel"
               label="Phone"
+              autoComplete="off"
               {...register('phone')}
               placeholder="+1 (555) 123-4567"
               error={errors.phone?.message}
@@ -298,6 +304,7 @@ export function ClientModal({
               <Input
                 id="pan"
                 label="P.A.N."
+                spellCheck={false}
                 {...register('pan')}
                 placeholder="ABCDE1234F"
                 error={errors.pan?.message}
@@ -308,6 +315,7 @@ export function ClientModal({
               <Input
                 id="tan"
                 label="T.A.N."
+                spellCheck={false}
                 {...register('tan')}
                 placeholder="ABCD12345E"
                 error={errors.tan?.message}
@@ -318,6 +326,7 @@ export function ClientModal({
               <Input
                 id="gstin"
                 label="GSTIN"
+                spellCheck={false}
                 {...register('gstin')}
                 placeholder="22AAAAA0000A1Z5"
                 error={errors.gstin?.message}
@@ -331,6 +340,7 @@ export function ClientModal({
             <Input
               id="address"
               label="Address"
+              autoComplete="off"
               {...register('address')}
               placeholder="Enter street address"
               error={errors.address?.message}
@@ -344,6 +354,7 @@ export function ClientModal({
               <Input
                 id="city"
                 label="City"
+                autoComplete="off"
                 {...register('city')}
                 placeholder="Enter city"
                 error={errors.city?.message}
@@ -354,6 +365,7 @@ export function ClientModal({
               <Input
                 id="state"
                 label="State"
+                autoComplete="off"
                 {...register('state')}
                 placeholder="Enter state"
                 error={errors.state?.message}
@@ -364,6 +376,7 @@ export function ClientModal({
               <Input
                 id="country"
                 label="Country"
+                autoComplete="off"
                 {...register('country')}
                 placeholder="Enter country"
                 error={errors.country?.message}
@@ -374,6 +387,8 @@ export function ClientModal({
               <Input
                 id="zipCode"
                 label="Zip Code"
+                autoComplete="off"
+                spellCheck={false}
                 {...register('zipCode')}
                 placeholder="Enter zip code"
                 error={errors.zipCode?.message}
@@ -383,8 +398,8 @@ export function ClientModal({
           </div>
 
           {/* Compliance */}
-          <div>
-            <Label>Compliance Services</Label>
+          <fieldset>
+            <legend className="text-sm font-medium leading-none">Compliance Services</legend>
             <div className="mt-2 grid grid-cols-2 md:grid-cols-4 gap-3">
               {([
                 { field: 'complianceRoc', label: 'ROC' },
@@ -412,7 +427,7 @@ export function ClientModal({
                 </label>
               ))}
             </div>
-          </div>
+          </fieldset>
 
           {/* Status */}
           <div>
@@ -420,14 +435,16 @@ export function ClientModal({
             <select
               id="status"
               {...register('status')}
-              className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              aria-invalid={!!errors.status}
+              aria-describedby={errors.status ? 'status-error' : undefined}
+              className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isLoading}
             >
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
             </select>
             {errors.status && (
-              <p className="text-sm text-red-600 mt-1">{errors.status.message}</p>
+              <p id="status-error" role="alert" className="text-sm text-red-600 mt-1">{errors.status.message}</p>
             )}
           </div>
 

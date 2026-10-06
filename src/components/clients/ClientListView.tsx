@@ -41,7 +41,7 @@ export function ClientListView({
 
   return (
     <div className="bg-white dark:bg-gray-dark rounded-lg border border-gray-200 dark:border-gray-700 overflow-x-auto">
-      <table className="w-full text-xs">
+      <table className="w-full text-xs tabular-nums">
         <thead className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-10">
           <tr>
             <th className="px-2 py-2 text-left text-xs font-medium text-gray-700 dark:text-gray-300 w-10 sticky left-0 bg-gray-50 dark:bg-gray-800">
@@ -53,7 +53,7 @@ export function ClientListView({
                     if (input) input.indeterminate = someSelected;
                   }}
                   onChange={onToggleSelectAll}
-                  className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                  className="w-4 h-4 rounded border-gray-300 text-blue-600 focus-visible:ring-blue-500"
                   aria-label="Select all clients"
                 />
               )}
@@ -100,7 +100,7 @@ export function ClientListView({
                     type="checkbox"
                     checked={selectedIds.has(client.id!)}
                     onChange={() => onToggleSelection(client.id!)}
-                    className="w-4 h-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    className="w-4 h-4 rounded border-gray-300 text-blue-600 focus-visible:ring-blue-500"
                     aria-label={`Select ${client.clientName}`}
                   />
                 )}

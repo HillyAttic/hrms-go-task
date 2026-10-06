@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, Suspense } from 'react';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { useClients } from '@/hooks/use-clients';
 import { Client } from '@/services/client.service';
 import { ClientList } from '@/components/clients/ClientList';
@@ -18,6 +19,18 @@ import { toast } from 'react-toastify';
  * Validates Requirements: 1.1, 1.2, 1.3
  */
 export default function ClientsPage() {
+  return (
+    <Suspense fallback={null}>
+      <ClientsPageContent />
+    </Suspense>
+  );
+}
+
+function ClientsPageContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
   const {
     clients,
     loading,
@@ -33,12 +46,25 @@ export default function ClientsPage() {
   const [selectedClient, setSelectedClient] = useState<Client | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<'grid' | 'list'>('list');
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>(
+    searchParams.get('view') === 'grid' ? 'grid' : 'list'
+  );
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
   const [filters, setFilters] = useState<ClientFilterState>({
-    status: 'all',
-    filterBy: 'all',
+    status: searchParams.get('status') || 'all',
+    filterBy: searchParams.get('filterBy') || 'all',
   });
+
+  // Keep view mode and filters in the URL so the view is shareable
+  useEffect(() => {
+    // Preserve params owned by other components on the page (e.g. ClientList search)
+    const params = new URLSearchParams(window.location.search);
+    if (viewMode !== 'list') params.set('view', viewMode); else params.delete('view');
+    if (filters.status !== 'all') params.set('status', filters.status); else params.delete('status');
+    if (filters.filterBy !== 'all') params.set('filterBy', filters.filterBy); else params.delete('filterBy');
+    const qs = params.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  }, [viewMode, filters, pathname, router]);
 
   // Filter clients based on selected criteria
   const filteredClients = useMemo(() => {
@@ -133,7 +159,7 @@ export default function ClientsPage() {
     }
     
     try {
-      toast.info('Preparing export...');
+      toast.info('Preparing export…');
       console.log('Calling exportClientsToExcel...');
       exportClientsToExcel(filteredClients);
       console.log('Export function completed');
@@ -177,7 +203,7 @@ export default function ClientsPage() {
       setDeleteConfirmId(null);
     } catch (error) {
       console.error('Error deleting client:', error);
-      alert('Failed to delete client. Please try again.');
+      toast.error('Failed to delete client. Please try again.');
     }
   };
 
@@ -198,7 +224,7 @@ export default function ClientsPage() {
       setSelectedIds(new Set());
     } catch (error) {
       console.error('Error deleting clients:', error);
-      alert('Failed to delete clients. Please try again.');
+      toast.error('Failed to delete clients. Please try again.');
     }
   };
 
@@ -354,7 +380,7 @@ export default function ClientsPage() {
 
       {/* Error Display */}
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+        <div role="alert" className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
           <p className="font-medium">Error loading clients</p>
           <p className="text-sm">{error.message}</p>
         </div>

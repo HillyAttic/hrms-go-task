@@ -55,7 +55,7 @@ export function AttendanceRecordCard({
                 {record.status}
               </Badge>
             </div>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-gray-500 dark:text-gray-400">
               {record.clockIn.toLocaleDateString('en-US', {
                 weekday: 'short',
                 month: 'short',
@@ -94,7 +94,7 @@ export function AttendanceRecordCard({
         {/* Time Information */}
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <div className="flex items-center gap-1 text-sm text-muted-foreground mb-1">
+            <div className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 mb-1">
               <Clock className="h-3 w-3" />
               <span>Clock In</span>
             </div>
@@ -102,7 +102,7 @@ export function AttendanceRecordCard({
           </div>
 
           <div>
-            <div className="flex items-center gap-1 text-sm text-muted-foreground mb-1">
+            <div className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 mb-1">
               <Clock className="h-3 w-3" />
               <span>Clock Out</span>
             </div>
@@ -122,15 +122,15 @@ export function AttendanceRecordCard({
         {/* Hours Summary */}
         <div className="grid grid-cols-3 gap-2 pt-3 border-t">
           <div className="text-center">
-            <p className="text-xs text-muted-foreground mb-1">Total</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Total</p>
             <p className="font-semibold">{formatHours(record.totalHours)}</p>
           </div>
           <div className="text-center">
-            <p className="text-xs text-muted-foreground mb-1">Regular</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Regular</p>
             <p className="font-semibold">{formatHours(record.regularHours)}</p>
           </div>
           <div className="text-center">
-            <p className="text-xs text-muted-foreground mb-1">Overtime</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mb-1">Overtime</p>
             <p className="font-semibold text-orange-600">
               {formatHours(record.overtimeHours)}
             </p>
@@ -140,7 +140,7 @@ export function AttendanceRecordCard({
         {/* Breaks */}
         {record.breaks.length > 0 && (
           <div className="pt-3 border-t">
-            <div className="flex items-center gap-1 text-sm text-muted-foreground mb-2">
+            <div className="flex items-center gap-1 text-sm text-gray-500 dark:text-gray-400 mb-2">
               <Coffee className="h-3 w-3" />
               <span>Breaks ({record.breaks.length})</span>
             </div>
@@ -148,7 +148,7 @@ export function AttendanceRecordCard({
               {record.breaks.map((breakRecord, index) => (
                 <div
                   key={breakRecord.id || index}
-                  className="text-xs text-muted-foreground flex justify-between"
+                  className="text-xs text-gray-500 dark:text-gray-400 flex justify-between"
                 >
                   <span>
                     {formatTimeShort(breakRecord.startTime)} -{' '}
@@ -168,7 +168,7 @@ export function AttendanceRecordCard({
         {/* Location */}
         {(record.location?.clockIn || record.location?.clockOut) && (
           <div className="pt-3 border-t">
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+            <div className="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
               <MapPin className="h-3 w-3" />
               <span>Location verified</span>
             </div>
@@ -178,7 +178,7 @@ export function AttendanceRecordCard({
         {/* Notes */}
         {(record.notes?.clockIn || record.notes?.clockOut) && (
           <div className="pt-3 border-t">
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-gray-500 dark:text-gray-400">
               {record.notes.clockIn || record.notes.clockOut}
             </p>
           </div>
@@ -187,7 +187,7 @@ export function AttendanceRecordCard({
         {/* Edit Info */}
         {record.status === 'edited' && record.editedBy && (
           <div className="pt-3 border-t">
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-gray-500 dark:text-gray-400">
               Edited by {record.editedBy}
               {record.editReason && `: ${record.editReason}`}
             </p>

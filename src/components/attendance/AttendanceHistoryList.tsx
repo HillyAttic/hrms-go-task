@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import { 
   collection, 
   query, 
@@ -56,7 +57,13 @@ export function AttendanceHistoryList({
   const [attendances, setAttendances] = useState<AttendanceRecord[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasMoreData, setHasMoreData] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const [currentPage, setCurrentPage] = useState(() => {
+    const p = Number(searchParams.get('page'));
+    return Number.isFinite(p) && p >= 1 ? Math.floor(p) : 1;
+  });
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const itemsPerPage = 10;
 
@@ -149,12 +156,23 @@ export function AttendanceHistoryList({
     }
   }, [userId]);
 
-  // Load initial data
+  // Load data for the current page
   useEffect(() => {
     if (userId) {
-      fetchAttendanceHistory();
+      fetchAttendanceHistory(currentPage);
     }
-  }, [userId, fetchAttendanceHistory]);
+  }, [userId, currentPage, fetchAttendanceHistory]);
+
+  // Change page and keep it in the URL
+  const goToPage = (page: number) => {
+    const next = Math.max(1, page);
+    setCurrentPage(next);
+    const params = new URLSearchParams(searchParams.toString());
+    if (next <= 1) params.delete('page');
+    else params.set('page', String(next));
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+  };
 
 
 
@@ -377,12 +395,8 @@ export function AttendanceHistoryList({
           
           {/* Pagination Controls */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mt-6 sm:mt-8">
-            <Button 
-              onClick={() => {
-                const prevPage = Math.max(1, currentPage - 1);
-                setCurrentPage(prevPage);
-                fetchAttendanceHistory(prevPage);
-              }}
+            <Button
+              onClick={() => goToPage(currentPage - 1)}
               disabled={currentPage <= 1 || loading}
               variant="outline"
               className="w-full sm:w-auto"
@@ -397,12 +411,8 @@ export function AttendanceHistoryList({
               </span>
             </div>
             
-            <Button 
-              onClick={() => {
-                const nextPage = currentPage + 1;
-                setCurrentPage(nextPage);
-                fetchAttendanceHistory(nextPage);
-              }}
+            <Button
+              onClick={() => goToPage(currentPage + 1)}
               disabled={!hasMoreData || loading}
               variant="outline"
               className="w-full sm:w-auto"
@@ -414,9 +424,9 @@ export function AttendanceHistoryList({
           
           {loading && (
             <div className="text-center py-8">
-              <div className="inline-flex items-center gap-2">
-                <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
-                <span className="text-sm sm:text-base text-gray-600 dark:text-gray-400">Loading records...</span>
+              <div className="inline-flex items-center gap-2" role="status" aria-label="Loading…">
+                <Loader2 aria-hidden="true" className="h-5 w-5 animate-spin text-blue-600" />
+                <span className="text-sm sm:text-base text-gray-600 dark:text-gray-400">Loading records…</span>
               </div>
             </div>
           )}

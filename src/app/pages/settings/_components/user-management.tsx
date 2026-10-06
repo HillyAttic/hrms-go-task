@@ -36,7 +36,7 @@ export function UserManagementForm() {
 
   if (!canManageUsers()) {
     return (
-      <div className="rounded-lg border border-stroke bg-white p-6 shadow-default dark:border-strokedark dark:bg-boxdark">
+      <div className="rounded-lg border border-stroke bg-white p-6 shadow-default dark:border-gray-700 dark:bg-gray-800">
         <h2 className="mb-4 text-title-md2 font-semibold text-black dark:text-white">
           User Management
         </h2>
@@ -115,7 +115,7 @@ export function UserManagementForm() {
   };
 
   return (
-    <div className="rounded-lg border border-stroke bg-white p-6 shadow-default dark:border-strokedark dark:bg-boxdark">
+    <div className="rounded-lg border border-stroke bg-white p-6 shadow-default dark:border-gray-700 dark:bg-gray-800">
       <h2 className="mb-4 text-title-md2 font-semibold text-black dark:text-white">
         User Management
       </h2>

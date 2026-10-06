@@ -3,6 +3,15 @@
 @tailwind utilities;
 
 @layer base {
+  /* Native UI (scrollbars, form controls, date pickers) follows the active theme. */
+  :root {
+    color-scheme: light;
+  }
+
+  .dark {
+    color-scheme: dark;
+  }
+
   body {
     @apply bg-[#F8FAFC] text-dark-5 dark:bg-[#020D1A] dark:text-dark-6;
     margin: 0;

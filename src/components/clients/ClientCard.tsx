@@ -6,6 +6,12 @@ import { Avatar } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { PencilSquareIcon, TrashIcon, EnvelopeIcon, PhoneIcon, BuildingOfficeIcon } from '@heroicons/react/24/outline';
 
+const dateFormatter = new Intl.DateTimeFormat(undefined, {
+  year: 'numeric',
+  month: 'numeric',
+  day: 'numeric',
+});
+
 interface ClientCardProps {
   client: Client;
   onEdit: (client: Client) => void;
@@ -29,7 +35,7 @@ export function ClientCard({ client, onEdit, onDelete }: ClientCardProps) {
   };
 
   return (
-    <Card className="group hover:shadow-lg transition-all duration-200">
+    <Card className="group hover:shadow-lg transition-shadow duration-200">
       <CardContent className="p-6">
 
         
@@ -57,7 +63,7 @@ export function ClientCard({ client, onEdit, onDelete }: ClientCardProps) {
           </div>
 
           {/* Action Buttons */}
-          <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity">
             <Button
               size="sm"
               variant="ghost"
@@ -119,7 +125,7 @@ export function ClientCard({ client, onEdit, onDelete }: ClientCardProps) {
         {/* Footer with creation date */}
         {client.createdAt && (
           <div className="mt-4 pt-4 border-t text-xs text-gray-500 dark:text-gray-400">
-            Added {new Date(client.createdAt).toLocaleDateString()}
+            Added {dateFormatter.format(new Date(client.createdAt))}
           </div>
         )}
       </CardContent>

@@ -355,10 +355,12 @@ export default function NonRecurringTasksPage() {
           <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 absolute left-3 top-1/2 -translate-y-1/2 z-10" />
           <input
             type="text"
-            placeholder="Search tasks by title, description, or assignee..."
+            name="search"
+            autoComplete="off"
+            placeholder="Search tasks by title, description, or assignee…"
             value={searchQuery}
             onChange={handleSearchChange}
-            className="w-full h-10 pl-10 pr-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-white placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full h-10 pl-10 pr-3 py-2 rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-sm text-gray-900 dark:text-white placeholder:text-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
             aria-label="Search tasks"
           />
         </div>
@@ -376,7 +378,7 @@ export default function NonRecurringTasksPage() {
 
         {/* Error Display */}
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
+          <div role="alert" className="bg-red-50 border border-red-200 rounded-lg p-4">
             <p className="text-red-800 text-sm">
               <strong>Error:</strong> {error.message}
             </p>
@@ -389,6 +391,7 @@ export default function NonRecurringTasksPage() {
             <div className="flex items-center space-x-2">
               <button
                 onClick={() => setViewMode('grid')}
+                aria-pressed={viewMode === 'grid'}
                 className={`px-3 py-2 md:py-1.5 rounded-md text-sm font-medium transition-colors min-h-[44px] md:min-h-0 ${viewMode === 'grid' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'}`}
                 aria-label="Grid view"
               >
@@ -396,6 +399,7 @@ export default function NonRecurringTasksPage() {
               </button>
               <button
                 onClick={() => setViewMode('list')}
+                aria-pressed={viewMode === 'list'}
                 className={`px-3 py-2 md:py-1.5 rounded-md text-sm font-medium transition-colors min-h-[44px] md:min-h-0 ${viewMode === 'list' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'}`}
                 aria-label="List view"
               >

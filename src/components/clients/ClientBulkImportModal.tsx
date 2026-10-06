@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useId } from 'react';
 import {
   Dialog,
   DialogContent,
@@ -33,6 +33,11 @@ export function ClientBulkImportModal({
     errors: Array<{ row: number; error: string }>;
   } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const fileInputId = useId();
+  const fileSizeFormatter = new Intl.NumberFormat(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
 
   const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -241,9 +246,9 @@ export function ClientBulkImportModal({
             <div className="flex items-start gap-3">
               <DocumentArrowDownIcon className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5" />
               <div className="flex-1">
-                <h4 className="font-medium text-blue-900 dark:text-blue-100 mb-1">
+                <h3 className="font-medium text-blue-900 dark:text-blue-100 mb-1">
                   Download CSV Template
-                </h4>
+                </h3>
                 <p className="text-sm text-blue-700 dark:text-blue-300 mb-2">
                   Use our template to ensure your data is formatted correctly. Only Client Name is required. Compliance fields (ROC, GSTR1, GST3B, IFF, ITR, ITR Audit, Tax Audit, Accounting, Client Visit, Bank, TCS, TDS, Statutory Audit) accept Y or N values.
                 </p>
@@ -262,12 +267,14 @@ export function ClientBulkImportModal({
 
           {/* File Upload */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+            <label htmlFor={fileInputId} className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               Select CSV File
             </label>
             <div className="flex items-center gap-3">
               <input
                 ref={fileInputRef}
+                id={fileInputId}
+                name="csvFile"
                 type="file"
                 accept=".csv"
                 onChange={handleFileSelect}
@@ -277,23 +284,23 @@ export function ClientBulkImportModal({
             </div>
             {file && (
               <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-                Selected: {file.name} ({(file.size / 1024).toFixed(2)} KB)
+                Selected: {file.name} ({fileSizeFormatter.format(file.size / 1024)} KB)
               </p>
             )}
           </div>
 
           {/* Errors */}
           {errors.length > 0 && (
-            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
-              <h4 className="font-medium text-red-900 dark:text-red-100 mb-2">
+            <div role="alert" className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+              <h3 className="font-medium text-red-900 dark:text-red-100 mb-2">
                 Validation Errors
-              </h4>
+              </h3>
               <ul className="text-sm text-red-700 dark:text-red-300 space-y-1 max-h-40 overflow-y-auto">
                 {errors.slice(0, 10).map((error, index) => (
                   <li key={index}>• {error}</li>
                 ))}
                 {errors.length > 10 && (
-                  <li className="font-medium">... and {errors.length - 10} more errors</li>
+                  <li className="font-medium">… and {errors.length - 10} more errors</li>
                 )}
               </ul>
             </div>
@@ -302,9 +309,9 @@ export function ClientBulkImportModal({
           {/* Preview */}
           {previewData.length > 0 && errors.length === 0 && (
             <div>
-              <h4 className="font-medium text-gray-900 dark:text-white mb-2">
+              <h3 className="font-medium text-gray-900 dark:text-white mb-2">
                 Preview (First 5 rows)
-              </h4>
+              </h3>
               <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
                   <thead className="bg-gray-50 dark:bg-gray-800">
@@ -354,12 +361,19 @@ export function ClientBulkImportModal({
           {isUploading && (
             <div>
               <div className="flex justify-between text-sm text-gray-600 dark:text-gray-400 mb-2">
-                <span>Importing clients...</span>
+                <span>Importing clients…</span>
                 <span>{uploadProgress}%</span>
               </div>
-              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+              <div
+                role="progressbar"
+                aria-label="Import progress"
+                aria-valuenow={uploadProgress}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2"
+              >
                 <div
-                  className="bg-primary h-2 rounded-full transition-all duration-300"
+                  className="bg-primary h-2 rounded-full transition-[width] duration-300"
                   style={{ width: `${uploadProgress}%` }}
                 />
               </div>
@@ -373,13 +387,13 @@ export function ClientBulkImportModal({
                 ? 'bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800'
                 : 'bg-yellow-50 dark:bg-yellow-900/20 border-yellow-200 dark:border-yellow-800'
             }`}>
-              <h4 className={`font-medium mb-2 ${
+              <h3 className={`font-medium mb-2 ${
                 importResult.failed === 0
                   ? 'text-green-900 dark:text-green-100'
                   : 'text-yellow-900 dark:text-yellow-100'
               }`}>
                 Import Complete
-              </h4>
+              </h3>
               <div className="text-sm space-y-1">
                 <p className="text-green-700 dark:text-green-300">
                   ✓ Successfully imported: {importResult.success} clients

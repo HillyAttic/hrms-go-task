@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useState, useEffect, useCallback, useMemo, Suspense } from 'react';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { Client } from '@/services/client.service';
 
@@ -20,17 +21,39 @@ interface ClientAccessDoc {
 }
 
 export default function ClientAccessPage() {
+  return (
+    <Suspense fallback={null}>
+      <ClientAccessPageContent />
+    </Suspense>
+  );
+}
+
+function ClientAccessPageContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
   const [users, setUsers] = useState<UserInfo[]>([]);
   const [clients, setClients] = useState<Client[]>([]);
   const [accessDocs, setAccessDocs] = useState<ClientAccessDoc[]>([]);
-  const [activeUserId, setActiveUserId] = useState<string | null>(null);
+  const [activeUserId, setActiveUserId] = useState<string | null>(searchParams.get('user'));
   const [loading, setLoading] = useState(true);
   const [savingUser, setSavingUser] = useState<string | null>(null);
 
   // Filters
-  const [searchQuery, setSearchQuery] = useState('');
-  const [complianceFilter, setComplianceFilter] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState(searchParams.get('q') ?? '');
+  const [complianceFilter, setComplianceFilter] = useState<string>(searchParams.get('compliance') ?? 'all');
   const [userSearchQuery, setUserSearchQuery] = useState('');
+
+  // Keep the selected user and filters in the URL so the view is shareable
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (activeUserId) params.set('user', activeUserId);
+    if (searchQuery) params.set('q', searchQuery);
+    if (complianceFilter !== 'all') params.set('compliance', complianceFilter);
+    const qs = params.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  }, [activeUserId, searchQuery, complianceFilter, pathname, router]);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -337,8 +360,8 @@ export default function ClientAccessPage() {
       </div>
 
       {loading ? (
-        <div className="p-8 text-center">
-          <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-purple-600 mx-auto" />
+        <div role="status" aria-label="Loading…" className="p-8 text-center">
+          <div aria-hidden="true" className="animate-spin rounded-full h-10 w-10 border-b-2 border-purple-600 mx-auto" />
         </div>
       ) : users.length === 0 ? (
         <div className="p-10 text-center text-gray-500 dark:text-gray-400">
@@ -350,19 +373,21 @@ export default function ClientAccessPage() {
           <div className="mb-6">
             {/* Mobile Dropdown - visible only on small screens */}
             <div className="block md:hidden mb-4">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor="active-user-select" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Select User
               </label>
               <select
+                id="active-user-select"
+                name="activeUser"
                 value={activeUserId || ''}
                 onChange={(e) => {
                   setActiveUserId(e.target.value);
                   setSearchQuery('');
                   setComplianceFilter('all');
                 }}
-                className="w-full px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-800 dark:text-white"
+                className="w-full px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 dark:bg-gray-800 dark:text-white"
               >
-                <option value="">Choose a user...</option>
+                <option value="">Choose a user…</option>
                 {users.map((user) => (
                   <option key={user.uid} value={user.uid}>
                     {user.displayName} ({user.role}) - {user.email}
@@ -376,10 +401,13 @@ export default function ClientAccessPage() {
               <div className="mb-4">
                 <input
                   type="text"
-                  placeholder="Search users by name, email, or role..."
+                  name="userSearch"
+                  placeholder="Search users by name, email, or role…"
                   value={userSearchQuery}
                   onChange={(e) => setUserSearchQuery(e.target.value)}
-                  className="w-full px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-800 dark:text-white"
+                  autoComplete="off"
+                  aria-label="Search users by name, email, or role"
+                  className="w-full px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 dark:bg-gray-800 dark:text-white"
                 />
               </div>
 
@@ -393,7 +421,8 @@ export default function ClientAccessPage() {
                       setSearchQuery('');
                       setComplianceFilter('all');
                     }}
-                    className={`p-4 rounded-lg border-2 transition-all text-left ${
+                    aria-pressed={activeUserId === user.uid}
+                    className={`p-4 rounded-lg border-2 transition text-left ${
                       activeUserId === user.uid
                         ? 'border-purple-600 bg-purple-50 dark:bg-purple-900/20 shadow-md'
                         : 'border-gray-200 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-700 hover:shadow'
@@ -430,7 +459,7 @@ export default function ClientAccessPage() {
 
               {filteredUsers.length === 0 && (
                 <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-                  No users found matching "{userSearchQuery}"
+                  No users found matching “{userSearchQuery}”
                 </div>
               )}
             </div>
@@ -453,15 +482,20 @@ export default function ClientAccessPage() {
               <div className="flex flex-col gap-3 mb-4 sm:flex-row">
                 <input
                   type="text"
-                  placeholder="Search clients..."
+                  name="clientSearch"
+                  placeholder="Search clients…"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="flex-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-800 dark:text-white"
+                  autoComplete="off"
+                  aria-label="Search clients"
+                  className="flex-1 px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 dark:bg-gray-800 dark:text-white"
                 />
                 <select
+                  name="complianceFilter"
                   value={complianceFilter}
                   onChange={(e) => setComplianceFilter(e.target.value)}
-                  className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-gray-800 dark:text-white"
+                  aria-label="Filter by compliance service"
+                  className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-500 dark:bg-gray-800 dark:text-white"
                 >
                   <option value="all">All Rows</option>
                   <option value="roc">ROC</option>
@@ -533,6 +567,10 @@ export default function ClientAccessPage() {
                         {filteredClients.map((client, idx) => {
                           const hasAccess = client.id ? allowedClientIds.has(client.id) : false;
                           return (
+                            // ponytail: no content-visibility here — this table is auto-layout
+                            // with no column widths, so skipping row measurement makes column
+                            // widths jump while scrolling. Add pagination or a real virtualizer
+                            // when client counts get large.
                             <tr
                               key={client.id}
                               className="hover:bg-gray-50 dark:hover:bg-gray-700/50"
@@ -553,6 +591,9 @@ export default function ClientAccessPage() {
                                 <button
                                   onClick={() => client.id && toggleClient(client.id)}
                                   disabled={savingUser === activeUserId}
+                                  role="switch"
+                                  aria-checked={hasAccess}
+                                  aria-label={`${hasAccess ? 'Revoke' : 'Grant'} access for ${client.clientName}`}
                                   className={`w-10 h-6 rounded-full transition-colors relative ${
                                     hasAccess
                                       ? 'bg-green-500'

@@ -86,13 +86,13 @@ export function AttendanceStatsCard({ stats, loading, error }: AttendanceStatsCa
               <item.icon className={`h-5 w-5 ${item.color}`} />
             </div>
             <p className="text-2xl font-bold">{item.value}</p>
-            <p className="text-xs text-muted-foreground mt-1">{item.label}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{item.label}</p>
           </div>
         ))}
       </div>
       {stats.overtimeHours > 0 && (
         <div className="mt-4 pt-4 border-t text-center">
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-gray-500 dark:text-gray-400">
             Overtime: <span className="font-semibold text-orange-600">{stats.overtimeHours.toFixed(1)}h</span>
           </p>
         </div>

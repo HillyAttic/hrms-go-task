@@ -36,6 +36,7 @@ export function HolidayManagementModal({ isOpen, onClose, managerId, isManager, 
   const [holidayDate, setHolidayDate] = useState('');
   const [holidayName, setHolidayName] = useState('');
   const [holidayDescription, setHolidayDescription] = useState('');
+  const [formError, setFormError] = useState('');
 
   const parseHolidayDate = (data: any): string => {
     if (data.date && typeof data.date.toDate === 'function') {
@@ -113,9 +114,10 @@ export function HolidayManagementModal({ isOpen, onClose, managerId, isManager, 
   // Add holiday
   const handleAddHoliday = async () => {
     if (!holidayDate || !holidayName.trim()) {
-      alert('Please enter both date and holiday name');
+      setFormError('Please enter both date and holiday name');
       return;
     }
+    setFormError('');
 
     setSaving(true);
     try {
@@ -202,10 +204,11 @@ export function HolidayManagementModal({ isOpen, onClose, managerId, isManager, 
                 <Label htmlFor="holidayDate">Date *</Label>
                 <input
                   id="holidayDate"
+                  name="holidayDate"
                   type="date"
                   value={holidayDate}
                   onChange={(e) => setHolidayDate(e.target.value)}
-                  className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                 />
               </div>
 
@@ -213,11 +216,12 @@ export function HolidayManagementModal({ isOpen, onClose, managerId, isManager, 
                 <Label htmlFor="holidayName">Holiday Name *</Label>
                 <input
                   id="holidayName"
+                  name="holidayName"
                   type="text"
                   value={holidayName}
                   onChange={(e) => setHolidayName(e.target.value)}
                   placeholder="e.g., Independence Day"
-                  className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                 />
               </div>
 
@@ -225,15 +229,19 @@ export function HolidayManagementModal({ isOpen, onClose, managerId, isManager, 
                 <Label htmlFor="holidayDescription">Description (Optional)</Label>
                 <input
                   id="holidayDescription"
+                  name="holidayDescription"
                   type="text"
                   value={holidayDescription}
                   onChange={(e) => setHolidayDescription(e.target.value)}
                   placeholder="e.g., National Holiday"
-                  className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full mt-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                 />
               </div>
             </div>
 
+            {formError && (
+              <p role="alert" className="text-sm text-red-600 mt-2">{formError}</p>
+            )}
             <Button
               onClick={handleAddHoliday}
               disabled={saving || !holidayDate || !holidayName.trim()}
@@ -242,7 +250,7 @@ export function HolidayManagementModal({ isOpen, onClose, managerId, isManager, 
               {saving ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                  Adding...
+                  Adding…
                 </>
               ) : (
                 <>
@@ -311,6 +319,7 @@ export function HolidayManagementModal({ isOpen, onClose, managerId, isManager, 
                         size="sm"
                         onClick={() => handleDeleteHoliday(holiday.id)}
                         className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                        aria-label="Delete holiday"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>

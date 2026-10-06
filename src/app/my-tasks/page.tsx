@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useId } from 'react';
 import { useEnhancedAuth } from '@/contexts/enhanced-auth.context';
 import { useRouter } from 'next/navigation';
 import { myTasksService } from '@/services/my-tasks.service';
@@ -132,9 +132,9 @@ export default function MyTasksPage() {
 
     if (authLoading || loading) {
         return (
-            <div className="flex items-center justify-center min-h-[60vh]">
+            <div className="flex items-center justify-center min-h-[60vh]" role="status" aria-label="Loading…">
                 <div className="text-center space-y-3">
-                    <div className="w-10 h-10 rounded-full border-2 border-primary border-t-transparent animate-spin mx-auto" />
+                    <div className="w-10 h-10 rounded-full border-2 border-primary border-t-transparent animate-spin mx-auto" aria-hidden="true" />
                     <p className="text-sm text-gray-400">Loading your tasks…</p>
                 </div>
             </div>
@@ -145,7 +145,7 @@ export default function MyTasksPage() {
         return (
             <div className="flex items-center justify-center min-h-[60vh]">
                 <div className="text-center space-y-4">
-                    <p className="text-red-500 text-sm">{error}</p>
+                    <p role="alert" className="text-red-500 text-sm">{error}</p>
                     <button onClick={() => window.location.reload()} className="px-5 py-2 bg-primary text-white rounded-xl text-sm font-medium">
                         Retry
                     </button>
@@ -180,8 +180,9 @@ export default function MyTasksPage() {
                             <button
                                 key={list.id}
                                 onClick={() => setSelectedListId(list.id)}
+                                aria-pressed={isSelected}
                                 className={cn(
-                                    "relative text-left rounded-2xl p-4 transition-all duration-200 active:scale-[0.97]",
+                                    "relative text-left rounded-2xl p-4 transition duration-200 active:scale-[0.97]",
                                     "shadow-sm",
                                     isSelected
                                         ? "ring-2 ring-offset-1 dark:ring-offset-[#1c1c1e]"
@@ -217,8 +218,9 @@ export default function MyTasksPage() {
                             onClick={() => handleDeleteList(selectedList.id)}
                             className="p-1.5 text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                             title="Delete list"
+                            aria-label="Delete list"
                         >
-                            <Trash2 className="w-4 h-4" />
+                            <Trash2 className="w-4 h-4" aria-hidden="true" />
                         </button>
                     </div>
 
@@ -246,19 +248,23 @@ export default function MyTasksPage() {
                         <input
                             ref={inputRef}
                             type="text"
+                            name="newTaskTitle"
+                            autoComplete="off"
+                            aria-label="New task title"
                             value={newTaskTitle}
                             onChange={(e) => setNewTaskTitle(e.target.value)}
                             onKeyDown={(e) => e.key === 'Enter' && handleAddTask()}
                             placeholder="Add a task…"
-                            className="flex-1 bg-transparent text-[15px] text-gray-800 dark:text-white placeholder-gray-400 focus:outline-none"
+                            className="flex-1 bg-transparent text-[15px] text-gray-800 dark:text-white placeholder-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded"
                         />
                         {newTaskTitle.trim() && (
                             <button
                                 onClick={handleAddTask}
+                                aria-label="Add task"
                                 className="w-7 h-7 rounded-full flex items-center justify-center text-white transition-transform active:scale-90"
                                 style={{ backgroundColor: selectedList.color }}
                             >
-                                <Plus className="w-4 h-4" />
+                                <Plus className="w-4 h-4" aria-hidden="true" />
                             </button>
                         )}
                     </div>
@@ -345,35 +351,42 @@ function TaskRow({ task, color, isToggling, onToggle, onDelete, showDivider, com
     return (
         <li
             className={cn(
-                "flex items-center gap-3 px-4 py-3 cursor-pointer select-none",
+                "flex items-center gap-3 px-4 py-3 select-none",
                 "active:bg-gray-50 dark:active:bg-white/[0.04] transition-colors",
                 showDivider && "border-b border-gray-100 dark:border-white/[0.05]",
                 completed && "opacity-50"
             )}
-            onClick={onToggle}
         >
-            {/* Checkbox */}
-            <div
-                className={cn(
-                    "w-[22px] h-[22px] rounded-full flex-shrink-0 flex items-center justify-center transition-all duration-200",
-                    isToggling && "scale-90 opacity-70",
-                    completed ? "border-0" : "border-2"
-                )}
-                style={completed
-                    ? { backgroundColor: color }
-                    : { borderColor: color }
-                }
+            <button
+                type="button"
+                onClick={onToggle}
+                aria-pressed={completed}
+                className="flex-1 flex items-center gap-3 text-left cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg"
             >
-                {completed && <Check className="w-3 h-3 text-white" strokeWidth={3} />}
-            </div>
+                {/* Checkbox */}
+                <div
+                    className={cn(
+                        "w-[22px] h-[22px] rounded-full flex-shrink-0 flex items-center justify-center transition duration-200",
+                        isToggling && "scale-90 opacity-70",
+                        completed ? "border-0" : "border-2"
+                    )}
+                    style={completed
+                        ? { backgroundColor: color }
+                        : { borderColor: color }
+                    }
+                    aria-hidden="true"
+                >
+                    {completed && <Check className="w-3 h-3 text-white" strokeWidth={3} />}
+                </div>
 
-            {/* Title */}
-            <span className={cn(
-                "flex-1 text-[15px] leading-snug text-gray-800 dark:text-white",
-                completed && "line-through text-gray-400 dark:text-gray-500"
-            )}>
-                {task.title}
-            </span>
+                {/* Title */}
+                <span className={cn(
+                    "flex-1 min-w-0 text-[15px] leading-snug text-gray-800 dark:text-white",
+                    completed && "line-through text-gray-400 dark:text-gray-500"
+                )}>
+                    {task.title}
+                </span>
+            </button>
 
             {/* Delete — tap area */}
             <button
@@ -381,7 +394,7 @@ function TaskRow({ task, color, isToggling, onToggle, onDelete, showDivider, com
                 className="p-1.5 -mr-1 text-gray-300 hover:text-red-400 dark:text-gray-600 dark:hover:text-red-400 rounded-lg transition-colors active:scale-90"
                 aria-label="Delete task"
             >
-                <X className="w-4 h-4" />
+                <X className="w-4 h-4" aria-hidden="true" />
             </button>
         </li>
     );
@@ -396,6 +409,27 @@ interface CreateListModalProps {
 function CreateListModal({ onClose, onCreate }: CreateListModalProps) {
     const [name, setName] = useState('');
     const [color, setColor] = useState(TASK_LIST_COLORS[0]);
+    const titleId = useId();
+    const previouslyFocused = useRef<HTMLElement | null>(null);
+    const onCloseRef = useRef(onClose);
+    const nameInputRef = useRef<HTMLInputElement>(null);
+
+    useEffect(() => {
+        onCloseRef.current = onClose;
+    }, [onClose]);
+
+    useEffect(() => {
+        previouslyFocused.current = document.activeElement as HTMLElement | null;
+        const onKey = (e: KeyboardEvent) => {
+            if (e.key === 'Escape') onCloseRef.current();
+        };
+        document.addEventListener('keydown', onKey);
+        nameInputRef.current?.focus();
+        return () => {
+            document.removeEventListener('keydown', onKey);
+            previouslyFocused.current?.focus?.();
+        };
+    }, []);
 
     return (
         <div
@@ -407,24 +441,30 @@ function CreateListModal({ onClose, onCreate }: CreateListModalProps) {
 
             {/* Sheet */}
             <div
-                className="relative bg-white dark:bg-[#2c2c2e] rounded-2xl shadow-2xl w-full max-w-md p-6 sm:p-6"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby={titleId}
+                className="relative bg-white dark:bg-[#2c2c2e] rounded-2xl shadow-2xl w-full max-w-md p-6 sm:p-6 overscroll-contain"
                 onClick={e => e.stopPropagation()}
             >
                 <div className="flex items-center justify-between mb-5">
-                    <h3 className="text-[17px] font-semibold text-gray-900 dark:text-white">New List</h3>
-                    <button onClick={onClose} className="w-7 h-7 flex items-center justify-center rounded-full bg-gray-100 dark:bg-white/[0.08] text-gray-500 dark:text-gray-400">
-                        <X className="w-4 h-4" />
+                    <h2 id={titleId} className="text-[17px] font-semibold text-gray-900 dark:text-white">New List</h2>
+                    <button onClick={onClose} aria-label="Close dialog" className="w-7 h-7 flex items-center justify-center rounded-full bg-gray-100 dark:bg-white/[0.08] text-gray-500 dark:text-gray-400">
+                        <X className="w-4 h-4" aria-hidden="true" />
                     </button>
                 </div>
 
                 <input
+                    ref={nameInputRef}
                     type="text"
+                    name="listName"
+                    autoComplete="off"
+                    aria-label="List name"
                     value={name}
                     onChange={e => setName(e.target.value)}
                     onKeyDown={e => e.key === 'Enter' && name.trim() && onCreate(name.trim(), color)}
                     placeholder="List name"
-                    autoFocus
-                    className="w-full px-4 py-3 bg-gray-100 dark:bg-white/[0.06] rounded-xl text-[15px] text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary mb-5"
+                    className="w-full px-4 py-3 bg-gray-100 dark:bg-white/[0.06] rounded-xl text-[15px] text-gray-900 dark:text-white placeholder-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary mb-5"
                 />
 
                 <p className="text-[11px] font-semibold uppercase tracking-widest text-gray-400 mb-3">Colour</p>
@@ -433,8 +473,9 @@ function CreateListModal({ onClose, onCreate }: CreateListModalProps) {
                         <button
                             key={c}
                             onClick={() => setColor(c)}
+                            aria-pressed={color === c}
                             className={cn(
-                                "w-9 h-9 rounded-full transition-all active:scale-90",
+                                "w-9 h-9 rounded-full transition active:scale-90",
                                 color === c && "ring-2 ring-offset-2 dark:ring-offset-[#2c2c2e] scale-110"
                             )}
                             style={{ backgroundColor: c, outlineColor: c }}

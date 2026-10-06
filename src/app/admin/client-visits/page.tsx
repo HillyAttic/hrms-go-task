@@ -1,8 +1,15 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { MagnifyingGlassIcon, CalendarIcon, UserIcon } from '@heroicons/react/24/outline';
+
+const visitDateFormatter = new Intl.DateTimeFormat(undefined, {
+  weekday: 'short',
+  month: 'short',
+  day: 'numeric',
+});
 
 interface VisitRecord {
   date: string;
@@ -37,18 +44,44 @@ interface ClientMonthlyReport {
 }
 
 export default function ClientVisitsPage() {
+  return (
+    <Suspense fallback={null}>
+      <ClientVisitsPageContent />
+    </Suspense>
+  );
+}
+
+function ClientVisitsPageContent() {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+
   const [clientReports, setClientReports] = useState<ClientMonthlyReport[]>([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('search') ?? '');
+  const [startDate, setStartDate] = useState(searchParams.get('start') ?? '');
+  const [endDate, setEndDate] = useState(searchParams.get('end') ?? '');
   const [expandedClients, setExpandedClients] = useState<Set<string>>(new Set());
   const [expandedMonths, setExpandedMonths] = useState<Set<string>>(new Set());
-  const [activeTab, setActiveTab] = useState<'visits' | 'bank'>('visits');
+  const [activeTab, setActiveTab] = useState<'visits' | 'bank'>(
+    searchParams.get('tab') === 'bank' ? 'bank' : 'visits'
+  );
 
   useEffect(() => {
     fetchClientReports();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Keep the active tab and filters in the URL so the view is shareable
+  useEffect(() => {
+    const params = new URLSearchParams();
+    if (searchTerm) params.set('search', searchTerm);
+    if (startDate) params.set('start', startDate);
+    if (endDate) params.set('end', endDate);
+    if (activeTab !== 'visits') params.set('tab', activeTab);
+    const qs = params.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  }, [searchTerm, startDate, endDate, activeTab, pathname, router]);
 
   const fetchClientReports = async () => {
     try {
@@ -153,6 +186,7 @@ export default function ClientVisitsPage() {
       <div className="flex gap-1 mb-4 sm:mb-6 border-b border-gray-200 dark:border-gray-700">
         <button
           onClick={() => setActiveTab('visits')}
+          aria-pressed={activeTab === 'visits'}
           className={`px-4 py-2 text-sm font-medium rounded-t-lg transition ${
             activeTab === 'visits'
               ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 border border-b-white dark:border-b-gray-800 border-gray-200 dark:border-gray-700 -mb-px'
@@ -168,6 +202,7 @@ export default function ClientVisitsPage() {
         </button>
         <button
           onClick={() => setActiveTab('bank')}
+          aria-pressed={activeTab === 'bank'}
           className={`px-4 py-2 text-sm font-medium rounded-t-lg transition ${
             activeTab === 'bank'
               ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 border border-b-white dark:border-b-gray-800 border-gray-200 dark:border-gray-700 -mb-px'
@@ -208,26 +243,33 @@ export default function ClientVisitsPage() {
             <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
             <input
               type="text"
+              name="clientSearch"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+              autoComplete="off"
+              aria-label="Search client name"
               className="w-full pl-10 pr-4 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-              placeholder="Search client name..."
+              placeholder="Search client name…"
             />
           </div>
           <input
             type="date"
+            name="startDate"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
+            autoComplete="off"
+            aria-label="Start date"
             className="px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-            placeholder="Start Date"
           />
           <input
             type="date"
+            name="endDate"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
+            autoComplete="off"
+            aria-label="End date"
             className="px-3 sm:px-4 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg dark:bg-gray-700 dark:text-white"
-            placeholder="End Date"
           />
         </div>
         <div className="flex gap-2">
@@ -248,9 +290,9 @@ export default function ClientVisitsPage() {
 
       {/* Client Reports */}
       {loading ? (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-8 sm:p-12 text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-sm sm:text-base text-gray-600 dark:text-gray-400">Loading client reports...</p>
+        <div role="status" aria-live="polite" className="bg-white dark:bg-gray-800 rounded-lg shadow p-8 sm:p-12 text-center">
+          <div aria-hidden="true" className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-sm sm:text-base text-gray-600 dark:text-gray-400">Loading client reports…</p>
         </div>
       ) : activeClients.length === 0 ? (
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-8 sm:p-12 text-center">
@@ -271,6 +313,7 @@ export default function ClientVisitsPage() {
               {/* Client Header */}
               <button
                 onClick={() => toggleClient(client.clientId)}
+                aria-expanded={expandedClients.has(client.clientId)}
                 className="w-full px-4 sm:px-6 py-3 sm:py-4 flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-700 transition"
               >
                 <div className="flex items-center gap-2 sm:gap-3 min-w-0">
@@ -289,6 +332,8 @@ export default function ClientVisitsPage() {
                   </div>
                 </div>
                 <svg
+                  aria-hidden="true"
+                  focusable="false"
                   className={`w-5 h-5 text-gray-400 transition-transform flex-shrink-0 ${
                     expandedClients.has(client.clientId) ? 'rotate-180' : ''
                   }`}
@@ -310,6 +355,7 @@ export default function ClientVisitsPage() {
                         {/* Month Header */}
                         <button
                           onClick={() => toggleMonth(monthKey)}
+                          aria-expanded={expandedMonths.has(monthKey)}
                           className="w-full px-4 sm:px-6 py-2.5 sm:py-3 flex items-center justify-between bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
                         >
                           <div className="flex items-center gap-2">
@@ -322,6 +368,8 @@ export default function ClientVisitsPage() {
                             </span>
                           </div>
                           <svg
+                            aria-hidden="true"
+                            focusable="false"
                             className={`w-4 h-4 text-gray-400 transition-transform flex-shrink-0 ${
                               expandedMonths.has(monthKey) ? 'rotate-180' : ''
                             }`}
@@ -346,11 +394,7 @@ export default function ClientVisitsPage() {
                                   <div className="flex items-center justify-between">
                                     <div>
                                       <div className="text-sm font-medium text-gray-900 dark:text-white">
-                                        {new Date(visit.date).toLocaleDateString('en-US', {
-                                          weekday: 'short',
-                                          month: 'short',
-                                          day: 'numeric'
-                                        })}
+                                        {visitDateFormatter.format(new Date(visit.date))}
                                       </div>
                                       <div className="text-xs text-gray-500 dark:text-gray-400">
                                         {visit.startTime !== '-'

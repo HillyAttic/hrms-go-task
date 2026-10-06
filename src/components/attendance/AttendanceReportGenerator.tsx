@@ -51,7 +51,7 @@ export function AttendanceReportGenerator({
           <select
             id="reportType"
             {...register('reportType')}
-            className="w-full mt-1 rounded-md border border-input bg-background px-3 py-2"
+            className="w-full mt-1 rounded-md border border-stroke bg-white px-3 py-2 text-dark dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
           >
             <option value="daily">Daily Attendance</option>
             <option value="weekly">Weekly Timesheet</option>
@@ -86,7 +86,7 @@ export function AttendanceReportGenerator({
           <select
             id="format"
             {...register('format')}
-            className="w-full mt-1 rounded-md border border-input bg-background px-3 py-2"
+            className="w-full mt-1 rounded-md border border-stroke bg-white px-3 py-2 text-dark dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
           >
             <option value="pdf">PDF</option>
             <option value="csv">CSV</option>
@@ -108,7 +108,7 @@ export function AttendanceReportGenerator({
 
         <Button type="submit" disabled={loading} className="w-full text-white">
           <Download className="mr-2 h-4 w-4" />
-          {loading ? 'Generating...' : 'Generate Report'}
+          {loading ? 'Generating…' : 'Generate Report'}
         </Button>
       </form>
     </Card>

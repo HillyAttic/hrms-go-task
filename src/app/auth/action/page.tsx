@@ -74,7 +74,7 @@ function AuthActionContent() {
 
   if (isVerifying) {
     return (
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-gray-700 dark:bg-gray-800">
         <div className="flex flex-wrap items-center">
           <div className="hidden xl:block xl:w-1/2">
             <div className="px-26 py-17.5 text-center">
@@ -95,14 +95,14 @@ function AuthActionContent() {
             </div>
           </div>
 
-          <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
+          <div className="w-full border-stroke dark:border-gray-700 xl:w-1/2 xl:border-l-2">
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
               <div className="mb-8 text-center">
                 <h2 className="text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
                   Verifying Reset Link
                 </h2>
                 <p className="mt-4 text-black dark:text-white">
-                  Please wait while we verify your password reset link...
+                  Please wait while we verify your password reset link…
                 </p>
               </div>
             </div>
@@ -114,7 +114,7 @@ function AuthActionContent() {
 
   if (error) {
     return (
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-gray-700 dark:bg-gray-800">
         <div className="flex flex-wrap items-center">
           <div className="hidden xl:block xl:w-1/2">
             <div className="px-26 py-17.5 text-center">
@@ -135,7 +135,7 @@ function AuthActionContent() {
             </div>
           </div>
 
-          <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
+          <div className="w-full border-stroke dark:border-gray-700 xl:w-1/2 xl:border-l-2">
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
               <div className="mb-8 text-center">
                 <h2 className="text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
@@ -143,8 +143,8 @@ function AuthActionContent() {
                 </h2>
               </div>
 
-              <div className="rounded-lg border border-danger bg-danger/10 p-4 text-center">
-                <p className="text-danger font-semibold">{error}</p>
+              <div role="alert" className="rounded-lg border border-red bg-red/10 p-4 text-center">
+                <p className="text-red font-semibold">{error}</p>
               </div>
 
               <div className="mt-6 text-center">
@@ -166,7 +166,7 @@ function AuthActionContent() {
   }
 
   return (
-    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-gray-700 dark:bg-gray-800">
       <div className="flex flex-wrap items-center">
         <div className="hidden xl:block xl:w-1/2">
           <div className="px-26 py-17.5 text-center">
@@ -187,7 +187,7 @@ function AuthActionContent() {
           </div>
         </div>
 
-        <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
+        <div className="w-full border-stroke dark:border-gray-700 xl:w-1/2 xl:border-l-2">
           <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
             <div className="mb-8 text-center">
               <h2 className="text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
@@ -203,6 +203,7 @@ function AuthActionContent() {
                 label="New Password"
                 type="password"
                 name="newPassword"
+                autoComplete="new-password"
                 placeholder="Enter new password"
                 required
                 value={newPassword}
@@ -214,6 +215,7 @@ function AuthActionContent() {
                 label="Confirm New Password"
                 type="password"
                 name="confirmPassword"
+                autoComplete="new-password"
                 placeholder="Confirm new password"
                 required
                 value={confirmPassword}
@@ -222,8 +224,8 @@ function AuthActionContent() {
               />
 
               {error && (
-                <div className="mb-4 rounded-lg border border-danger bg-danger/10 p-3">
-                  <p className="text-sm text-danger">{error}</p>
+                <div role="alert" className="mb-4 rounded-lg border border-red bg-red/10 p-3">
+                  <p className="text-sm text-red">{error}</p>
                 </div>
               )}
 
@@ -255,9 +257,9 @@ function AuthActionContent() {
 export default function AuthActionPage() {
   return (
     <Suspense fallback={
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-gray-700 dark:bg-gray-800">
         <div className="flex items-center justify-center p-12">
-          <p className="text-black dark:text-white">Loading...</p>
+          <p className="text-black dark:text-white">Loading…</p>
         </div>
       </div>
     }>

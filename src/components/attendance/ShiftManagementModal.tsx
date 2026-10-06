@@ -92,8 +92,8 @@ export function ShiftManagementModal({
             </div>
           </div>
 
-          <div>
-            <Label>Days of Week</Label>
+          <fieldset>
+            <legend className="text-sm font-medium">Days of Week</legend>
             <div className="grid grid-cols-2 gap-2 mt-2">
               {DAYS_OF_WEEK.map((day) => (
                 <label key={day.value} className="flex items-center gap-2">
@@ -110,7 +110,7 @@ export function ShiftManagementModal({
             {errors.daysOfWeek && (
               <p className="text-sm text-red-600 mt-1">{errors.daysOfWeek.message}</p>
             )}
-          </div>
+          </fieldset>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
@@ -151,7 +151,7 @@ export function ShiftManagementModal({
               Cancel
             </Button>
             <Button type="submit" disabled={loading} className="text-white">
-              {loading ? 'Creating...' : 'Create Shift'}
+              {loading ? 'Creating…' : 'Create Shift'}
             </Button>
           </div>
         </form>

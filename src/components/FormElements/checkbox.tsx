@@ -43,7 +43,7 @@ export function Checkbox({
 
           <div
             className={cn(
-              "mr-2 flex size-5 items-center justify-center rounded border border-dark-5 peer-checked:border-primary dark:border-dark-6 peer-checked:[&>*]:block",
+              "mr-2 flex size-5 items-center justify-center rounded border border-dark-5 peer-checked:border-primary peer-focus-visible:ring-2 peer-focus-visible:ring-primary peer-focus-visible:ring-offset-2 dark:border-dark-6 dark:ring-offset-gray-900 peer-checked:[&>*]:block",
               withBg
                 ? "peer-checked:bg-primary [&>*]:text-white"
                 : "peer-checked:bg-gray-2 dark:peer-checked:bg-transparent",

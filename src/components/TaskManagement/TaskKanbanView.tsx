@@ -37,21 +37,24 @@ export const TaskKanbanView: React.FC<TaskKanbanViewProps> = ({
     e.preventDefault();
   };
 
-  const handleDrop = (e: React.DragEvent, status: TaskStatus) => {
-    e.preventDefault();
-    const taskId = e.dataTransfer.getData('taskId');
-    
-    const updatedTasks = tasks.map(task => 
+  // Shared move handler used by both drag-and-drop and the keyboard-accessible control
+  const moveTaskToStatus = (taskId: string, status: TaskStatus) => {
+    const updatedTasks = tasks.map(task =>
       task.id === taskId ? { ...task, status } : task
     );
-    
+
     setTasks(updatedTasks);
-    
+
     // Find the updated task and call the update handler
     const updatedTask = updatedTasks.find(task => task.id === taskId);
     if (updatedTask && onTaskUpdate) {
       onTaskUpdate(updatedTask);
     }
+  };
+
+  const handleDrop = (e: React.DragEvent, status: TaskStatus) => {
+    e.preventDefault();
+    moveTaskToStatus(e.dataTransfer.getData('taskId'), status);
   };
 
   const handleTaskClick = (task: Task) => {
@@ -119,8 +122,8 @@ export const TaskKanbanView: React.FC<TaskKanbanViewProps> = ({
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      <div className="flex justify-center items-center h-64" role="status" aria-label="Loading…">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500" aria-hidden="true"></div>
       </div>
     );
   }
@@ -137,7 +140,7 @@ export const TaskKanbanView: React.FC<TaskKanbanViewProps> = ({
           <div className={`flex items-center mb-4 pb-2 border-b-2 ${getStatusColor(status as TaskStatus)}`}>
             <h2 className="text-xl font-bold text-black dark:text-white">
               {getStatusTitle(status as TaskStatus)} 
-              <span className="ml-2 bg-gray-200 dark:bg-boxdark-2 text-gray-700 dark:text-gray-300 text-sm font-medium px-2.5 py-0.5 rounded">
+              <span className="ml-2 bg-gray-200 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-sm font-medium px-2.5 py-0.5 rounded">
                 {statusTasks.length}
               </span>
             </h2>
@@ -145,15 +148,29 @@ export const TaskKanbanView: React.FC<TaskKanbanViewProps> = ({
           
           <div className="space-y-4 min-h-[100px]">
             {statusTasks.map((task) => (
-              <div 
+              <div
                 key={task.id}
                 draggable
                 onDragStart={(e) => handleDragStart(e, task.id)}
               >
-                <TaskCard 
-                  task={task} 
-                  onClick={() => handleTaskClick(task)} 
+                <TaskCard
+                  task={task}
+                  onClick={() => handleTaskClick(task)}
                 />
+                {/* Keyboard-accessible alternative to drag-and-drop */}
+                <label htmlFor={`move-${task.id}`} className="sr-only">
+                  Move “{task.title}” to another status
+                </label>
+                <select
+                  id={`move-${task.id}`}
+                  value={task.status}
+                  onChange={(e) => moveTaskToStatus(task.id, e.target.value as TaskStatus)}
+                  className="sr-only focus-visible:not-sr-only focus-visible:mt-2 focus-visible:w-full focus-visible:rounded-lg focus-visible:border focus-visible:border-stroke focus-visible:bg-white focus-visible:px-2 focus-visible:py-1 focus-visible:text-xs focus-visible:text-black dark:focus-visible:border-gray-700 dark:focus-visible:bg-gray-800 dark:focus-visible:text-white"
+                >
+                  <option value={TaskStatus.TODO}>To Do</option>
+                  <option value={TaskStatus.IN_PROGRESS}>In Progress</option>
+                  <option value={TaskStatus.COMPLETED}>Completed</option>
+                </select>
               </div>
             ))}
           </div>

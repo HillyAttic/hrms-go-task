@@ -56,17 +56,20 @@ const ForgotPasswordPage = () => {
       newErrors.newPassword = 'Password must be at least 8 characters';
     }
     if (formData.newPassword !== formData.confirmNewPassword) {
-      newErrors.confirmNewPassword = "Passwords don't match";
+      newErrors.confirmNewPassword = 'Passwords don’t match';
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return newErrors;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validateForm()) {
+    const newErrors = validateForm();
+    const firstInvalid = Object.keys(newErrors)[0];
+    if (firstInvalid) {
+      document.getElementById(firstInvalid)?.focus();
       return;
     }
 
@@ -105,7 +108,7 @@ const ForgotPasswordPage = () => {
   };
 
   return (
-    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-gray-700 dark:bg-gray-800">
       <div className="flex flex-wrap items-center">
         <div className="hidden xl:block xl:w-1/2">
           <div className="px-26 py-17.5 text-center">
@@ -126,7 +129,7 @@ const ForgotPasswordPage = () => {
           </div>
         </div>
 
-        <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
+        <div className="w-full border-stroke dark:border-gray-700 xl:w-1/2 xl:border-l-2">
           <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
             <div className="mb-8 text-center">
               <h2 className="text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
@@ -139,9 +142,12 @@ const ForgotPasswordPage = () => {
 
             <form onSubmit={handleSubmit}>
               <Input
+                id="email"
                 label="Email Address"
                 type="email"
                 name="email"
+                autoComplete="email"
+                spellCheck={false}
                 placeholder="Enter your email"
                 error={errors.email}
                 required
@@ -151,25 +157,33 @@ const ForgotPasswordPage = () => {
               />
 
               <Input
+                id="currentPassword"
                 label="Current Password"
                 type="password"
                 name="currentPassword"
+                autoComplete="current-password"
                 placeholder="Enter current password"
                 error={errors.currentPassword}
+                aria-describedby="currentPassword-help"
                 required
                 value={formData.currentPassword}
                 onChange={handleChange}
                 disabled={isLoading}
               />
-              <p className="-mt-3 mb-5 text-xs text-gray-500 dark:text-gray-400">
+              <p
+                id="currentPassword-help"
+                className="-mt-3 mb-5 text-xs text-gray-500 dark:text-gray-400"
+              >
                 This is the password you currently sign in with
               </p>
 
               <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2">
                 <Input
+                  id="newPassword"
                   label="New Password"
                   type="password"
                   name="newPassword"
+                  autoComplete="new-password"
                   placeholder="Enter new password"
                   error={errors.newPassword}
                   required
@@ -179,9 +193,11 @@ const ForgotPasswordPage = () => {
                 />
 
                 <Input
+                  id="confirmNewPassword"
                   label="Confirm New Password"
                   type="password"
                   name="confirmNewPassword"
+                  autoComplete="new-password"
                   placeholder="Confirm password"
                   error={errors.confirmNewPassword}
                   required

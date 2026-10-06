@@ -1,9 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useId, useRef } from 'react';
 import { Task, Comment, TaskStatus, TaskPriority } from '@/types/task.types';
 import { UserAvatar } from './UserAvatar';
 import { taskApi } from '@/services/task.api';
 import { useNotification } from '@/contexts/notification.context';
 import { useModal } from '@/contexts/modal-context';
+import { ConfirmDialog } from '@/components/ui/confirm-dialog';
+
+const dateFormatter = new Intl.DateTimeFormat(undefined, {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
 
 interface TaskDetailsModalProps {
   task: Task;
@@ -23,12 +30,43 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
   const [newComment, setNewComment] = useState('');
   const [comments, setComments] = useState<Comment[]>([]);
   const [isLoadingComments, setIsLoadingComments] = useState(true);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const { addNotification } = useNotification();
   const { openModal, closeModal } = useModal();
+  const titleId = useId();
+  const commentInputId = useId();
+  const previouslyFocused = useRef<HTMLElement | null>(null);
+  const showDeleteConfirmRef = useRef(false);
+  const onCloseRef = useRef(onClose);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
   useEffect(() => {
     openModal();
     return () => closeModal();
   }, [openModal, closeModal]);
+
+  useEffect(() => {
+    onCloseRef.current = onClose;
+  }, [onClose]);
+
+  useEffect(() => {
+    showDeleteConfirmRef.current = showDeleteConfirm;
+  }, [showDeleteConfirm]);
+
+  // Escape-to-close, initial focus, and focus restoration for the modal
+  useEffect(() => {
+    previouslyFocused.current = document.activeElement as HTMLElement | null;
+    const onKey = (e: KeyboardEvent) => {
+      // Let the nested delete confirmation handle its own Escape first
+      if (e.key === 'Escape' && !showDeleteConfirmRef.current) onCloseRef.current();
+    };
+    document.addEventListener('keydown', onKey);
+    closeButtonRef.current?.focus();
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      previouslyFocused.current?.focus?.();
+    };
+  }, []);
 
   // Load comments when modal opens
   useEffect(() => {
@@ -112,11 +150,7 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
 
   const formatDate = (date?: Date) => {
     if (!date) return '';
-    return new Date(date).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
+    return dateFormatter.format(new Date(date));
   };
 
   const getStatusColor = (status: TaskStatus) => {
@@ -147,30 +181,37 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div 
-        className="bg-white dark:bg-boxdark rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto overscroll-contain"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-6">
           {/* Header */}
           <div className="flex justify-between items-start mb-4">
-            <h2 className="text-2xl font-bold text-black dark:text-white">
+            <h2 id={titleId} className="text-2xl font-bold text-black dark:text-white">
               {isEditing ? (
                 <input
                   type="text"
+                  name="taskTitle"
+                  aria-label="Task title"
                   value={editedTask.title}
                   onChange={(e) => setEditedTask({...editedTask, title: e.target.value})}
-                  className="w-full bg-transparent border-b border-gray-300 dark:border-strokedark text-black dark:text-white focus:outline-none"
+                  className="w-full bg-transparent border-b border-gray-300 dark:border-gray-700 text-black dark:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 />
               ) : (
                 task.title
               )}
             </h2>
             <button
+              ref={closeButtonRef}
               onClick={onClose}
+              aria-label="Close dialog"
               className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path>
               </svg>
             </button>
@@ -198,7 +239,7 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
               <textarea
                 value={editedTask.description}
                 onChange={(e) => setEditedTask({...editedTask, description: e.target.value})}
-                className="w-full h-32 p-3 bg-gray-50 dark:bg-boxdark-2 border border-stroke dark:border-strokedark rounded-lg text-black dark:text-white"
+                className="w-full h-32 p-3 bg-gray-50 dark:bg-gray-800 border border-stroke dark:border-gray-700 rounded-lg text-black dark:text-white"
               />
             ) : (
               <p className="text-gray-600 dark:text-gray-300">
@@ -219,7 +260,7 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
                     ...editedTask, 
                     dueDate: e.target.value ? new Date(e.target.value) : new Date()
                   })}
-                  className="w-full p-2 bg-gray-50 dark:bg-boxdark-2 border border-stroke dark:border-strokedark rounded-lg text-black dark:text-white"
+                  className="w-full p-2 bg-gray-50 dark:bg-gray-800 border border-stroke dark:border-gray-700 rounded-lg text-black dark:text-white"
                 />
               ) : (
                 <p className="text-gray-600 dark:text-gray-300">
@@ -250,7 +291,7 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
             ) : (
               <div className="space-y-4 max-h-60 overflow-y-auto pr-2">
                 {comments.map((comment) => (
-                  <div key={comment.id} className="bg-gray-50 dark:bg-boxdark-2 p-4 rounded-lg">
+                  <div key={comment.id} className="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg">
                     <div className="flex items-start">
                       <UserAvatar users={[comment.author]} size="sm" />
                       <div className="ml-3 flex-1">
@@ -274,11 +315,15 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
             
             <div className="mt-4 flex">
               <input
+                id={commentInputId}
                 type="text"
+                name="comment"
+                autoComplete="off"
+                aria-label="Add a comment"
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}
-                placeholder="Add a comment..."
-                className="flex-1 p-3 bg-gray-50 dark:bg-boxdark-2 border border-stroke dark:border-strokedark rounded-l-lg text-black dark:text-white focus:outline-none"
+                placeholder="Add a comment…"
+                className="flex-1 p-3 bg-gray-50 dark:bg-gray-800 border border-stroke dark:border-gray-700 rounded-l-lg text-black dark:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
@@ -296,7 +341,7 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
           </div>
 
           {/* Actions */}
-          <div className="flex justify-between pt-4 border-t border-stroke dark:border-strokedark">
+          <div className="flex justify-between pt-4 border-t border-stroke dark:border-gray-700">
             <div>
               {!isEditing && (
                 <button
@@ -307,7 +352,7 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
                 </button>
               )}
               <button
-                onClick={handleDelete}
+                onClick={() => setShowDeleteConfirm(true)}
                 className="text-red-500 hover:text-red-700"
               >
                 Delete
@@ -318,7 +363,7 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
               <div>
                 <button
                   onClick={() => setIsEditing(false)}
-                  className="mr-2 px-4 py-2 bg-gray-200 dark:bg-boxdark-2 text-black dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-boxdark"
+                  className="mr-2 px-4 py-2 bg-gray-200 dark:bg-gray-800 text-black dark:text-white rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700"
                 >
                   Cancel
                 </button>
@@ -333,6 +378,17 @@ export const TaskDetailsModal: React.FC<TaskDetailsModalProps> = ({
           </div>
         </div>
       </div>
+
+      {showDeleteConfirm && (
+        <ConfirmDialog
+          title="Delete task"
+          message="This will permanently delete this task and its comments."
+          confirmText="Delete"
+          variant="danger"
+          onConfirm={handleDelete}
+          onCancel={() => setShowDeleteConfirm(false)}
+        />
+      )}
     </div>
   );
 };

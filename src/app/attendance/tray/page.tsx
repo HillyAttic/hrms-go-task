@@ -1,7 +1,9 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useId, Suspense } from 'react';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
+import { useRouter, usePathname, useSearchParams } from 'next/navigation';
 import {
   collection,
   query,
@@ -15,7 +17,7 @@ import { db } from '@/lib/firebase';
 import { useEnhancedAuth } from '@/contexts/enhanced-auth.context';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Button, buttonVariants } from '@/components/ui/button';
 import { ManagerGuard } from '@/components/Auth/PermissionGuard';
 
 // Lazy load heavy modals
@@ -70,20 +72,55 @@ interface Employee {
 }
 
 export default function AttendanceTrayPage() {
+  return (
+    <Suspense fallback={null}>
+      <AttendanceTrayPageInner />
+    </Suspense>
+  );
+}
+
+function AttendanceTrayPageInner() {
   const { user, userProfile, isAdmin, isManager } = useEnhancedAuth();
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const [attendances, setAttendances] = useState<AttendanceRecord[]>([]);
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [assignedEmployeeIds, setAssignedEmployeeIds] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [hasMoreData, setHasMoreData] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(() => {
+    const p = Number(searchParams.get('page'));
+    return Number.isFinite(p) && p >= 1 ? Math.floor(p) : 1;
+  });
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const itemsPerPage = 20;
-  
-  // Filter states
-  const [selectedEmployee, setSelectedEmployee] = useState<string>('all');
-  const [selectedStatus, setSelectedStatus] = useState<string>('all');
-  const [dateFilter, setDateFilter] = useState<string>('all');
+
+  // Filter states (initialized from the URL)
+  const [selectedEmployee, setSelectedEmployee] = useState<string>(() => searchParams.get('employee') || 'all');
+  const [selectedStatus, setSelectedStatus] = useState<string>(() => searchParams.get('status') || 'all');
+  const [dateFilter, setDateFilter] = useState<string>(() => searchParams.get('date') || 'all');
+
+  const employeeFilterId = useId();
+  const statusFilterId = useId();
+  const dateFilterId = useId();
+
+  // Keep filters and page in the URL
+  const writeParams = (opts: { employee: string; status: string; date: string; page: number }) => {
+    const params = new URLSearchParams(searchParams.toString());
+    const entries: [string, string | undefined][] = [
+      ['employee', opts.employee === 'all' ? undefined : opts.employee],
+      ['status', opts.status === 'all' ? undefined : opts.status],
+      ['date', opts.date === 'all' ? undefined : opts.date],
+      ['page', opts.page > 1 ? String(opts.page) : undefined],
+    ];
+    for (const [key, value] of entries) {
+      if (value) params.set(key, value);
+      else params.delete(key);
+    }
+    const query = params.toString();
+    router.replace(query ? `${pathname}?${query}` : pathname, { scroll: false });
+  };
 
   // State for location map modal
   const [showMapModal, setShowMapModal] = useState(false);
@@ -405,12 +442,12 @@ export default function AttendanceTrayPage() {
           </div>
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Authentication Required</h2>
           <p className="text-gray-600 dark:text-gray-400 mb-6">Please sign in to view attendance tray.</p>
-          <Button 
-            onClick={() => window.location.href = '/auth/signin'}
-            className="bg-blue-600 hover:bg-blue-700 text-white"
+          <Link
+            href="/auth/signin"
+            className={buttonVariants({ className: 'bg-blue-600 hover:bg-blue-700 text-white' })}
           >
             Sign In to Continue
-          </Button>
+          </Link>
         </Card>
       </div>
     );
@@ -427,9 +464,9 @@ export default function AttendanceTrayPage() {
           <p className="text-gray-600 dark:text-gray-400 text-center max-w-md">
             You don't have permission to access this page. Only administrators and managers can view the attendance tray.
           </p>
-          <Button onClick={() => window.history.back()} variant="outline">
+          <Link href="/dashboard" className={buttonVariants({ variant: 'outline' })}>
             Go Back
-          </Button>
+          </Link>
         </div>
       }
     >
@@ -456,14 +493,10 @@ export default function AttendanceTrayPage() {
             <Loader2 className="h-4 w-4" />
             Refresh
           </Button>
-          <Button
-            variant="outline"
-            onClick={() => window.history.back()}
-            className="flex items-center gap-2"
-          >
-            <ChevronLeft className="h-4 w-4" />
+          <Link href="/attendance" className={buttonVariants({ variant: 'outline', className: 'flex items-center gap-2' })}>
+            <ChevronLeft aria-hidden="true" className="h-4 w-4" />
             Back
-          </Button>
+          </Link>
         </div>
       </div>
 
@@ -479,16 +512,20 @@ export default function AttendanceTrayPage() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Employee Filter */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor={employeeFilterId} className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Employee
               </label>
               <select
+                id={employeeFilterId}
+                name="employeeFilter"
                 value={selectedEmployee}
                 onChange={(e) => {
-                  setSelectedEmployee(e.target.value);
+                  const value = e.target.value;
+                  setSelectedEmployee(value);
                   setCurrentPage(1);
+                  writeParams({ employee: value, status: selectedStatus, date: dateFilter, page: 1 });
                 }}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
               >
                 <option value="all">All Employees</option>
                 {employees.map((emp) => (
@@ -501,16 +538,20 @@ export default function AttendanceTrayPage() {
 
             {/* Status Filter */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor={statusFilterId} className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Status
               </label>
               <select
+                id={statusFilterId}
+                name="statusFilter"
                 value={selectedStatus}
                 onChange={(e) => {
-                  setSelectedStatus(e.target.value);
+                  const value = e.target.value;
+                  setSelectedStatus(value);
                   setCurrentPage(1);
+                  writeParams({ employee: selectedEmployee, status: value, date: dateFilter, page: 1 });
                 }}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
               >
                 <option value="all">All Status</option>
                 <option value="active">Active</option>
@@ -520,16 +561,20 @@ export default function AttendanceTrayPage() {
 
             {/* Date Filter */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label htmlFor={dateFilterId} className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Date Range
               </label>
               <select
+                id={dateFilterId}
+                name="dateFilter"
                 value={dateFilter}
                 onChange={(e) => {
-                  setDateFilter(e.target.value);
+                  const value = e.target.value;
+                  setDateFilter(value);
                   setCurrentPage(1);
+                  writeParams({ employee: selectedEmployee, status: selectedStatus, date: value, page: 1 });
                 }}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
               >
                 <option value="all">All Time</option>
                 <option value="today">Today</option>
@@ -643,10 +688,11 @@ export default function AttendanceTrayPage() {
           
           {/* Pagination Controls */}
           <div className="flex items-center justify-between mt-8">
-            <Button 
+            <Button
               onClick={() => {
                 const prevPage = Math.max(1, currentPage - 1);
                 setCurrentPage(prevPage);
+                writeParams({ employee: selectedEmployee, status: selectedStatus, date: dateFilter, page: prevPage });
               }}
               disabled={currentPage <= 1 || loading}
               variant="outline"
@@ -661,10 +707,11 @@ export default function AttendanceTrayPage() {
               </span>
             </div>
           
-            <Button 
+            <Button
               onClick={() => {
                 const nextPage = currentPage + 1;
                 setCurrentPage(nextPage);
+                writeParams({ employee: selectedEmployee, status: selectedStatus, date: dateFilter, page: nextPage });
               }}
               disabled={!hasMoreData || loading}
               variant="outline"
@@ -676,9 +723,9 @@ export default function AttendanceTrayPage() {
           
           {loading && (
             <div className="text-center py-8">
-              <div className="inline-flex items-center gap-2">
-                <Loader2 className="h-5 w-5 animate-spin text-blue-600" />
-                <span className="text-gray-600 dark:text-gray-400">Loading records...</span>
+              <div className="inline-flex items-center gap-2" role="status" aria-label="Loading…">
+                <Loader2 aria-hidden="true" className="h-5 w-5 animate-spin text-blue-600" />
+                <span className="text-gray-600 dark:text-gray-400">Loading records…</span>
               </div>
             </div>
           )}

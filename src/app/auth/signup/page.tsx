@@ -62,21 +62,24 @@ const SignUpPage = () => {
     }
     
     if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = "Passwords don't match";
+      newErrors.confirmPassword = 'Passwords don’t match';
     }
-    
+
     if (!formData.acceptTerms) {
       newErrors.acceptTerms = 'You must accept the terms and conditions';
     }
-    
+
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return newErrors;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!validateForm()) {
+
+    const newErrors = validateForm();
+    const firstInvalid = Object.keys(newErrors)[0];
+    if (firstInvalid) {
+      document.getElementById(firstInvalid)?.focus();
       return;
     }
     
@@ -106,7 +109,7 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-gray-700 dark:bg-gray-800">
       <div className="flex flex-wrap items-center">
         <div className="hidden xl:block xl:w-1/2">
           <div className="px-26 py-17.5 text-center">
@@ -127,7 +130,7 @@ const SignUpPage = () => {
           </div>
         </div>
 
-        <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
+        <div className="w-full border-stroke dark:border-gray-700 xl:w-1/2 xl:border-l-2">
           <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
             <div className="mb-8 text-center">
               <h2 className="text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
@@ -140,9 +143,11 @@ const SignUpPage = () => {
 
             <form onSubmit={handleSubmit}>
               <Input
+                id="fullName"
                 label="Full Name"
                 type="text"
                 name="fullName"
+                autoComplete="name"
                 placeholder="Enter your full name"
                 error={errors.fullName}
                 required
@@ -151,9 +156,12 @@ const SignUpPage = () => {
               />
 
               <Input
+                id="email"
                 label="Email Address"
                 type="email"
                 name="email"
+                autoComplete="email"
+                spellCheck={false}
                 placeholder="Enter your email"
                 error={errors.email}
                 required
@@ -162,9 +170,11 @@ const SignUpPage = () => {
               />
 
               <Input
+                id="password"
                 label="Password"
                 type="password"
                 name="password"
+                autoComplete="new-password"
                 placeholder="Enter your password"
                 error={errors.password}
                 required
@@ -173,9 +183,11 @@ const SignUpPage = () => {
               />
 
               <Input
+                id="confirmPassword"
                 label="Confirm Password"
                 type="password"
                 name="confirmPassword"
+                autoComplete="new-password"
                 placeholder="Re-enter your password"
                 error={errors.confirmPassword}
                 required
@@ -192,23 +204,28 @@ const SignUpPage = () => {
                     className="peer sr-only"
                     checked={formData.acceptTerms}
                     onChange={handleChange}
+                    aria-label="I agree to the Terms and Conditions"
+                    aria-invalid={!!errors.acceptTerms}
+                    aria-describedby={errors.acceptTerms ? 'acceptTerms-error' : undefined}
                   />
                   <label
                     htmlFor="acceptTerms"
                     className={`${
-                      formData.acceptTerms ? 'bg-primary' : 'bg-white dark:bg-boxdark-2'
-                    } flex h-5 w-5 items-center justify-center rounded border ${
+                      formData.acceptTerms ? 'bg-primary' : 'bg-white dark:bg-gray-800'
+                    } flex h-5 w-5 items-center justify-center rounded border peer-focus-visible:ring-2 peer-focus-visible:ring-primary ${
                       errors.acceptTerms
                         ? '!border-red dark:!border-red'
-                        : 'border-stroke dark:border-form-strokedark'
-                    } peer-checked:before:block`}
+                        : 'border-stroke dark:border-gray-700'
+                    }`}
                   >
-                    <span className="hidden">
+                    <span className={formData.acceptTerms ? 'block' : 'hidden'}>
                       <svg
                         className="h-3.5 w-3.5 text-white"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
+                        aria-hidden="true"
+                        focusable="false"
                       >
                         <path
                           strokeLinecap="round"
@@ -220,18 +237,15 @@ const SignUpPage = () => {
                     </span>
                   </label>
                 </div>
-                <label
-                  htmlFor="acceptTerms"
-                  className="text-sm font-medium text-black dark:text-white"
-                >
+                <span className="text-sm font-medium text-black dark:text-white">
                   I agree to the{' '}
                   <Link href="/terms" className="text-primary hover:underline">
                     Terms and Conditions
                   </Link>
-                </label>
+                </span>
               </div>
               {errors.acceptTerms && (
-                <p className="mt-1 text-sm text-red">
+                <p id="acceptTerms-error" role="alert" className="mt-1 text-sm text-red">
                   {errors.acceptTerms}
                 </p>
               )}

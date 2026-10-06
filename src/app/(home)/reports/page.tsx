@@ -22,14 +22,18 @@ export default function ReportsPage() {
 
   if (authLoading || loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      <div role="status" aria-label="Loading…" className="flex items-center justify-center min-h-screen">
+        <div aria-hidden="true" className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
       </div>
     );
   }
 
   if (!isManager) {
-    return null;
+    return (
+      <div role="status" aria-label="Redirecting…" className="flex items-center justify-center min-h-screen">
+        <div aria-hidden="true" className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+      </div>
+    );
   }
 
   return (

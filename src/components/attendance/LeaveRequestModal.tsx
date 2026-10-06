@@ -80,7 +80,7 @@ export function LeaveRequestModal({
             <select
               id="leaveTypeId"
               {...register('leaveTypeId')}
-              className="w-full mt-1 rounded-md border border-input bg-background px-3 py-2"
+              className="w-full mt-1 rounded-md border border-stroke bg-white px-3 py-2 text-dark dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100"
             >
               <option value="">Select leave type</option>
               {leaveTypes?.map((type) => (
@@ -163,7 +163,7 @@ export function LeaveRequestModal({
               Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting || loading} className="text-white">
-              {isSubmitting || loading ? 'Submitting...' : 'Submit Request'}
+              {isSubmitting || loading ? 'Submitting…' : 'Submit Request'}
             </Button>
           </div>
         </form>

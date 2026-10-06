@@ -17,6 +17,8 @@ type InputGroupProps = {
   iconPosition?: "left" | "right";
   height?: "sm" | "default";
   defaultValue?: string;
+  autoComplete?: string;
+  spellCheck?: boolean;
 };
 
 const InputGroup: React.FC<InputGroupProps> = ({
@@ -70,6 +72,8 @@ const InputGroup: React.FC<InputGroupProps> = ({
           required={required}
           disabled={disabled}
           data-active={active}
+          autoComplete={props.autoComplete}
+          spellCheck={props.spellCheck}
         />
 
         {icon}

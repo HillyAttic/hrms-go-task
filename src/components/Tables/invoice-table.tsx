@@ -8,9 +8,18 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
-import dayjs from "dayjs";
 import { getInvoiceTableData } from "./fetch";
 import { DownloadIcon, PreviewIcon } from "./icons";
+
+const dateFormatter = new Intl.DateTimeFormat("en-US", {
+  month: "short",
+  day: "2-digit",
+  year: "numeric",
+});
+const currencyFormatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
+});
 
 export async function InvoiceTable() {
   const data = await getInvoiceTableData();
@@ -28,18 +37,25 @@ export async function InvoiceTable() {
         </TableHeader>
 
         <TableBody>
-          {data.map((item, index) => (
+          {data.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={4} className="py-6 text-center text-body-sm">
+                No invoices found
+              </TableCell>
+            </TableRow>
+          ) : (
+            data.map((item, index) => (
             <TableRow key={index} className="border-[#eee] dark:border-dark-3">
               <TableCell className="min-w-[155px] xl:pl-7.5">
-                <h5 className="text-dark dark:text-white">{item.name}</h5>
+                <div className="text-dark dark:text-white">{item.name}</div>
                 <p className="mt-[3px] text-body-sm font-medium">
-                  ${item.price}
+                  {currencyFormatter.format(item.price)}
                 </p>
               </TableCell>
 
               <TableCell>
                 <p className="text-dark dark:text-white">
-                  {dayjs(item.date).format("MMM DD, YYYY")}
+                  {dateFormatter.format(new Date(item.date))}
                 </p>
               </TableCell>
 
@@ -80,7 +96,8 @@ export async function InvoiceTable() {
                 </div>
               </TableCell>
             </TableRow>
-          ))}
+          ))
+          )}
         </TableBody>
       </Table>
     </div>

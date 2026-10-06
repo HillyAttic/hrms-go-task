@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRecurringTasks } from '@/hooks/use-recurring-tasks';
 import { useBulkSelection } from '@/hooks/use-bulk-selection';
 import { useEnhancedAuth } from '@/contexts/enhanced-auth.context';
@@ -117,6 +117,42 @@ export default function RecurringTasksPage() {
 
     loadTeamNames();
   }, []);
+
+  // Keyboard/focus management + Escape-to-close for the delete confirmation dialog
+  const deleteDialogRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!deleteConfirmId) return;
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setDeleteConfirmId(null);
+        return;
+      }
+      if (e.key === 'Tab') {
+        const dialog = deleteDialogRef.current;
+        if (!dialog) return;
+        const focusables = dialog.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusables.length === 0) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    };
+    document.addEventListener('keydown', onKey);
+    deleteDialogRef.current?.querySelector<HTMLElement>('button')?.focus();
+    return () => {
+      document.removeEventListener('keydown', onKey);
+      previouslyFocused?.focus?.();
+    };
+  }, [deleteConfirmId]);
 
   /**
    * Handle opening modal for creating new task
@@ -374,7 +410,7 @@ export default function RecurringTasksPage() {
 
         {/* Error Display */}
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
+          <div role="alert" className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg">
             <p className="font-medium">Error loading recurring tasks</p>
             <p className="text-sm">{error.message}</p>
           </div>
@@ -399,6 +435,7 @@ export default function RecurringTasksPage() {
             <div className="flex items-center space-x-2">
               <button
                 onClick={() => setViewMode('grid')}
+                aria-pressed={viewMode === 'grid'}
                 className={`px-3 py-2 md:py-1.5 rounded-md text-sm font-medium transition-colors min-h-[44px] md:min-h-0 ${viewMode === 'grid' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'}`}
                 aria-label="Grid view"
               >
@@ -406,6 +443,7 @@ export default function RecurringTasksPage() {
               </button>
               <button
                 onClick={() => setViewMode('list')}
+                aria-pressed={viewMode === 'list'}
                 className={`px-3 py-2 md:py-1.5 rounded-md text-sm font-medium transition-colors min-h-[44px] md:min-h-0 ${viewMode === 'list' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'}`}
                 aria-label="List view"
               >
@@ -494,10 +532,16 @@ export default function RecurringTasksPage() {
         {/* Delete Confirmation Dialog */}
         {deleteConfirmId && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white dark:bg-gray-dark rounded-lg p-6 max-w-md w-full mx-4">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+            <div
+              ref={deleteDialogRef}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="delete-recurring-task-title"
+              className="bg-white dark:bg-gray-dark rounded-lg p-6 max-w-md w-full mx-4 overscroll-contain"
+            >
+              <h2 id="delete-recurring-task-title" className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                 Delete Recurring Task
-              </h3>
+              </h2>
               <p className="text-gray-600 dark:text-gray-400 mb-6">
                 How would you like to handle this recurring task?
               </p>
@@ -615,8 +659,8 @@ export default function RecurringTasksPage() {
 
       {/* Report loading overlay */}
       {isReportLoading && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" role="status" aria-label="Loading…">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white" aria-hidden="true"></div>
         </div>
       )}
 
