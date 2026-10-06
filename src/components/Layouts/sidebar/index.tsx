@@ -189,7 +189,7 @@ export function Sidebar() {
         inert={!isOpen && variant !== 'tablet'}
         onTouchStart={handleTouchStart}
       >
-        <div className="flex h-full flex-col py-6 pl-6 pr-2 md:py-10 md:pl-[25px] md:pr-[7px]">
+        <div className="flex h-full flex-col pb-6 pl-6 pr-2 md:pb-10 md:pl-[25px] md:pr-[7px]">
           {/* Header */}
           <div className="relative pr-4.5">
             {/* Tablet open button - shown when sidebar is closed */}
@@ -210,21 +210,23 @@ export function Sidebar() {
             )}
           </div>
 
-          {/* Logo - edVenture branding (light/dark) */}
-          <div className="px-3.5" style={{ marginBottom: '-0.5rem' }}>
+          {/* Logo - edVenture branding (light/dark).
+              Same vertical box as <Header> (py-4 md:py-5) so the brand mark and the
+              page title share one centre line. ponytail: the logo heights are derived
+              from the header's content height — retune both if <Header>'s padding or
+              title block changes. */}
+          <div className="flex items-center px-3.5 py-4 md:py-5">
             {/* Light mode logo */}
             <img
               src="/images/branding_edVenture-5.png"
               alt="edVenture Logo"
-              className="h-auto w-full block dark:hidden"
-              style={{ maxWidth: '220px' }}
+              className="block h-[50px] w-auto max-w-full dark:hidden md:h-[62px]"
             />
             {/* Dark mode logo */}
             <img
               src="/images/dark-mode.png"
               alt="edVenture Logo"
-              className="h-auto w-full hidden dark:block"
-              style={{ maxWidth: '220px' }}
+              className="hidden h-[50px] w-auto max-w-full dark:block md:h-[62px]"
             />
           </div>
 
