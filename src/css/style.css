@@ -905,3 +905,213 @@ img {
     margin-top: 3rem;
   }
 }
+/* --- Auth (sign-in): Material 3 surfaces with light neumorphic depth ---
+   Neumorphism only reads if the raised element and the canvas behind it are
+   the same colour, so the canvas, card, fields and wells all share one token. */
+:root {
+  --auth-surface: #eef2f8;
+  --auth-light: rgba(255, 255, 255, 0.95);
+  --auth-shade: rgba(163, 177, 198, 0.55);
+}
+
+.dark {
+  --auth-surface: #0e1626;
+  --auth-light: rgba(255, 255, 255, 0.08);
+  --auth-shade: rgba(0, 0, 0, 0.9);
+}
+
+.auth-neu-canvas {
+  background-color: var(--auth-surface);
+  background-image:
+    radial-gradient(55rem 38rem at 10% 4%, rgba(4, 71, 253, 0.12), transparent 62%),
+    radial-gradient(46rem 34rem at 92% 96%, rgba(127, 27, 255, 0.12), transparent 64%);
+}
+
+.auth-neu-card {
+  background-color: var(--auth-surface);
+  box-shadow:
+    14px 14px 34px var(--auth-shade),
+    -12px -12px 28px var(--auth-light);
+}
+
+.auth-neu-well {
+  background-color: var(--auth-surface);
+  box-shadow:
+    inset 3px 3px 7px var(--auth-shade),
+    inset -3px -3px 7px var(--auth-light);
+}
+
+/* Padding lives here (not in Tailwind utilities) because mobile-responsive.css
+   sets `padding` on input[type=…] at a higher specificity than a utility class,
+   which would otherwise collapse the leading-icon gutter. The media query there
+   re-applies this same variable. */
+.auth-field {
+  --auth-field-pad: 14px 16px 14px 48px;
+  width: 100%;
+  padding: var(--auth-field-pad);
+  border: 0;
+  border-radius: 1rem;
+  background-color: var(--auth-surface);
+  box-shadow:
+    inset 4px 4px 9px var(--auth-shade),
+    inset -4px -4px 9px var(--auth-light);
+  outline: none;
+  transition: box-shadow 0.18s ease;
+}
+
+.auth-field::placeholder {
+  font-weight: 400;
+  color: #94a3b8;
+}
+
+.auth-field:focus {
+  box-shadow:
+    inset 4px 4px 9px var(--auth-shade),
+    inset -4px -4px 9px var(--auth-light),
+    0 0 0 2px rgba(4, 71, 253, 0.55);
+}
+
+.auth-field:disabled {
+  opacity: 0.6;
+}
+
+.auth-field-invalid,
+.auth-field-invalid:focus {
+  box-shadow:
+    inset 4px 4px 9px var(--auth-shade),
+    inset -4px -4px 9px var(--auth-light),
+    0 0 0 2px rgba(242, 48, 48, 0.65);
+}
+
+/* Field with a trailing control (the password reveal button) */
+.auth-field-action {
+  --auth-field-pad: 14px 56px 14px 48px;
+}
+
+/* Secondary action: raised like the card rather than filled */
+.auth-neu-ghost {
+  background-color: var(--auth-surface);
+  box-shadow:
+    6px 6px 14px var(--auth-shade),
+    -6px -6px 14px var(--auth-light);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.auth-neu-ghost:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.auth-neu-ghost:active:not(:disabled) {
+  transform: none;
+  box-shadow:
+    inset 3px 3px 7px var(--auth-shade),
+    inset -3px -3px 7px var(--auth-light);
+}
+
+.auth-neu-ghost:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.auth-neu-ghost:focus-visible {
+  outline: 2px solid #0447fd;
+  outline-offset: 3px;
+}
+
+.auth-neu-btn {
+  background-image: linear-gradient(135deg, #0447fd 0%, #2f6bff 55%, #7f1bff 100%);
+  box-shadow:
+    0 14px 28px -10px rgba(4, 71, 253, 0.75),
+    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.auth-neu-btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow:
+    0 18px 34px -10px rgba(4, 71, 253, 0.8),
+    inset 0 1px 0 rgba(255, 255, 255, 0.45);
+}
+
+.auth-neu-btn:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow:
+    0 8px 18px -12px rgba(4, 71, 253, 0.7),
+    inset 0 2px 8px rgba(0, 0, 0, 0.28);
+}
+
+.auth-neu-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.auth-neu-btn:focus-visible {
+  outline: 2px solid #0447fd;
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .auth-neu-btn,
+  .auth-neu-ghost {
+    transition: none;
+  }
+
+  .auth-neu-btn:hover:not(:disabled),
+  .auth-neu-btn:active:not(:disabled),
+  .auth-neu-ghost:hover:not(:disabled) {
+    transform: none;
+  }
+}
+
+/* Short viewports (landscape laptops, split-screen windows). The auth forms are
+   tall, so above 820px of height they scroll; below it, tighten the card's
+   vertical rhythm so everything fits without scrolling. Declared after
+   @tailwind utilities, so these win against the utility classes they refine. */
+@media (max-height: 820px) {
+  .auth-neu-card {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .auth-card-header {
+    margin-bottom: 1rem;
+  }
+
+  .auth-card-logo {
+    width: 3.5rem;
+    height: 3.5rem;
+    margin-bottom: 0.75rem;
+    border-radius: 1rem;
+  }
+
+  .auth-card-logo img {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+
+  .auth-card-title {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+
+  .auth-card-subtitle {
+    margin-top: 0.25rem;
+    font-size: 0.8125rem;
+  }
+
+  .auth-form-grid {
+    gap: 0.75rem;
+  }
+
+  .auth-field {
+    --auth-field-pad: 11px 16px 11px 44px;
+  }
+
+  .auth-field-action {
+    --auth-field-pad: 11px 52px 11px 44px;
+  }
+}

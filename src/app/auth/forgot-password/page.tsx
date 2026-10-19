@@ -1,11 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Input } from '@/components/Form/Input';
-import { Button } from '@/components/Form/Button';
+import { EmailIcon, PasswordIcon } from '@/assets/icons';
+import { AuthCard, authLinkClass } from '@/components/Auth/AuthCard';
+import { AuthField } from '@/components/Auth/AuthField';
 import { useNotification } from '@/contexts/notification.context';
 
 interface ForgotPasswordFormData {
@@ -96,7 +96,7 @@ const ForgotPasswordPage = () => {
         message: 'Password changed successfully! Please sign in with your new password.',
       });
       setFormData(EMPTY_FORM);
-      setTimeout(() => router.push('/auth/signin'), 2000);
+      setTimeout(() => router.push('/auth/sign-in'), 2000);
     } catch {
       addNotification({ type: 'error', message: 'An error occurred while changing your password' });
     } finally {
@@ -105,123 +105,100 @@ const ForgotPasswordPage = () => {
   };
 
   return (
-    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-      <div className="flex flex-wrap items-center">
-        <div className="hidden xl:block xl:w-1/2">
-          <div className="px-26 py-17.5 text-center">
-            <div className="mb-8 flex justify-center">
-              <Image
-                src="/images/logo/logo-512.png"
-                alt="EdVentureHub logo"
-                width={176}
-                height={176}
-              />
-            </div>
-            <h2 className="mb-2 text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-              EdVentureHub Admin Dashboard
-            </h2>
-            <p className="text-black dark:text-white">
-              Securely manage your account
-            </p>
-          </div>
+    <AuthCard
+      title="Change password"
+      subtitle="Confirm your current password and choose a new one"
+      className="max-w-[440px] sm:max-w-[600px]"
+    >
+      <form onSubmit={handleSubmit}>
+        <div className="auth-form-grid grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <AuthField
+            label="Email Address"
+            type="email"
+            name="email"
+            placeholder="you@company.com"
+            autoComplete="email"
+            error={errors.email}
+            required
+            value={formData.email}
+            onChange={handleChange}
+            disabled={isLoading}
+            icon={<EmailIcon width="20" height="20" />}
+          />
+
+          <AuthField
+            label="Current Password"
+            type="password"
+            name="currentPassword"
+            placeholder="Enter current password"
+            autoComplete="current-password"
+            error={errors.currentPassword}
+            hint="This is the password you currently sign in with"
+            required
+            value={formData.currentPassword}
+            onChange={handleChange}
+            disabled={isLoading}
+            icon={<PasswordIcon width="20" height="20" />}
+          />
+
+          <AuthField
+            label="New Password"
+            type="password"
+            name="newPassword"
+            placeholder="Enter new password"
+            autoComplete="new-password"
+            error={errors.newPassword}
+            required
+            value={formData.newPassword}
+            onChange={handleChange}
+            disabled={isLoading}
+            icon={<PasswordIcon width="20" height="20" />}
+          />
+
+          <AuthField
+            label="Confirm New Password"
+            type="password"
+            name="confirmNewPassword"
+            placeholder="Confirm password"
+            autoComplete="new-password"
+            error={errors.confirmNewPassword}
+            required
+            value={formData.confirmNewPassword}
+            onChange={handleChange}
+            disabled={isLoading}
+            icon={<PasswordIcon width="20" height="20" />}
+          />
         </div>
 
-        <div className="w-full border-stroke dark:border-strokedark xl:w-1/2 xl:border-l-2">
-          <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
-            <div className="mb-8 text-center">
-              <h2 className="text-2xl font-bold text-black dark:text-white sm:text-title-xl2">
-                Change Password
-              </h2>
-              <p className="text-black dark:text-white">
-                Confirm your current password and choose a new one
-              </p>
-            </div>
-
-            <form onSubmit={handleSubmit}>
-              <Input
-                label="Email Address"
-                type="email"
-                name="email"
-                placeholder="Enter your email"
-                error={errors.email}
-                required
-                value={formData.email}
-                onChange={handleChange}
-                disabled={isLoading}
-              />
-
-              <Input
-                label="Current Password"
-                type="password"
-                name="currentPassword"
-                placeholder="Enter current password"
-                error={errors.currentPassword}
-                required
-                value={formData.currentPassword}
-                onChange={handleChange}
-                disabled={isLoading}
-              />
-              <p className="-mt-3 mb-5 text-xs text-gray-500 dark:text-gray-400">
-                This is the password you currently sign in with
-              </p>
-
-              <div className="grid grid-cols-1 gap-x-4 md:grid-cols-2">
-                <Input
-                  label="New Password"
-                  type="password"
-                  name="newPassword"
-                  placeholder="Enter new password"
-                  error={errors.newPassword}
-                  required
-                  value={formData.newPassword}
-                  onChange={handleChange}
-                  disabled={isLoading}
-                />
-
-                <Input
-                  label="Confirm New Password"
-                  type="password"
-                  name="confirmNewPassword"
-                  placeholder="Confirm password"
-                  error={errors.confirmNewPassword}
-                  required
-                  value={formData.confirmNewPassword}
-                  onChange={handleChange}
-                  disabled={isLoading}
-                />
-              </div>
-
-              <div className="mt-2 flex gap-3">
-                <div className="flex-1">
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    onClick={() => router.push('/auth/signin')}
-                    disabled={isLoading}
-                  >
-                    Cancel
-                  </Button>
-                </div>
-                <div className="flex-1">
-                  <Button type="submit" isLoading={isLoading} disabled={isLoading}>
-                    Save Changes
-                  </Button>
-                </div>
-              </div>
-
-              <div className="mt-6 text-center">
-                <p className="font-medium text-black dark:text-white">
-                  Remember your password?{' '}
-                  <Link href="/auth/signin" className="text-primary hover:underline">
-                    Back to sign in
-                  </Link>
-                </p>
-              </div>
-            </form>
-          </div>
+        <div className="mt-6 flex gap-3">
+          <button
+            type="button"
+            onClick={() => router.push('/auth/sign-in')}
+            disabled={isLoading}
+            className="auth-neu-ghost flex-1 rounded-full py-4 text-[15px] font-semibold text-dark-4 dark:text-dark-6"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="auth-neu-btn flex flex-1 items-center justify-center gap-2 rounded-full py-4 text-[15px] font-semibold tracking-wide text-white"
+          >
+            {isLoading ? 'Saving...' : 'Save Changes'}
+            {isLoading && (
+              <span className="inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-t-transparent" />
+            )}
+          </button>
         </div>
-      </div>
-    </div>
+
+        <p className="mt-6 text-center text-sm">
+          <span className="text-dark-5 dark:text-dark-6">Remember your password? </span>
+          <Link href="/auth/sign-in" className={authLinkClass}>
+            Back to sign in
+          </Link>
+        </p>
+      </form>
+    </AuthCard>
   );
 };
 

@@ -81,6 +81,12 @@ body.modal-open header {
     /* Removed touch-action: manipulation - was causing zoom issues */
   }
 
+  /* Auth fields set their own padding (leading icon + reveal button), which the
+     rule above outranks on specificity. Re-apply their variable. */
+  input.auth-field {
+    padding: var(--auth-field-pad);
+  }
+
   /* Table responsiveness */
   table {
     display: block;
