@@ -4,39 +4,44 @@ import { ArrowRight } from 'lucide-react';
 
 export function KanbanCTA() {
   return (
-    <section className="relative flex h-full min-h-[220px] flex-col overflow-hidden rounded-2xl bg-gradient-to-br from-blue-600 via-indigo-600 to-violet-600 p-6 text-white shadow-sm md:p-7">
-      {/* Decorative shapes */}
-      <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute -bottom-24 left-16 h-56 w-56 rounded-full bg-white/10 blur-xl" />
-        <div className="absolute -right-12 -top-16 h-48 w-48 rounded-full bg-white/10 blur-xl" />
-        <div className="absolute bottom-0 right-16 h-40 w-40 rounded-full bg-violet-300/20 blur-2xl" />
-        <div className="absolute -bottom-10 left-1/2 h-36 w-36 rounded-full border border-white/10" />
-      </div>
+    <section className="relative flex h-full min-h-[190px] flex-col overflow-hidden rounded-2xl bg-[linear-gradient(100deg,#2A54F5_0%,#4640EE_42%,#6231E8_72%,#7A2BE3_100%)] px-7 py-7 text-white shadow-sm md:px-9 md:py-8">
+      {/* Organic translucent blobs matching the reference artwork */}
+      <svg
+        className="pointer-events-none absolute inset-0 h-full w-full"
+        viewBox="0 0 400 160"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+      >
+        <defs>
+          <linearGradient id="kanban-cta-blob" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0%" stopColor="#A78BFA" stopOpacity="0.18" />
+            <stop offset="100%" stopColor="#C4B5FD" stopOpacity="0.4" />
+          </linearGradient>
+        </defs>
+        {/* Left hill */}
+        <path d="M58,160 C64,134 88,118 116,118 C146,118 168,136 174,160 Z" fill="url(#kanban-cta-blob)" />
+        {/* Centre hill */}
+        <path d="M142,160 C150,114 186,88 228,88 C276,88 310,120 318,160 Z" fill="url(#kanban-cta-blob)" />
+        {/* Large right mass */}
+        <path
+          d="M276,160 C272,132 276,102 292,82 C306,64 328,52 352,52 C380,52 398,74 402,96 L402,160 Z"
+          fill="url(#kanban-cta-blob)"
+        />
+      </svg>
 
-      <div className="relative z-10 max-w-md">
-        <h3 className="text-2xl font-bold leading-tight md:text-[28px]">
-          Stay on top of every task.
-        </h3>
-        <p className="mt-2 max-w-sm text-[13px] leading-relaxed text-white/80 md:text-sm">
-          Turn to smart tools and real-time updates to keep your work moving.
-        </p>
-
-        <div className="mt-4 flex flex-wrap gap-2">
-          {['Board view', 'Real-time sync', 'Team visibility'].map((label) => (
-            <span
-              key={label}
-              className="rounded-full bg-white/15 px-2.5 py-1 text-[11px] font-medium text-white/90 ring-1 ring-inset ring-white/15"
-            >
-              {label}
-            </span>
-          ))}
+      <div className="relative z-10 flex flex-1 flex-col justify-between gap-6 sm:flex-row sm:items-end">
+        <div className="max-w-[25rem]">
+          <h3 className="text-[26px] font-bold leading-[1.15] tracking-tight md:text-[30px]">
+            Stay on top of every task.
+          </h3>
+          <p className="mt-2.5 text-[13px] leading-relaxed text-white/80 md:text-[15px]">
+            Turn to smart tools and real-time updates to keep your work moving.
+          </p>
         </div>
-      </div>
 
-      <div className="relative z-10 mt-auto flex justify-end pt-6">
         <Link
           href="/kanban"
-          className="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-[13px] font-semibold text-indigo-700 shadow-sm transition-colors hover:bg-blue-50 md:text-sm"
+          className="inline-flex shrink-0 items-center gap-2 self-start rounded-xl bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-[0_6px_18px_-6px_rgba(15,23,42,0.45)] transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_24px_-8px_rgba(15,23,42,0.55)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent sm:self-auto"
         >
           View Board
           <ArrowRight className="h-4 w-4" />

@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useEffect, useId, useState } from 'react';
-import { BarChart3, Clock3, CheckCircle2, Sparkles } from 'lucide-react';
+import Image from 'next/image';
+import { BarChart3, Clock3 } from 'lucide-react';
 
 interface WelcomeBannerProps {
   name: string;
@@ -59,34 +60,22 @@ export function WelcomeBanner({ name }: WelcomeBannerProps) {
           </p>
         </div>
 
-        {/* Decorative illustration: floating tool chips over a mini stats card. */}
-        <div className="relative hidden h-[112px] w-[236px] shrink-0 md:block" aria-hidden="true">
-          <div className="absolute right-1 top-0 h-[84px] w-[136px] rounded-xl bg-white/70 p-2.5 shadow-sm ring-1 ring-white/70 backdrop-blur-sm dark:bg-white/10 dark:ring-white/10">
-            <div className="flex h-full items-end justify-between gap-1.5">
-              {[38, 62, 30, 78, 50].map((height, index) => (
-                <span
-                  key={index}
-                  className={`w-4 rounded-t-md ${
-                    index === 3 ? 'bg-indigo-500' : 'bg-indigo-300/80'
-                  }`}
-                  style={{ height: `${height}%` }}
-                />
-              ))}
-            </div>
-          </div>
+        {/* Decorative illustration: floating tool chips beside the hero image. */}
+        <div className="relative hidden h-[128px] w-[272px] shrink-0 md:block" aria-hidden="true">
+          <Image
+            src="/images/illustration/dashboard-illustration.png"
+            alt=""
+            width={153}
+            height={110}
+            priority
+            className="absolute -bottom-2 right-0 h-[116px] w-auto object-contain"
+          />
 
-          <div className="absolute left-1 top-4 flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-sm dark:bg-white/10">
+          <div className="absolute left-0 top-2 flex h-10 w-10 items-center justify-center rounded-xl bg-white shadow-sm dark:bg-white/10">
             <BarChart3 className="h-5 w-5 text-blue-500" />
           </div>
-          <div className="absolute bottom-0 left-8 flex h-9 w-9 items-center justify-center rounded-xl bg-white shadow-sm dark:bg-white/10">
+          <div className="absolute bottom-2 left-10 flex h-9 w-9 items-center justify-center rounded-xl bg-white shadow-sm dark:bg-white/10">
             <Clock3 className="h-[18px] w-[18px] text-orange-500" />
-          </div>
-          <div className="absolute bottom-2 left-24 flex h-8 w-8 items-center justify-center rounded-full bg-white shadow-sm dark:bg-white/10">
-            <CheckCircle2 className="h-4 w-4 text-emerald-500" />
-          </div>
-
-          <div className="absolute right-[132px] top-1 flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 text-white shadow-md">
-            <Sparkles className="h-5 w-5" />
           </div>
         </div>
       </div>
