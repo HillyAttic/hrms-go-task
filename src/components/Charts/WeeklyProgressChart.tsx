@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useId } from 'react';
-import { TrendingUp } from 'lucide-react';
+import { ChevronDown, TrendingUp } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 
 export type ProgressRange = 'week' | 'month';
@@ -22,7 +22,7 @@ const RANGES: { value: ProgressRange; label: string }[] = [
 ];
 
 const selectClass =
-  'rounded-lg border border-gray-200 bg-white px-2.5 py-1 text-[11px] font-medium text-gray-600 outline-none focus:border-blue-400 dark:border-gray-700 dark:bg-gray-dark dark:text-gray-300';
+  'appearance-none rounded-lg border border-gray-200 bg-white py-1 pl-2.5 pr-7 text-[11px] font-medium text-gray-600 outline-none transition-colors hover:border-gray-300 focus:border-blue-400 dark:border-gray-700 dark:bg-gray-dark dark:text-gray-300 dark:hover:border-gray-600';
 
 type Point = { x: number; y: number };
 
@@ -54,8 +54,11 @@ export function WeeklyProgressChart({ data, range, onRangeChange }: WeeklyProgre
   const totalCompleted = data.completed.reduce((a, b) => a + b, 0);
   const completionRate = totalCreated > 0 ? Math.round((totalCompleted / totalCreated) * 100) : 0;
 
-  const max = Math.max(...data.created, ...data.completed, 4);
-  const mid = Math.round(max / 2);
+  // Round the scale up to a tidy step so the axis reads 0 / 20 / 40 / 60 / 80.
+  const rawMax = Math.max(...data.created, ...data.completed, 4);
+  const step = rawMax <= 4 ? 1 : Math.ceil(rawMax / 20) * 5;
+  const max = step * 4;
+  const yTicks = [4, 3, 2, 1, 0].map((i) => Math.round(step * i));
   const count = data.created.length;
 
   // Points sit at the centre of each column so labels line up exactly underneath.
@@ -67,12 +70,14 @@ export function WeeklyProgressChart({ data, range, onRangeChange }: WeeklyProgre
 
   const createdPoints = toPoints(data.created);
   const completedPoints = toPoints(data.completed);
+  // With an empty week a row of baseline dots adds noise instead of information.
+  const showDots = (totalCreated > 0 || totalCompleted > 0) && count <= 7;
 
   // Keep at most 7 x-axis ticks regardless of the window length.
-  const step = Math.max(1, Math.ceil(count / 7));
+  const stepX = Math.max(1, Math.ceil(count / 7));
   const ticks = data.labels
     .map((label, i) => ({ label, x: ((i + 0.5) / Math.max(count, 1)) * 100 }))
-    .filter((_, i) => i % step === 0);
+    .filter((_, i) => i % stepX === 0);
 
   return (
     <Card className="flex h-full min-h-[250px] flex-col overflow-hidden rounded-2xl border-gray-100/80 p-5 shadow-sm dark:border-gray-800">
@@ -82,30 +87,37 @@ export function WeeklyProgressChart({ data, range, onRangeChange }: WeeklyProgre
           Weekly Progress
         </h3>
         <div className="flex items-center gap-1.5">
-          <span className="rounded-full bg-gray-50 px-2 py-1 text-[10px] font-medium text-gray-600 dark:bg-gray-800 dark:text-gray-300">
+          <div className="relative">
+            <select
+              value={range}
+              onChange={(e) => onRangeChange(e.target.value as ProgressRange)}
+              className={selectClass}
+              aria-label="Progress time range"
+            >
+              {RANGES.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
+            <ChevronDown
+              className="pointer-events-none absolute right-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-400"
+              aria-hidden="true"
+            />
+          </div>
+          <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-1 text-[10px] font-semibold text-amber-600 ring-1 ring-inset ring-amber-200/70 dark:bg-amber-500/10 dark:text-amber-400 dark:ring-amber-500/20">
+            <span className="h-1.5 w-1.5 rounded-full bg-amber-500" />
             {completionRate}% completion
           </span>
-          <select
-            value={range}
-            onChange={(e) => onRangeChange(e.target.value as ProgressRange)}
-            className={selectClass}
-            aria-label="Progress time range"
-          >
-            {RANGES.map((option) => (
-              <option key={option.value} value={option.value}>
-                {option.label}
-              </option>
-            ))}
-          </select>
         </div>
       </div>
 
       <div className="flex min-h-0 flex-1 flex-col pt-4">
         <div className="flex flex-1 gap-2">
-          <div className="flex w-6 shrink-0 flex-col justify-between text-right text-[10px] leading-none text-gray-400 dark:text-gray-500">
-            <span>{max}</span>
-            <span>{mid}</span>
-            <span>0</span>
+          <div className="flex w-6 shrink-0 flex-col justify-between py-0 text-right text-[10px] leading-none text-gray-400 dark:text-gray-500">
+            {yTicks.map((tick) => (
+              <span key={tick}>{tick}</span>
+            ))}
           </div>
 
           <div className="relative min-h-[140px] flex-1">
@@ -127,14 +139,27 @@ export function WeeklyProgressChart({ data, range, onRangeChange }: WeeklyProgre
                 </linearGradient>
               </defs>
 
-              {[0, 50, 100].map((y) => (
+              {[0, 25, 50, 75, 100].map((y) => (
                 <line
-                  key={y}
+                  key={`h-${y}`}
                   x1="0"
                   x2="100"
                   y1={y}
                   y2={y}
                   className="stroke-gray-100 dark:stroke-gray-800"
+                  strokeWidth="1"
+                  vectorEffect="non-scaling-stroke"
+                />
+              ))}
+
+              {createdPoints.map((point, i) => (
+                <line
+                  key={`v-${i}`}
+                  x1={point.x}
+                  x2={point.x}
+                  y1="0"
+                  y2="100"
+                  className="stroke-gray-50 dark:stroke-gray-800/60"
                   strokeWidth="1"
                   vectorEffect="non-scaling-stroke"
                 />
@@ -162,6 +187,25 @@ export function WeeklyProgressChart({ data, range, onRangeChange }: WeeklyProgre
                 vectorEffect="non-scaling-stroke"
               />
             </svg>
+
+            {showDots && (
+              <div className="pointer-events-none absolute inset-0" aria-hidden="true">
+                {createdPoints.map((point, i) => (
+                  <span
+                    key={`dot-created-${i}`}
+                    className="absolute h-[7px] w-[7px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500 ring-2 ring-white dark:ring-gray-dark"
+                    style={{ left: `${point.x}%`, top: `${point.y}%` }}
+                  />
+                ))}
+                {completedPoints.map((point, i) => (
+                  <span
+                    key={`dot-completed-${i}`}
+                    className="absolute h-[7px] w-[7px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-gray-dark"
+                    style={{ left: `${point.x}%`, top: `${point.y}%` }}
+                  />
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
@@ -178,7 +222,7 @@ export function WeeklyProgressChart({ data, range, onRangeChange }: WeeklyProgre
           ))}
         </div>
 
-        <div className="mt-3 flex shrink-0 items-center justify-center gap-5 border-t border-gray-100 pt-2.5 dark:border-gray-800">
+        <div className="mt-3 flex shrink-0 items-center justify-start gap-5 border-t border-gray-100 pt-2.5 dark:border-gray-800">
           <span className="flex items-center gap-1.5 text-[10px] text-gray-600 dark:text-gray-400">
             <span className="h-2 w-2 rounded-full bg-blue-500" />
             Created

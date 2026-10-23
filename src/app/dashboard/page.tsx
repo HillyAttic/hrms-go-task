@@ -658,7 +658,7 @@ export default function DashboardPage() {
       });
   }, [tasks, employees, isManager, isAdmin, managerHierarchy]);
 
-  // Weekly progress data (7 days, or 28 for the wider view)
+  // Weekly progress data (current Mon–Sun week, or the last four such weeks)
   const weeklyProgressData = useMemo(() => {
     const now = new Date();
     const dayCount = weeklyRange === 'week' ? 7 : 28;
@@ -667,10 +667,16 @@ export default function DashboardPage() {
     const created: number[] = [];
     const completed: number[] = [];
 
-    for (let i = dayCount - 1; i >= 0; i--) {
-      const date = new Date(now);
-      date.setDate(date.getDate() - i);
-      date.setHours(0, 0, 0, 0);
+    // Snap to the Monday of the current week, then walk back whole weeks.
+    const weekStart = new Date(now);
+    weekStart.setHours(0, 0, 0, 0);
+    weekStart.setDate(weekStart.getDate() - ((weekStart.getDay() + 6) % 7));
+    const rangeStart = new Date(weekStart);
+    rangeStart.setDate(rangeStart.getDate() - (dayCount - 7));
+
+    for (let i = 0; i < dayCount; i++) {
+      const date = new Date(rangeStart);
+      date.setDate(rangeStart.getDate() + i);
 
       const nextDate = new Date(date);
       nextDate.setDate(nextDate.getDate() + 1);
@@ -1045,10 +1051,10 @@ export default function DashboardPage() {
 
       {/* Kanban CTA + Attendance */}
       <div className="grid grid-cols-1 gap-4 xl:grid-cols-12">
-        <div className="xl:col-span-7">
+        <div className="xl:col-span-6">
           <KanbanCTA />
         </div>
-        <div className="xl:col-span-5">
+        <div className="xl:col-span-6">
           <AttendanceTrackingCard userId={user?.uid} />
         </div>
       </div>

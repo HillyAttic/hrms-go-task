@@ -22,14 +22,11 @@ export function Sidebar() {
   const { device, isTouchDevice } = useResponsive();
   const { hasRole, user } = useAuthEnhanced();
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
-  const [collapsedSections, setCollapsedSections] = useState<string[]>(
-    NAV_DATA.filter((s) => s.label !== 'MAIN MENU').map((s) => s.label)
-  );
+  // Every section opens by default so the day-to-day tools stay one click away.
+  const [collapsedSections, setCollapsedSections] = useState<string[]>([]);
   const [misConfig, setMisConfig] = useState<any>(null);
   const [misConfigLoaded, setMisConfigLoaded] = useState(false);
   const [isExclusivityLocked, setIsExclusivityLocked] = useState(true);
-  // Admin/Exclusivity stay one click away instead of taking permanent sidebar space.
-  const [showMore, setShowMore] = useState(false);
   const [hasAccessibleSlips, setHasAccessibleSlips] = useState(false);
   const [slipCheckDone, setSlipCheckDone] = useState(false);
 
@@ -239,10 +236,7 @@ export function Sidebar() {
             "md:mt-10",
             "pb-20 md:pb-0"
           )}>
-            {NAV_DATA.filter(
-              (section) =>
-                showMore || section.label === "MAIN MENU" || section.label === "MANAGEMENT"
-            ).map((section) => {
+            {NAV_DATA.map((section) => {
               // Filter items based on role and mobile visibility
               const visibleItems = section.items.filter((item: any) => {
                 // Filter out items hidden on mobile
@@ -468,45 +462,25 @@ export function Sidebar() {
               </div>
             );
             })}
-
-            {/* Hidden Admin / Exclusivity sections */}
-            {!showMore && (
-              <button
-                onClick={() => setShowMore(true)}
-                className="mb-2 flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold uppercase tracking-widest text-dark-4 transition-colors hover:bg-gray-50 hover:text-dark dark:text-gray-500 dark:hover:bg-gray-800 dark:hover:text-gray-300"
-                aria-expanded={showMore}
-              >
-                More tools
-                <ChevronUp className="size-4 rotate-180" aria-hidden="true" />
-              </button>
-            )}
-            {showMore && (
-              <button
-                onClick={() => setShowMore(false)}
-                className="mb-2 flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold uppercase tracking-widest text-dark-4 transition-colors hover:bg-gray-50 hover:text-dark dark:text-gray-500 dark:hover:bg-gray-800 dark:hover:text-gray-300"
-                aria-expanded={showMore}
-              >
-                Less
-                <ChevronUp className="size-4" aria-hidden="true" />
-              </button>
-            )}
           </div>
 
           {/* Promo card */}
           {!(variant === "tablet" && !isOpen) && (
             <div className="mt-3 shrink-0 pr-3">
-              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-50 via-blue-50 to-purple-100 p-4 dark:from-indigo-950/40 dark:via-blue-950/30 dark:to-purple-950/30">
-                <div className="pointer-events-none absolute -right-6 -top-6 h-20 w-20 rounded-full bg-white/50 blur-2xl dark:bg-white/5" />
-                <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-white text-indigo-600 shadow-sm dark:bg-white/10 dark:text-indigo-300">
-                  <GraduationCap className="h-5 w-5" aria-hidden="true" />
+              <div className="relative overflow-hidden rounded-2xl bg-[linear-gradient(135deg,#B6BFFF_0%,#9E92FA_38%,#8A79F7_68%,#7F9DF8_100%)] p-4 shadow-[0_10px_30px_-12px_rgba(99,102,241,0.55)]">
+                {/* Soft light spills that give the card its 3D depth */}
+                <div className="pointer-events-none absolute -right-8 -top-10 h-28 w-28 rounded-full bg-white/25 blur-2xl" />
+                <div className="pointer-events-none absolute -bottom-12 -left-10 h-32 w-32 rounded-full bg-[#5B8DEF]/40 blur-2xl" />
+                <div className="relative flex h-[52px] w-[52px] items-center justify-center rounded-2xl bg-white shadow-[0_10px_20px_-10px_rgba(15,23,42,0.45)]">
+                  <GraduationCap className="h-7 w-7 text-[#3559F5]" aria-hidden="true" />
                 </div>
-                <p className="relative mt-2 text-sm font-semibold leading-snug text-gray-900 dark:text-white">
+                <p className="relative mt-3 text-[14.5px] font-semibold leading-snug text-white">
                   Empowering Better Learning Together.
                 </p>
                 <Link
                   href="/reports"
                   onClick={() => isMobile && setIsOpen(false)}
-                  className="relative mt-3 inline-flex items-center gap-1 rounded-lg bg-white px-3 py-1.5 text-xs font-semibold text-indigo-700 shadow-sm transition-colors hover:bg-indigo-50 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
+                  className="relative mt-3 inline-flex w-full items-center justify-center gap-1.5 rounded-lg bg-white px-3 py-2 text-[12px] font-semibold text-[#3559F5] shadow-sm transition-colors hover:bg-indigo-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
                 >
                   View Reports
                   <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />

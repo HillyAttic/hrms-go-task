@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card } from '@/components/ui/card';
 import {
+  Bars3BottomLeftIcon,
   PlusCircleIcon,
   UserGroupIcon,
   FolderIcon,
@@ -65,13 +66,16 @@ export function QuickActions({
 
   return (
     <Card className="flex h-full min-h-[250px] flex-col overflow-hidden rounded-2xl border-gray-100/80 p-5 shadow-sm dark:border-gray-800">
-      <h3 className="shrink-0 text-[15px] font-semibold text-gray-900 dark:text-white">Quick Actions</h3>
+      <h3 className="flex shrink-0 items-center gap-1.5 text-[15px] font-semibold text-gray-900 dark:text-white">
+        <Bars3BottomLeftIcon className="h-4 w-4 text-gray-400" />
+        Quick Actions
+      </h3>
       <div className="mt-3.5 grid flex-1 grid-cols-2 content-start gap-2">
         {filteredActions.map((action, index) => (
           <button
             key={index}
             onClick={action.onClick}
-            className={`relative flex min-h-[38px] items-center justify-center gap-1.5 rounded-lg px-1.5 py-2 text-center text-[10.5px] font-semibold leading-tight text-white shadow-sm transition-colors 2xl:text-[11px] ${action.color}`}
+            className={`relative flex min-h-[34px] items-center justify-center gap-1.5 rounded-lg px-1.5 py-1.5 text-center text-[11px] font-semibold leading-tight text-white shadow-sm transition-colors 2xl:text-[11.5px] ${action.color}`}
           >
             {action.icon}
             <span className="min-w-0">{action.label}</span>

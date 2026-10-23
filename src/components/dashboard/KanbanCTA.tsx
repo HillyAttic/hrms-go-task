@@ -4,7 +4,7 @@ import { ArrowRight } from 'lucide-react';
 
 export function KanbanCTA() {
   return (
-    <section className="relative flex h-full min-h-[190px] flex-col overflow-hidden rounded-2xl bg-[linear-gradient(100deg,#2A54F5_0%,#4640EE_42%,#6231E8_72%,#7A2BE3_100%)] px-7 py-7 text-white shadow-sm md:px-9 md:py-8">
+    <section className="relative flex h-full min-h-[210px] flex-col overflow-hidden rounded-2xl bg-[linear-gradient(100deg,#2A54F5_0%,#4640EE_42%,#6231E8_72%,#7A2BE3_100%)] px-7 py-7 text-white shadow-sm md:px-10 md:py-9">
       {/* Organic translucent blobs matching the reference artwork */}
       <svg
         className="pointer-events-none absolute inset-0 h-full w-full"
@@ -29,9 +29,9 @@ export function KanbanCTA() {
         />
       </svg>
 
-      <div className="relative z-10 flex flex-1 flex-col justify-between gap-6 sm:flex-row sm:items-end">
+      <div className="relative z-10 flex flex-1 flex-col justify-between gap-6 sm:flex-row sm:items-start">
         <div className="max-w-[25rem]">
-          <h3 className="text-[26px] font-bold leading-[1.15] tracking-tight md:text-[30px]">
+          <h3 className="text-[27px] font-bold leading-[1.15] tracking-tight md:text-[32px]">
             Stay on top of every task.
           </h3>
           <p className="mt-2.5 text-[13px] leading-relaxed text-white/80 md:text-[15px]">
@@ -41,7 +41,7 @@ export function KanbanCTA() {
 
         <Link
           href="/kanban"
-          className="inline-flex shrink-0 items-center gap-2 self-start rounded-xl bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-[0_6px_18px_-6px_rgba(15,23,42,0.45)] transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_24px_-8px_rgba(15,23,42,0.55)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent sm:self-auto"
+          className="inline-flex shrink-0 items-center gap-2 self-start rounded-xl bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-[0_6px_18px_-6px_rgba(15,23,42,0.45)] transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_24px_-8px_rgba(15,23,42,0.55)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent sm:self-center"
         >
           View Board
           <ArrowRight className="h-4 w-4" />

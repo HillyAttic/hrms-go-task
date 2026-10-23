@@ -56,7 +56,7 @@ function formatTime(value?: string) {
 }
 
 const actionClass =
-  'inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-lg px-3 py-2 text-[11px] font-semibold transition-colors md:text-xs';
+  'inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-lg px-2.5 py-1.5 text-[11px] font-semibold transition-colors';
 
 const secondaryActionClass =
   `${actionClass} border border-gray-200 bg-white text-gray-600 hover:bg-gray-50 dark:border-gray-700 dark:bg-transparent dark:text-gray-300 dark:hover:bg-gray-800`;
@@ -267,7 +267,7 @@ export function AttendanceTrackingCard({ userId }: AttendanceTrackingCardProps) 
   return (
     <>
       <Card className="flex h-full min-h-[220px] flex-col overflow-hidden rounded-2xl border-gray-100/80 p-5 shadow-sm dark:border-gray-800">
-        <div className="flex flex-wrap items-start justify-between gap-3">
+        <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between sm:gap-3">
           <div className="min-w-0">
             <div className="flex items-center gap-2">
               <h3 className="flex items-center gap-1.5 text-[15px] font-semibold text-gray-900 dark:text-white">
@@ -294,7 +294,7 @@ export function AttendanceTrackingCard({ userId }: AttendanceTrackingCardProps) 
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex shrink-0 flex-wrap items-center gap-2">
             <button
               type="button"
               onClick={openLeaveModal}

@@ -21,28 +21,28 @@ interface SimpleStatCardProps {
 
 const colorMap = {
   blue: {
-    wash: 'from-blue-50 via-blue-50/50 to-transparent dark:from-blue-500/10 dark:via-blue-500/5 dark:to-transparent',
-    badge: 'bg-blue-100/80 text-blue-600 dark:bg-blue-500/15 dark:text-blue-400',
+    wash: 'from-blue-100/60 via-blue-50/25 to-white dark:from-blue-500/15 dark:via-blue-500/5 dark:to-transparent',
+    badge: 'bg-blue-50/90 text-blue-600 ring-1 ring-inset ring-blue-200/70 dark:bg-blue-500/15 dark:text-blue-400 dark:ring-blue-500/20',
     stroke: '#2563eb',
   },
   green: {
-    wash: 'from-emerald-50 via-emerald-50/50 to-transparent dark:from-emerald-500/10 dark:via-emerald-500/5 dark:to-transparent',
-    badge: 'bg-emerald-100/80 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-400',
+    wash: 'from-emerald-100/60 via-emerald-50/25 to-white dark:from-emerald-500/15 dark:via-emerald-500/5 dark:to-transparent',
+    badge: 'bg-emerald-50/90 text-emerald-600 ring-1 ring-inset ring-emerald-200/70 dark:bg-emerald-500/15 dark:text-emerald-400 dark:ring-emerald-500/20',
     stroke: '#10b981',
   },
   orange: {
-    wash: 'from-orange-50 via-orange-50/50 to-transparent dark:from-orange-500/10 dark:via-orange-500/5 dark:to-transparent',
-    badge: 'bg-orange-100/80 text-orange-500 dark:bg-orange-500/15 dark:text-orange-400',
+    wash: 'from-orange-100/60 via-orange-50/25 to-white dark:from-orange-500/15 dark:via-orange-500/5 dark:to-transparent',
+    badge: 'bg-orange-50/90 text-orange-500 ring-1 ring-inset ring-orange-200/70 dark:bg-orange-500/15 dark:text-orange-400 dark:ring-orange-500/20',
     stroke: '#f59e0b',
   },
   red: {
-    wash: 'from-red-50 via-red-50/50 to-transparent dark:from-red-500/10 dark:via-red-500/5 dark:to-transparent',
-    badge: 'bg-red-100/80 text-red-500 dark:bg-red-500/15 dark:text-red-400',
+    wash: 'from-red-100/60 via-red-50/25 to-white dark:from-red-500/15 dark:via-red-500/5 dark:to-transparent',
+    badge: 'bg-red-50/90 text-red-500 ring-1 ring-inset ring-red-200/70 dark:bg-red-500/15 dark:text-red-400 dark:ring-red-500/20',
     stroke: '#ef4444',
   },
   purple: {
-    wash: 'from-violet-50 via-violet-50/50 to-transparent dark:from-violet-500/10 dark:via-violet-500/5 dark:to-transparent',
-    badge: 'bg-violet-100/80 text-violet-600 dark:bg-violet-500/15 dark:text-violet-400',
+    wash: 'from-violet-100/60 via-violet-50/25 to-white dark:from-violet-500/15 dark:via-violet-500/5 dark:to-transparent',
+    badge: 'bg-violet-50/90 text-violet-600 ring-1 ring-inset ring-violet-200/70 dark:bg-violet-500/15 dark:text-violet-400 dark:ring-violet-500/20',
     stroke: '#8b5cf6',
   },
 };
@@ -58,7 +58,7 @@ function Sparkline({ data, color }: { data: number[]; color: string }) {
   // Reserve a small vertical margin so the stroke never clips.
   const points = data.map((value, i) => ({
     x: (i / (data.length - 1)) * 100,
-    y: 30 - ((value - min) / span) * 24,
+    y: 36 - ((value - min) / span) * 30,
   }));
 
   // Smooth the line with quadratic segments through the midpoints.
@@ -69,18 +69,18 @@ function Sparkline({ data, color }: { data: number[]; color: string }) {
     const midX = (current.x + next.x) / 2;
     line += ` C${midX},${current.y} ${midX},${next.y} ${next.x},${next.y}`;
   }
-  const area = `${line} L100,32 L0,32 Z`;
+  const area = `${line} L100,40 L0,40 Z`;
 
   return (
     <svg
-      viewBox="0 0 100 32"
+      viewBox="0 0 100 40"
       preserveAspectRatio="none"
-      className="h-7 w-14 shrink-0 overflow-visible sm:w-16 2xl:w-[72px]"
+      className="h-10 w-[84px] shrink-0 overflow-visible sm:w-[96px] 2xl:h-11 2xl:w-[110px]"
       aria-hidden="true"
     >
       <defs>
         <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor={color} stopOpacity="0.25" />
+          <stop offset="0%" stopColor={color} stopOpacity="0.3" />
           <stop offset="100%" stopColor={color} stopOpacity="0" />
         </linearGradient>
       </defs>
@@ -89,7 +89,7 @@ function Sparkline({ data, color }: { data: number[]; color: string }) {
         d={line}
         fill="none"
         stroke={color}
-        strokeWidth="2"
+        strokeWidth="2.2"
         strokeLinecap="round"
         strokeLinejoin="round"
         vectorEffect="non-scaling-stroke"
@@ -142,7 +142,7 @@ export function SimpleStatCard({
           </div>
         </div>
 
-        <p className="mt-3 truncate text-[13px] font-medium text-gray-600 dark:text-gray-400">
+        <p className="mt-3 truncate text-[12.5px] font-medium text-gray-600 dark:text-gray-400">
           {displayTitle}
         </p>
 
@@ -151,11 +151,7 @@ export function SimpleStatCard({
             <span className="block text-[26px] font-bold leading-none tracking-tight text-gray-900 2xl:text-[28px] dark:text-white">
               {value}
             </span>
-            {trend && (
-              <div className="pb-0.5">
-                <Sparkline data={trend.spark} color={colors.stroke} />
-              </div>
-            )}
+            {trend && <Sparkline data={trend.spark} color={colors.stroke} />}
           </div>
 
           {trend ? (

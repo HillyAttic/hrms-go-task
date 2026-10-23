@@ -1,4 +1,5 @@
 import React from 'react';
+import { ChevronDown, PieChart } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 
 export type DistributionRange = 'week' | 'month' | 'all';
@@ -19,7 +20,7 @@ const RANGES: { value: DistributionRange; label: string }[] = [
 ];
 
 const selectClass =
-  'rounded-lg border border-gray-200 bg-white px-2.5 py-1 text-[11px] font-medium text-gray-600 outline-none focus:border-blue-400 dark:border-gray-700 dark:bg-gray-dark dark:text-gray-300';
+  'appearance-none rounded-lg border border-gray-200 bg-white py-1 pl-2.5 pr-7 text-[11px] font-medium text-gray-600 outline-none transition-colors hover:border-gray-300 focus:border-blue-400 dark:border-gray-700 dark:bg-gray-dark dark:text-gray-300 dark:hover:border-gray-600';
 
 export function TaskDistributionChart({
   completed,
@@ -64,31 +65,48 @@ export function TaskDistributionChart({
   return (
     <Card className="flex h-full min-h-[250px] flex-col overflow-hidden rounded-2xl border-gray-100/80 p-5 shadow-sm dark:border-gray-800">
       <div className="flex shrink-0 items-center justify-between gap-2">
-        <h3 className="text-[15px] font-semibold text-gray-900 dark:text-white">Task Distribution</h3>
-        <select
-          value={range}
-          onChange={(e) => onRangeChange(e.target.value as DistributionRange)}
-          className={selectClass}
-          aria-label="Task distribution time range"
-        >
-          {RANGES.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
+        <h3 className="flex items-center gap-1.5 text-[15px] font-semibold text-gray-900 dark:text-white">
+          <PieChart className="h-4 w-4 text-gray-400" />
+          Task Distribution
+        </h3>
+        <div className="relative shrink-0">
+          <select
+            value={range}
+            onChange={(e) => onRangeChange(e.target.value as DistributionRange)}
+            className={selectClass}
+            aria-label="Task distribution time range"
+          >
+            {RANGES.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          <ChevronDown
+            className="pointer-events-none absolute right-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-400"
+            aria-hidden="true"
+          />
+        </div>
       </div>
 
       <div className="mt-4 flex flex-1 flex-wrap items-center justify-center gap-3 2xl:flex-nowrap 2xl:gap-5">
-        <div className="relative h-24 w-24 shrink-0 2xl:h-32 2xl:w-32">
+        <div className="relative h-28 w-28 shrink-0 2xl:h-36 2xl:w-36">
           <svg viewBox="0 0 100 100" className="h-full w-full -rotate-90" aria-hidden="true">
+            <defs>
+              <linearGradient id="task-distribution-track" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#C7D2FE" />
+                <stop offset="55%" stopColor="#DDD6FE" />
+                <stop offset="100%" stopColor="#BBF7D0" />
+              </linearGradient>
+            </defs>
             <circle
               cx="50"
               cy="50"
               r={radius}
               fill="none"
               strokeWidth="12"
-              className="stroke-gray-100 dark:stroke-gray-800"
+              className={total > 0 ? 'stroke-gray-100 dark:stroke-gray-800' : ''}
+              stroke={total > 0 ? undefined : 'url(#task-distribution-track)'}
             />
             {total > 0 &&
               segments.map((segment) => {
@@ -124,14 +142,13 @@ export function TaskDistributionChart({
               key={segment.label}
               className={`flex items-center justify-between gap-2 rounded-lg px-2 py-2 2xl:px-3 ${segment.row}`}
             >
-              <span className="flex min-w-0 items-center gap-2 truncate text-[11px] font-medium 2xl:text-[12px]">
+              <span className="flex min-w-0 items-center gap-2 truncate text-[11.5px] font-medium 2xl:text-[12px]">
                 <span className={`h-2 w-2 shrink-0 rounded-full ${segment.dot}`} />
                 <span className="truncate">{segment.label}</span>
               </span>
-              <span className="shrink-0 text-[11px] font-semibold text-gray-900 2xl:text-[12px] dark:text-white">
+              <span className="shrink-0 text-[11.5px] font-semibold text-gray-900 2xl:text-[12px] dark:text-white">
                 {segment.value}{' '}
-                {/* Percentages only when the card is wide enough to show them in full. */}
-                <span className="hidden font-normal text-gray-400 sm:inline xl:hidden 2xl:inline dark:text-gray-500">
+                <span className="font-normal text-gray-400 dark:text-gray-500">
                   ({pct(segment.value)}%)
                 </span>
               </span>
