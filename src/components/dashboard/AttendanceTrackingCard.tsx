@@ -357,7 +357,7 @@ export function AttendanceTrackingCard({ userId }: AttendanceTrackingCardProps) 
               type="button"
               onClick={status.isClockedIn ? handleClockOut : handleClockIn}
               disabled={busy !== null}
-              className={`mt-3 flex w-full items-center justify-center gap-1.5 rounded-lg px-3 py-2 text-[11px] font-semibold text-white shadow-sm transition-colors disabled:opacity-60 ${
+              className={`mt-3 flex items-center justify-center gap-1.5 self-center rounded-lg px-8 py-2 text-xs font-semibold text-white shadow-sm transition-colors disabled:opacity-60 ${
                 status.isClockedIn
                   ? 'bg-rose-600 hover:bg-rose-700'
                   : 'bg-blue-600 hover:bg-blue-700'
@@ -385,7 +385,7 @@ export function AttendanceTrackingCard({ userId }: AttendanceTrackingCardProps) 
           <button
             onClick={refresh}
             disabled={loading}
-            className="mt-auto flex w-full items-center justify-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3 py-2 text-[11px] font-medium text-gray-600 transition-colors hover:bg-gray-50 disabled:opacity-60 dark:border-gray-700 dark:bg-transparent dark:text-gray-300 dark:hover:bg-gray-800"
+            className="mt-2 flex items-center justify-center gap-1.5 self-center rounded-lg border border-gray-200 bg-white px-8 py-2 text-xs font-medium text-gray-600 transition-colors hover:bg-gray-50 disabled:opacity-60 dark:border-gray-700 dark:bg-transparent dark:text-gray-300 dark:hover:bg-gray-800"
           >
             <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} />
             Refresh Status
