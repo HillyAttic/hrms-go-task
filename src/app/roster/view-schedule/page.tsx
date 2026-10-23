@@ -440,8 +440,8 @@ export default function ViewSchedulePage() {
         {days.map((calDay, index) => (
           <div
             key={index}
-            className={`min-h-[80px] border border-gray-200 dark:border-gray-700 p-1 ${
-              !calDay.isCurrentMonth ? 'bg-gray-50 dark:bg-gray-800' : 'bg-white dark:bg-gray-dark'
+            className={`min-h-[80px] border border-white/60 dark:border-white/10 p-1 ${
+              !calDay.isCurrentMonth ? 'bg-gray-50 dark:bg-gray-800' : 'glass-surface'
             }`}
           >
             <div className={`text-sm ${!calDay.isCurrentMonth ? 'text-gray-400' : 'text-gray-900 dark:text-gray-100'}`}>
@@ -586,7 +586,7 @@ export default function ViewSchedulePage() {
               return (
                 <tr key={user.id} className="hover:bg-gray-50 dark:bg-gray-800" style={{ height: '40px' }}>
                   <td 
-                    className="border border-gray-300 dark:border-gray-600 px-2 font-medium bg-white dark:bg-gray-dark whitespace-nowrap cursor-pointer hover:bg-blue-50 hover:text-blue-600 transition-colors text-sm"
+                    className="border border-gray-300 dark:border-gray-600 px-2 font-medium glass-surface whitespace-nowrap cursor-pointer hover:bg-blue-50 hover:text-blue-600 transition-colors text-sm"
                     onClick={() => handleUserNameClick(user)}
                     title="Click to view full calendar"
                     style={{ width: '150px', minWidth: '150px', height: '40px' }}
@@ -683,7 +683,7 @@ export default function ViewSchedulePage() {
       </div>
 
       {/* Month Navigation */}
-      <div className="bg-white dark:bg-gray-dark rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+      <div className="glass-surface rounded-xl border border-white/60 dark:border-white/10 p-4">
         <div className="flex items-center justify-between">
           <button
             onClick={handlePreviousMonth}
@@ -708,13 +708,13 @@ export default function ViewSchedulePage() {
       </div>
 
       {/* Content */}
-      <div className="bg-white dark:bg-gray-dark rounded-xl border border-gray-200 dark:border-gray-700 p-4 md:p-6">
+      <div className="glass-surface rounded-xl border border-white/60 dark:border-white/10 p-4 md:p-6">
         {canViewAllSchedules ? renderExcelView() : renderUserCalendar()}
       </div>
 
       {/* Legend for Excel View */}
       {canViewAllSchedules && (
-        <div className="bg-white dark:bg-gray-dark rounded-xl border border-gray-200 dark:border-gray-700 p-4">
+        <div className="glass-surface rounded-xl border border-white/60 dark:border-white/10 p-4">
           <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Task Duration Legend</h3>
           <div className="flex flex-wrap gap-4 text-sm text-gray-600 dark:text-gray-400">
             <div className="flex items-center gap-2">
@@ -740,10 +740,10 @@ export default function ViewSchedulePage() {
           onClick={handleCloseDayTasksModal}
         >
           <div
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-5xl w-full max-h-[90vh] overflow-y-auto"
+            className="glass-surface rounded-lg shadow-xl max-w-5xl w-full max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="sticky top-0 bg-white dark:bg-gray-dark border-b border-gray-200 dark:border-gray-700 p-6 z-10">
+            <div className="sticky top-0 glass-surface border-b border-white/60 dark:border-white/10 p-6 z-10">
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
@@ -846,7 +846,7 @@ export default function ViewSchedulePage() {
               )}
             </div>
 
-            <div className="sticky bottom-0 bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-6">
+            <div className="sticky bottom-0 bg-gray-50 dark:bg-gray-800 border-t border-white/60 dark:border-white/10 p-6">
               <button
                 onClick={handleCloseDayTasksModal}
                 className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"
@@ -866,7 +866,7 @@ export default function ViewSchedulePage() {
           onClick={handleCloseActivityModal}
         >
           <div
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-md w-full p-6"
+            className="glass-surface rounded-lg shadow-xl max-w-md w-full p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-4">
@@ -1002,10 +1002,10 @@ export default function ViewSchedulePage() {
           onClick={handleCloseUserCalendarModal}
         >
           <div
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-4xl w-full max-h-[calc(100vh-2rem)] overflow-y-auto"
+            className="glass-surface rounded-lg shadow-xl max-w-4xl w-full max-h-[calc(100vh-2rem)] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="sticky top-0 bg-white dark:bg-gray-dark border-b border-gray-200 dark:border-gray-700 p-6 z-10">
+            <div className="sticky top-0 glass-surface border-b border-white/60 dark:border-white/10 p-6 z-10">
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{selectedUser.name}'s Schedule</h3>
@@ -1032,7 +1032,7 @@ export default function ViewSchedulePage() {
                     onClick={() => setUserCalendarViewMode('calendar')}
                     className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                       userCalendarViewMode === 'calendar'
-                        ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-300 shadow-sm'
+                        ? 'glass-surface text-blue-600 dark:text-blue-300 shadow-sm'
                         : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
                     }`}
                   >
@@ -1045,7 +1045,7 @@ export default function ViewSchedulePage() {
                     onClick={() => setUserCalendarViewMode('table')}
                     className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                       userCalendarViewMode === 'table'
-                        ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-300 shadow-sm'
+                        ? 'glass-surface text-blue-600 dark:text-blue-300 shadow-sm'
                         : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
                     }`}
                   >
@@ -1064,7 +1064,7 @@ export default function ViewSchedulePage() {
                   
                   {/* Task Details Table - Shows below calendar when a day is selected */}
                   {selectedDayInUserCalendar !== null && tasksForSelectedDay.length > 0 && (
-                    <div className="mt-6 border-t border-gray-200 dark:border-gray-700 pt-6">
+                    <div className="mt-6 border-t border-white/60 dark:border-white/10 pt-6">
                       <div className="flex items-center justify-between mb-4">
                         <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
                           Tasks for {MONTHS[currentMonth - 1]} {selectedDayInUserCalendar}, {currentYear}
@@ -1238,7 +1238,7 @@ export default function ViewSchedulePage() {
               )}
             </div>
 
-            <div className="sticky bottom-0 bg-white dark:bg-gray-dark border-t border-gray-200 dark:border-gray-700 p-4">
+            <div className="sticky bottom-0 glass-surface border-t border-white/60 dark:border-white/10 p-4">
               <button
                 onClick={handleCloseUserCalendarModal}
                 className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium"

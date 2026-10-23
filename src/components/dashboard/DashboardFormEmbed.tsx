@@ -363,7 +363,7 @@ export default function DashboardFormEmbed() {
               return (
                 <div
                   key={form.formId}
-                  className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden"
+                  className="border border-white/60 dark:border-white/10 rounded-lg overflow-hidden"
                 >
                   {/* Accordion Header */}
                   <button
@@ -410,7 +410,7 @@ export default function DashboardFormEmbed() {
 
                   {/* Accordion Content */}
                   {isExpanded && form.template && (
-                    <div className="p-4 bg-white dark:bg-gray-dark">
+                    <div className="p-4 glass-surface">
                       {form.isSubmitted ? (
                         <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-md border border-green-200 dark:border-green-800">
                           <svg

@@ -150,9 +150,9 @@ export function NotificationSystem() {
 
       {/* Notification Dropdown */}
       {showNotifications && (
-        <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-dark rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 z-50">
+        <div className="absolute right-0 mt-2 w-80 glass-surface rounded-lg shadow-lg border border-white/60 dark:border-white/10 z-50">
           {/* Header */}
-          <div className="p-4 border-b border-gray-200 dark:border-gray-700">
+          <div className="p-4 border-b border-white/60 dark:border-white/10">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Notifications</h3>
               <div className="flex space-x-2">
@@ -223,7 +223,7 @@ export function NotificationSystem() {
           </div>
 
           {/* Footer */}
-          <div className="p-3 border-t border-gray-200 dark:border-gray-700 text-center">
+          <div className="p-3 border-t border-white/60 dark:border-white/10 text-center">
             <button className="text-sm text-blue-600 hover:text-blue-800">
               View all notifications
             </button>

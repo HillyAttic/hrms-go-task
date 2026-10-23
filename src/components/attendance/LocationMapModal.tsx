@@ -47,9 +47,9 @@ export function LocationMapModal({
 
   const modalContent = (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-[99999] flex items-center justify-center p-4">
-      <div className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+      <div className="glass-surface rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
         {/* Header */}
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between p-4 border-b border-white/60 dark:border-white/10">
           <div>
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
               {title}
@@ -83,7 +83,7 @@ export function LocationMapModal({
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800">
+        <div className="flex items-center justify-between p-4 border-t border-white/60 dark:border-white/10 bg-gray-50 dark:bg-gray-800">
           <a
             href={`https://www.google.com/maps?q=${latitude},${longitude}`}
             target="_blank"

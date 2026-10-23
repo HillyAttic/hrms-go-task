@@ -39,7 +39,7 @@ export function ClientFilter({
   const hasActiveFilters = filters.status !== 'all' || filters.filterBy !== 'all';
 
   return (
-    <div className="bg-white dark:bg-gray-dark rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+    <div className="glass-surface rounded-lg border border-white/60 dark:border-white/10 p-4">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Status Filter */}
         <div>

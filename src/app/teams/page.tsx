@@ -46,7 +46,7 @@ function DetailPanelWrapper({ children, onClose }: { children: React.ReactNode; 
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-2 sm:p-4">
-      <div className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-lg w-full max-h-[70vh] overflow-y-auto">
+      <div className="glass-surface rounded-lg shadow-xl max-w-lg w-full max-h-[70vh] overflow-y-auto">
         <div className="p-3 sm:p-4">
           {children}
         </div>
@@ -323,14 +323,14 @@ export default function TeamsPage() {
           <div className="inline-flex rounded-lg border border-gray-300 dark:border-gray-600 overflow-hidden shadow-sm">
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-2.5 transition-colors ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
+              className={`p-2.5 transition-colors ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'glass-surface text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
               aria-label="Grid view"
             >
               <Squares2X2Icon className="w-5 h-5" />
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`p-2.5 border-l border-gray-300 dark:border-gray-600 transition-colors ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
+              className={`p-2.5 border-l border-gray-300 dark:border-gray-600 transition-colors ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'glass-surface text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
               aria-label="List view"
             >
               <ListBulletIcon className="w-5 h-5" />
@@ -371,9 +371,9 @@ export default function TeamsPage() {
               </div>
             ) : (
               /* List View - Redesigned */
-              <div className="bg-white dark:bg-gray-dark rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden shadow-sm">
+              <div className="glass-surface rounded-xl border border-white/60 dark:border-white/10 overflow-hidden shadow-sm">
                 {/* Table Header */}
-                <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-3.5 bg-gray-50 dark:bg-gray-800/80 border-b-2 border-gray-200 dark:border-gray-700">
+                <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-3.5 bg-gray-50 dark:bg-gray-800/80 border-b-2 border-white/60 dark:border-white/10">
                   <div className="col-span-4 text-[11px] uppercase tracking-wider font-semibold text-gray-500 dark:text-gray-400">Team Name</div>
                   <div className="col-span-3 text-[11px] uppercase tracking-wider font-semibold text-gray-500 dark:text-gray-400">Leader</div>
                   <div className="col-span-2 text-[11px] uppercase tracking-wider font-semibold text-gray-500 dark:text-gray-400">Members</div>
@@ -384,7 +384,7 @@ export default function TeamsPage() {
                   {teams.map((team) => (
                     <div
                       key={team.id}
-                      className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 px-4 md:px-6 py-4 text-sm bg-white dark:bg-gray-dark hover:bg-gray-50/80 dark:hover:bg-gray-800/50 transition-colors"
+                      className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 px-4 md:px-6 py-4 text-sm glass-surface hover:bg-gray-50/80 dark:hover:bg-gray-800/50 transition-colors"
                     >
                       {/* Mobile card view */}
                       <div className="md:hidden space-y-3">
@@ -405,7 +405,7 @@ export default function TeamsPage() {
                               </div>
                             )}
                           </div>
-                          <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium flex-shrink-0 ${team.status === 'active' ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-800' : team.status === 'inactive' ? 'bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border border-amber-100 dark:border-amber-800' : 'bg-gray-50 text-gray-600 dark:bg-gray-800 dark:text-gray-400 border border-gray-200 dark:border-gray-700'}`}>
+                          <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium flex-shrink-0 ${team.status === 'active' ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-800' : team.status === 'inactive' ? 'bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border border-amber-100 dark:border-amber-800' : 'bg-gray-50 text-gray-600 dark:bg-gray-800 dark:text-gray-400 border border-white/60 dark:border-white/10'}`}>
                             {team.status}
                           </span>
                         </div>
@@ -419,7 +419,7 @@ export default function TeamsPage() {
                             <span>{team.members.length} {team.members.length === 1 ? 'member' : 'members'}</span>
                           </div>
                         </div>
-                        <div className="flex gap-2 pt-2 border-t border-gray-100 dark:border-gray-800">
+                        <div className="flex gap-2 pt-2 border-t border-white/60 dark:border-white/10">
                           <button
                             onClick={() => handleViewDetails(team.id!)}
                             className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-600 bg-blue-50 rounded-md hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/20 dark:hover:bg-blue-900/40 transition-colors"
@@ -475,7 +475,7 @@ export default function TeamsPage() {
                           <span className="font-medium">{team.members.length}</span>
                         </div>
                         <div className="col-span-1 flex items-center">
-                          <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${team.status === 'active' ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-800' : team.status === 'inactive' ? 'bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border border-amber-100 dark:border-amber-800' : 'bg-gray-50 text-gray-600 dark:bg-gray-800 dark:text-gray-400 border border-gray-200 dark:border-gray-700'}`}>
+                          <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${team.status === 'active' ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-800' : team.status === 'inactive' ? 'bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border border-amber-100 dark:border-amber-800' : 'bg-gray-50 text-gray-600 dark:bg-gray-800 dark:text-gray-400 border border-white/60 dark:border-white/10'}`}>
                             {team.status}
                           </span>
                         </div>

@@ -41,7 +41,7 @@ export function NotificationSettings() {
     <div className="space-y-4">
       <NotificationSetupGuide />
       
-      <div className="flex items-center justify-between p-4 bg-white dark:bg-gray-dark border border-stroke dark:border-stroke-dark rounded-lg">
+      <div className="flex items-center justify-between p-4 glass-surface border border-stroke dark:border-stroke-dark rounded-lg">
         <div className="flex items-center space-x-3">
           <div className={`w-3 h-3 rounded-full ${isEnabled ? 'bg-green-500' : 'bg-gray-400'}`} />
           <div>

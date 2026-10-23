@@ -150,12 +150,12 @@ export default function ClientVisitsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 mb-4 sm:mb-6 border-b border-gray-200 dark:border-gray-700">
+      <div className="flex gap-1 mb-4 sm:mb-6 border-b border-white/60 dark:border-white/10">
         <button
           onClick={() => setActiveTab('visits')}
           className={`px-4 py-2 text-sm font-medium rounded-t-lg transition ${
             activeTab === 'visits'
-              ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 border border-b-white dark:border-b-gray-800 border-gray-200 dark:border-gray-700 -mb-px'
+              ? 'glass-surface text-blue-600 dark:text-blue-400 border border-b-white dark:border-b-gray-800 border-white/60 dark:border-white/10 -mb-px'
               : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
           }`}
         >
@@ -170,7 +170,7 @@ export default function ClientVisitsPage() {
           onClick={() => setActiveTab('bank')}
           className={`px-4 py-2 text-sm font-medium rounded-t-lg transition ${
             activeTab === 'bank'
-              ? 'bg-white dark:bg-gray-800 text-blue-600 dark:text-blue-400 border border-b-white dark:border-b-gray-800 border-gray-200 dark:border-gray-700 -mb-px'
+              ? 'glass-surface text-blue-600 dark:text-blue-400 border border-b-white dark:border-b-gray-800 border-white/60 dark:border-white/10 -mb-px'
               : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
           }`}
         >
@@ -185,15 +185,15 @@ export default function ClientVisitsPage() {
 
       {/* Summary Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
-        <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow">
+        <div className="glass-surface p-4 sm:p-6 rounded-lg shadow">
           <div className="text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400">{activeClients.length}</div>
           <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Total Clients</div>
         </div>
-        <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow">
+        <div className="glass-surface p-4 sm:p-6 rounded-lg shadow">
           <div className="text-2xl sm:text-3xl font-bold text-green-600 dark:text-green-400">{totalVisitsAcrossClients}</div>
           <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Total Visits</div>
         </div>
-        <div className="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-lg shadow">
+        <div className="glass-surface p-4 sm:p-6 rounded-lg shadow">
           <div className="text-2xl sm:text-3xl font-bold text-purple-600 dark:text-purple-400">
             {activeClients.reduce((sum, c) => sum + c.monthlyData.length, 0)}
           </div>
@@ -202,7 +202,7 @@ export default function ClientVisitsPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white dark:bg-gray-800 p-3 sm:p-4 rounded-lg shadow mb-4 sm:mb-6">
+      <div className="glass-surface p-3 sm:p-4 rounded-lg shadow mb-4 sm:mb-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 mb-3 sm:mb-4">
           <div className="relative sm:col-span-2 lg:col-span-1">
             <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
@@ -248,12 +248,12 @@ export default function ClientVisitsPage() {
 
       {/* Client Reports */}
       {loading ? (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-8 sm:p-12 text-center">
+        <div className="glass-surface rounded-lg shadow p-8 sm:p-12 text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
           <p className="mt-4 text-sm sm:text-base text-gray-600 dark:text-gray-400">Loading client reports...</p>
         </div>
       ) : activeClients.length === 0 ? (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-8 sm:p-12 text-center">
+        <div className="glass-surface rounded-lg shadow p-8 sm:p-12 text-center">
           <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400">No client visits found</p>
           {searchTerm && (
             <p className="text-xs sm:text-sm text-gray-400 dark:text-gray-500 mt-2">
@@ -266,7 +266,7 @@ export default function ClientVisitsPage() {
           {activeClients.map((client) => (
             <div
               key={client.clientId}
-              className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden"
+              className="glass-surface rounded-lg shadow overflow-hidden"
             >
               {/* Client Header */}
               <button
@@ -302,11 +302,11 @@ export default function ClientVisitsPage() {
 
               {/* Monthly Data */}
               {expandedClients.has(client.clientId) && (
-                <div className="border-t border-gray-200 dark:border-gray-700">
+                <div className="border-t border-white/60 dark:border-white/10">
                   {client.monthlyData.map((monthData) => {
                     const monthKey = `${client.clientId}-${monthData.month}`;
                     return (
-                      <div key={monthData.month} className="border-b border-gray-200 dark:border-gray-700 last:border-b-0">
+                      <div key={monthData.month} className="border-b border-white/60 dark:border-white/10 last:border-b-0">
                         {/* Month Header */}
                         <button
                           onClick={() => toggleMonth(monthKey)}

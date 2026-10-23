@@ -159,7 +159,7 @@ export default function TeamPage() {
       {/* Add Member Modal Placeholder */}
       {showAddMember && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-dark rounded-lg p-6 w-full max-w-md">
+          <div className="glass-surface rounded-lg p-6 w-full max-w-md">
             <h2 className="text-xl font-bold mb-4">Add Team Member</h2>
             <div className="space-y-4">
               <div>

@@ -123,7 +123,7 @@ export function RecurringTaskListView({
     }
 
     return (
-      <div className={containerClassName ?? "px-6 pb-3 pt-2 flex flex-wrap gap-2 border-t border-gray-100 dark:border-gray-700/50 justify-end"}>
+      <div className={containerClassName ?? "px-6 pb-3 pt-2 flex flex-wrap gap-2 border-t border-white/60 dark:border-white/10/50 justify-end"}>
         {hasClientsButton && onClientsClick && (
           <button
             onClick={() => onClientsClick(task)}
@@ -194,9 +194,9 @@ export function RecurringTaskListView({
   return (
     <>
       {/* Desktop Table View - Hidden on mobile */}
-      <div className="hidden md:block bg-white dark:bg-gray-dark rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="hidden md:block glass-surface rounded-lg border border-white/60 dark:border-white/10 overflow-hidden">
         {/* Table Header */}
-        <div className="grid grid-cols-12 gap-4 px-6 py-3 bg-gray-50 dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 border-b border-gray-200 dark:border-gray-700">
+        <div className="grid grid-cols-12 gap-4 px-6 py-3 bg-gray-50 dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 border-b border-white/60 dark:border-white/10">
           {onSelect && <div className="col-span-1">Select</div>}
           <div className={onSelect ? "col-span-3" : "col-span-3"}>Title</div>
           <div className="col-span-2">Pattern</div>
@@ -209,7 +209,7 @@ export function RecurringTaskListView({
         {/* Table Body */}
         <div className="divide-y divide-gray-200 dark:divide-gray-700">
           {tasks.map((task) => (
-            <div key={task.id} className="bg-white dark:bg-gray-dark">
+            <div key={task.id} className="glass-surface">
             <div
               className={`grid grid-cols-12 gap-4 px-6 py-4 text-sm transition-colors ${
                 selected.includes(task.id!)
@@ -348,7 +348,7 @@ export function RecurringTaskListView({
         {tasks.map((task) => (
           <div
             key={task.id}
-            className={`bg-white dark:bg-gray-dark rounded-lg border border-gray-200 dark:border-gray-700 p-4 space-y-3 ${
+            className={`glass-surface rounded-lg border border-white/60 dark:border-white/10 p-4 space-y-3 ${
               selected.includes(task.id!) ? 'ring-2 ring-primary' : ''
             }`}
           >
@@ -415,7 +415,7 @@ export function RecurringTaskListView({
 
             {/* Action Buttons */}
             {(canManageTasks || onViewReport) && (
-              <div className="col-span-2 flex items-center justify-end gap-3 pt-2 border-t border-gray-200 dark:border-gray-700">
+              <div className="col-span-2 flex items-center justify-end gap-3 pt-2 border-t border-white/60 dark:border-white/10">
                 {onViewReport && (
                   <button
                     onClick={() => onViewReport(task)}
@@ -468,7 +468,7 @@ export function RecurringTaskListView({
               </div>
             )}
             {/* Action buttons for team-member-mapped tasks (mobile) */}
-            {renderActionButtons(task, "pt-2 flex flex-wrap gap-2 border-t border-gray-100 dark:border-gray-700/50")}
+            {renderActionButtons(task, "pt-2 flex flex-wrap gap-2 border-t border-white/60 dark:border-white/10/50")}
           </div>
         ))}
       </div>

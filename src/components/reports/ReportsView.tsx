@@ -189,7 +189,7 @@ export function ReportsView() {
               <span className="hidden sm:inline">Export Summary</span>
               <span className="sm:hidden">Export</span>
             </button>
-            <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
+            <div className="absolute right-0 mt-2 w-48 glass-surface rounded-lg shadow-lg border border-white/60 dark:border-white/10 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
               <button
                 onClick={() => exportSummaryToPDF(tasks, clients, completions)}
                 className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-900 dark:text-white rounded-t-lg transition-colors"
@@ -218,7 +218,7 @@ export function ReportsView() {
       </div>
 
       {tasks.length === 0 ? (
-        <div className="bg-white dark:bg-gray-dark rounded-lg shadow p-12 text-center">
+        <div className="glass-surface rounded-lg shadow p-12 text-center">
           <div className="flex flex-col items-center justify-center">
             <svg className="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -238,12 +238,12 @@ export function ReportsView() {
       ) : (
         <>
           {/* Period Filter */}
-          <div className="bg-white dark:bg-gray-dark rounded-lg shadow px-4 sm:px-6 py-3 flex flex-wrap items-center gap-3">
+          <div className="glass-surface rounded-lg shadow px-4 sm:px-6 py-3 flex flex-wrap items-center gap-3">
             <span className="text-xs text-gray-500 dark:text-gray-400 font-medium">Filter:</span>
             <select
               value={selectedFY}
               onChange={e => { setSelectedFY(e.target.value); setSelectedMonth('all'); }}
-              className="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1.5 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1.5 text-sm glass-surface text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               {financialYears.map(fy => (
                 <option key={fy} value={fy}>FY {fy}</option>
@@ -252,7 +252,7 @@ export function ReportsView() {
             <select
               value={selectedMonth}
               onChange={e => setSelectedMonth(e.target.value)}
-              className="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1.5 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-1.5 text-sm glass-surface text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="all">All Months</option>
               {MONTH_NAMES.map(m => (
@@ -266,7 +266,7 @@ export function ReportsView() {
             )}
           </div>
 
-          <div className="bg-white dark:bg-gray-dark rounded-lg shadow overflow-hidden">
+          <div className="glass-surface rounded-lg shadow overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50 dark:bg-gray-800">
@@ -288,7 +288,7 @@ export function ReportsView() {
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white dark:bg-gray-dark divide-y divide-gray-200">
+              <tbody className="glass-surface divide-y divide-gray-200">
                 {tasks.map((task) => {
                 const hasTeamMemberMapping = task.teamMemberMappings && task.teamMemberMappings.length > 0;
 

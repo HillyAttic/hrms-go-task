@@ -335,7 +335,7 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
                   className="w-full"
                 />
               ) : (
-                <div className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md text-gray-900 dark:text-white">
+                <div className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-white/60 dark:border-white/10 rounded-md text-gray-900 dark:text-white">
                   {editingTask.title}
                 </div>
               )}
@@ -354,7 +354,7 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
                   className="w-full"
                 />
               ) : (
-                <div className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md text-gray-900 dark:text-white min-h-[80px]">
+                <div className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-white/60 dark:border-white/10 rounded-md text-gray-900 dark:text-white min-h-[80px]">
                   {editingTask.description || 'No description'}
                 </div>
               )}
@@ -393,7 +393,7 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
                     <option value={TaskPriority.HIGH}>High</option>
                   </Select>
                 ) : (
-                  <div className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md text-gray-900 dark:text-white h-10 flex items-center">
+                  <div className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-white/60 dark:border-white/10 rounded-md text-gray-900 dark:text-white h-10 flex items-center">
                     {editingTask.priority === TaskPriority.LOW && 'Low'}
                     {editingTask.priority === TaskPriority.MEDIUM && 'Medium'}
                     {editingTask.priority === TaskPriority.HIGH && 'High'}
@@ -418,7 +418,7 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
                   className="w-full"
                 />
               ) : (
-                <div className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md text-gray-900 dark:text-white">
+                <div className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-white/60 dark:border-white/10 rounded-md text-gray-900 dark:text-white">
                   {editingTask.dueDate
                     ? new Date(editingTask.dueDate).toLocaleDateString()
                     : 'No due date'}
@@ -464,7 +464,7 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
                   </p>
                 </>
               ) : (
-                <div className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md text-gray-900 dark:text-white">
+                <div className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-white/60 dark:border-white/10 rounded-md text-gray-900 dark:text-white">
                   {displayValue || 'No users assigned'}
                 </div>
               )}
@@ -476,7 +476,7 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Client
                 </label>
-                <div className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md text-gray-900 dark:text-white">
+                <div className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-800 border border-white/60 dark:border-white/10 rounded-md text-gray-900 dark:text-white">
                   {clientName}
                 </div>
               </div>
@@ -497,7 +497,7 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
                     href={attachment.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-3 px-4 py-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
+                    className="flex items-center gap-3 px-4 py-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-white/60 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group"
                   >
                     <DocumentIcon className="w-5 h-5 text-gray-400 flex-shrink-0" />
                     <div className="flex-1 min-w-0">
@@ -546,7 +546,7 @@ export function TaskDetailModal({ open, onClose, task, onUpdate }: TaskDetailMod
                                 href={att.url}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-gray-700 rounded border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors group text-sm"
+                                className="flex items-center gap-2 px-3 py-2 glass-surface rounded border border-white/60 dark:border-white/10 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors group text-sm"
                               >
                                 <DocumentIcon className="w-4 h-4 text-gray-400 flex-shrink-0" />
                                 <span className="flex-1 truncate text-gray-700 dark:text-gray-300">{att.name}</span>

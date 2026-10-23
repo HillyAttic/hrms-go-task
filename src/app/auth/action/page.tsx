@@ -74,7 +74,7 @@ function AuthActionContent() {
 
   if (isVerifying) {
     return (
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+      <div className="rounded-3xl border border-white/70 bg-white/85 shadow-[0_30px_80px_-20px_rgba(15,23,42,0.35)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#0B1430]/90">
         <div className="flex flex-wrap items-center">
           <div className="hidden xl:block xl:w-1/2">
             <div className="px-26 py-17.5 text-center">
@@ -114,7 +114,7 @@ function AuthActionContent() {
 
   if (error) {
     return (
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+      <div className="rounded-3xl border border-white/70 bg-white/85 shadow-[0_30px_80px_-20px_rgba(15,23,42,0.35)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#0B1430]/90">
         <div className="flex flex-wrap items-center">
           <div className="hidden xl:block xl:w-1/2">
             <div className="px-26 py-17.5 text-center">
@@ -166,7 +166,7 @@ function AuthActionContent() {
   }
 
   return (
-    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+    <div className="rounded-3xl border border-white/70 bg-white/85 shadow-[0_30px_80px_-20px_rgba(15,23,42,0.35)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#0B1430]/90">
       <div className="flex flex-wrap items-center">
         <div className="hidden xl:block xl:w-1/2">
           <div className="px-26 py-17.5 text-center">
@@ -255,7 +255,7 @@ function AuthActionContent() {
 export default function AuthActionPage() {
   return (
     <Suspense fallback={
-      <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+      <div className="rounded-3xl border border-white/70 bg-white/85 shadow-[0_30px_80px_-20px_rgba(15,23,42,0.35)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#0B1430]/90">
         <div className="flex items-center justify-center p-12">
           <p className="text-black dark:text-white">Loading...</p>
         </div>

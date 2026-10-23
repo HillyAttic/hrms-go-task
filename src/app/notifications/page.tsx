@@ -257,7 +257,7 @@ export default function NotificationsPage() {
       </div>
 
       {/* Notification Permission Card */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-4 sm:p-6 mb-4 sm:mb-6">
+      <div className="glass-surface rounded-lg shadow p-4 sm:p-6 mb-4 sm:mb-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div className="flex items-center space-x-3 sm:space-x-4">
             <div className={`p-2 sm:p-3 rounded-full flex-shrink-0 ${notificationPermission === 'granted'
@@ -392,8 +392,8 @@ export default function NotificationsPage() {
       )}
 
       {/* Notifications List */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
-        <div className="p-3 sm:p-4 border-b border-gray-200 dark:border-gray-700">
+      <div className="glass-surface rounded-lg shadow overflow-hidden">
+        <div className="p-3 sm:p-4 border-b border-white/60 dark:border-white/10">
           <h2 className="font-semibold text-gray-900 dark:text-white text-sm sm:text-base">
             Recent Notifications
           </h2>

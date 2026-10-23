@@ -411,7 +411,7 @@ export function TaskModal({
                   {existingAttachments.map((attachment) => (
                     <div
                       key={attachment.storagePath}
-                      className="flex items-center justify-between gap-2 px-3 py-2 bg-gray-50 dark:bg-gray-800 rounded-md border border-gray-200 dark:border-gray-700"
+                      className="flex items-center justify-between gap-2 px-3 py-2 bg-gray-50 dark:bg-gray-800 rounded-md border border-white/60 dark:border-white/10"
                     >
                       <div className="flex items-center gap-2 min-w-0">
                         <DocumentIcon className="w-4 h-4 text-gray-400 flex-shrink-0" />
@@ -582,7 +582,7 @@ export function TaskModal({
 
             {/* Selected Employees Display */}
             {selectedEmployees.length > 0 && (
-              <div className="mt-2 mb-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+              <div className="mt-2 mb-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-white/60 dark:border-white/10">
                 <div className="flex items-center justify-between mb-2">
                   <p className="text-xs font-medium text-gray-600 dark:text-gray-400">Selected Employees ({selectedEmployees.length})</p>
                   <Button
@@ -603,7 +603,7 @@ export function TaskModal({
                   {selectedEmployees.map((employee) => (
                     <div
                       key={employee.id}
-                      className="flex items-center gap-2 bg-white dark:bg-gray-dark border border-gray-300 dark:border-gray-600 rounded-md px-2.5 py-1.5 shadow-sm"
+                      className="flex items-center gap-2 glass-surface border border-gray-300 dark:border-gray-600 rounded-md px-2.5 py-1.5 shadow-sm"
                     >
                       <div className="flex flex-col">
                         <span className="text-sm font-medium text-gray-900 dark:text-white">{employee.name}</span>
@@ -724,7 +724,7 @@ export function TaskModal({
 
             {/* Selected Projects Display */}
             {selectedProjects.length > 0 && (
-              <div className="mt-2 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+              <div className="mt-2 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-white/60 dark:border-white/10">
                 <div className="flex items-center justify-between mb-2">
                   <p className="text-xs font-medium text-gray-600 dark:text-gray-400">Selected Projects ({selectedProjects.length})</p>
                   <Button
@@ -745,7 +745,7 @@ export function TaskModal({
                   {selectedProjects.map((project) => (
                     <div
                       key={project.id}
-                      className="flex items-center gap-2 bg-white dark:bg-gray-dark border border-gray-300 dark:border-gray-600 rounded-md px-2.5 py-1.5 shadow-sm"
+                      className="flex items-center gap-2 glass-surface border border-gray-300 dark:border-gray-600 rounded-md px-2.5 py-1.5 shadow-sm"
                     >
                       <div className="flex flex-col">
                         <span className="text-sm font-medium text-gray-900 dark:text-white">{project.projectName}</span>

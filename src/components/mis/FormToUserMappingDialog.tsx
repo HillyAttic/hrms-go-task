@@ -171,7 +171,7 @@ export function FormToUserMappingDialog({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="w-[95vw] max-w-[1100px] p-0 overflow-hidden max-h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="px-6 pt-6 pb-4 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
+        <div className="px-6 pt-6 pb-4 border-b border-white/60 dark:border-white/10 flex-shrink-0">
           <DialogTitle className="text-lg font-semibold">Form to User Assignment</DialogTitle>
           <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
             Assign forms to users. Each user will see only their assigned forms on the dashboard.
@@ -182,7 +182,7 @@ export function FormToUserMappingDialog({
         <div className="flex flex-col md:flex-row flex-1 min-h-0 overflow-hidden">
 
           {/* LEFT — Selection controls */}
-          <div className="md:w-[45%] flex-shrink-0 flex flex-col border-b md:border-b-0 md:border-r border-gray-200 dark:border-gray-700 overflow-y-auto p-5 space-y-4">
+          <div className="md:w-[45%] flex-shrink-0 flex flex-col border-b md:border-b-0 md:border-r border-white/60 dark:border-white/10 overflow-y-auto p-5 space-y-4">
             {/* Form Selection */}
             <div>
               <Label htmlFor="form-select" className="flex items-center gap-2 mb-2">
@@ -257,7 +257,7 @@ export function FormToUserMappingDialog({
                 </div>
 
                 {/* User List */}
-                <div className="border border-gray-200 dark:border-gray-600 rounded-md overflow-y-auto flex-1 min-h-[200px] max-h-[300px] bg-white dark:bg-gray-dark">
+                <div className="border border-white/60 dark:border-white/10 rounded-md overflow-y-auto flex-1 min-h-[200px] max-h-[300px] glass-surface">
                   {filteredUsers.length === 0 ? (
                     <div className="flex items-center justify-center h-20 text-sm text-gray-500">
                       {userSearch ? 'No users match the search' : 'All users already assigned'}
@@ -268,7 +268,7 @@ export function FormToUserMappingDialog({
                       return (
                         <label
                           key={user.uid}
-                          className={`flex items-center gap-2.5 px-3 py-2 cursor-pointer select-none border-b border-gray-100 dark:border-gray-700 last:border-b-0 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors ${isChecked ? 'bg-blue-50 dark:bg-blue-900/20' : ''}`}
+                          className={`flex items-center gap-2.5 px-3 py-2 cursor-pointer select-none border-b border-white/60 dark:border-white/10 last:border-b-0 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors ${isChecked ? 'bg-blue-50 dark:bg-blue-900/20' : ''}`}
                         >
                           <input
                             type="checkbox"
@@ -321,7 +321,7 @@ export function FormToUserMappingDialog({
                 </div>
               </div>
             ) : (
-              <div className="flex items-center justify-center flex-1 text-sm text-gray-400 dark:text-gray-500 border border-dashed border-gray-200 dark:border-gray-700 rounded-lg py-10">
+              <div className="flex items-center justify-center flex-1 text-sm text-gray-400 dark:text-gray-500 border border-dashed border-white/60 dark:border-white/10 rounded-lg py-10">
                 Select a form to assign users
               </div>
             )}
@@ -338,7 +338,7 @@ export function FormToUserMappingDialog({
 
             <div className="flex-1 overflow-y-auto">
               {mappings.length === 0 ? (
-                <div className="flex flex-col items-center justify-center h-full text-gray-400 dark:text-gray-500 border border-dashed border-gray-200 dark:border-gray-700 rounded-lg py-12">
+                <div className="flex flex-col items-center justify-center h-full text-gray-400 dark:text-gray-500 border border-dashed border-white/60 dark:border-white/10 rounded-lg py-12">
                   <DocumentTextIcon className="w-10 h-10 mb-2 text-gray-300 dark:text-gray-600" />
                   <p className="text-sm">No form assignments yet</p>
                   <p className="text-xs mt-1">Assign users to a form to get started</p>
@@ -348,7 +348,7 @@ export function FormToUserMappingDialog({
                   {mappings.map((mapping) => (
                     <div
                       key={mapping.formId}
-                      className="p-3 bg-white dark:bg-gray-dark border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm"
+                      className="p-3 glass-surface border border-white/60 dark:border-white/10 rounded-lg shadow-sm"
                     >
                       <div className="flex items-start justify-between mb-2">
                         <div className="flex items-start gap-2 flex-1 min-w-0">
@@ -415,7 +415,7 @@ export function FormToUserMappingDialog({
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-2 flex-shrink-0">
+        <div className="px-6 py-4 border-t border-white/60 dark:border-white/10 flex justify-end gap-2 flex-shrink-0">
           <Button type="button" variant="outline" onClick={onClose}>
             Cancel
           </Button>

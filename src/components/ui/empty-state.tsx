@@ -25,7 +25,7 @@ export function EmptyState({
 }: EmptyStateProps) {
   return (
     <div
-      className={`flex flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-gray-50 p-12 text-center dark:border-gray-700 dark:bg-gray-800 ${className}`}
+      className={`flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-white/60 bg-white/40 p-12 text-center backdrop-blur dark:border-white/10 dark:bg-white/[0.03] ${className}`}
       role="status"
       aria-live="polite"
     >

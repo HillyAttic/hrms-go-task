@@ -157,7 +157,7 @@ export default function CategoriesPage() {
         </div>
 
         {/* Search and Filter */}
-        <div className="bg-white dark:bg-gray-dark rounded-lg border border-gray-200 dark:border-gray-700 p-3 shadow-sm">
+        <div className="glass-surface rounded-lg border border-white/60 dark:border-white/10 p-3 shadow-sm">
           <div className="flex flex-col lg:flex-row gap-3">
             <div className="relative flex-1">
               <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
@@ -202,7 +202,7 @@ export default function CategoriesPage() {
 
           {/* Results count */}
           {(searchQuery || filterStatus !== 'all') && (
-            <div className="mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+            <div className="mt-2 pt-2 border-t border-white/60 dark:border-white/10">
               <p className="text-xs text-gray-600 dark:text-gray-400">
                 Showing <span className="font-semibold text-gray-900 dark:text-white">{filteredCategories.length}</span> of <span className="font-semibold text-gray-900 dark:text-white">{categories.length}</span> categories
               </p>

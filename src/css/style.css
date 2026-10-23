@@ -60,6 +60,13 @@
   }
 }
 
+@layer components {
+  /* Shared glass surface for cards, panels, tables and modals. */
+  .glass-surface {
+    @apply bg-white/75 backdrop-blur-md dark:bg-[#0B1430]/80;
+  }
+}
+
 @layer utilities {
   /* Chrome, Safari and Opera */
   .no-scrollbar::-webkit-scrollbar {

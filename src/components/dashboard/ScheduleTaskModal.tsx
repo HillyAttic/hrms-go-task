@@ -316,7 +316,7 @@ export function ScheduleTaskModal({
           ) : (
             <>
               {/* Add Schedule Form */}
-              <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-3 sm:p-4 bg-gray-50 dark:bg-gray-800">
+              <div className="border border-white/60 dark:border-white/10 rounded-lg p-3 sm:p-4 bg-gray-50 dark:bg-gray-800">
                 <Label className="mb-2 sm:mb-3 block font-semibold text-sm sm:text-base">Add Schedule Entry</Label>
 
                 {/* Two-column equal grid on md+: form fields left, calendar right. Single column on mobile. */}
@@ -477,7 +477,7 @@ export function ScheduleTaskModal({
                           ({group.items.length} {group.items.length === 1 ? 'entry' : 'entries'})
                         </span>
                       </div>
-                      <div className="bg-white dark:bg-gray-dark overflow-x-auto">
+                      <div className="glass-surface overflow-x-auto">
                         <table className="w-full min-w-[320px]">
                           <thead className="bg-gray-50 dark:bg-gray-800">
                             <tr>
@@ -553,7 +553,7 @@ export function ScheduleTaskModal({
         </div>
 
         {/* Footer Actions */}
-        <div className="flex items-center justify-end gap-2 sm:gap-3 pt-3 sm:pt-4 border-t border-gray-200 dark:border-gray-700 mt-3 sm:mt-4">
+        <div className="flex items-center justify-end gap-2 sm:gap-3 pt-3 sm:pt-4 border-t border-white/60 dark:border-white/10 mt-3 sm:mt-4">
           <Button type="button" variant="outline" onClick={onClose} disabled={saving} className="text-sm h-9 sm:h-10">
             {entries.length > 0 ? 'Cancel' : 'Close'}
           </Button>

@@ -106,7 +106,7 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+    <div className="rounded-3xl border border-white/70 bg-white/85 shadow-[0_30px_80px_-20px_rgba(15,23,42,0.35)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#0B1430]/90">
       <div className="flex flex-wrap items-center">
         <div className="hidden xl:block xl:w-1/2">
           <div className="px-26 py-17.5 text-center">
@@ -196,7 +196,7 @@ const SignUpPage = () => {
                   <label
                     htmlFor="acceptTerms"
                     className={`${
-                      formData.acceptTerms ? 'bg-primary' : 'bg-white dark:bg-boxdark-2'
+                      formData.acceptTerms ? 'bg-primary' : 'glass-surface'
                     } flex h-5 w-5 items-center justify-center rounded border ${
                       errors.acceptTerms
                         ? '!border-red dark:!border-red'

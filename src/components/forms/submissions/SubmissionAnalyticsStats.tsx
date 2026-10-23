@@ -385,7 +385,7 @@ export function SubmissionAnalyticsStats({
       </div>
 
       {showBranchReport && (
-      <div className="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-3 sm:p-4 space-y-4">
+      <div className="glass-surface border border-white/60 dark:border-white/10 rounded-lg p-3 sm:p-4 space-y-4">
         <div className="flex flex-col xl:flex-row xl:items-end gap-3">
           <div>
             <h3 className="text-base font-semibold text-gray-900 dark:text-white">BU-wise Collective Report</h3>
@@ -401,7 +401,7 @@ export function SubmissionAnalyticsStats({
                 setReportStartDate(e.target.value);
                 setReportPreset('day');
               }}
-              className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+              className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg glass-surface text-gray-900 dark:text-white"
             />
           </div>
 
@@ -414,7 +414,7 @@ export function SubmissionAnalyticsStats({
                 setReportEndDate(e.target.value);
                 setReportPreset('day');
               }}
-              className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+              className="px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded-lg glass-surface text-gray-900 dark:text-white"
             />
           </div>
 
@@ -426,7 +426,7 @@ export function SubmissionAnalyticsStats({
                 className={`px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${
                   reportPreset === preset
                     ? 'bg-blue-600 border-blue-600 text-white'
-                    : 'bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                    : 'glass-surface border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                 }`}
               >
                 {preset.charAt(0).toUpperCase() + preset.slice(1)}

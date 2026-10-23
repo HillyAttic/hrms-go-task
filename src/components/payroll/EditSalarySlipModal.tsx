@@ -83,7 +83,7 @@ interface EditSalarySlipModalProps {
 }
 
 const inputClass =
-  'w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500';
+  'w-full rounded-lg border border-gray-300 dark:border-gray-600 glass-surface px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500';
 const labelClass = 'block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1';
 const errorClass = 'mt-1 text-xs text-red-500';
 const sectionTitleClass = 'text-base font-semibold text-gray-900 dark:text-white';
@@ -326,7 +326,7 @@ export function EditSalarySlipModal({
             )}
           </div>
 
-          <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-4 grid grid-cols-3 gap-4 text-sm">
+          <div className="bg-gray-50 dark:bg-gray-800 border border-white/60 dark:border-white/10 rounded-lg p-4 grid grid-cols-3 gap-4 text-sm">
             <div>
               <p className="text-gray-500 dark:text-gray-400">Total Earnings</p>
               <p className="font-bold text-green-600 dark:text-green-400">

@@ -194,7 +194,7 @@ export function HolidayManagementModal({ isOpen, onClose, managerId, isManager, 
 
         <div className="space-y-6 py-4">
           {/* Add Holiday Form */}
-          <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-800">
+          <div className="border border-white/60 dark:border-white/10 rounded-lg p-4 bg-gray-50 dark:bg-gray-800">
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">Add New Holiday</h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -264,7 +264,7 @@ export function HolidayManagementModal({ isOpen, onClose, managerId, isManager, 
                 <Loader2 className="w-6 h-6 animate-spin text-blue-600" />
               </div>
             ) : holidays.length === 0 ? (
-              <div className="text-center py-8 text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700 rounded-lg">
+              <div className="text-center py-8 text-gray-500 dark:text-gray-400 border border-white/60 dark:border-white/10 rounded-lg">
                 No holidays added yet
               </div>
             ) : (
@@ -272,7 +272,7 @@ export function HolidayManagementModal({ isOpen, onClose, managerId, isManager, 
                 {holidays.map((holiday) => (
                   <div
                     key={holiday.id}
-                    className="flex items-center justify-between p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:bg-gray-800 transition-colors"
+                    className="flex items-center justify-between p-4 border border-white/60 dark:border-white/10 rounded-lg hover:bg-gray-50 dark:bg-gray-800 transition-colors"
                   >
                     <div className="flex-1">
                       <div className="flex items-center gap-3">

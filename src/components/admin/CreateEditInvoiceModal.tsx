@@ -82,7 +82,7 @@ export function CreateEditInvoiceModal({
               type="text"
               {...register('clientName')}
               placeholder="Enter client name"
-              className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full rounded-md border border-gray-300 dark:border-gray-600 glass-surface px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
 
@@ -94,7 +94,7 @@ export function CreateEditInvoiceModal({
               type="text"
               {...register('services')}
               placeholder="Enter services"
-              className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full rounded-md border border-gray-300 dark:border-gray-600 glass-surface px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
 
@@ -108,7 +108,7 @@ export function CreateEditInvoiceModal({
                 min: { value: 0, message: 'Amount must be positive' },
               })}
               placeholder="Enter amount"
-              className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full rounded-md border border-gray-300 dark:border-gray-600 glass-surface px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
             />
             {errors.amount && (
               <p className="mt-1 text-xs text-red-500">{errors.amount.message}</p>
@@ -123,7 +123,7 @@ export function CreateEditInvoiceModal({
               {...register('description')}
               rows={3}
               placeholder="Enter description"
-              className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary resize-none"
+              className="w-full rounded-md border border-gray-300 dark:border-gray-600 glass-surface px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary resize-none"
             />
           </div>
 
@@ -135,7 +135,7 @@ export function CreateEditInvoiceModal({
               type="text"
               {...register('remark')}
               placeholder="Enter remark"
-              className="w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full rounded-md border border-gray-300 dark:border-gray-600 glass-surface px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
 

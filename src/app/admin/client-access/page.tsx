@@ -396,7 +396,7 @@ export default function ClientAccessPage() {
                     className={`p-4 rounded-lg border-2 transition-all text-left ${
                       activeUserId === user.uid
                         ? 'border-purple-600 bg-purple-50 dark:bg-purple-900/20 shadow-md'
-                        : 'border-gray-200 dark:border-gray-700 hover:border-purple-300 dark:hover:border-purple-700 hover:shadow'
+                        : 'border-white/60 dark:border-white/10 hover:border-purple-300 dark:hover:border-purple-700 hover:shadow'
                     }`}
                   >
                     <div className="flex items-start justify-between">
@@ -502,7 +502,7 @@ export default function ClientAccessPage() {
               </div>
 
               {/* Client Table */}
-              <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden">
+              <div className="glass-surface rounded-lg shadow border border-white/60 dark:border-white/10 overflow-hidden">
                 {filteredClients.length === 0 ? (
                   <div className="p-10 text-center text-gray-500 dark:text-gray-400">
                     No clients match your search.

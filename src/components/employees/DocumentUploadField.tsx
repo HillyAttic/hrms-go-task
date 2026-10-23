@@ -79,7 +79,7 @@ export function DocumentUploadField({
   };
 
   return (
-    <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
+    <div className="border border-white/60 dark:border-white/10 rounded-lg p-3">
       <Label className="text-sm font-medium mb-2 block">{label || DOCUMENT_LABELS[field]}</Label>
 
       {url && (

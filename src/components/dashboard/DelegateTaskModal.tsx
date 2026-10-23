@@ -278,8 +278,8 @@ export function DelegateTaskModal({
                 </p>
               </div>
             ) : (
-              <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-                <div className="sticky top-0 z-10 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 px-3 py-2 flex items-center gap-2">
+              <div className="border border-white/60 dark:border-white/10 rounded-lg overflow-hidden">
+                <div className="sticky top-0 z-10 glass-surface border-b border-white/60 dark:border-white/10 px-3 py-2 flex items-center gap-2">
                   <MagnifyingGlassIcon className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
                   <input
                     type="text"
@@ -340,8 +340,8 @@ export function DelegateTaskModal({
                   {selectedClientIds.length === clientList.length ? 'Deselect All' : 'Select All'}
                 </button>
               </div>
-              <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
-                <div className="sticky top-0 z-10 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 px-3 py-2 flex items-center gap-2">
+              <div className="border border-white/60 dark:border-white/10 rounded-lg overflow-hidden">
+                <div className="sticky top-0 z-10 glass-surface border-b border-white/60 dark:border-white/10 px-3 py-2 flex items-center gap-2">
                   <MagnifyingGlassIcon className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
                   <input
                     type="text"
@@ -396,7 +396,7 @@ export function DelegateTaskModal({
         </div>
 
         {/* Footer Actions */}
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700 mt-4">
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-white/60 dark:border-white/10 mt-4">
           <Button type="button" variant="outline" onClick={onClose} disabled={saving}>
             Cancel
           </Button>

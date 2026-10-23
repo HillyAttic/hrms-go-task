@@ -164,7 +164,7 @@ export default function MISAccessibilityPage() {
       ) : (
         <div className="space-y-4 sm:space-y-6 md:space-y-8">
           {/* Form Assignments */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
+          <div className="glass-surface rounded-lg shadow-sm border border-white/60 dark:border-white/10 p-3 sm:p-4 md:p-6">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
               <div className="flex-1 min-w-0">
                 <h2 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900 dark:text-white">
@@ -184,7 +184,7 @@ export default function MISAccessibilityPage() {
 
             {/* Summary Card */}
             {formToUserMappings.length > 0 ? (
-              <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
+              <div className="bg-gray-50 dark:bg-gray-900 rounded-lg p-3 sm:p-4 border border-white/60 dark:border-white/10">
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-0 mb-3">
                   <div>
                     <h3 className="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">
@@ -200,7 +200,7 @@ export default function MISAccessibilityPage() {
                   {formToUserMappings.map((mapping) => (
                     <div
                       key={mapping.formId}
-                      className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 py-2 px-2 sm:px-3 bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700"
+                      className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 py-2 px-2 sm:px-3 glass-surface rounded border border-white/60 dark:border-white/10"
                     >
                       <div className="flex items-center gap-2 flex-1 min-w-0">
                         <svg
@@ -260,7 +260,7 @@ export default function MISAccessibilityPage() {
           </div>
 
           {/* Submissions Access */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-3 sm:p-4 md:p-6">
+          <div className="glass-surface rounded-lg shadow-sm border border-white/60 dark:border-white/10 p-3 sm:p-4 md:p-6">
             <h2 className="text-base sm:text-lg md:text-xl font-semibold text-gray-900 dark:text-white mb-3 sm:mb-4 md:mb-6">
               Submissions Access
             </h2>

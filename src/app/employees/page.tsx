@@ -556,8 +556,8 @@ export default function EmployeesPage() {
             </div>
           ) : (
             /* List View */
-            <div className="bg-white dark:bg-gray-dark rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-              <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-3 bg-gray-50 dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 border-b border-gray-200 dark:border-gray-700">
+            <div className="glass-surface rounded-lg border border-white/60 dark:border-white/10 overflow-hidden">
+              <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-3 bg-gray-50 dark:bg-gray-800 text-sm font-medium text-gray-700 dark:text-gray-300 border-b border-white/60 dark:border-white/10">
                 <div className="col-span-1">Select</div>
                 <div className="col-span-1">ID</div>
                 <div className="col-span-3">Name</div>
@@ -570,7 +570,7 @@ export default function EmployeesPage() {
                 {filteredEmployees.map((employee) => (
                   <div 
                     key={employee.id} 
-                    className={`grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 px-4 md:px-6 py-4 text-sm ${isSelected(employee.id!) ? 'bg-blue-50 dark:bg-blue-900/30' : 'bg-white dark:bg-gray-dark'}`}
+                    className={`grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 px-4 md:px-6 py-4 text-sm ${isSelected(employee.id!) ? 'bg-blue-50 dark:bg-blue-900/30' : 'glass-surface'}`}
                   >
                     {/* Mobile View */}
                     <div className="md:hidden space-y-3">

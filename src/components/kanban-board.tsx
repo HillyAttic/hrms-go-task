@@ -83,7 +83,7 @@ export function KanbanBoard({ tasks, onTaskUpdate, onTaskDelete, onTaskEdit }: K
           >
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-bold text-lg">{column.title}</h3>
-              <span className="bg-white dark:bg-gray-dark bg-opacity-50 rounded-full px-3 py-1 text-sm">
+              <span className="glass-surface bg-opacity-50 rounded-full px-3 py-1 text-sm">
                 {columnTasks.length}
               </span>
             </div>

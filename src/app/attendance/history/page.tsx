@@ -381,7 +381,7 @@ export default function AttendanceHistoryPage() {
               <CardHeader className="px-3 sm:px-6 py-3 sm:py-4 pb-3 sm:pb-6">
                 <div className="flex justify-between items-start gap-2 sm:gap-3">
                   <div className="flex-1 min-w-0">
-                    <CardTitle className="flex items-center gap-1 sm:gap-2 leading-tight sm:leading-normal pb-2 sm:pb-0 border-b sm:border-b-0 border-gray-200 dark:border-gray-700">
+                    <CardTitle className="flex items-center gap-1 sm:gap-2 leading-tight sm:leading-normal pb-2 sm:pb-0 border-b sm:border-b-0 border-white/60 dark:border-white/10">
                       <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-gray-500 dark:text-gray-400 flex-shrink-0" />
                       <span className="whitespace-nowrap text-sm sm:text-xl">{formatDate(record.clockIn)}</span>
                     </CardTitle>
@@ -541,7 +541,7 @@ export default function AttendanceHistoryPage() {
       {/* Delete Confirmation Modal - Mobile Responsive */}
       {showDeleteModal && recordToDelete && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-dark rounded-lg max-w-md w-full p-4 sm:p-6 mx-4">
+          <div className="glass-surface rounded-lg max-w-md w-full p-4 sm:p-6 mx-4">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
                 <AlertTriangle className="w-5 h-5 text-red-600" />

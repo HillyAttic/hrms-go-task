@@ -80,9 +80,9 @@ export function TeamMembersModal({
           onClick={onClose}
         ></div>
 
-        <div className="inline-block w-full max-w-2xl overflow-hidden text-left align-middle transition-all transform bg-white dark:bg-gray-dark rounded-lg shadow-xl relative z-10 max-h-[85vh] flex flex-col">
+        <div className="inline-block w-full max-w-2xl overflow-hidden text-left align-middle transition-all transform glass-surface rounded-lg shadow-xl relative z-10 max-h-[85vh] flex flex-col">
           {/* Header - Fixed */}
-          <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
+          <div className="px-6 py-4 border-b border-white/60 dark:border-white/10 flex-shrink-0">
             <div className="flex items-center justify-between">
               <div>
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
@@ -115,7 +115,7 @@ export function TeamMembersModal({
                 {teamMembers.map((member) => (
                   <div
                     key={member.userId}
-                    className="p-4 border-2 border-gray-200 dark:border-gray-700 rounded-lg hover:border-purple-300 dark:hover:border-purple-600 transition-colors bg-white dark:bg-gray-800"
+                    className="p-4 border-2 border-white/60 dark:border-white/10 rounded-lg hover:border-purple-300 dark:hover:border-purple-600 transition-colors glass-surface"
                   >
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3 flex-1 min-w-0">
@@ -173,7 +173,7 @@ export function TeamMembersModal({
                       {team.members.map((member) => (
                         <div
                           key={member.id}
-                          className="p-3 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-purple-300 dark:hover:border-purple-600 transition-colors bg-white dark:bg-gray-800"
+                          className="p-3 border border-white/60 dark:border-white/10 rounded-lg hover:border-purple-300 dark:hover:border-purple-600 transition-colors glass-surface"
                         >
                           <div className="flex items-center gap-3">
                             <div className="flex-shrink-0">
@@ -207,7 +207,7 @@ export function TeamMembersModal({
           </div>
 
           {/* Footer - Fixed */}
-          <div className="px-6 py-3 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 flex-shrink-0">
+          <div className="px-6 py-3 border-t border-white/60 dark:border-white/10 bg-gray-50 dark:bg-gray-800 flex-shrink-0">
             <div className="flex items-center justify-between">
               <div className="text-sm text-gray-600 dark:text-gray-400">
                 {hasTeamMemberMappings ? (

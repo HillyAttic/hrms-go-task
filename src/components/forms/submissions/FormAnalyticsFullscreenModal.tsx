@@ -160,8 +160,8 @@ export function BranchReportFullscreenModal({
     <Dialog.Root open={isOpen} onOpenChange={onClose}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/60 z-50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
-        <Dialog.Content className="fixed inset-2 sm:inset-4 z-50 bg-white dark:bg-gray-900 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 focus:outline-none flex flex-col">
-          <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-700 flex items-start justify-between gap-4">
+        <Dialog.Content className="fixed inset-2 sm:inset-4 z-50 glass-surface rounded-lg shadow-xl border border-white/60 dark:border-white/10 focus:outline-none flex flex-col">
+          <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-white/60 dark:border-white/10 flex items-start justify-between gap-4">
             <div>
               <Dialog.Title className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
                 BU-wise Collective Report
@@ -177,7 +177,7 @@ export function BranchReportFullscreenModal({
             </Dialog.Close>
           </div>
 
-          <div className="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700 flex flex-wrap gap-2">
+          <div className="p-4 sm:p-6 border-b border-white/60 dark:border-white/10 flex flex-wrap gap-2">
             {(['week', 'month'] as const).map((item) => (
               <button
                 key={item}
@@ -185,7 +185,7 @@ export function BranchReportFullscreenModal({
                 className={`px-3 py-2 text-sm font-medium rounded-lg border transition-colors ${
                   preset === item
                     ? 'bg-blue-600 border-blue-600 text-white'
-                    : 'bg-white dark:bg-gray-900 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                    : 'glass-surface border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                 }`}
               >
                 {item.charAt(0).toUpperCase() + item.slice(1)}
@@ -203,7 +203,7 @@ export function BranchReportFullscreenModal({
                 No group visit data available for selected filter.
               </div>
             ) : (
-              <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-3 sm:p-4 bg-gray-50 dark:bg-gray-800">
+              <div className="border border-white/60 dark:border-white/10 rounded-lg p-3 sm:p-4 bg-gray-50 dark:bg-gray-800">
                 <div className="mb-3">
                   <h3 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
                     Daywise Visit Dashboard
@@ -241,8 +241,8 @@ export function FormAnalyticsFullscreenModal({
     <Dialog.Root open={isOpen} onOpenChange={onClose}>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/60 z-50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
-        <Dialog.Content className="fixed inset-2 sm:inset-4 z-50 bg-white dark:bg-gray-900 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 focus:outline-none flex flex-col">
-          <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-700 flex items-start justify-between gap-4">
+        <Dialog.Content className="fixed inset-2 sm:inset-4 z-50 glass-surface rounded-lg shadow-xl border border-white/60 dark:border-white/10 focus:outline-none flex flex-col">
+          <div className="px-4 sm:px-6 py-3 sm:py-4 border-b border-white/60 dark:border-white/10 flex items-start justify-between gap-4">
             <div>
               <Dialog.Title className="text-lg sm:text-xl font-semibold text-gray-900 dark:text-white">
                 Form Analytics Report
@@ -279,7 +279,7 @@ export function FormAnalyticsFullscreenModal({
                   return (
                     <div
                       key={question.fieldId}
-                      className="border border-gray-200 dark:border-gray-700 rounded-lg p-3 sm:p-4 bg-gray-50 dark:bg-gray-800"
+                      className="border border-white/60 dark:border-white/10 rounded-lg p-3 sm:p-4 bg-gray-50 dark:bg-gray-800"
                     >
                       <div className="mb-3">
                         <h3 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">

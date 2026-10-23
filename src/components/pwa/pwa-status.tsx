@@ -72,7 +72,7 @@ export function PWAStatus() {
   }
 
   return (
-    <div className="fixed bottom-4 right-4 w-80 bg-white dark:bg-gray-dark border border-stroke dark:border-stroke-dark rounded-lg shadow-card-2 p-4 z-50 max-h-[80vh] overflow-y-auto">
+    <div className="fixed bottom-4 right-4 w-80 glass-surface border border-stroke dark:border-stroke-dark rounded-lg shadow-card-2 p-4 z-50 max-h-[80vh] overflow-y-auto">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold text-dark dark:text-white">PWA Status</h3>
         <button

@@ -345,7 +345,7 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
       </div>
 
       {/* Tab Navigation */}
-      <div className="flex flex-wrap gap-2 border-b border-gray-200 dark:border-gray-700 pb-3">
+      <div className="flex flex-wrap gap-2 border-b border-white/60 dark:border-white/10 pb-3">
         {TABS.map((tab) => (
           <button key={tab.id} type="button" onClick={() => setActiveTab(tab.id)} className={tabClass(tab.id)}>
             {tab.label}
@@ -451,7 +451,7 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
           </div>
 
           {/* Bank Details */}
-          <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
+          <div className="border-t border-white/60 dark:border-white/10 pt-4 mt-4">
             <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Bank Details</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Input
@@ -483,7 +483,7 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
           </div>
 
           {/* Password */}
-          <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
+          <div className="border-t border-white/60 dark:border-white/10 pt-4 mt-4">
             <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
               Change Password (optional)
             </h4>
@@ -544,7 +544,7 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
             />
           </div>
 
-          <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
+          <div className="border-t border-white/60 dark:border-white/10 pt-4 mt-4">
             <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">Promotion Details</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
               <Input

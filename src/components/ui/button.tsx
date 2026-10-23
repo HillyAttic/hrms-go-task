@@ -7,14 +7,14 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: 'bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600',
-        default: 'bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600',
-        secondary: 'bg-gray-200 text-gray-900 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600',
-        danger: 'bg-red-600 text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600',
-        destructive: 'bg-red-600 text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600',
-        outline: 'border border-gray-300 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-900 dark:text-gray-100',
-        ghost: 'hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-900 dark:text-gray-100',
-        link: 'underline-offset-4 hover:underline text-blue-600 dark:text-blue-400',
+        primary: 'bg-gradient-to-r from-[#0447FD] to-[#7F1BFF] text-white shadow-lg shadow-indigo-500/25 hover:brightness-110 dark:from-[#0447FD] dark:to-[#7F1BFF]',
+        default: 'bg-gradient-to-r from-[#0447FD] to-[#7F1BFF] text-white shadow-lg shadow-indigo-500/25 hover:brightness-110 dark:from-[#0447FD] dark:to-[#7F1BFF]',
+        secondary: 'bg-white/60 text-slate-700 backdrop-blur hover:bg-white/90 dark:bg-white/10 dark:text-slate-100 dark:hover:bg-white/15',
+        danger: 'bg-gradient-to-r from-rose-500 to-red-600 text-white shadow-lg shadow-rose-500/25 hover:brightness-110',
+        destructive: 'bg-gradient-to-r from-rose-500 to-red-600 text-white shadow-lg shadow-rose-500/25 hover:brightness-110',
+        outline: 'border border-white/60 bg-white/50 text-slate-700 backdrop-blur hover:bg-white/80 hover:text-slate-900 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10 dark:hover:text-white',
+        ghost: 'hover:bg-white/70 text-slate-700 hover:text-slate-900 dark:hover:bg-white/10 dark:text-slate-200 dark:hover:text-white',
+        link: 'underline-offset-4 hover:underline text-indigo-600 dark:text-indigo-400',
       },
       size: {
         default: 'h-10 py-2 px-4', // 40px height

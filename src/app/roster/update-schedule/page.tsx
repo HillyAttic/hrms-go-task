@@ -567,7 +567,7 @@ export default function UpdateSchedulePage() {
             onClick={() => setViewMode('desktop')}
             className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
               viewMode === 'desktop'
-                ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
+                ? 'glass-surface text-gray-900 dark:text-white shadow-sm'
                 : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
             }`}
           >
@@ -578,7 +578,7 @@ export default function UpdateSchedulePage() {
             onClick={() => setViewMode('mobile')}
             className={`flex items-center space-x-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
               viewMode === 'mobile'
-                ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm'
+                ? 'glass-surface text-gray-900 dark:text-white shadow-sm'
                 : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
             }`}
           >
@@ -589,7 +589,7 @@ export default function UpdateSchedulePage() {
       </div>
 
       {/* Color Legend */}
-      <div className="bg-white dark:bg-gray-dark rounded-lg border border-gray-200 dark:border-gray-700 p-4">
+      <div className="glass-surface rounded-lg border border-white/60 dark:border-white/10 p-4">
         <h3 className="text-sm font-semibold mb-2">Task Duration Legend:</h3>
         <div className="flex flex-wrap gap-4 text-sm">
           <div className="flex items-center gap-2">
@@ -609,7 +609,7 @@ export default function UpdateSchedulePage() {
 
       {/* Calendar */}
       {viewMode === 'desktop' ? (
-        <div className="bg-white dark:bg-gray-dark rounded-xl border border-gray-200 dark:border-gray-700 p-4 md:p-6">
+        <div className="glass-surface rounded-xl border border-white/60 dark:border-white/10 p-4 md:p-6">
           {/* Month Navigation */}
           <div className="flex items-center justify-between mb-6">
             <button
@@ -646,14 +646,14 @@ export default function UpdateSchedulePage() {
           {calendarDays.map((calDay, index) => {
             // Skip rendering days from prev/next month on mobile
             if (!calDay.isCurrentMonth) {
-              return <div key={index} className="hidden md:block bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 min-h-[100px]" />;
+              return <div key={index} className="hidden md:block bg-gray-50 dark:bg-gray-800 border border-white/60 dark:border-white/10 min-h-[100px]" />;
             }
 
             return (
               <div
                 key={index}
-                className={`relative min-h-[100px] border border-gray-200 dark:border-gray-700 p-3 md:p-2 ${
-                  calDay.isCurrentMonth ? 'bg-white dark:bg-gray-dark hover:bg-blue-50 dark:hover:bg-blue-900/20 cursor-pointer' : ''
+                className={`relative min-h-[100px] border border-white/60 dark:border-white/10 p-3 md:p-2 ${
+                  calDay.isCurrentMonth ? 'glass-surface hover:bg-blue-50 dark:hover:bg-blue-900/20 cursor-pointer' : ''
                 } transition-colors group`}
                 onMouseEnter={() => calDay.isCurrentMonth && setHoveredDay(index)}
                 onMouseLeave={() => setHoveredDay(null)}
@@ -776,7 +776,7 @@ export default function UpdateSchedulePage() {
           onClick={handleCloseModal}
         >
           <div
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl w-full max-w-md mx-auto p-4 sm:p-6 max-h-[90vh] overflow-y-auto pb-safe"
+            className="glass-surface rounded-lg shadow-xl w-full max-w-md mx-auto p-4 sm:p-6 max-h-[90vh] overflow-y-auto pb-safe"
             onClick={(e) => e.stopPropagation()}
           >
             <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">
@@ -794,7 +794,7 @@ export default function UpdateSchedulePage() {
                     className={`flex-1 py-2 px-3 sm:px-4 text-sm sm:text-base rounded-lg border ${
                       taskType === 'single'
                         ? 'bg-blue-600 text-white border-blue-600'
-                        : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
+                        : 'glass-surface text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
                     }`}
                   >
                     Client Task
@@ -805,7 +805,7 @@ export default function UpdateSchedulePage() {
                     className={`flex-1 py-2 px-3 sm:px-4 text-sm sm:text-base rounded-lg border ${
                       taskType === 'multi'
                         ? 'bg-blue-600 text-white border-blue-600'
-                        : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
+                        : 'glass-surface text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
                     }`}
                   >
                     <span className="hidden sm:inline">Activity</span>
@@ -947,7 +947,7 @@ export default function UpdateSchedulePage() {
           onClick={() => { setSelectedNonRecurringTask(null); closeModal(); }}
         >
           <div
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl w-full max-w-md p-6"
+            className="glass-surface rounded-lg shadow-xl w-full max-w-md p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-start mb-4">
@@ -1004,7 +1004,7 @@ export default function UpdateSchedulePage() {
           onClick={handleCloseTaskActionMenu}
         >
           <div
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl w-full max-w-sm p-6"
+            className="glass-surface rounded-lg shadow-xl w-full max-w-sm p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-start mb-4">
@@ -1071,7 +1071,7 @@ export default function UpdateSchedulePage() {
           onClick={handleCloseTaskViewModal}
         >
           <div
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl w-full max-w-md p-6"
+            className="glass-surface rounded-lg shadow-xl w-full max-w-md p-6"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-start mb-4">
@@ -1176,7 +1176,7 @@ export default function UpdateSchedulePage() {
           onClick={handleCloseTaskTable}
         >
           <div
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-4xl w-full p-6 max-h-[90vh] overflow-y-auto"
+            className="glass-surface rounded-lg shadow-xl max-w-4xl w-full p-6 max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex justify-between items-center mb-4 gap-2">
@@ -1229,7 +1229,7 @@ export default function UpdateSchedulePage() {
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse">
                   <thead>
-                    <tr className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+                    <tr className="bg-gray-50 dark:bg-gray-800 border-b border-white/60 dark:border-white/10">
                       <th className="text-left py-3 px-4 font-semibold text-sm text-gray-700 dark:text-gray-300">Date</th>
                       <th className="text-left py-3 px-4 font-semibold text-sm text-gray-700 dark:text-gray-300">Client Name</th>
                       <th className="text-left py-3 px-4 font-semibold text-sm text-gray-700 dark:text-gray-300">Task Name</th>
@@ -1251,7 +1251,7 @@ export default function UpdateSchedulePage() {
                         const isMulti = task.taskType === 'multi';
                         
                         return (
-                          <tr key={task.id} className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:bg-gray-800">
+                          <tr key={task.id} className="border-b border-white/60 dark:border-white/10 hover:bg-gray-50 dark:bg-gray-800">
                             <td className="py-3 px-4 text-sm text-gray-900 dark:text-white">
                               {start?.toLocaleDateString()}
                             </td>

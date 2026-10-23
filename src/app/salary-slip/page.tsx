@@ -321,13 +321,13 @@ export default function SalarySlipPage() {
       </div>
 
       {loading ? (
-        <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-10 text-center">
+        <div className="glass-surface rounded-xl shadow-sm border border-white/60 dark:border-white/10 p-10 text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4" />
           <p className="text-sm text-gray-500 dark:text-gray-400">Loading your information...</p>
         </div>
       ) : (
         <>
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-5">
+          <div className="glass-surface rounded-xl shadow-sm border border-white/60 dark:border-white/10 p-5">
             <div className="flex gap-4 items-end flex-wrap">
               <div>
                 <label
@@ -396,7 +396,7 @@ export default function SalarySlipPage() {
             </div>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="glass-surface rounded-xl shadow-sm border border-white/60 dark:border-white/10 overflow-hidden">
             {slips.length === 0 ? (
               <div className="p-10 text-center">
                 <svg
@@ -584,7 +584,7 @@ export default function SalarySlipPage() {
                 setPanValue(event.target.value.toUpperCase());
                 setPanError('');
               }}
-              className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm font-mono uppercase text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-lg border border-gray-300 dark:border-gray-600 glass-surface px-3 py-2 text-sm font-mono uppercase text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             {panError && <p className="text-xs mt-1 text-red-600 dark:text-red-400">{panError}</p>}
           </div>

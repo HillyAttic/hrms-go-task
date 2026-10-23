@@ -124,7 +124,7 @@ export function TeamCard({ team, onEdit, onDelete, onViewDetails, selected = fal
         )}
 
         {/* Team Details - Stats Row */}
-        <div className="flex items-center gap-4 mb-4 pb-4 border-b border-gray-100 dark:border-gray-800">
+        <div className="flex items-center gap-4 mb-4 pb-4 border-b border-white/60 dark:border-white/10">
           {/* Team Leader */}
           <div className="flex items-center gap-1.5 text-sm">
             <UserIcon className="w-4 h-4 text-gray-400" />
@@ -175,7 +175,7 @@ export function TeamCard({ team, onEdit, onDelete, onViewDetails, selected = fal
 
         {/* Footer with creation date */}
         {team.createdAt && (
-          <div className="mt-4 pt-3 border-t border-gray-100 dark:border-gray-800 text-[11px] text-gray-400 dark:text-gray-500">
+          <div className="mt-4 pt-3 border-t border-white/60 dark:border-white/10 text-[11px] text-gray-400 dark:text-gray-500">
             Created {new Date(team.createdAt).toLocaleDateString()}
           </div>
         )}

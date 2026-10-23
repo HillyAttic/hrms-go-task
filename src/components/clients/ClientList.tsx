@@ -102,7 +102,7 @@ export function ClientList({
             <FunnelIcon className="w-5 h-5 text-gray-400" />
             <select
               disabled
-              className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-dark opacity-50"
+              className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md glass-surface opacity-50"
             >
               <option>All Status</option>
             </select>
@@ -138,7 +138,7 @@ export function ClientList({
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value as 'all' | 'active' | 'inactive')}
-            className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-dark"
+            className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 glass-surface"
             aria-label="Filter by status"
           >
             <option value="all">All Status</option>
@@ -162,7 +162,7 @@ export function ClientList({
               setItemsPerPage(Number(e.target.value));
               setCurrentPage(1);
             }}
-            className="px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-dark"
+            className="px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 glass-surface"
           >
             <option value={25}>25</option>
             <option value={50}>50</option>

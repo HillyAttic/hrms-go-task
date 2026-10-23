@@ -44,7 +44,7 @@ export const TaskCard: React.FC<TaskCardProps> = ({ task, onClick }) => {
 
   return (
     <div 
-      className="bg-white dark:bg-boxdark rounded-lg border border-stroke dark:border-strokedark p-4 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer transform hover:-translate-y-0.5"
+      className="glass-surface rounded-lg border border-stroke dark:border-strokedark p-4 shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer transform hover:-translate-y-0.5"
       onClick={onClick}
     >
       <div className="flex justify-between items-start mb-2">
