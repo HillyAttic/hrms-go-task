@@ -12,7 +12,6 @@
 
 import React, { useState, useEffect, useMemo, Suspense } from 'react';
 import { createPortal } from 'react-dom';
-import { Button } from '@/components/ui/button';
 import {
   PlusCircleIcon,
   ClockIcon,
@@ -25,7 +24,7 @@ import {
   CalendarDaysIcon,
   ChartBarIcon
 } from '@heroicons/react/24/outline';
-import { Task, TaskStatus, TaskPriority } from '@/types/task.types';
+import { Task } from '@/types/task.types';
 import { taskApi } from '@/services/task.api';
 import { RecurringTask } from '@/services/recurring-task.service';
 import DashboardFormEmbed from '@/components/dashboard/DashboardFormEmbed';
@@ -38,10 +37,11 @@ import { useEnhancedAuth } from '@/contexts/enhanced-auth.context';
 import { useModal } from '@/contexts/modal-context';
 import { getDbLazy, getAuthLazy, preloadFirebase } from '@/lib/firebase-optimized';
 import { SimpleStatCard } from '@/components/dashboard/SimpleStatCard';
-import { TaskOverview } from '@/components/dashboard/TaskOverview';
 import { UpcomingDeadlines } from '@/components/dashboard/UpcomingDeadlines';
-import { ActivityFeed } from '@/components/dashboard/ActivityFeed';
 import { QuickActions } from '@/components/dashboard/QuickActions';
+import { WelcomeBanner } from '@/components/dashboard/WelcomeBanner';
+import { KanbanCTA } from '@/components/dashboard/KanbanCTA';
+import { AttendanceTrackingCard } from '@/components/dashboard/AttendanceTrackingCard';
 import { PlanTaskModal } from '@/components/dashboard/PlanTaskModal';
 import { ClientListModal } from '@/components/dashboard/ClientListModal';
 import { TeamMembersModal } from '@/components/dashboard/TeamMembersModal';
@@ -53,12 +53,11 @@ import { ProgressiveHydration, SkeletonLoader } from '@/components/ProgressiveHy
 import { useOptimizedFetch, batchFetch } from '@/hooks/use-optimized-fetch';
 import { useDeferredRender } from '@/hooks/use-deferred-value';
 import { processInChunks } from '@/utils/chunk-tasks';
-import { EnhancedKanbanBoard } from '@/components/kanban/EnhancedKanbanBoard';
-import { kanbanService } from '@/services/kanban.service';
-import { KanbanTask, Business } from '@/types/kanban.types';
 import { TaskReportModal } from '@/components/reports/TaskReportModal';
 import { generateMonths } from '@/utils/report-utils';
 import { ClientTaskCompletion } from '@/services/task-completion.service';
+import type { DistributionRange } from '@/components/Charts/TaskDistributionChart';
+import type { ProgressRange } from '@/components/Charts/WeeklyProgressChart';
 
 // Lazy load heavy chart components with progressive hydration
 const TaskDistributionChart = React.lazy(() => 
@@ -156,11 +155,9 @@ export default function DashboardPage() {
   // Check if user is admin or manager
   const canViewAllTasks = isAdmin || isManager;
 
-  // Kanban state (admin-only)
-  const [kanbanBusinesses, setKanbanBusinesses] = useState<Business[]>([]);
-  const [kanbanTasks, setKanbanTasks] = useState<KanbanTask[]>([]);
-  const [selectedKanbanBusinessId, setSelectedKanbanBusinessId] = useState<string | null>(null);
-  const [kanbanLoading, setKanbanLoading] = useState(false);
+  // Card filter ranges
+  const [distributionRange, setDistributionRange] = useState<DistributionRange>('week');
+  const [weeklyRange, setWeeklyRange] = useState<ProgressRange>('week');
 
   // ✅ OPTIMIZATION: Preload Firebase during idle time
   useEffect(() => {
@@ -411,30 +408,6 @@ export default function DashboardPage() {
     }
   }, [user, authLoading, router]);
 
-  // Load kanban data for admin and manager users
-  useEffect(() => {
-    if (!user || !canViewAllTasks) return;
-
-    const loadKanban = async () => {
-      setKanbanLoading(true);
-      try {
-        const businesses = await kanbanService.getUserBusinesses(user.uid);
-        if (businesses.length > 0) {
-          setKanbanBusinesses(businesses);
-          setSelectedKanbanBusinessId(businesses[0].id);
-          const tasks = await kanbanService.getAllUserTasks(user.uid);
-          setKanbanTasks(tasks);
-        }
-      } catch (err) {
-        console.error('Error loading kanban data for dashboard:', err);
-      } finally {
-        setKanbanLoading(false);
-      }
-    };
-
-    loadKanban();
-  }, [user, canViewAllTasks]);
-
   // Fetch pending invoices count
   useEffect(() => {
     if (!user || !isAdmin || userProfile?.role !== 'admin') return;
@@ -506,35 +479,6 @@ export default function DashboardPage() {
     fetchPendingLeaveApprovalsCount();
   }, [user, isAdmin, isManager]);
 
-  // Kanban task handlers
-  const handleKanbanTaskUpdate = async (updatedTask: KanbanTask) => {
-    try {
-      await kanbanService.updateTask(updatedTask.id, updatedTask);
-      setKanbanTasks(prev => prev.map(t => t.id === updatedTask.id ? updatedTask : t));
-    } catch (err) {
-      console.error('Error updating kanban task:', err);
-    }
-  };
-
-  const handleKanbanTaskAdd = async (taskData: Omit<KanbanTask, 'id' | 'createdAt' | 'businessId'>) => {
-    if (!selectedKanbanBusinessId) return;
-    try {
-      const newTask = await kanbanService.createTask({ ...taskData, businessId: selectedKanbanBusinessId });
-      setKanbanTasks(prev => [...prev, newTask]);
-    } catch (err) {
-      console.error('Error adding kanban task:', err);
-    }
-  };
-
-  const handleKanbanTaskDelete = async (taskId: string) => {
-    try {
-      await kanbanService.deleteTask(taskId);
-      setKanbanTasks(prev => prev.filter(t => t.id !== taskId));
-    } catch (err) {
-      console.error('Error deleting kanban task:', err);
-    }
-  };
-
   // Calculate stats (memoized)
   const stats = useMemo(() => {
     const total = tasks.length;
@@ -551,11 +495,55 @@ export default function DashboardPage() {
     return { total, completed, inProgress, todo, overdue };
   }, [tasks]);
 
-  // Kanban tasks for selected business (admin-only)
-  const kanbanCurrentTasks = useMemo(() => {
-    if (!selectedKanbanBusinessId) return [];
-    return kanbanTasks.filter(t => t.businessId === selectedKanbanBusinessId);
-  }, [kanbanTasks, selectedKanbanBusinessId]);
+  // Week-over-week change + 7-day sparkline for each stat card.
+  const trends = useMemo(() => {
+    const DAY = 24 * 60 * 60 * 1000;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const within = (value: unknown, from: number, to: number) => {
+      const time = new Date(value as string).getTime();
+      return time >= from && time < to;
+    };
+
+    const daily = (match: (task: DashboardTask, from: number, to: number) => boolean) =>
+      Array.from({ length: 14 }, (_, i) => {
+        const from = today.getTime() - (13 - i) * DAY;
+        return tasks.filter(task => match(task, from, from + DAY)).length;
+      });
+
+    const summarise = (series: number[]) => {
+      const last = series.slice(7).reduce((a, b) => a + b, 0);
+      const previous = series.slice(0, 7).reduce((a, b) => a + b, 0);
+      const change = previous === 0 ? (last > 0 ? 100 : 0) : Math.round(((last - previous) / previous) * 100);
+      return { change, spark: series.slice(7) };
+    };
+
+    return {
+      total: summarise(daily((t, from, to) => within(t.createdAt, from, to))),
+      completed: summarise(daily((t, from, to) => t.status === 'completed' && within(t.updatedAt, from, to))),
+      inProgress: summarise(daily((t, from, to) => t.status === 'in-progress' && within(t.updatedAt, from, to))),
+      todo: summarise(daily((t, from, to) => t.status === 'pending' && within(t.createdAt, from, to))),
+      overdue: summarise(daily((t, from, to) => !!t.dueDate && t.status !== 'completed' && within(t.dueDate, from, to))),
+    };
+  }, [tasks]);
+
+  // Task distribution scoped by the selected window (by creation date).
+  const distribution = useMemo(() => {
+    if (distributionRange === 'all') {
+      return stats;
+    }
+    const days = distributionRange === 'week' ? 7 : 30;
+    const from = Date.now() - days * 24 * 60 * 60 * 1000;
+    const scoped = tasks.filter(t => new Date(t.createdAt).getTime() >= from);
+    return {
+      total: scoped.length,
+      completed: scoped.filter(t => t.status === 'completed').length,
+      inProgress: scoped.filter(t => t.status === 'in-progress').length,
+      todo: scoped.filter(t => t.status === 'pending').length,
+      overdue: stats.overdue,
+    };
+  }, [tasks, stats, distributionRange]);
 
   // Get filtered task lists (memoized)
   const overdueTasks = useMemo(() => {
@@ -670,25 +658,28 @@ export default function DashboardPage() {
       });
   }, [tasks, employees, isManager, isAdmin, managerHierarchy]);
 
-  // Calculate weekly progress data (memoized)
+  // Weekly progress data (7 days, or 28 for the wider view)
   const weeklyProgressData = useMemo(() => {
     const now = new Date();
+    const dayCount = weeklyRange === 'week' ? 7 : 28;
     const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const labels: string[] = [];
     const created: number[] = [];
     const completed: number[] = [];
 
-    // Get last 7 days
-    for (let i = 6; i >= 0; i--) {
+    for (let i = dayCount - 1; i >= 0; i--) {
       const date = new Date(now);
       date.setDate(date.getDate() - i);
       date.setHours(0, 0, 0, 0);
-      
+
       const nextDate = new Date(date);
       nextDate.setDate(nextDate.getDate() + 1);
 
-      const dayLabel = daysOfWeek[date.getDay()];
-      labels.push(dayLabel);
+      labels.push(
+        dayCount === 7
+          ? daysOfWeek[date.getDay()]
+          : date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+      );
 
       // Count tasks created on this day
       const createdCount = tasks.filter(task => {
@@ -708,7 +699,7 @@ export default function DashboardPage() {
     }
 
     return { labels, created, completed };
-  }, [tasks]);
+  }, [tasks, weeklyRange]);
 
   const todoTasks = useMemo(() => {
     return tasks.filter(task => task.status === 'pending')
@@ -978,220 +969,170 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="flex flex-col gap-4 xl:gap-5">
+      <WelcomeBanner
+        name={userProfile?.displayName || user?.email?.split('@')[0] || 'there'}
+      />
+
       {/* Stats Cards - Critical, render immediately */}
-      <div className="grid grid-cols-3 gap-2 sm:gap-4 md:grid-cols-5 md:gap-4 lg:gap-5 xl:gap-6">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 lg:gap-4">
         <SimpleStatCard
           title="Total Tasks"
           mobileTitle="Total"
           value={stats.total}
-          icon={<ClipboardDocumentListIcon className="w-4 h-4 sm:w-6 sm:h-6 md:w-7 md:h-7" />}
+          icon={<ClipboardDocumentListIcon />}
+          trend={trends.total}
           onClick={() => {
             setShowAllTasksModal(true);
             openModal(); // Open modal context to hide header
             fetchCompletionStats();
           }}
-          subtitle="All tasks"
-          compact={true}
         />
         <SimpleStatCard
           title="Completed"
           mobileTitle="Done"
           value={stats.completed}
-          icon={<CheckCircleIcon className="w-4 h-4 sm:w-6 sm:h-6 md:w-7 md:h-7" />}
+          icon={<CheckCircleIcon />}
+          color="green"
+          trend={trends.completed}
           onClick={() => {
             setShowCompletedModal(true);
             openModal();
           }}
-          color="green"
-          subtitle="Finished tasks"
-          compact={true}
         />
         <SimpleStatCard
           title="In Progress"
           mobileTitle="Active"
           value={stats.inProgress}
-          icon={<ClockIcon className="w-4 h-4 sm:w-6 sm:h-6 md:w-7 md:h-7" />}
+          icon={<ClockIcon />}
+          color="orange"
+          trend={trends.inProgress}
           onClick={() => {
             setShowInProgressModal(true);
             openModal();
           }}
-          color="orange"
-          subtitle="Currently active"
-          compact={true}
         />
         <SimpleStatCard
           title="To Do"
           value={stats.todo}
-          icon={<PlusCircleIcon className="w-4 h-4 sm:w-6 sm:h-6 md:w-7 md:h-7" />}
+          icon={<PlusCircleIcon />}
+          color="purple"
+          trend={trends.todo}
           onClick={() => {
             setShowTodoModal(true);
             openModal();
           }}
-          color="blue"
-          subtitle="Pending tasks"
-          compact={true}
         />
-        <SimpleStatCard
-          title="Overdue"
-          mobileTitle="Late"
-          value={stats.overdue}
-          icon={<ExclamationTriangleIcon className="w-4 h-4 sm:w-5 sm:h-5 md:w-7 md:h-7" />}
-          onClick={() => {
-            setShowOverdueModal(true);
-            openModal();
-          }}
-          color="red"
-          subtitle="Past due date"
-          compact={true}
-        />
+        {/* Trailing 5th card fills the last row on the 2-column mobile grid */}
+        <div className="col-span-2 sm:col-span-1">
+          <SimpleStatCard
+            title="Overdue"
+            mobileTitle="Late"
+            value={stats.overdue}
+            icon={<ExclamationTriangleIcon />}
+            color="red"
+            trend={trends.overdue}
+            onClick={() => {
+              setShowOverdueModal(true);
+              openModal();
+            }}
+          />
+        </div>
       </div>
 
-      {/* MIS Form Embed */}
+      {/* MIS Form Embed (only renders when forms are assigned) */}
       <DashboardFormEmbed />
 
-      {/* Kanban Board Section - Admin and Manager */}
-      {canViewAllTasks && (
-        <div className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-dark p-4 sm:p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Kanban Board</h2>
-            <a
-              href="/kanban"
-              className="text-sm text-blue-600 hover:underline dark:text-blue-400 font-medium"
-            >
-              View Full Board →
-            </a>
-          </div>
-
-          {kanbanBusinesses.length > 1 && (
-            <div className="flex gap-2 mb-4 overflow-x-auto pb-1">
-              {kanbanBusinesses.map(b => {
-                const businessTaskCount = kanbanTasks.filter(task => task.businessId === b.id).length;
-                return (
-                  <button
-                    key={b.id}
-                    onClick={() => setSelectedKanbanBusinessId(b.id)}
-                    className={`px-3 py-1.5 text-sm rounded-full whitespace-nowrap transition-colors flex items-center gap-2 ${
-                      selectedKanbanBusinessId === b.id
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
-                    }`}
-                  >
-                    {b.name}
-                    <span className={`inline-flex items-center px-1 sm:px-1.5 py-0.5 rounded-full text-[9px] sm:text-xs font-medium ${
-                      selectedKanbanBusinessId === b.id
-                        ? 'bg-white/20 text-white'
-                        : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
-                    }`}>
-                      {businessTaskCount}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          )}
-
-          {kanbanLoading ? (
-            <SkeletonLoader className="h-64 w-full" />
-          ) : (
-            <EnhancedKanbanBoard
-              tasks={kanbanCurrentTasks}
-              onTaskUpdate={handleKanbanTaskUpdate}
-              onTaskAdd={handleKanbanTaskAdd}
-              onTaskDelete={handleKanbanTaskDelete}
-              mobileScrollable
-              compact
-            />
-          )}
+      {/* Kanban CTA + Attendance */}
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-12">
+        <div className="xl:col-span-7">
+          <KanbanCTA />
         </div>
-      )}
+        <div className="xl:col-span-5">
+          <AttendanceTrackingCard userId={user?.uid} />
+        </div>
+      </div>
 
       {/* ✅ OPTIMIZATION: Charts load progressively */}
-      {/* First Row: Task Distribution Chart and Quick Actions in 2-column grid for desktop */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+      {/* Distribution / Deadlines / Quick Actions */}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-12">
         {shouldRenderCharts && canViewAllTasks && (
-          <ProgressiveHydration
-            delay={200}
-            priority="low"
-            fallback={<SkeletonLoader className="h-64 w-full" />}
-          >
-            <Suspense fallback={<SkeletonLoader className="h-64 w-full" />}>
-              <TaskDistributionChart 
-                completed={stats.completed}
-                inProgress={stats.inProgress}
-                todo={stats.todo}
-                total={stats.total}
-              />
-            </Suspense>
-          </ProgressiveHydration>
+          <div className="xl:col-span-4">
+            <ProgressiveHydration
+              delay={200}
+              priority="low"
+              fallback={<SkeletonLoader className="h-full min-h-[250px] w-full rounded-2xl" />}
+            >
+              <Suspense fallback={<SkeletonLoader className="h-full min-h-[250px] w-full rounded-2xl" />}>
+                <TaskDistributionChart
+                  completed={distribution.completed}
+                  inProgress={distribution.inProgress}
+                  todo={distribution.todo}
+                  total={distribution.total}
+                  range={distributionRange}
+                  onRangeChange={setDistributionRange}
+                />
+              </Suspense>
+            </ProgressiveHydration>
+          </div>
         )}
 
-        {/* Quick Actions */}
-        <QuickActions 
-          onCreateTask={() => {
-            setShowTaskTypeDialog(true);
-            openModal(); // Hide header when modal opens
-          }}
-          onViewTeam={() => router.push('/users')}
-          onManageProjects={() => router.push('/categories')}
-          onViewRoster={() => router.push('/roster')}
-          onViewReports={() => router.push('/reports')}
-          onViewAttendance={() => router.push('/attendance')}
-          isAdminOrManager={canViewAllTasks}
-          isManager={isManager}
-          isAdmin={isAdmin}
-          pendingInvoicesCount={pendingInvoicesCount}
-          pendingLeaveApprovalsCount={pendingLeaveApprovalsCount}
-        />
+        <div className={`md:col-span-1 ${canViewAllTasks ? 'xl:col-span-4' : 'md:col-span-2 xl:col-span-8'}`}>
+          <UpcomingDeadlines tasks={tasks} onTaskClick={(taskId) => {
+            const task = tasks.find(t => t.id === taskId);
+            if (task) {
+              router.push(`/tasks/${task.isRecurring ? 'recurring' : 'non-recurring'}`);
+            }
+          }} />
+        </div>
+
+        {canViewAllTasks && (
+          <div className="md:col-span-2 xl:col-span-4">
+            <QuickActions
+              onCreateTask={() => {
+                setShowTaskTypeDialog(true);
+                openModal(); // Hide header when modal opens
+              }}
+              isAdminOrManager={canViewAllTasks}
+              isManager={isManager}
+              isAdmin={isAdmin}
+              pendingInvoicesCount={pendingInvoicesCount}
+              pendingLeaveApprovalsCount={pendingLeaveApprovalsCount}
+            />
+          </div>
+        )}
       </div>
 
-      {/* Second Row: Upcoming Deadlines and Task Overview in 2-column grid for desktop */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
-        {/* Upcoming Deadlines */}
-        <UpcomingDeadlines tasks={tasks} onTaskClick={(taskId) => {
-          const task = tasks.find(t => t.id === taskId);
-          if (task) {
-            router.push(`/tasks/${task.isRecurring ? 'recurring' : 'non-recurring'}`);
-          }
-        }} />
-
-        {/* Task Overview */}
-        <TaskOverview tasks={tasks.slice(0, 10)} onTaskClick={(taskId) => {
-          const task = tasks.find(t => t.id === taskId);
-          if (task) {
-            router.push(`/tasks/${task.isRecurring ? 'recurring' : 'non-recurring'}`);
-          }
-        }} />
-      </div>
-
-      {/* Third Row: Team Performance and Weekly Progress in 2-column grid for desktop */}
+      {/* Team Performance + Weekly Progress */}
       {shouldRenderCharts && canViewAllTasks && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
-          {/* Team Performance Chart - Show for both admin and manager */}
-          {teamPerformanceData.length > 0 && (
+        <div className="grid grid-cols-1 gap-4 xl:grid-cols-12">
+          <div className="xl:col-span-7">
             <ProgressiveHydration
               delay={300}
               priority="low"
-              fallback={<SkeletonLoader className="h-64 w-full" />}
+              fallback={<SkeletonLoader className="h-full min-h-[250px] w-full rounded-2xl" />}
             >
-              <Suspense fallback={<SkeletonLoader className="h-64 w-full" />}>
+              <Suspense fallback={<SkeletonLoader className="h-full min-h-[250px] w-full rounded-2xl" />}>
                 <TeamPerformanceChart teamMembers={teamPerformanceData} />
               </Suspense>
             </ProgressiveHydration>
-          )}
+          </div>
 
-          {/* Weekly Progress Chart - Show for admin and manager */}
-          {canViewAllTasks && (
+          <div className="xl:col-span-5">
             <ProgressiveHydration
               delay={350}
               priority="low"
-              fallback={<SkeletonLoader className="h-64 w-full" />}
+              fallback={<SkeletonLoader className="h-full min-h-[250px] w-full rounded-2xl" />}
             >
-              <Suspense fallback={<SkeletonLoader className="h-64 w-full" />}>
-                <WeeklyProgressChart data={weeklyProgressData} />
+              <Suspense fallback={<SkeletonLoader className="h-full min-h-[250px] w-full rounded-2xl" />}>
+                <WeeklyProgressChart
+                  data={weeklyProgressData}
+                  range={weeklyRange}
+                  onRangeChange={setWeeklyRange}
+                />
               </Suspense>
             </ProgressiveHydration>
-          )}
+          </div>
         </div>
       )}
 

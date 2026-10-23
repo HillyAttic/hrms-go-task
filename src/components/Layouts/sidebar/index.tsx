@@ -6,6 +6,7 @@ import { useResponsive } from "@/hooks/use-responsive";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ArrowRight, GraduationCap } from "lucide-react";
 import { NAV_DATA } from "./data";
 import { ArrowLeftIcon, ChevronUp } from "./icons";
 import { MenuItem } from "./menu-item";
@@ -27,6 +28,8 @@ export function Sidebar() {
   const [misConfig, setMisConfig] = useState<any>(null);
   const [misConfigLoaded, setMisConfigLoaded] = useState(false);
   const [isExclusivityLocked, setIsExclusivityLocked] = useState(true);
+  // Admin/Exclusivity stay one click away instead of taking permanent sidebar space.
+  const [showMore, setShowMore] = useState(false);
   const [hasAccessibleSlips, setHasAccessibleSlips] = useState(false);
   const [slipCheckDone, setSlipCheckDone] = useState(false);
 
@@ -215,7 +218,7 @@ export function Sidebar() {
               page title share one centre line. ponytail: the logo heights are derived
               from the header's content height — retune both if <Header>'s padding or
               title block changes. */}
-          <div className="flex items-center px-3.5 py-4 md:py-5">
+          <div className="flex items-center px-3.5 py-3 md:py-4">
             {/* Light mode logo */}
             <img
               src="/images/branding_edVenture-5.png"
@@ -236,7 +239,10 @@ export function Sidebar() {
             "md:mt-10",
             "pb-20 md:pb-0"
           )}>
-            {NAV_DATA.map((section) => {
+            {NAV_DATA.filter(
+              (section) =>
+                showMore || section.label === "MAIN MENU" || section.label === "MANAGEMENT"
+            ).map((section) => {
               // Filter items based on role and mobile visibility
               const visibleItems = section.items.filter((item: any) => {
                 // Filter out items hidden on mobile
@@ -462,7 +468,52 @@ export function Sidebar() {
               </div>
             );
             })}
+
+            {/* Hidden Admin / Exclusivity sections */}
+            {!showMore && (
+              <button
+                onClick={() => setShowMore(true)}
+                className="mb-2 flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold uppercase tracking-widest text-dark-4 transition-colors hover:bg-gray-50 hover:text-dark dark:text-gray-500 dark:hover:bg-gray-800 dark:hover:text-gray-300"
+                aria-expanded={showMore}
+              >
+                More tools
+                <ChevronUp className="size-4 rotate-180" aria-hidden="true" />
+              </button>
+            )}
+            {showMore && (
+              <button
+                onClick={() => setShowMore(false)}
+                className="mb-2 flex w-full items-center justify-between rounded-lg px-3 py-2 text-sm font-semibold uppercase tracking-widest text-dark-4 transition-colors hover:bg-gray-50 hover:text-dark dark:text-gray-500 dark:hover:bg-gray-800 dark:hover:text-gray-300"
+                aria-expanded={showMore}
+              >
+                Less
+                <ChevronUp className="size-4" aria-hidden="true" />
+              </button>
+            )}
           </div>
+
+          {/* Promo card */}
+          {!(variant === "tablet" && !isOpen) && (
+            <div className="mt-3 shrink-0 pr-3">
+              <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-indigo-50 via-blue-50 to-purple-100 p-4 dark:from-indigo-950/40 dark:via-blue-950/30 dark:to-purple-950/30">
+                <div className="pointer-events-none absolute -right-6 -top-6 h-20 w-20 rounded-full bg-white/50 blur-2xl dark:bg-white/5" />
+                <div className="relative flex h-9 w-9 items-center justify-center rounded-xl bg-white text-indigo-600 shadow-sm dark:bg-white/10 dark:text-indigo-300">
+                  <GraduationCap className="h-5 w-5" aria-hidden="true" />
+                </div>
+                <p className="relative mt-2 text-sm font-semibold leading-snug text-gray-900 dark:text-white">
+                  Empowering Better Learning Together.
+                </p>
+                <Link
+                  href="/reports"
+                  onClick={() => isMobile && setIsOpen(false)}
+                  className="relative mt-3 inline-flex items-center gap-1 rounded-lg bg-white px-3 py-1.5 text-xs font-semibold text-indigo-700 shadow-sm transition-colors hover:bg-indigo-50 dark:bg-white/10 dark:text-white dark:hover:bg-white/20"
+                >
+                  View Reports
+                  <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
       </aside>
     </>
