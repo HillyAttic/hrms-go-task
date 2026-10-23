@@ -66,8 +66,8 @@ function PerformanceTable({ members, compact = false, stickyHeader = false }: Pe
   const cellText = compact ? 'text-[12px]' : 'text-sm';
   const headPad = compact ? 'pb-2' : 'pb-3';
   const rowPad = compact ? 'py-2.5' : 'py-3.5';
-  const sticky = stickyHeader ? 'sticky top-0 z-10 bg-white dark:bg-gray-dark' : undefined;
-  const headBase = cn('font-semibold', headText, headPad, 'border-b border-gray-100 dark:border-gray-800', sticky);
+  const sticky = stickyHeader ? 'sticky top-0 z-10 bg-white/90 backdrop-blur-xl dark:bg-[#0B1430]/90' : undefined;
+  const headBase = cn('font-semibold', headText, headPad, 'border-b border-white/60 dark:border-white/10', sticky);
 
   return (
     <table className="w-full table-fixed border-collapse">
@@ -108,7 +108,7 @@ function PerformanceTable({ members, compact = false, stickyHeader = false }: Pe
           return (
             <tr
               key={member.id}
-              className="border-b border-gray-50 transition-colors last:border-0 hover:bg-gray-50 dark:border-gray-800/60 dark:hover:bg-gray-800/40"
+              className="border-b border-white/50 transition-colors last:border-0 hover:bg-white/60 dark:border-white/[0.06] dark:hover:bg-white/[0.04]"
             >
               <td className={cn('pr-2', rowPad)}>
                 <span className={cn('block truncate font-medium text-gray-900 dark:text-gray-100', cellText)}>
@@ -167,17 +167,17 @@ export function TeamPerformanceChart({ teamMembers }: TeamPerformanceChartProps)
 
   return (
     <>
-      <Card className="flex h-full min-h-[250px] flex-col overflow-hidden rounded-2xl border-gray-100/80 p-5 shadow-sm dark:border-gray-800">
+      <Card className="flex h-full min-h-[250px] flex-col overflow-hidden rounded-2xl border-white/60 bg-white/60 p-5 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.22)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05]">
         <div className="flex shrink-0 items-center justify-between gap-2">
-          <h3 className="flex items-center gap-1.5 text-[15px] font-semibold text-gray-900 dark:text-white">
-            <Users className="h-4 w-4 text-gray-400" />
+          <h3 className="flex items-center gap-1.5 text-[15px] font-semibold text-slate-900 dark:text-white">
+            <Users className="h-4 w-4 text-indigo-500/70" />
             Team Performance
           </h3>
           <button
             type="button"
             onClick={() => handleOpenChange(true)}
             aria-haspopup="dialog"
-            className="inline-flex items-center gap-1 rounded text-xs font-medium text-blue-600 transition-colors hover:text-blue-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 focus-visible:ring-offset-2 dark:text-blue-400 dark:hover:text-blue-300 dark:focus-visible:ring-offset-gray-dark"
+            className="inline-flex items-center gap-1 rounded text-xs font-medium text-indigo-600 transition-colors hover:text-indigo-700 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/40 focus-visible:ring-offset-2 dark:text-indigo-400 dark:hover:text-indigo-300 dark:focus-visible:ring-offset-[#0B1430]"
           >
             View All
             <ArrowRight className="h-3.5 w-3.5" />
@@ -202,9 +202,9 @@ export function TeamPerformanceChart({ teamMembers }: TeamPerformanceChartProps)
       </Card>
 
       <Dialog open={isViewAllOpen} onOpenChange={handleOpenChange}>
-        <DialogContent className="flex max-h-[85vh] w-[95vw] flex-col gap-0 overflow-hidden rounded-2xl border-gray-100 p-0 sm:max-w-3xl dark:border-gray-800">
+        <DialogContent className="flex max-h-[85vh] w-[95vw] flex-col gap-0 overflow-hidden rounded-3xl border border-white/70 bg-white/85 p-0 backdrop-blur-2xl sm:max-w-3xl dark:border-white/10 dark:bg-[#0B1430]/90">
           {/* Header - fixed */}
-          <DialogHeader className="shrink-0 space-y-0 border-b border-gray-100 px-6 pb-5 pr-14 pt-6 dark:border-gray-800">
+          <DialogHeader className="shrink-0 space-y-0 border-b border-white/60 px-6 pb-5 pr-14 pt-6 dark:border-white/10">
             {/* Single wrapper: DialogHeader's space-y utilities would otherwise override child margins */}
             <div className="flex flex-col">
               <DialogTitle className="flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-white">
@@ -223,7 +223,7 @@ export function TeamPerformanceChart({ teamMembers }: TeamPerformanceChartProps)
                   onChange={(event) => setSearchQuery(event.target.value)}
                   placeholder="Search team member..."
                   aria-label="Search team members"
-                  className="h-11 w-full rounded-lg border border-gray-200 bg-white pl-9 pr-3 text-sm text-gray-900 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-100 dark:placeholder:text-gray-500"
+                  className="h-11 w-full rounded-xl border border-slate-200/80 bg-white/70 pl-9 pr-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/30 dark:border-white/10 dark:bg-white/5 dark:text-slate-100 dark:placeholder:text-slate-500"
                 />
               </div>
             </div>
@@ -263,7 +263,7 @@ export function TeamPerformanceChart({ teamMembers }: TeamPerformanceChartProps)
           </div>
 
           {/* Footer - fixed */}
-          <div className="flex shrink-0 items-center justify-between gap-3 border-t border-gray-100 bg-gray-50/60 px-6 py-4 dark:border-gray-800 dark:bg-gray-800/40">
+          <div className="flex shrink-0 items-center justify-between gap-3 border-t border-white/60 bg-white/40 px-6 py-4 dark:border-white/10 dark:bg-white/[0.03]">
             <p className="text-[13px] text-gray-500 dark:text-gray-400">
               Showing{' '}
               <span className="font-semibold text-gray-900 dark:text-gray-200">{filteredMembers.length}</span> of{' '}

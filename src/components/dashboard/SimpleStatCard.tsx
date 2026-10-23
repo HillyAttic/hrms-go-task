@@ -15,6 +15,7 @@ interface SimpleStatCardProps {
   color?: 'blue' | 'green' | 'orange' | 'red' | 'purple';
   subtitle?: string;
   trend?: { change: number; spark: number[] };
+  variant?: 'default' | 'glass';
 }
 
 const colorMap = {
@@ -98,7 +99,9 @@ export function SimpleStatCard({
   color = 'blue',
   subtitle,
   trend,
+  variant = 'default',
 }: SimpleStatCardProps) {
+  const glass = variant === 'glass';
   const colors = colorMap[color];
   const displayTitle = mobileTitle ? (
     <>
@@ -115,11 +118,17 @@ export function SimpleStatCard({
   return (
     <Card
       onClick={onClick}
-      className={`group relative h-full overflow-hidden rounded-2xl border-gray-100/90 p-4 shadow-sm transition-all duration-200 dark:border-gray-800 ${
-        onClick
-          ? 'cursor-pointer hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md dark:hover:border-blue-800'
-          : ''
-      }`}
+      className={glass
+        ? `group relative h-full overflow-hidden rounded-2xl border-white/60 bg-white/60 p-4 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.22)] backdrop-blur-xl transition-all duration-200 dark:border-white/10 dark:bg-white/[0.05] ${
+            onClick
+              ? 'cursor-pointer hover:-translate-y-1 hover:border-indigo-300/70 hover:shadow-[0_18px_35px_-18px_rgba(4,71,253,0.5)] dark:hover:border-indigo-400/40'
+              : ''
+          }`
+        : `group relative h-full overflow-hidden rounded-2xl border-gray-100/90 p-4 shadow-sm transition-all duration-200 dark:border-gray-800 ${
+            onClick
+              ? 'cursor-pointer hover:-translate-y-0.5 hover:border-blue-200 hover:shadow-md dark:hover:border-blue-800'
+              : ''
+          }`}
     >
       <div
         className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${colors.wash}`}

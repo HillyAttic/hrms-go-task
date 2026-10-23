@@ -46,18 +46,21 @@ export function QuickActions({
     return null;
   }
 
+  const gradient = (from: string, to: string) =>
+    `bg-gradient-to-r ${from} ${to} hover:brightness-110`;
+
   const actions = [
-    { label: 'Create Task', icon: <PlusCircleIcon className="h-4 w-4 shrink-0" />, onClick: onCreateTask, color: 'bg-blue-600 hover:bg-blue-700', showForManager: true },
-    { label: 'View Team', icon: <UserGroupIcon className="h-4 w-4 shrink-0" />, onClick: () => router.push('/teams'), color: 'bg-green-600 hover:bg-green-700', showForManager: false },
-    { label: 'Pending Invoices', icon: <FolderIcon className="h-4 w-4 shrink-0" />, onClick: () => router.push('/admin/pending-invoices'), color: 'bg-indigo-600 hover:bg-indigo-700', showForManager: false, badge: pendingInvoicesCount > 0 ? pendingInvoicesCount : undefined },
-    { label: 'View Roster', icon: <CalendarDaysIcon className="h-4 w-4 shrink-0" />, onClick: () => router.push('/roster/view-schedule'), color: 'bg-teal-600 hover:bg-teal-700', showForManager: false },
-    { label: 'Reports', icon: <ClipboardDocumentCheckIcon className="h-4 w-4 shrink-0" />, onClick: () => router.push('/reports'), color: 'bg-cyan-600 hover:bg-cyan-700', showForManager: true },
-    { label: 'Attendance Sheet', icon: <ClockIcon className="h-4 w-4 shrink-0" />, onClick: () => router.push('/admin/attendance-roster'), color: 'bg-pink-600 hover:bg-pink-700', showForManager: true },
-    { label: 'Leave Approvals', icon: <CheckCircleIcon className="h-4 w-4 shrink-0" />, onClick: () => router.push('/admin/leave-approvals'), color: 'bg-orange-600 hover:bg-orange-700', showForManager: true, badge: pendingLeaveApprovalsCount > 0 ? pendingLeaveApprovalsCount : undefined },
-    { label: 'Compliance', icon: <CalendarIcon className="h-4 w-4 shrink-0" />, onClick: () => router.push('/calendar'), color: 'bg-red-600 hover:bg-red-700', showForManager: false },
-    { label: 'Kanban', icon: <Squares2X2Icon className="h-4 w-4 shrink-0" />, onClick: () => router.push('/kanban'), color: 'bg-yellow-600 hover:bg-yellow-700', showForManager: false },
-    { label: 'Projects', icon: <BuildingOfficeIcon className="h-4 w-4 shrink-0" />, onClick: () => router.push('/projects'), color: 'bg-emerald-600 hover:bg-emerald-700', showForManager: false },
-    { label: 'Employees', icon: <UsersIcon className="h-4 w-4 shrink-0" />, onClick: () => router.push('/employees'), color: 'bg-violet-600 hover:bg-violet-700', showForManager: false },
+    { label: 'Create Task', icon: <PlusCircleIcon className="h-4 w-4 shrink-0" />, onClick: onCreateTask, color: gradient('from-[#0447FD]', 'to-[#7F1BFF]'), showForManager: true },
+    { label: 'View Team', icon: <UserGroupIcon className="h-4 w-4 shrink-0" />, onClick: () => router.push('/teams'), color: gradient('from-emerald-500', 'to-teal-600'), showForManager: false },
+    { label: 'Pending Invoices', icon: <FolderIcon className="h-4 w-4 shrink-0" />, onClick: () => router.push('/admin/pending-invoices'), color: gradient('from-indigo-500', 'to-violet-600'), showForManager: false, badge: pendingInvoicesCount > 0 ? pendingInvoicesCount : undefined },
+    { label: 'View Roster', icon: <CalendarDaysIcon className="h-4 w-4 shrink-0" />, onClick: () => router.push('/roster/view-schedule'), color: gradient('from-teal-500', 'to-cyan-600'), showForManager: false },
+    { label: 'Reports', icon: <ClipboardDocumentCheckIcon className="h-4 w-4 shrink-0" />, onClick: () => router.push('/reports'), color: gradient('from-cyan-500', 'to-sky-600'), showForManager: true },
+    { label: 'Attendance Sheet', icon: <ClockIcon className="h-4 w-4 shrink-0" />, onClick: () => router.push('/admin/attendance-roster'), color: gradient('from-pink-500', 'to-rose-600'), showForManager: true },
+    { label: 'Leave Approvals', icon: <CheckCircleIcon className="h-4 w-4 shrink-0" />, onClick: () => router.push('/admin/leave-approvals'), color: gradient('from-orange-500', 'to-amber-600'), showForManager: true, badge: pendingLeaveApprovalsCount > 0 ? pendingLeaveApprovalsCount : undefined },
+    { label: 'Compliance', icon: <CalendarIcon className="h-4 w-4 shrink-0" />, onClick: () => router.push('/calendar'), color: gradient('from-rose-500', 'to-red-600'), showForManager: false },
+    { label: 'Kanban', icon: <Squares2X2Icon className="h-4 w-4 shrink-0" />, onClick: () => router.push('/kanban'), color: gradient('from-fuchsia-500', 'to-purple-600'), showForManager: false },
+    { label: 'Projects', icon: <BuildingOfficeIcon className="h-4 w-4 shrink-0" />, onClick: () => router.push('/projects'), color: gradient('from-green-500', 'to-emerald-600'), showForManager: false },
+    { label: 'Employees', icon: <UsersIcon className="h-4 w-4 shrink-0" />, onClick: () => router.push('/employees'), color: gradient('from-violet-500', 'to-purple-600'), showForManager: false },
   ];
 
   const filteredActions = isManager && !isAdmin
@@ -65,9 +68,9 @@ export function QuickActions({
     : actions;
 
   return (
-    <Card className="flex h-full min-h-[250px] flex-col overflow-hidden rounded-2xl border-gray-100/80 p-5 shadow-sm dark:border-gray-800">
-      <h3 className="flex shrink-0 items-center gap-1.5 text-[15px] font-semibold text-gray-900 dark:text-white">
-        <Bars3BottomLeftIcon className="h-4 w-4 text-gray-400" />
+    <Card className="flex h-full min-h-[250px] flex-col overflow-hidden rounded-2xl border-white/60 bg-white/60 p-5 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.22)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05]">
+      <h3 className="flex shrink-0 items-center gap-1.5 text-[15px] font-semibold text-slate-900 dark:text-white">
+        <Bars3BottomLeftIcon className="h-4 w-4 text-indigo-500/70" />
         Quick Actions
       </h3>
       <div className="mt-3.5 grid flex-1 grid-cols-2 content-start gap-2">
@@ -75,7 +78,7 @@ export function QuickActions({
           <button
             key={index}
             onClick={action.onClick}
-            className={`relative flex min-h-[34px] items-center justify-center gap-1.5 rounded-lg px-1.5 py-1.5 text-center text-[11px] font-semibold leading-tight text-white shadow-sm transition-colors 2xl:text-[11.5px] ${action.color}`}
+            className={`relative flex min-h-[34px] items-center justify-center gap-1.5 rounded-xl px-1.5 py-1.5 text-center text-[11px] font-semibold leading-tight text-white shadow-sm transition-all 2xl:text-[11.5px] ${action.color}`}
           >
             {action.icon}
             <span className="min-w-0">{action.label}</span>

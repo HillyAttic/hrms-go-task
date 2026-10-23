@@ -6,7 +6,7 @@ export function KanbanCTA() {
   const artId = useId().replace(/:/g, '');
 
   return (
-    <section className="relative flex h-full min-h-[210px] flex-col overflow-hidden rounded-2xl bg-[linear-gradient(100deg,#2A54F5_0%,#4640EE_42%,#6231E8_72%,#7A2BE3_100%)] px-7 py-7 text-white shadow-sm md:px-10 md:py-9">
+    <section className="relative flex h-full min-h-[210px] flex-col overflow-hidden rounded-3xl bg-[linear-gradient(100deg,#2A54F5_0%,#4640EE_42%,#6231E8_72%,#7A2BE3_100%)] px-7 py-7 text-white shadow-[0_24px_50px_-28px_rgba(98,49,232,0.75)] md:px-10 md:py-9">
       {/* Soft translucent waves rising from the bottom edge */}
       <svg
         className="pointer-events-none absolute inset-0 h-full w-full"

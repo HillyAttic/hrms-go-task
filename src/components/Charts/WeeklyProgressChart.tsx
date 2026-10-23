@@ -22,7 +22,7 @@ const RANGES: { value: ProgressRange; label: string }[] = [
 ];
 
 const selectClass =
-  'appearance-none rounded-lg border border-gray-200 bg-white py-1 pl-2.5 pr-7 text-[11px] font-medium text-gray-600 outline-none transition-colors hover:border-gray-300 focus:border-blue-400 dark:border-gray-700 dark:bg-gray-dark dark:text-gray-300 dark:hover:border-gray-600';
+  'appearance-none rounded-xl border border-slate-200/80 bg-white/70 py-1 pl-2.5 pr-7 text-[11px] font-medium text-slate-600 outline-none backdrop-blur transition-colors hover:border-indigo-300 focus:border-indigo-400 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:border-white/20';
 
 type Point = { x: number; y: number };
 
@@ -80,10 +80,10 @@ export function WeeklyProgressChart({ data, range, onRangeChange }: WeeklyProgre
     .filter((_, i) => i % stepX === 0);
 
   return (
-    <Card className="flex h-full min-h-[250px] flex-col overflow-hidden rounded-2xl border-gray-100/80 p-5 shadow-sm dark:border-gray-800">
+    <Card className="flex h-full min-h-[250px] flex-col overflow-hidden rounded-2xl border-white/60 bg-white/60 p-5 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.22)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05]">
       <div className="flex shrink-0 flex-wrap items-center justify-between gap-2">
-        <h3 className="flex items-center gap-1.5 text-[15px] font-semibold text-gray-900 dark:text-white">
-          <TrendingUp className="h-4 w-4 text-gray-400" />
+        <h3 className="flex items-center gap-1.5 text-[15px] font-semibold text-slate-900 dark:text-white">
+          <TrendingUp className="h-4 w-4 text-indigo-500/70" />
           Weekly Progress
         </h3>
         <div className="flex items-center gap-1.5">
@@ -193,14 +193,14 @@ export function WeeklyProgressChart({ data, range, onRangeChange }: WeeklyProgre
                 {createdPoints.map((point, i) => (
                   <span
                     key={`dot-created-${i}`}
-                    className="absolute h-[7px] w-[7px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500 ring-2 ring-white dark:ring-gray-dark"
+                    className="absolute h-[7px] w-[7px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500 ring-2 ring-white/80 dark:ring-[#0B1430]"
                     style={{ left: `${point.x}%`, top: `${point.y}%` }}
                   />
                 ))}
                 {completedPoints.map((point, i) => (
                   <span
                     key={`dot-completed-${i}`}
-                    className="absolute h-[7px] w-[7px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500 ring-2 ring-white dark:ring-gray-dark"
+                    className="absolute h-[7px] w-[7px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-emerald-500 ring-2 ring-white/80 dark:ring-[#0B1430]"
                     style={{ left: `${point.x}%`, top: `${point.y}%` }}
                   />
                 ))}
@@ -222,12 +222,12 @@ export function WeeklyProgressChart({ data, range, onRangeChange }: WeeklyProgre
           ))}
         </div>
 
-        <div className="mt-3 flex shrink-0 items-center justify-start gap-5 border-t border-gray-100 pt-2.5 dark:border-gray-800">
-          <span className="flex items-center gap-1.5 text-[10px] text-gray-600 dark:text-gray-400">
+        <div className="mt-3 flex shrink-0 items-center justify-start gap-5 border-t border-white/60 pt-2.5 dark:border-white/10">
+          <span className="flex items-center gap-1.5 text-[10px] text-slate-600 dark:text-slate-400">
             <span className="h-2 w-2 rounded-full bg-blue-500" />
             Created
           </span>
-          <span className="flex items-center gap-1.5 text-[10px] text-gray-600 dark:text-gray-400">
+          <span className="flex items-center gap-1.5 text-[10px] text-slate-600 dark:text-slate-400">
             <span className="h-2 w-2 rounded-full bg-emerald-500" />
             Completed
           </span>

@@ -23,7 +23,7 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-30 flex items-center gap-2 border-b border-gray-100 bg-white px-3 py-3 shadow-[0_1px_3px_0_rgba(0,0,0,0.06)] dark:border-stroke-dark dark:bg-gray-dark md:px-5 md:py-4 2xl:px-8">
+    <header className="sticky top-0 z-30 flex items-center gap-2 border-b border-white/60 bg-white/70 px-3 py-3 shadow-[0_8px_30px_-20px_rgba(15,23,42,0.35)] backdrop-blur-xl dark:border-white/10 dark:bg-[#070C1C]/70 md:px-5 md:py-4 2xl:px-8">
       {/* Left: menu / mobile logo / page title */}
       <div className="flex min-w-0 items-center gap-2">
         <button
@@ -59,10 +59,10 @@ export function Header() {
         )}
 
         <div className={`${device.type === 'desktop' ? 'block' : 'hidden'} max-xl:hidden`}>
-          <h1 className="text-lg font-bold leading-tight text-dark dark:text-white">
+          <h1 className="text-lg font-semibold leading-tight tracking-tight text-slate-900 dark:text-white">
             Dashboard
           </h1>
-          <p className="text-xs font-medium text-dark-4 dark:text-dark-6">
+          <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
             edVenture Admin Dashboard
           </p>
         </div>

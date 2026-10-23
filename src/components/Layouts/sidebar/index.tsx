@@ -145,7 +145,7 @@ export function Sidebar() {
   };
 
   const getSidebarClasses = () => {
-    const baseClasses = "overflow-hidden border-r border-gray-100 bg-white text-dark transition-all duration-200 ease-in-out dark:border-white/[0.06] dark:bg-[#1c1c1e]";
+    const baseClasses = "overflow-hidden border-r border-white/60 bg-white/70 text-slate-700 backdrop-blur-2xl transition-all duration-200 ease-in-out dark:border-white/10 dark:bg-[#080F22]/80 dark:text-slate-300";
     
     if (variant === 'mobile') {
       return cn(
@@ -278,8 +278,8 @@ export function Sidebar() {
                     onClick={() => toggleSection(section.label)}
                     className={cn(
                       "flex flex-1 items-center justify-between",
-                      "text-sm font-semibold uppercase tracking-widest text-dark-4 dark:text-gray-500",
-                      "hover:text-dark dark:hover:text-gray-300 transition-colors duration-200"
+                      "text-sm font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500",
+                      "hover:text-slate-700 dark:hover:text-slate-300 transition-colors duration-200"
                     )}
                     aria-expanded={!isSectionCollapsed}
                   >

@@ -799,7 +799,7 @@ export default function DashboardPage() {
       <>
         {/* Completion progress bar — task creator or admin/manager */}
         {hasViewReportButton && completionStats && (
-          <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+          <div className="mt-3 pt-3 border-t border-white/60 dark:border-white/10">
             <div className="flex items-center justify-between mb-1">
               <span className="text-xs text-gray-600 dark:text-gray-400">
                 {completionStats.completed}/{completionStats.total} clients completed ({completionPct}%)
@@ -814,7 +814,7 @@ export default function DashboardPage() {
           </div>
         )}
 
-      <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 flex flex-wrap gap-2">
+      <div className="mt-3 pt-3 border-t border-white/60 dark:border-white/10 flex flex-wrap gap-2">
         {/* Clients Button - Show client count for user's assigned clients */}
         {hasClientsButton && (
           <button
@@ -975,7 +975,14 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="flex flex-col gap-4 xl:gap-5">
+    <div className="relative isolate flex flex-col gap-4 overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#EEF2FF] via-white to-[#F5F3FF] p-4 dark:from-[#060B18] dark:via-[#080F22] dark:to-[#0B1430] sm:p-6 xl:gap-5">
+      {/* Ambient gradient wash */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute -left-24 -top-28 h-80 w-80 rounded-full bg-[#0447FD]/20 blur-3xl dark:bg-[#0447FD]/25" />
+        <div className="absolute -right-20 top-10 h-72 w-72 rounded-full bg-[#7F1BFF]/20 blur-3xl dark:bg-[#7F1BFF]/25" />
+        <div className="absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-[#22D3EE]/15 blur-3xl" />
+      </div>
+
       <WelcomeBanner
         name={userProfile?.displayName || user?.email?.split('@')[0] || 'there'}
       />
@@ -987,6 +994,7 @@ export default function DashboardPage() {
           mobileTitle="Total"
           value={stats.total}
           trend={trends.total}
+          variant="glass"
           onClick={() => {
             setShowAllTasksModal(true);
             openModal(); // Open modal context to hide header
@@ -999,6 +1007,7 @@ export default function DashboardPage() {
           value={stats.completed}
           color="green"
           trend={trends.completed}
+          variant="glass"
           onClick={() => {
             setShowCompletedModal(true);
             openModal();
@@ -1010,6 +1019,7 @@ export default function DashboardPage() {
           value={stats.inProgress}
           color="orange"
           trend={trends.inProgress}
+          variant="glass"
           onClick={() => {
             setShowInProgressModal(true);
             openModal();
@@ -1020,6 +1030,7 @@ export default function DashboardPage() {
           value={stats.todo}
           color="purple"
           trend={trends.todo}
+          variant="glass"
           onClick={() => {
             setShowTodoModal(true);
             openModal();
@@ -1033,6 +1044,7 @@ export default function DashboardPage() {
             value={stats.overdue}
             color="red"
             trend={trends.overdue}
+            variant="glass"
             onClick={() => {
               setShowOverdueModal(true);
               openModal();
@@ -1140,14 +1152,14 @@ export default function DashboardPage() {
       {/* Modals - Only render when needed */}
       {showTaskTypeDialog && (
         <div 
-          className="fixed inset-0 !mt-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 !mt-0 z-50 flex items-center justify-center bg-slate-950/40 p-4 backdrop-blur-sm"
           onClick={() => {
             setShowTaskTypeDialog(false);
             closeModal(); // Close modal context to show header
           }}
         >
           <div 
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-md w-full p-6"
+            className="w-full max-w-md rounded-3xl border border-white/70 bg-white/85 p-6 shadow-[0_30px_80px_-20px_rgba(15,23,42,0.45)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#0B1430]/90"
             onClick={(e) => e.stopPropagation()}
           >
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
@@ -1160,7 +1172,7 @@ export default function DashboardPage() {
                   closeModal(); // Close modal context to show header
                   router.push('/tasks/non-recurring');
                 }}
-                className="w-full p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 transition-all text-left"
+                className="w-full rounded-2xl border border-slate-200/70 bg-white/50 p-4 text-left transition-all hover:border-indigo-300 hover:bg-white/80 dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-indigo-400/40 dark:hover:bg-white/[0.06]"
               >
                 <h4 className="font-semibold">Non-Recurring Task</h4>
                 <p className="text-sm text-gray-600">One-time task with a single due date</p>
@@ -1171,7 +1183,7 @@ export default function DashboardPage() {
                   closeModal(); // Close modal context to show header
                   router.push('/tasks/recurring');
                 }}
-                className="w-full p-4 border-2 border-gray-200 rounded-lg hover:border-green-500 transition-all text-left"
+                className="w-full rounded-2xl border border-slate-200/70 bg-white/50 p-4 text-left transition-all hover:border-emerald-300 hover:bg-white/80 dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-emerald-400/40 dark:hover:bg-white/[0.06]"
               >
                 <h4 className="font-semibold">Recurring Task</h4>
                 <p className="text-sm text-gray-600">Task that repeats on a schedule</p>
@@ -1184,17 +1196,17 @@ export default function DashboardPage() {
       {/* All Tasks Modal */}
       {showAllTasksModal && (
         <div 
-          className="fixed inset-0 !mt-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 !mt-0 z-50 flex items-center justify-center bg-slate-950/40 p-4 backdrop-blur-sm"
           onClick={() => {
             setShowAllTasksModal(false);
             closeModal(); // Close modal context to show header
           }}
         >
           <div 
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden"
+            className="flex max-h-[85vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-white/70 bg-white/85 shadow-[0_30px_80px_-20px_rgba(15,23,42,0.45)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#0B1430]/90"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-white/60 dark:border-white/10">
               <div className="flex items-center justify-between gap-2 sm:gap-4">
                 <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
                   <div className="p-1.5 sm:p-2 bg-blue-600 rounded-lg flex-shrink-0">
@@ -1219,7 +1231,7 @@ export default function DashboardPage() {
                     setShowAllTasksModal(false);
                     closeModal(); // Close modal context to show header
                   }}
-                  className="p-1.5 sm:p-2 hover:bg-gray-100 dark:bg-gray-700 rounded-lg transition-colors flex-shrink-0"
+                  className="flex-shrink-0 rounded-lg p-1.5 transition-colors hover:bg-white/70 dark:hover:bg-white/10 sm:p-2"
                   aria-label="Close modal"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700 dark:text-gray-300">
@@ -1297,7 +1309,7 @@ export default function DashboardPage() {
                               }`}>
                                 {task.status === 'pending' ? 'Pending' : task.status === 'in-progress' ? 'In Progress' : 'Completed'}
                               </span>
-                              <span className="px-2 py-0.5 bg-white dark:bg-gray-dark rounded-full font-medium text-gray-600 dark:text-gray-400">
+                              <span className="px-2 py-0.5 bg-white/70 dark:bg-white/10 rounded-full font-medium text-gray-600 dark:text-gray-400">
                                 {task.priority || 'medium'}
                               </span>
                               {dueDate && (
@@ -1312,7 +1324,7 @@ export default function DashboardPage() {
                                 </span>
                               )}
                             </div>
-                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 mt-2 pt-2 border-t border-white/60 dark:border-white/10">
                               {task.createdBy && (
                                 <span className="flex items-center gap-0.5 sm:gap-1 whitespace-nowrap overflow-hidden">
                                   <span className="font-medium flex-shrink-0">Created By:</span>
@@ -1344,17 +1356,17 @@ export default function DashboardPage() {
       {/* Completed Tasks Modal */}
       {showCompletedModal && (
         <div 
-          className="fixed inset-0 !mt-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 !mt-0 z-50 flex items-center justify-center bg-slate-950/40 p-4 backdrop-blur-sm"
           onClick={() => {
             setShowCompletedModal(false);
             closeModal();
           }}
         >
           <div 
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden"
+            className="flex max-h-[85vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-white/70 bg-white/85 shadow-[0_30px_80px_-20px_rgba(15,23,42,0.45)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#0B1430]/90"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-white/60 dark:border-white/10">
               <div className="flex items-center justify-between gap-2 sm:gap-4">
                 <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
                   <div className="p-1.5 sm:p-2 bg-green-600 rounded-lg flex-shrink-0">
@@ -1376,7 +1388,7 @@ export default function DashboardPage() {
                     setShowCompletedModal(false);
                     closeModal();
                   }}
-                  className="p-1.5 sm:p-2 hover:bg-gray-100 dark:bg-gray-700 rounded-lg transition-colors flex-shrink-0"
+                  className="flex-shrink-0 rounded-lg p-1.5 transition-colors hover:bg-white/70 dark:hover:bg-white/10 sm:p-2"
                   aria-label="Close modal"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700 dark:text-gray-300">
@@ -1412,7 +1424,7 @@ export default function DashboardPage() {
                               <span className="px-2 py-0.5 rounded-full font-medium bg-green-100 text-green-700">
                                 Completed
                               </span>
-                              <span className="px-2 py-0.5 bg-white dark:bg-gray-dark rounded-full font-medium text-gray-600 dark:text-gray-400">
+                              <span className="px-2 py-0.5 bg-white/70 dark:bg-white/10 rounded-full font-medium text-gray-600 dark:text-gray-400">
                                 {task.priority || 'medium'}
                               </span>
                               {dueDate && (
@@ -1427,7 +1439,7 @@ export default function DashboardPage() {
                                 </span>
                               )}
                             </div>
-                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 mt-2 pt-2 border-t border-white/60 dark:border-white/10">
                               {task.createdBy && (
                                 <span className="flex items-center gap-0.5 sm:gap-1 whitespace-nowrap overflow-hidden">
                                   <span className="font-medium flex-shrink-0">Created By:</span>
@@ -1459,17 +1471,17 @@ export default function DashboardPage() {
       {/* In Progress Tasks Modal */}
       {showInProgressModal && (
         <div 
-          className="fixed inset-0 !mt-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 !mt-0 z-50 flex items-center justify-center bg-slate-950/40 p-4 backdrop-blur-sm"
           onClick={() => {
             setShowInProgressModal(false);
             closeModal();
           }}
         >
           <div 
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden"
+            className="flex max-h-[85vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-white/70 bg-white/85 shadow-[0_30px_80px_-20px_rgba(15,23,42,0.45)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#0B1430]/90"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-white/60 dark:border-white/10">
               <div className="flex items-center justify-between">
                 <h3 className="text-base sm:text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
                   <ClockIcon className="w-5 h-5 sm:w-6 sm:h-6 text-orange-600" />
@@ -1533,7 +1545,7 @@ export default function DashboardPage() {
                               <span className="px-2 py-0.5 rounded-full font-medium bg-orange-100 text-orange-700">
                                 In Progress
                               </span>
-                              <span className="px-2 py-0.5 bg-white dark:bg-gray-dark rounded-full font-medium text-gray-600 dark:text-gray-400">
+                              <span className="px-2 py-0.5 bg-white/70 dark:bg-white/10 rounded-full font-medium text-gray-600 dark:text-gray-400">
                                 {task.priority || 'medium'}
                               </span>
                               {dueDate && (
@@ -1548,7 +1560,7 @@ export default function DashboardPage() {
                                 </span>
                               )}
                             </div>
-                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 mt-2 pt-2 border-t border-white/60 dark:border-white/10">
                               {task.createdBy && (
                                 <span className="flex items-center gap-0.5 sm:gap-1 whitespace-nowrap overflow-hidden">
                                   <span className="font-medium flex-shrink-0">Created By:</span>
@@ -1580,17 +1592,17 @@ export default function DashboardPage() {
       {/* To Do Tasks Modal */}
       {showTodoModal && (
         <div 
-          className="fixed inset-0 !mt-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 !mt-0 z-50 flex items-center justify-center bg-slate-950/40 p-4 backdrop-blur-sm"
           onClick={() => {
             setShowTodoModal(false);
             closeModal();
           }}
         >
           <div 
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden"
+            className="flex max-h-[85vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-white/70 bg-white/85 shadow-[0_30px_80px_-20px_rgba(15,23,42,0.45)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#0B1430]/90"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-white/60 dark:border-white/10">
               <div className="flex items-center justify-between">
                 <h3 className="text-base sm:text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
                   <PlusCircleIcon className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
@@ -1654,7 +1666,7 @@ export default function DashboardPage() {
                               <span className="px-2 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-700">
                                 Pending
                               </span>
-                              <span className="px-2 py-0.5 bg-white dark:bg-gray-dark rounded-full font-medium text-gray-600 dark:text-gray-400">
+                              <span className="px-2 py-0.5 bg-white/70 dark:bg-white/10 rounded-full font-medium text-gray-600 dark:text-gray-400">
                                 {task.priority || 'medium'}
                               </span>
                               {dueDate && (
@@ -1669,7 +1681,7 @@ export default function DashboardPage() {
                                 </span>
                               )}
                             </div>
-                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 mt-2 pt-2 border-t border-white/60 dark:border-white/10">
                               {task.createdBy && (
                                 <span className="flex items-center gap-0.5 sm:gap-1 whitespace-nowrap overflow-hidden">
                                   <span className="font-medium flex-shrink-0">Created By:</span>
@@ -1701,19 +1713,19 @@ export default function DashboardPage() {
       {/* Overdue Tasks Modal */}
       {showOverdueModal && (
         <div 
-          className="fixed inset-0 !mt-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 !mt-0 z-50 flex items-center justify-center bg-slate-950/40 p-4 backdrop-blur-sm"
           onClick={() => {
             setShowOverdueModal(false);
             closeModal();
           }}
         >
           <div 
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden"
+            className="flex max-h-[85vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-white/70 bg-white/85 shadow-[0_30px_80px_-20px_rgba(15,23,42,0.45)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#0B1430]/90"
             onClick={(e) => {
               e.stopPropagation();
             }}
           >
-            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-white/60 dark:border-white/10">
               <div className="flex items-center justify-between">
                 <h3 className="text-base sm:text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
                   <ExclamationTriangleIcon className="w-5 h-5 sm:w-6 sm:h-6 text-red-600" />
@@ -1769,7 +1781,7 @@ export default function DashboardPage() {
                               }`}>
                                 {task.status === 'pending' ? 'Pending' : 'In Progress'}
                               </span>
-                              <span className="px-2 py-0.5 bg-white dark:bg-gray-dark rounded-full font-medium text-gray-600 dark:text-gray-400">
+                              <span className="px-2 py-0.5 bg-white/70 dark:bg-white/10 rounded-full font-medium text-gray-600 dark:text-gray-400">
                                 {task.priority || 'medium'}
                               </span>
                               {dueDate && (
@@ -1784,7 +1796,7 @@ export default function DashboardPage() {
                                 </span>
                               )}
                             </div>
-                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 mt-2 pt-2 border-t border-white/60 dark:border-white/10">
                               {task.createdBy && (
                                 <span className="flex items-center gap-0.5 sm:gap-1 whitespace-nowrap overflow-hidden">
                                   <span className="font-medium flex-shrink-0">Created By:</span>
@@ -1924,7 +1936,7 @@ export default function DashboardPage() {
       {showDashboardReportModal && selectedTaskForReport && createPortal(
         reportModalLoading ? (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white dark:bg-gray-dark rounded-lg p-8 flex flex-col items-center gap-3">
+            <div className="flex flex-col items-center gap-3 rounded-3xl border border-white/70 bg-white/85 p-8 backdrop-blur-2xl dark:border-white/10 dark:bg-[#0B1430]/90">
               <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-cyan-600" />
               <span className="text-sm text-gray-600 dark:text-gray-400">Loading report...</span>
             </div>

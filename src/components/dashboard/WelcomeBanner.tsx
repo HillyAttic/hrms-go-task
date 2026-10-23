@@ -19,7 +19,7 @@ export function WelcomeBanner({ name }: WelcomeBannerProps) {
   }, []);
 
   return (
-    <section className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#EDF2FF] via-[#F1F0FF] to-[#F8F1FF] px-6 py-7 md:min-h-[172px] md:px-9 md:py-6 dark:from-indigo-950/50 dark:via-blue-950/40 dark:to-violet-950/30">
+    <section className="relative overflow-hidden rounded-3xl border border-white/60 bg-gradient-to-br from-[#EDF2FF] via-[#F1F0FF] to-[#F8F1FF] px-6 py-7 shadow-[0_20px_50px_-30px_rgba(4,71,253,0.45)] backdrop-blur-xl md:min-h-[172px] md:px-9 md:py-6 dark:border-white/10 dark:from-indigo-950/50 dark:via-blue-950/40 dark:to-violet-950/30">
       {/* Layered hills that fade in from the right side of the banner */}
       <svg
         className="pointer-events-none absolute inset-0 h-full w-full"

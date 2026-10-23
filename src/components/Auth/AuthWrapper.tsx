@@ -118,7 +118,7 @@ export const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
   // For auth pages, render without sidebar and header
   if (isPublicRoute) {
     return (
-      <div className="min-h-screen bg-gray-2 dark:bg-[#020d1a]">
+      <div className="min-h-screen bg-gradient-to-br from-[#EEF2FF] via-[#F8FAFC] to-[#F5F3FF] dark:from-[#060B18] dark:via-[#080F22] dark:to-[#0B1430]">
         <main className="flex-1 mx-auto w-full max-w-screen-2xl overflow-hidden p-4 md:p-6 2xl:p-10">
           {children}
         </main>
@@ -131,7 +131,7 @@ export const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
 
   // For protected pages, render with sidebar and conditionally with header
   return (
-    <div className="flex min-h-screen bg-gray-2 dark:bg-[#020d1a]">
+    <div className="flex min-h-screen bg-gradient-to-br from-[#EEF2FF] via-[#F8FAFC] to-[#F5F3FF] dark:from-[#060B18] dark:via-[#080F22] dark:to-[#0B1430]">
       <Sidebar />
       <div className="flex-1 flex flex-col min-w-0">
         {/* Show header on mobile always, hide on desktop for specific routes */}

@@ -76,7 +76,7 @@ export function TaskFilter({ filters, onFiltersChange, onClearFilters, taskCount
       </div>
 
       {showFilters && (
-        <div className="mt-4 p-4 bg-white dark:bg-gray-dark border border-gray-200 dark:border-gray-700 rounded-lg shadow-sm">
+        <div className="mt-4 p-4 glass-surface border border-white/60 dark:border-white/10 rounded-lg shadow-sm">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">

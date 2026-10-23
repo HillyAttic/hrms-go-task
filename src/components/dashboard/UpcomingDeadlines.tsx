@@ -41,15 +41,15 @@ export function UpcomingDeadlines({ tasks, onTaskClick }: UpcomingDeadlinesProps
   };
 
   return (
-    <Card className="flex h-full min-h-[250px] flex-col overflow-hidden rounded-2xl border-gray-100/80 p-5 shadow-sm dark:border-gray-800">
+    <Card className="flex h-full min-h-[250px] flex-col overflow-hidden rounded-2xl border-white/60 bg-white/60 p-5 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.22)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05]">
       <div className="mb-1 flex shrink-0 items-center justify-between gap-2">
-        <h3 className="flex items-center gap-1.5 text-[15px] font-semibold text-gray-900 dark:text-white">
-          <CalendarDays className="h-4 w-4 text-gray-400" />
+        <h3 className="flex items-center gap-1.5 text-[15px] font-semibold text-slate-900 dark:text-white">
+          <CalendarDays className="h-4 w-4 text-indigo-500/70" />
           Upcoming Deadlines
         </h3>
         <Link
           href="/tasks"
-          className="inline-flex items-center gap-1 text-xs font-medium text-blue-600 hover:underline dark:text-blue-400"
+          className="inline-flex items-center gap-1 text-xs font-medium text-indigo-600 hover:underline dark:text-indigo-400"
         >
           View All
           <ArrowRight className="h-3.5 w-3.5" />
@@ -58,9 +58,9 @@ export function UpcomingDeadlines({ tasks, onTaskClick }: UpcomingDeadlinesProps
 
       {upcomingTasks.length === 0 ? (
         <div className="flex flex-1 flex-col items-center justify-center px-4 py-6 text-center">
-          <CalendarDays className="h-9 w-9 text-gray-300 dark:text-gray-600" />
-          <p className="mt-2 text-xs font-medium text-gray-500 dark:text-gray-400">No upcoming deadlines</p>
-          <p className="mt-1 text-[11px] text-gray-400 dark:text-gray-500">
+          <CalendarDays className="h-9 w-9 text-slate-300 dark:text-slate-600" />
+          <p className="mt-2 text-xs font-medium text-slate-500 dark:text-slate-400">No upcoming deadlines</p>
+          <p className="mt-1 text-[11px] text-slate-400 dark:text-slate-500">
             You don&apos;t have any deadlines in the next 30 days.
           </p>
         </div>
@@ -72,11 +72,11 @@ export function UpcomingDeadlines({ tasks, onTaskClick }: UpcomingDeadlinesProps
               <button
                 key={task.id}
                 onClick={() => onTaskClick?.(task.id)}
-                className="flex w-full items-center justify-between gap-2 rounded-lg px-2 py-2 text-left transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                className="flex w-full items-center justify-between gap-2 rounded-xl px-2 py-2 text-left transition-colors hover:bg-white/70 dark:hover:bg-white/10"
               >
                 <div className="min-w-0">
-                  <p className="truncate text-xs font-medium text-gray-900 dark:text-white">{task.title}</p>
-                  <p className="mt-0.5 text-[11px] text-gray-400">
+                  <p className="truncate text-xs font-medium text-slate-900 dark:text-white">{task.title}</p>
+                  <p className="mt-0.5 text-[11px] text-slate-400">
                     Due{' '}
                     {new Date(task.dueDate!).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                   </p>
