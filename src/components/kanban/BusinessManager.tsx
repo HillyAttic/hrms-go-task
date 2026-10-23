@@ -20,6 +20,11 @@ const BUSINESS_COLORS = [
   '#EC4899', '#06B6D4', '#84CC16', '#F97316', '#6366F1'
 ];
 
+const FIELD =
+  'w-full rounded-xl border border-slate-200/80 bg-white/70 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/30 dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500';
+
+const LABEL = 'mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-200';
+
 export function BusinessManager({
   businesses,
   selectedBusinessId,
@@ -43,7 +48,7 @@ export function BusinessManager({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.name.trim()) return;
 
     if (editingBusiness) {
@@ -84,10 +89,10 @@ export function BusinessManager({
           <div key={business.id} className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
             <button
               onClick={() => onSelectBusiness(business.id)}
-              className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm sm:text-base font-medium transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 whitespace-nowrap ${
+              className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent sm:px-4 sm:py-2 whitespace-nowrap ${
                 selectedBusinessId === business.id
-                  ? 'text-white shadow-md'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'text-white shadow-lg shadow-slate-900/15'
+                  : 'border border-slate-200/70 bg-white/60 text-slate-600 shadow-sm backdrop-blur hover:bg-white/90 hover:text-slate-900 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:shadow-none dark:hover:bg-white/10 dark:hover:text-white'
               }`}
               style={{
                 backgroundColor: selectedBusinessId === business.id ? business.color : undefined,
@@ -95,18 +100,18 @@ export function BusinessManager({
             >
               {business.name}
             </button>
-            
+
             {selectedBusinessId === business.id && (
               <div className="flex items-center gap-0.5 sm:gap-1">
                 <button
                   onClick={() => handleEdit(business)}
-                  className="p-1 sm:p-1.5 rounded hover:bg-gray-100 dark:bg-gray-700 text-gray-600 hover:text-gray-900 dark:text-white transition-colors"
+                  className="rounded-lg p-1 text-slate-500 transition-colors hover:bg-white/70 hover:text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white sm:p-1.5"
                   title="Edit business"
                   aria-label="Edit business"
                 >
                   <PencilIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 </button>
-                
+
                 {businesses.length > 1 && (
                   <button
                     onClick={() => {
@@ -114,7 +119,7 @@ export function BusinessManager({
                         onDeleteBusiness(business.id);
                       }
                     }}
-                    className="p-1 sm:p-1.5 rounded hover:bg-red-100 text-gray-600 dark:text-gray-400 hover:text-red-600 transition-colors"
+                    className="rounded-lg p-1 text-slate-500 transition-colors hover:bg-rose-50 hover:text-rose-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rose-500/50 dark:text-slate-300 dark:hover:bg-rose-500/10 dark:hover:text-rose-300 sm:p-1.5"
                     title="Delete business"
                     aria-label="Delete business"
                   >
@@ -125,11 +130,11 @@ export function BusinessManager({
             )}
           </div>
         ))}
-        
+
         <Button
           onClick={() => setShowAddModal(true)}
           variant="outline"
-          className="flex items-center gap-1.5 sm:gap-2 flex-shrink-0 text-sm sm:text-base px-3 py-1.5 sm:px-4 sm:py-2 whitespace-nowrap"
+          className="flex flex-shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border-slate-200/70 bg-white/60 px-3 py-1.5 text-sm text-slate-700 shadow-sm backdrop-blur transition hover:bg-white/90 hover:text-slate-900 focus-visible:ring-2 focus-visible:ring-indigo-500/50 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:shadow-none dark:hover:bg-white/10 sm:gap-2 sm:px-4 sm:py-2"
         >
           <PlusIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           <span className="hidden sm:inline">Add Business</span>
@@ -139,42 +144,48 @@ export function BusinessManager({
 
       {/* Add/Edit Business Modal */}
       {showAddModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onClick={handleCancel}>
-          <div className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-md w-full p-4 sm:p-6 max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-            <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/30 p-4 backdrop-blur-sm"
+          onClick={handleCancel}
+        >
+          <div
+            className="max-h-[90vh] w-full max-w-md overflow-y-auto rounded-3xl border border-white/70 bg-white/85 p-5 shadow-[0_30px_80px_-20px_rgba(15,23,42,0.45)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#0B1430]/90 sm:p-6"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="mb-4 text-lg font-semibold tracking-tight text-slate-900 dark:text-white sm:text-xl">
               {editingBusiness ? 'Edit Business' : 'Add New Business'}
             </h3>
-            
-            <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
+
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className={LABEL}>
                   Business Name *
                 </label>
                 <input
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className={FIELD}
                   placeholder="e.g., Tech Startup, Consulting Firm"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                <label className={LABEL}>
                   Description
                 </label>
                 <textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-3 py-2 text-sm sm:text-base border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className={FIELD}
                   placeholder="Brief description of this business"
                   rows={3}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className={`${LABEL} mb-2`}>
                   Color Theme
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -183,9 +194,9 @@ export function BusinessManager({
                       key={color}
                       type="button"
                       onClick={() => setFormData({ ...formData, color })}
-                      className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg transition-all ${
+                      className={`h-8 w-8 rounded-full transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/60 focus-visible:ring-offset-2 sm:h-9 sm:w-9 ${
                         formData.color === color
-                          ? 'ring-2 ring-offset-2 ring-gray-400 scale-110'
+                          ? 'scale-110 ring-2 ring-slate-900/60 ring-offset-2 ring-offset-white/80 dark:ring-white dark:ring-offset-[#0B1430]'
                           : 'hover:scale-105'
                       }`}
                       style={{ backgroundColor: color }}
@@ -195,18 +206,18 @@ export function BusinessManager({
                 </div>
               </div>
 
-              <div className="flex gap-2 sm:gap-3 pt-2 sm:pt-4">
+              <div className="flex gap-2 pt-2 sm:gap-3 sm:pt-4">
                 <Button
                   type="button"
                   onClick={handleCancel}
                   variant="outline"
-                  className="flex-1 text-sm sm:text-base"
+                  className="flex-1 rounded-xl border-slate-200/80 bg-white/60 text-slate-700 hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10"
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
-                  className="flex-1 bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base"
+                  className="flex-1 rounded-xl bg-gradient-to-r from-[#0447FD] to-[#7F1BFF] text-white shadow-lg shadow-indigo-500/25 transition hover:brightness-110"
                 >
                   {editingBusiness ? 'Update' : 'Add'} Business
                 </Button>

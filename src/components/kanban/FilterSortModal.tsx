@@ -5,6 +5,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '
 import { Button } from '@/components/ui/button';
 import { KanbanFilters, KanbanSort } from '@/types/kanban.types';
 
+const FIELD =
+  'w-full rounded-xl border border-slate-200/80 bg-white/70 px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-indigo-400 focus:ring-2 focus:ring-indigo-500/30 dark:border-white/10 dark:bg-white/5 dark:text-white';
+
+const LABEL = 'mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-200';
+
 interface FilterSortModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -46,25 +51,25 @@ export function FilterSortModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[500px] rounded-3xl border border-white/70 bg-white/85 p-6 shadow-[0_30px_80px_-20px_rgba(15,23,42,0.45)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#0B1430]/90">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold">Filter & Sort Tasks</DialogTitle>
+          <DialogTitle className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-white">Filter & Sort Tasks</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-6 mt-4">
           {/* Filters Section */}
           <div>
-            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Filters</h3>
+            <h3 className="mb-4 text-sm font-semibold tracking-wide text-slate-700 dark:text-slate-200">Filters</h3>
 
             {/* Due Date Filter */}
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+              <label className={LABEL}>
                 Due Date
               </label>
               <select
                 value={filters.dueDate || 'all'}
                 onChange={(e) => setFilters({ ...filters, dueDate: e.target.value as any })}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className={FIELD}
               >
                 <option value="all">All</option>
                 <option value="today">Today</option>
@@ -76,18 +81,18 @@ export function FilterSortModal({
 
           {/* Sort Section */}
           <div>
-            <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-white">Sort</h3>
+            <h3 className="mb-4 text-sm font-semibold tracking-wide text-slate-700 dark:text-slate-200">Sort</h3>
 
             <div className="grid grid-cols-2 gap-4">
               {/* Sort Field */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className={LABEL}>
                   Sort By
                 </label>
                 <select
                   value={sort.field}
                   onChange={(e) => setSort({ ...sort, field: e.target.value as any })}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className={FIELD}
                 >
                   <option value="dueDate">Due Date</option>
                   <option value="priority">Priority</option>
@@ -97,13 +102,13 @@ export function FilterSortModal({
 
               {/* Sort Direction */}
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className={LABEL}>
                   Direction
                 </label>
                 <select
                   value={sort.direction}
                   onChange={(e) => setSort({ ...sort, direction: e.target.value as any })}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className={FIELD}
                 >
                   <option value="asc">Ascending</option>
                   <option value="desc">Descending</option>
@@ -114,19 +119,19 @@ export function FilterSortModal({
         </div>
 
         {/* Actions */}
-        <DialogFooter className="gap-2 sm:gap-0 mt-6">
+        <DialogFooter className="gap-2 mt-6 sm:gap-0">
           <Button
             type="button"
             variant="outline"
             onClick={handleReset}
-            className="w-full sm:w-auto"
+            className="w-full rounded-xl border-slate-200/80 bg-white/60 text-slate-700 hover:bg-white dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10 sm:w-auto"
           >
             Reset
           </Button>
           <Button
             type="button"
             onClick={handleApply}
-            className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white"
+            className="w-full rounded-xl bg-gradient-to-r from-[#0447FD] to-[#7F1BFF] text-white shadow-lg shadow-indigo-500/25 transition hover:brightness-110 sm:w-auto"
           >
             Apply
           </Button>

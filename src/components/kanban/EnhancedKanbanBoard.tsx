@@ -15,6 +15,7 @@ interface EnhancedKanbanBoardProps {
   onTaskDelete: (taskId: string) => void;
   mobileScrollable?: boolean;
   compact?: boolean;
+  variant?: 'default' | 'glass';
 }
 
 const COLUMNS: KanbanColumnType[] = [
@@ -23,7 +24,8 @@ const COLUMNS: KanbanColumnType[] = [
   { id: 'completed', title: 'Completed', color: 'bg-green-50' },
 ];
 
-export function EnhancedKanbanBoard({ tasks, onTaskUpdate, onTaskAdd, onTaskDelete, mobileScrollable, compact }: EnhancedKanbanBoardProps) {
+export function EnhancedKanbanBoard({ tasks, onTaskUpdate, onTaskAdd, onTaskDelete, mobileScrollable, compact, variant = 'default' }: EnhancedKanbanBoardProps) {
+  const glass = variant === 'glass';
   const [draggedTask, setDraggedTask] = useState<KanbanTask | null>(null);
   const [showAddModal, setShowAddModal] = useState(false);
   const [showFilterModal, setShowFilterModal] = useState(false);
@@ -162,26 +164,32 @@ export function EnhancedKanbanBoard({ tasks, onTaskUpdate, onTaskAdd, onTaskDele
       {/* Header Actions */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 sm:gap-0">
         <div>
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Task Board</h2>
-          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1">
+          <h2 className={`text-xl sm:text-2xl ${glass ? 'font-semibold tracking-tight text-slate-900 dark:text-white' : 'font-bold text-gray-900 dark:text-white'}`}>
+            Task Board
+          </h2>
+          <p className={`text-xs sm:text-sm mt-1 ${glass ? 'text-slate-500 dark:text-slate-400' : 'text-gray-600 dark:text-gray-400'}`}>
             {filteredAndSortedTasks.length} task{filteredAndSortedTasks.length !== 1 ? 's' : ''}
           </p>
         </div>
-        
+
         <div className="flex items-center gap-2 sm:gap-3">
           <Button
             onClick={() => setShowFilterModal(true)}
             variant="outline"
-            className="flex items-center gap-1.5 sm:gap-2 hover:bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 text-sm sm:text-base px-3 py-1.5 sm:px-4 sm:py-2"
+            className={glass
+              ? 'flex items-center gap-1.5 sm:gap-2 rounded-xl border-slate-200/70 bg-white/60 text-slate-700 shadow-sm backdrop-blur hover:bg-white/90 hover:text-slate-900 focus-visible:ring-2 focus-visible:ring-indigo-500/50 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10 dark:shadow-none text-sm px-3 py-1.5 sm:px-4 sm:py-2'
+              : 'flex items-center gap-1.5 sm:gap-2 hover:bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 text-sm sm:text-base px-3 py-1.5 sm:px-4 sm:py-2'}
           >
             <FunnelIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             <span className="hidden sm:inline">Filter & Sort</span>
             <span className="sm:hidden">Filter</span>
           </Button>
-          
+
           <Button
             onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-1.5 sm:gap-2 bg-blue-600 hover:bg-blue-700 text-white focus:ring-2 focus:ring-blue-500 text-sm sm:text-base px-3 py-1.5 sm:px-4 sm:py-2"
+            className={glass
+              ? 'flex items-center gap-1.5 sm:gap-2 rounded-xl bg-gradient-to-r from-[#0447FD] to-[#7F1BFF] text-white shadow-lg shadow-indigo-500/25 transition hover:brightness-110 focus-visible:ring-2 focus-visible:ring-indigo-500/60 text-sm px-3 py-1.5 sm:px-4 sm:py-2'
+              : 'flex items-center gap-1.5 sm:gap-2 bg-blue-600 hover:bg-blue-700 text-white focus:ring-2 focus:ring-blue-500 text-sm sm:text-base px-3 py-1.5 sm:px-4 sm:py-2'}
           >
             <PlusIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             <span className="hidden sm:inline">Add New Task</span>
@@ -213,6 +221,7 @@ export function EnhancedKanbanBoard({ tasks, onTaskUpdate, onTaskAdd, onTaskDele
                     onDelete={onTaskDelete}
                     onEdit={handleEditTask}
                     compact={compact}
+                    variant={variant}
                   />
                 </div>
               );
@@ -247,6 +256,7 @@ export function EnhancedKanbanBoard({ tasks, onTaskUpdate, onTaskAdd, onTaskDele
                   onDelete={onTaskDelete}
                   onEdit={handleEditTask}
                   compact={compact}
+                  variant={variant}
                 />
               </div>
             );
