@@ -986,7 +986,6 @@ export default function DashboardPage() {
           title="Total Tasks"
           mobileTitle="Total"
           value={stats.total}
-          icon={<ClipboardDocumentListIcon />}
           trend={trends.total}
           onClick={() => {
             setShowAllTasksModal(true);
@@ -998,7 +997,6 @@ export default function DashboardPage() {
           title="Completed"
           mobileTitle="Done"
           value={stats.completed}
-          icon={<CheckCircleIcon />}
           color="green"
           trend={trends.completed}
           onClick={() => {
@@ -1010,7 +1008,6 @@ export default function DashboardPage() {
           title="In Progress"
           mobileTitle="Active"
           value={stats.inProgress}
-          icon={<ClockIcon />}
           color="orange"
           trend={trends.inProgress}
           onClick={() => {
@@ -1021,7 +1018,6 @@ export default function DashboardPage() {
         <SimpleStatCard
           title="To Do"
           value={stats.todo}
-          icon={<PlusCircleIcon />}
           color="purple"
           trend={trends.todo}
           onClick={() => {
@@ -1035,7 +1031,6 @@ export default function DashboardPage() {
             title="Overdue"
             mobileTitle="Late"
             value={stats.overdue}
-            icon={<ExclamationTriangleIcon />}
             color="red"
             trend={trends.overdue}
             onClick={() => {
