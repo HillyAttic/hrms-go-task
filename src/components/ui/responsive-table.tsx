@@ -84,7 +84,7 @@ export function ResponsiveTable<T extends Record<string, any>>({
           <div
             key={index}
             className={cn(
-              "rounded-lg border border-stroke bg-white p-4 shadow-card dark:border-stroke-dark dark:bg-gray-dark",
+              "rounded-2xl border border-white/60 bg-white/60 p-4 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.22)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05]",
               onRowClick && "cursor-pointer hover:shadow-card-2 transition-shadow"
             )}
             onClick={() => onRowClick?.(row)}
@@ -112,7 +112,7 @@ export function ResponsiveTable<T extends Record<string, any>>({
         {sortedData.map((row, index) => (
           <div
             key={index}
-            className="rounded-lg border border-stroke bg-white dark:border-stroke-dark dark:bg-gray-dark"
+            className="rounded-2xl border border-white/60 bg-white/60 backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05]"
           >
             <button
               className="w-full p-4 text-left flex items-center justify-between"
@@ -218,9 +218,9 @@ export function ResponsiveTable<T extends Record<string, any>>({
 
   // Desktop Full Table
   return (
-    <div className={cn("overflow-hidden rounded-lg border border-stroke dark:border-stroke-dark", className)}>
+    <div className={cn("overflow-hidden rounded-2xl border border-white/60 bg-white/60 backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05]", className)}>
       <table className="w-full table-auto">
-        <thead className="bg-gray-1 dark:bg-gray-dark">
+        <thead className="bg-white/50 dark:bg-white/[0.04]">
           <tr>
             {columns.map((column) => (
               <th
@@ -252,13 +252,13 @@ export function ResponsiveTable<T extends Record<string, any>>({
             ))}
           </tr>
         </thead>
-        <tbody className="bg-white dark:bg-gray-dark">
+        <tbody className="glass-surface">
           {sortedData.map((row, index) => (
             <tr
               key={index}
               className={cn(
-                "border-b border-stroke dark:border-stroke-dark last:border-b-0",
-                onRowClick && "cursor-pointer hover:bg-gray-1 dark:hover:bg-gray-dark/50 transition-colors"
+                "border-b border-white/50 dark:border-white/10 last:border-b-0",
+                onRowClick && "cursor-pointer hover:bg-white/70 dark:hover:bg-white/[0.06] transition-colors"
               )}
               onClick={() => onRowClick?.(row)}
             >

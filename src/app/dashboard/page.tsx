@@ -12,7 +12,6 @@
 
 import React, { useState, useEffect, useMemo, Suspense } from 'react';
 import { createPortal } from 'react-dom';
-import { Button } from '@/components/ui/button';
 import {
   PlusCircleIcon,
   ClockIcon,
@@ -25,7 +24,7 @@ import {
   CalendarDaysIcon,
   ChartBarIcon
 } from '@heroicons/react/24/outline';
-import { Task, TaskStatus, TaskPriority } from '@/types/task.types';
+import { Task } from '@/types/task.types';
 import { taskApi } from '@/services/task.api';
 import { RecurringTask } from '@/services/recurring-task.service';
 import DashboardFormEmbed from '@/components/dashboard/DashboardFormEmbed';
@@ -38,10 +37,11 @@ import { useEnhancedAuth } from '@/contexts/enhanced-auth.context';
 import { useModal } from '@/contexts/modal-context';
 import { getDbLazy, getAuthLazy, preloadFirebase } from '@/lib/firebase-optimized';
 import { SimpleStatCard } from '@/components/dashboard/SimpleStatCard';
-import { TaskOverview } from '@/components/dashboard/TaskOverview';
 import { UpcomingDeadlines } from '@/components/dashboard/UpcomingDeadlines';
-import { ActivityFeed } from '@/components/dashboard/ActivityFeed';
 import { QuickActions } from '@/components/dashboard/QuickActions';
+import { WelcomeBanner } from '@/components/dashboard/WelcomeBanner';
+import { KanbanCTA } from '@/components/dashboard/KanbanCTA';
+import { AttendanceTrackingCard } from '@/components/dashboard/AttendanceTrackingCard';
 import { PlanTaskModal } from '@/components/dashboard/PlanTaskModal';
 import { ClientListModal } from '@/components/dashboard/ClientListModal';
 import { TeamMembersModal } from '@/components/dashboard/TeamMembersModal';
@@ -53,12 +53,11 @@ import { ProgressiveHydration, SkeletonLoader } from '@/components/ProgressiveHy
 import { useOptimizedFetch, batchFetch } from '@/hooks/use-optimized-fetch';
 import { useDeferredRender } from '@/hooks/use-deferred-value';
 import { processInChunks } from '@/utils/chunk-tasks';
-import { EnhancedKanbanBoard } from '@/components/kanban/EnhancedKanbanBoard';
-import { kanbanService } from '@/services/kanban.service';
-import { KanbanTask, Business } from '@/types/kanban.types';
 import { TaskReportModal } from '@/components/reports/TaskReportModal';
 import { generateMonths } from '@/utils/report-utils';
 import { ClientTaskCompletion } from '@/services/task-completion.service';
+import type { DistributionRange } from '@/components/Charts/TaskDistributionChart';
+import type { ProgressRange } from '@/components/Charts/WeeklyProgressChart';
 
 // Lazy load heavy chart components with progressive hydration
 const TaskDistributionChart = React.lazy(() => 
@@ -156,11 +155,9 @@ export default function DashboardPage() {
   // Check if user is admin or manager
   const canViewAllTasks = isAdmin || isManager;
 
-  // Kanban state (admin-only)
-  const [kanbanBusinesses, setKanbanBusinesses] = useState<Business[]>([]);
-  const [kanbanTasks, setKanbanTasks] = useState<KanbanTask[]>([]);
-  const [selectedKanbanBusinessId, setSelectedKanbanBusinessId] = useState<string | null>(null);
-  const [kanbanLoading, setKanbanLoading] = useState(false);
+  // Card filter ranges
+  const [distributionRange, setDistributionRange] = useState<DistributionRange>('week');
+  const [weeklyRange, setWeeklyRange] = useState<ProgressRange>('week');
 
   // ✅ OPTIMIZATION: Preload Firebase during idle time
   useEffect(() => {
@@ -411,30 +408,6 @@ export default function DashboardPage() {
     }
   }, [user, authLoading, router]);
 
-  // Load kanban data for admin and manager users
-  useEffect(() => {
-    if (!user || !canViewAllTasks) return;
-
-    const loadKanban = async () => {
-      setKanbanLoading(true);
-      try {
-        const businesses = await kanbanService.getUserBusinesses(user.uid);
-        if (businesses.length > 0) {
-          setKanbanBusinesses(businesses);
-          setSelectedKanbanBusinessId(businesses[0].id);
-          const tasks = await kanbanService.getAllUserTasks(user.uid);
-          setKanbanTasks(tasks);
-        }
-      } catch (err) {
-        console.error('Error loading kanban data for dashboard:', err);
-      } finally {
-        setKanbanLoading(false);
-      }
-    };
-
-    loadKanban();
-  }, [user, canViewAllTasks]);
-
   // Fetch pending invoices count
   useEffect(() => {
     if (!user || !isAdmin || userProfile?.role !== 'admin') return;
@@ -506,35 +479,6 @@ export default function DashboardPage() {
     fetchPendingLeaveApprovalsCount();
   }, [user, isAdmin, isManager]);
 
-  // Kanban task handlers
-  const handleKanbanTaskUpdate = async (updatedTask: KanbanTask) => {
-    try {
-      await kanbanService.updateTask(updatedTask.id, updatedTask);
-      setKanbanTasks(prev => prev.map(t => t.id === updatedTask.id ? updatedTask : t));
-    } catch (err) {
-      console.error('Error updating kanban task:', err);
-    }
-  };
-
-  const handleKanbanTaskAdd = async (taskData: Omit<KanbanTask, 'id' | 'createdAt' | 'businessId'>) => {
-    if (!selectedKanbanBusinessId) return;
-    try {
-      const newTask = await kanbanService.createTask({ ...taskData, businessId: selectedKanbanBusinessId });
-      setKanbanTasks(prev => [...prev, newTask]);
-    } catch (err) {
-      console.error('Error adding kanban task:', err);
-    }
-  };
-
-  const handleKanbanTaskDelete = async (taskId: string) => {
-    try {
-      await kanbanService.deleteTask(taskId);
-      setKanbanTasks(prev => prev.filter(t => t.id !== taskId));
-    } catch (err) {
-      console.error('Error deleting kanban task:', err);
-    }
-  };
-
   // Calculate stats (memoized)
   const stats = useMemo(() => {
     const total = tasks.length;
@@ -551,11 +495,55 @@ export default function DashboardPage() {
     return { total, completed, inProgress, todo, overdue };
   }, [tasks]);
 
-  // Kanban tasks for selected business (admin-only)
-  const kanbanCurrentTasks = useMemo(() => {
-    if (!selectedKanbanBusinessId) return [];
-    return kanbanTasks.filter(t => t.businessId === selectedKanbanBusinessId);
-  }, [kanbanTasks, selectedKanbanBusinessId]);
+  // Week-over-week change + 7-day sparkline for each stat card.
+  const trends = useMemo(() => {
+    const DAY = 24 * 60 * 60 * 1000;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const within = (value: unknown, from: number, to: number) => {
+      const time = new Date(value as string).getTime();
+      return time >= from && time < to;
+    };
+
+    const daily = (match: (task: DashboardTask, from: number, to: number) => boolean) =>
+      Array.from({ length: 14 }, (_, i) => {
+        const from = today.getTime() - (13 - i) * DAY;
+        return tasks.filter(task => match(task, from, from + DAY)).length;
+      });
+
+    const summarise = (series: number[]) => {
+      const last = series.slice(7).reduce((a, b) => a + b, 0);
+      const previous = series.slice(0, 7).reduce((a, b) => a + b, 0);
+      const change = previous === 0 ? (last > 0 ? 100 : 0) : Math.round(((last - previous) / previous) * 100);
+      return { change, spark: series.slice(7) };
+    };
+
+    return {
+      total: summarise(daily((t, from, to) => within(t.createdAt, from, to))),
+      completed: summarise(daily((t, from, to) => t.status === 'completed' && within(t.updatedAt, from, to))),
+      inProgress: summarise(daily((t, from, to) => t.status === 'in-progress' && within(t.updatedAt, from, to))),
+      todo: summarise(daily((t, from, to) => t.status === 'pending' && within(t.createdAt, from, to))),
+      overdue: summarise(daily((t, from, to) => !!t.dueDate && t.status !== 'completed' && within(t.dueDate, from, to))),
+    };
+  }, [tasks]);
+
+  // Task distribution scoped by the selected window (by creation date).
+  const distribution = useMemo(() => {
+    if (distributionRange === 'all') {
+      return stats;
+    }
+    const days = distributionRange === 'week' ? 7 : 30;
+    const from = Date.now() - days * 24 * 60 * 60 * 1000;
+    const scoped = tasks.filter(t => new Date(t.createdAt).getTime() >= from);
+    return {
+      total: scoped.length,
+      completed: scoped.filter(t => t.status === 'completed').length,
+      inProgress: scoped.filter(t => t.status === 'in-progress').length,
+      todo: scoped.filter(t => t.status === 'pending').length,
+      overdue: stats.overdue,
+    };
+  }, [tasks, stats, distributionRange]);
 
   // Get filtered task lists (memoized)
   const overdueTasks = useMemo(() => {
@@ -670,25 +658,34 @@ export default function DashboardPage() {
       });
   }, [tasks, employees, isManager, isAdmin, managerHierarchy]);
 
-  // Calculate weekly progress data (memoized)
+  // Weekly progress data (current Mon–Sun week, or the last four such weeks)
   const weeklyProgressData = useMemo(() => {
     const now = new Date();
+    const dayCount = weeklyRange === 'week' ? 7 : 28;
     const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
     const labels: string[] = [];
     const created: number[] = [];
     const completed: number[] = [];
 
-    // Get last 7 days
-    for (let i = 6; i >= 0; i--) {
-      const date = new Date(now);
-      date.setDate(date.getDate() - i);
-      date.setHours(0, 0, 0, 0);
-      
+    // Snap to the Monday of the current week, then walk back whole weeks.
+    const weekStart = new Date(now);
+    weekStart.setHours(0, 0, 0, 0);
+    weekStart.setDate(weekStart.getDate() - ((weekStart.getDay() + 6) % 7));
+    const rangeStart = new Date(weekStart);
+    rangeStart.setDate(rangeStart.getDate() - (dayCount - 7));
+
+    for (let i = 0; i < dayCount; i++) {
+      const date = new Date(rangeStart);
+      date.setDate(rangeStart.getDate() + i);
+
       const nextDate = new Date(date);
       nextDate.setDate(nextDate.getDate() + 1);
 
-      const dayLabel = daysOfWeek[date.getDay()];
-      labels.push(dayLabel);
+      labels.push(
+        dayCount === 7
+          ? daysOfWeek[date.getDay()]
+          : date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+      );
 
       // Count tasks created on this day
       const createdCount = tasks.filter(task => {
@@ -708,7 +705,7 @@ export default function DashboardPage() {
     }
 
     return { labels, created, completed };
-  }, [tasks]);
+  }, [tasks, weeklyRange]);
 
   const todoTasks = useMemo(() => {
     return tasks.filter(task => task.status === 'pending')
@@ -802,7 +799,7 @@ export default function DashboardPage() {
       <>
         {/* Completion progress bar — task creator or admin/manager */}
         {hasViewReportButton && completionStats && (
-          <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+          <div className="mt-3 pt-3 border-t border-white/60 dark:border-white/10">
             <div className="flex items-center justify-between mb-1">
               <span className="text-xs text-gray-600 dark:text-gray-400">
                 {completionStats.completed}/{completionStats.total} clients completed ({completionPct}%)
@@ -817,7 +814,7 @@ export default function DashboardPage() {
           </div>
         )}
 
-      <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 flex flex-wrap gap-2">
+      <div className="mt-3 pt-3 border-t border-white/60 dark:border-white/10 flex flex-wrap gap-2">
         {/* Clients Button - Show client count for user's assigned clients */}
         {hasClientsButton && (
           <button
@@ -978,234 +975,192 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="relative isolate flex flex-col gap-4 overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#EEF2FF] via-white to-[#F5F3FF] p-4 dark:from-[#060B18] dark:via-[#080F22] dark:to-[#0B1430] sm:p-6 xl:gap-5">
+      {/* Ambient gradient wash — `overflow-clip` (not hidden) so the decorative
+          blobs cannot extend the page's scrollable area in any direction */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-clip">
+        <div className="absolute -left-24 -top-28 h-80 w-80 rounded-full bg-[#0447FD]/20 blur-3xl dark:bg-[#0447FD]/25" />
+        <div className="absolute -right-20 top-10 h-72 w-72 rounded-full bg-[#7F1BFF]/20 blur-3xl dark:bg-[#7F1BFF]/25" />
+        <div className="absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-[#22D3EE]/15 blur-3xl" />
+      </div>
+
+      <WelcomeBanner
+        name={userProfile?.displayName || user?.email?.split('@')[0] || 'there'}
+      />
+
       {/* Stats Cards - Critical, render immediately */}
-      <div className="grid grid-cols-3 gap-2 sm:gap-4 md:grid-cols-5 md:gap-4 lg:gap-5 xl:gap-6">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5 lg:gap-4">
         <SimpleStatCard
           title="Total Tasks"
           mobileTitle="Total"
           value={stats.total}
-          icon={<ClipboardDocumentListIcon className="w-4 h-4 sm:w-6 sm:h-6 md:w-7 md:h-7" />}
+          trend={trends.total}
+          variant="glass"
           onClick={() => {
             setShowAllTasksModal(true);
             openModal(); // Open modal context to hide header
             fetchCompletionStats();
           }}
-          subtitle="All tasks"
-          compact={true}
         />
         <SimpleStatCard
           title="Completed"
           mobileTitle="Done"
           value={stats.completed}
-          icon={<CheckCircleIcon className="w-4 h-4 sm:w-6 sm:h-6 md:w-7 md:h-7" />}
+          color="green"
+          trend={trends.completed}
+          variant="glass"
           onClick={() => {
             setShowCompletedModal(true);
             openModal();
           }}
-          color="green"
-          subtitle="Finished tasks"
-          compact={true}
         />
         <SimpleStatCard
           title="In Progress"
           mobileTitle="Active"
           value={stats.inProgress}
-          icon={<ClockIcon className="w-4 h-4 sm:w-6 sm:h-6 md:w-7 md:h-7" />}
+          color="orange"
+          trend={trends.inProgress}
+          variant="glass"
           onClick={() => {
             setShowInProgressModal(true);
             openModal();
           }}
-          color="orange"
-          subtitle="Currently active"
-          compact={true}
         />
         <SimpleStatCard
           title="To Do"
           value={stats.todo}
-          icon={<PlusCircleIcon className="w-4 h-4 sm:w-6 sm:h-6 md:w-7 md:h-7" />}
+          color="purple"
+          trend={trends.todo}
+          variant="glass"
           onClick={() => {
             setShowTodoModal(true);
             openModal();
           }}
-          color="blue"
-          subtitle="Pending tasks"
-          compact={true}
         />
-        <SimpleStatCard
-          title="Overdue"
-          mobileTitle="Late"
-          value={stats.overdue}
-          icon={<ExclamationTriangleIcon className="w-4 h-4 sm:w-5 sm:h-5 md:w-7 md:h-7" />}
-          onClick={() => {
-            setShowOverdueModal(true);
-            openModal();
-          }}
-          color="red"
-          subtitle="Past due date"
-          compact={true}
-        />
+        {/* Trailing 5th card fills the last row on the 2-column mobile grid */}
+        <div className="col-span-2 sm:col-span-1">
+          <SimpleStatCard
+            title="Overdue"
+            mobileTitle="Late"
+            value={stats.overdue}
+            color="red"
+            trend={trends.overdue}
+            variant="glass"
+            onClick={() => {
+              setShowOverdueModal(true);
+              openModal();
+            }}
+          />
+        </div>
       </div>
 
-      {/* MIS Form Embed */}
+      {/* MIS Form Embed (only renders when forms are assigned) */}
       <DashboardFormEmbed />
 
-      {/* Kanban Board Section - Admin and Manager */}
-      {canViewAllTasks && (
-        <div className="rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-dark p-4 sm:p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-gray-900 dark:text-white">Kanban Board</h2>
-            <a
-              href="/kanban"
-              className="text-sm text-blue-600 hover:underline dark:text-blue-400 font-medium"
-            >
-              View Full Board →
-            </a>
-          </div>
-
-          {kanbanBusinesses.length > 1 && (
-            <div className="flex gap-2 mb-4 overflow-x-auto pb-1">
-              {kanbanBusinesses.map(b => {
-                const businessTaskCount = kanbanTasks.filter(task => task.businessId === b.id).length;
-                return (
-                  <button
-                    key={b.id}
-                    onClick={() => setSelectedKanbanBusinessId(b.id)}
-                    className={`px-3 py-1.5 text-sm rounded-full whitespace-nowrap transition-colors flex items-center gap-2 ${
-                      selectedKanbanBusinessId === b.id
-                        ? 'bg-blue-600 text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600'
-                    }`}
-                  >
-                    {b.name}
-                    <span className={`inline-flex items-center px-1 sm:px-1.5 py-0.5 rounded-full text-[9px] sm:text-xs font-medium ${
-                      selectedKanbanBusinessId === b.id
-                        ? 'bg-white/20 text-white'
-                        : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
-                    }`}>
-                      {businessTaskCount}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          )}
-
-          {kanbanLoading ? (
-            <SkeletonLoader className="h-64 w-full" />
-          ) : (
-            <EnhancedKanbanBoard
-              tasks={kanbanCurrentTasks}
-              onTaskUpdate={handleKanbanTaskUpdate}
-              onTaskAdd={handleKanbanTaskAdd}
-              onTaskDelete={handleKanbanTaskDelete}
-              mobileScrollable
-              compact
-            />
-          )}
+      {/* Kanban CTA + Attendance */}
+      <div className="grid grid-cols-1 gap-4 xl:grid-cols-12">
+        <div className="xl:col-span-6">
+          <KanbanCTA />
         </div>
-      )}
+        <div className="xl:col-span-6">
+          <AttendanceTrackingCard userId={user?.uid} />
+        </div>
+      </div>
 
       {/* ✅ OPTIMIZATION: Charts load progressively */}
-      {/* First Row: Task Distribution Chart and Quick Actions in 2-column grid for desktop */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+      {/* Distribution / Deadlines / Quick Actions */}
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-12">
         {shouldRenderCharts && canViewAllTasks && (
-          <ProgressiveHydration
-            delay={200}
-            priority="low"
-            fallback={<SkeletonLoader className="h-64 w-full" />}
-          >
-            <Suspense fallback={<SkeletonLoader className="h-64 w-full" />}>
-              <TaskDistributionChart 
-                completed={stats.completed}
-                inProgress={stats.inProgress}
-                todo={stats.todo}
-                total={stats.total}
-              />
-            </Suspense>
-          </ProgressiveHydration>
+          <div className="xl:col-span-4">
+            <ProgressiveHydration
+              delay={200}
+              priority="low"
+              fallback={<SkeletonLoader className="h-full min-h-[250px] w-full rounded-2xl" />}
+            >
+              <Suspense fallback={<SkeletonLoader className="h-full min-h-[250px] w-full rounded-2xl" />}>
+                <TaskDistributionChart
+                  completed={distribution.completed}
+                  inProgress={distribution.inProgress}
+                  todo={distribution.todo}
+                  total={distribution.total}
+                  range={distributionRange}
+                  onRangeChange={setDistributionRange}
+                />
+              </Suspense>
+            </ProgressiveHydration>
+          </div>
         )}
 
-        {/* Quick Actions */}
-        <QuickActions 
-          onCreateTask={() => {
-            setShowTaskTypeDialog(true);
-            openModal(); // Hide header when modal opens
-          }}
-          onViewTeam={() => router.push('/users')}
-          onManageProjects={() => router.push('/categories')}
-          onViewRoster={() => router.push('/roster')}
-          onViewReports={() => router.push('/reports')}
-          onViewAttendance={() => router.push('/attendance')}
-          isAdminOrManager={canViewAllTasks}
-          isManager={isManager}
-          isAdmin={isAdmin}
-          pendingInvoicesCount={pendingInvoicesCount}
-          pendingLeaveApprovalsCount={pendingLeaveApprovalsCount}
-        />
+        <div className={`md:col-span-1 ${canViewAllTasks ? 'xl:col-span-4' : 'md:col-span-2 xl:col-span-8'}`}>
+          <UpcomingDeadlines tasks={tasks} onTaskClick={(taskId) => {
+            const task = tasks.find(t => t.id === taskId);
+            if (task) {
+              router.push(`/tasks/${task.isRecurring ? 'recurring' : 'non-recurring'}`);
+            }
+          }} />
+        </div>
+
+        {canViewAllTasks && (
+          <div className="md:col-span-2 xl:col-span-4">
+            <QuickActions
+              onCreateTask={() => {
+                setShowTaskTypeDialog(true);
+                openModal(); // Hide header when modal opens
+              }}
+              isAdminOrManager={canViewAllTasks}
+              isManager={isManager}
+              isAdmin={isAdmin}
+              pendingInvoicesCount={pendingInvoicesCount}
+              pendingLeaveApprovalsCount={pendingLeaveApprovalsCount}
+            />
+          </div>
+        )}
       </div>
 
-      {/* Second Row: Upcoming Deadlines and Task Overview in 2-column grid for desktop */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
-        {/* Upcoming Deadlines */}
-        <UpcomingDeadlines tasks={tasks} onTaskClick={(taskId) => {
-          const task = tasks.find(t => t.id === taskId);
-          if (task) {
-            router.push(`/tasks/${task.isRecurring ? 'recurring' : 'non-recurring'}`);
-          }
-        }} />
-
-        {/* Task Overview */}
-        <TaskOverview tasks={tasks.slice(0, 10)} onTaskClick={(taskId) => {
-          const task = tasks.find(t => t.id === taskId);
-          if (task) {
-            router.push(`/tasks/${task.isRecurring ? 'recurring' : 'non-recurring'}`);
-          }
-        }} />
-      </div>
-
-      {/* Third Row: Team Performance and Weekly Progress in 2-column grid for desktop */}
+      {/* Team Performance + Weekly Progress */}
       {shouldRenderCharts && canViewAllTasks && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
-          {/* Team Performance Chart - Show for both admin and manager */}
-          {teamPerformanceData.length > 0 && (
+        <div className="grid grid-cols-1 gap-4 xl:grid-cols-12">
+          <div className="xl:col-span-7">
             <ProgressiveHydration
               delay={300}
               priority="low"
-              fallback={<SkeletonLoader className="h-64 w-full" />}
+              fallback={<SkeletonLoader className="h-full min-h-[250px] w-full rounded-2xl" />}
             >
-              <Suspense fallback={<SkeletonLoader className="h-64 w-full" />}>
+              <Suspense fallback={<SkeletonLoader className="h-full min-h-[250px] w-full rounded-2xl" />}>
                 <TeamPerformanceChart teamMembers={teamPerformanceData} />
               </Suspense>
             </ProgressiveHydration>
-          )}
+          </div>
 
-          {/* Weekly Progress Chart - Show for admin and manager */}
-          {canViewAllTasks && (
+          <div className="xl:col-span-5">
             <ProgressiveHydration
               delay={350}
               priority="low"
-              fallback={<SkeletonLoader className="h-64 w-full" />}
+              fallback={<SkeletonLoader className="h-full min-h-[250px] w-full rounded-2xl" />}
             >
-              <Suspense fallback={<SkeletonLoader className="h-64 w-full" />}>
-                <WeeklyProgressChart data={weeklyProgressData} />
+              <Suspense fallback={<SkeletonLoader className="h-full min-h-[250px] w-full rounded-2xl" />}>
+                <WeeklyProgressChart
+                  data={weeklyProgressData}
+                  range={weeklyRange}
+                  onRangeChange={setWeeklyRange}
+                />
               </Suspense>
             </ProgressiveHydration>
-          )}
+          </div>
         </div>
       )}
 
       {/* Modals - Only render when needed */}
       {showTaskTypeDialog && (
         <div 
-          className="fixed inset-0 !mt-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 !mt-0 z-50 flex items-center justify-center bg-slate-950/40 p-4 backdrop-blur-sm"
           onClick={() => {
             setShowTaskTypeDialog(false);
             closeModal(); // Close modal context to show header
           }}
         >
           <div 
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-md w-full p-6"
+            className="w-full max-w-md rounded-3xl border border-white/70 bg-white/85 p-6 shadow-[0_30px_80px_-20px_rgba(15,23,42,0.45)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#0B1430]/90"
             onClick={(e) => e.stopPropagation()}
           >
             <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
@@ -1218,7 +1173,7 @@ export default function DashboardPage() {
                   closeModal(); // Close modal context to show header
                   router.push('/tasks/non-recurring');
                 }}
-                className="w-full p-4 border-2 border-gray-200 rounded-lg hover:border-blue-500 transition-all text-left"
+                className="w-full rounded-2xl border border-slate-200/70 bg-white/50 p-4 text-left transition-all hover:border-indigo-300 hover:bg-white/80 dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-indigo-400/40 dark:hover:bg-white/[0.06]"
               >
                 <h4 className="font-semibold">Non-Recurring Task</h4>
                 <p className="text-sm text-gray-600">One-time task with a single due date</p>
@@ -1229,7 +1184,7 @@ export default function DashboardPage() {
                   closeModal(); // Close modal context to show header
                   router.push('/tasks/recurring');
                 }}
-                className="w-full p-4 border-2 border-gray-200 rounded-lg hover:border-green-500 transition-all text-left"
+                className="w-full rounded-2xl border border-slate-200/70 bg-white/50 p-4 text-left transition-all hover:border-emerald-300 hover:bg-white/80 dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-emerald-400/40 dark:hover:bg-white/[0.06]"
               >
                 <h4 className="font-semibold">Recurring Task</h4>
                 <p className="text-sm text-gray-600">Task that repeats on a schedule</p>
@@ -1242,17 +1197,17 @@ export default function DashboardPage() {
       {/* All Tasks Modal */}
       {showAllTasksModal && (
         <div 
-          className="fixed inset-0 !mt-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 !mt-0 z-50 flex items-center justify-center bg-slate-950/40 p-4 backdrop-blur-sm"
           onClick={() => {
             setShowAllTasksModal(false);
             closeModal(); // Close modal context to show header
           }}
         >
           <div 
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden"
+            className="flex max-h-[85vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-white/70 bg-white/85 shadow-[0_30px_80px_-20px_rgba(15,23,42,0.45)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#0B1430]/90"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-white/60 dark:border-white/10">
               <div className="flex items-center justify-between gap-2 sm:gap-4">
                 <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
                   <div className="p-1.5 sm:p-2 bg-blue-600 rounded-lg flex-shrink-0">
@@ -1277,7 +1232,7 @@ export default function DashboardPage() {
                     setShowAllTasksModal(false);
                     closeModal(); // Close modal context to show header
                   }}
-                  className="p-1.5 sm:p-2 hover:bg-gray-100 dark:bg-gray-700 rounded-lg transition-colors flex-shrink-0"
+                  className="flex-shrink-0 rounded-lg p-1.5 transition-colors hover:bg-white/70 dark:hover:bg-white/10 sm:p-2"
                   aria-label="Close modal"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700 dark:text-gray-300">
@@ -1355,7 +1310,7 @@ export default function DashboardPage() {
                               }`}>
                                 {task.status === 'pending' ? 'Pending' : task.status === 'in-progress' ? 'In Progress' : 'Completed'}
                               </span>
-                              <span className="px-2 py-0.5 bg-white dark:bg-gray-dark rounded-full font-medium text-gray-600 dark:text-gray-400">
+                              <span className="px-2 py-0.5 bg-white/70 dark:bg-white/10 rounded-full font-medium text-gray-600 dark:text-gray-400">
                                 {task.priority || 'medium'}
                               </span>
                               {dueDate && (
@@ -1370,7 +1325,7 @@ export default function DashboardPage() {
                                 </span>
                               )}
                             </div>
-                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 mt-2 pt-2 border-t border-white/60 dark:border-white/10">
                               {task.createdBy && (
                                 <span className="flex items-center gap-0.5 sm:gap-1 whitespace-nowrap overflow-hidden">
                                   <span className="font-medium flex-shrink-0">Created By:</span>
@@ -1402,17 +1357,17 @@ export default function DashboardPage() {
       {/* Completed Tasks Modal */}
       {showCompletedModal && (
         <div 
-          className="fixed inset-0 !mt-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 !mt-0 z-50 flex items-center justify-center bg-slate-950/40 p-4 backdrop-blur-sm"
           onClick={() => {
             setShowCompletedModal(false);
             closeModal();
           }}
         >
           <div 
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden"
+            className="flex max-h-[85vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-white/70 bg-white/85 shadow-[0_30px_80px_-20px_rgba(15,23,42,0.45)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#0B1430]/90"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-white/60 dark:border-white/10">
               <div className="flex items-center justify-between gap-2 sm:gap-4">
                 <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
                   <div className="p-1.5 sm:p-2 bg-green-600 rounded-lg flex-shrink-0">
@@ -1434,7 +1389,7 @@ export default function DashboardPage() {
                     setShowCompletedModal(false);
                     closeModal();
                   }}
-                  className="p-1.5 sm:p-2 hover:bg-gray-100 dark:bg-gray-700 rounded-lg transition-colors flex-shrink-0"
+                  className="flex-shrink-0 rounded-lg p-1.5 transition-colors hover:bg-white/70 dark:hover:bg-white/10 sm:p-2"
                   aria-label="Close modal"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5 sm:w-6 sm:h-6 text-gray-700 dark:text-gray-300">
@@ -1470,7 +1425,7 @@ export default function DashboardPage() {
                               <span className="px-2 py-0.5 rounded-full font-medium bg-green-100 text-green-700">
                                 Completed
                               </span>
-                              <span className="px-2 py-0.5 bg-white dark:bg-gray-dark rounded-full font-medium text-gray-600 dark:text-gray-400">
+                              <span className="px-2 py-0.5 bg-white/70 dark:bg-white/10 rounded-full font-medium text-gray-600 dark:text-gray-400">
                                 {task.priority || 'medium'}
                               </span>
                               {dueDate && (
@@ -1485,7 +1440,7 @@ export default function DashboardPage() {
                                 </span>
                               )}
                             </div>
-                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 mt-2 pt-2 border-t border-white/60 dark:border-white/10">
                               {task.createdBy && (
                                 <span className="flex items-center gap-0.5 sm:gap-1 whitespace-nowrap overflow-hidden">
                                   <span className="font-medium flex-shrink-0">Created By:</span>
@@ -1517,17 +1472,17 @@ export default function DashboardPage() {
       {/* In Progress Tasks Modal */}
       {showInProgressModal && (
         <div 
-          className="fixed inset-0 !mt-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 !mt-0 z-50 flex items-center justify-center bg-slate-950/40 p-4 backdrop-blur-sm"
           onClick={() => {
             setShowInProgressModal(false);
             closeModal();
           }}
         >
           <div 
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden"
+            className="flex max-h-[85vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-white/70 bg-white/85 shadow-[0_30px_80px_-20px_rgba(15,23,42,0.45)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#0B1430]/90"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-white/60 dark:border-white/10">
               <div className="flex items-center justify-between">
                 <h3 className="text-base sm:text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
                   <ClockIcon className="w-5 h-5 sm:w-6 sm:h-6 text-orange-600" />
@@ -1591,7 +1546,7 @@ export default function DashboardPage() {
                               <span className="px-2 py-0.5 rounded-full font-medium bg-orange-100 text-orange-700">
                                 In Progress
                               </span>
-                              <span className="px-2 py-0.5 bg-white dark:bg-gray-dark rounded-full font-medium text-gray-600 dark:text-gray-400">
+                              <span className="px-2 py-0.5 bg-white/70 dark:bg-white/10 rounded-full font-medium text-gray-600 dark:text-gray-400">
                                 {task.priority || 'medium'}
                               </span>
                               {dueDate && (
@@ -1606,7 +1561,7 @@ export default function DashboardPage() {
                                 </span>
                               )}
                             </div>
-                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 mt-2 pt-2 border-t border-white/60 dark:border-white/10">
                               {task.createdBy && (
                                 <span className="flex items-center gap-0.5 sm:gap-1 whitespace-nowrap overflow-hidden">
                                   <span className="font-medium flex-shrink-0">Created By:</span>
@@ -1638,17 +1593,17 @@ export default function DashboardPage() {
       {/* To Do Tasks Modal */}
       {showTodoModal && (
         <div 
-          className="fixed inset-0 !mt-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 !mt-0 z-50 flex items-center justify-center bg-slate-950/40 p-4 backdrop-blur-sm"
           onClick={() => {
             setShowTodoModal(false);
             closeModal();
           }}
         >
           <div 
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden"
+            className="flex max-h-[85vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-white/70 bg-white/85 shadow-[0_30px_80px_-20px_rgba(15,23,42,0.45)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#0B1430]/90"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-white/60 dark:border-white/10">
               <div className="flex items-center justify-between">
                 <h3 className="text-base sm:text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
                   <PlusCircleIcon className="w-5 h-5 sm:w-6 sm:h-6 text-blue-600" />
@@ -1712,7 +1667,7 @@ export default function DashboardPage() {
                               <span className="px-2 py-0.5 rounded-full font-medium bg-yellow-100 text-yellow-700">
                                 Pending
                               </span>
-                              <span className="px-2 py-0.5 bg-white dark:bg-gray-dark rounded-full font-medium text-gray-600 dark:text-gray-400">
+                              <span className="px-2 py-0.5 bg-white/70 dark:bg-white/10 rounded-full font-medium text-gray-600 dark:text-gray-400">
                                 {task.priority || 'medium'}
                               </span>
                               {dueDate && (
@@ -1727,7 +1682,7 @@ export default function DashboardPage() {
                                 </span>
                               )}
                             </div>
-                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 mt-2 pt-2 border-t border-white/60 dark:border-white/10">
                               {task.createdBy && (
                                 <span className="flex items-center gap-0.5 sm:gap-1 whitespace-nowrap overflow-hidden">
                                   <span className="font-medium flex-shrink-0">Created By:</span>
@@ -1759,19 +1714,19 @@ export default function DashboardPage() {
       {/* Overdue Tasks Modal */}
       {showOverdueModal && (
         <div 
-          className="fixed inset-0 !mt-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 !mt-0 z-50 flex items-center justify-center bg-slate-950/40 p-4 backdrop-blur-sm"
           onClick={() => {
             setShowOverdueModal(false);
             closeModal();
           }}
         >
           <div 
-            className="bg-white dark:bg-gray-dark rounded-lg shadow-xl max-w-4xl w-full max-h-[85vh] flex flex-col overflow-hidden"
+            className="flex max-h-[85vh] w-full max-w-4xl flex-col overflow-hidden rounded-3xl border border-white/70 bg-white/85 shadow-[0_30px_80px_-20px_rgba(15,23,42,0.45)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#0B1430]/90"
             onClick={(e) => {
               e.stopPropagation();
             }}
           >
-            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex-shrink-0 px-4 sm:px-6 py-3 sm:py-4 border-b border-white/60 dark:border-white/10">
               <div className="flex items-center justify-between">
                 <h3 className="text-base sm:text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
                   <ExclamationTriangleIcon className="w-5 h-5 sm:w-6 sm:h-6 text-red-600" />
@@ -1827,7 +1782,7 @@ export default function DashboardPage() {
                               }`}>
                                 {task.status === 'pending' ? 'Pending' : 'In Progress'}
                               </span>
-                              <span className="px-2 py-0.5 bg-white dark:bg-gray-dark rounded-full font-medium text-gray-600 dark:text-gray-400">
+                              <span className="px-2 py-0.5 bg-white/70 dark:bg-white/10 rounded-full font-medium text-gray-600 dark:text-gray-400">
                                 {task.priority || 'medium'}
                               </span>
                               {dueDate && (
@@ -1842,7 +1797,7 @@ export default function DashboardPage() {
                                 </span>
                               )}
                             </div>
-                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+                            <div className="flex flex-wrap items-center gap-1.5 sm:gap-3 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 mt-2 pt-2 border-t border-white/60 dark:border-white/10">
                               {task.createdBy && (
                                 <span className="flex items-center gap-0.5 sm:gap-1 whitespace-nowrap overflow-hidden">
                                   <span className="font-medium flex-shrink-0">Created By:</span>
@@ -1982,7 +1937,7 @@ export default function DashboardPage() {
       {showDashboardReportModal && selectedTaskForReport && createPortal(
         reportModalLoading ? (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-            <div className="bg-white dark:bg-gray-dark rounded-lg p-8 flex flex-col items-center gap-3">
+            <div className="flex flex-col items-center gap-3 rounded-3xl border border-white/70 bg-white/85 p-8 backdrop-blur-2xl dark:border-white/10 dark:bg-[#0B1430]/90">
               <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-cyan-600" />
               <span className="text-sm text-gray-600 dark:text-gray-400">Loading report...</span>
             </div>

@@ -76,7 +76,7 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
   const hasActiveFilters = filters.status !== 'all' || filters.priority !== 'all' || filters.assignedTo || filters.clientId;
 
   return (
-    <div className="bg-white dark:bg-gray-dark rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-sm">
+    <div className="glass-surface rounded-lg border border-white/60 dark:border-white/10 p-4 shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <FunnelIcon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
@@ -106,7 +106,7 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
             id="status-filter"
             value={filters.status}
             onChange={handleStatusChange}
-            className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+            className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 glass-surface text-gray-900 dark:text-white text-sm"
             aria-label="Filter by status"
           >
             <option value="all">All Statuses</option>
@@ -125,7 +125,7 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
             id="priority-filter"
             value={filters.priority}
             onChange={handlePriorityChange}
-            className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+            className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 glass-surface text-gray-900 dark:text-white text-sm"
             aria-label="Filter by priority"
           >
             <option value="all">All Priorities</option>
@@ -152,11 +152,11 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
             onFocus={() => setIsMemberDropdownOpen(true)}
             placeholder="Search team member..."
             autoComplete="off"
-            className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+            className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 glass-surface text-gray-900 dark:text-white text-sm"
             aria-label="Search team member"
           />
           {isMemberDropdownOpen && (
-            <ul className="absolute z-50 mt-1 w-full max-h-48 overflow-auto bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-md shadow-lg">
+            <ul className="absolute z-50 mt-1 w-full max-h-48 overflow-auto glass-surface border border-gray-300 dark:border-gray-600 rounded-md shadow-lg">
               <li
                 onClick={() => handleMemberSelect(undefined)}
                 className={`px-3 py-2 text-sm cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-700 ${
@@ -193,7 +193,7 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
             id="client-filter"
             value={filters.clientId || ''}
             onChange={handleClientChange}
-            className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-sm"
+            className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 glass-surface text-gray-900 dark:text-white text-sm"
             aria-label="Filter by client"
           >
             <option value="">All Clients</option>
@@ -208,7 +208,7 @@ export function TaskFilter({ filters, onFilterChange, onClearFilters, employees 
 
       {/* Active Filter Indicators */}
       {hasActiveFilters && (
-        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="mt-4 pt-4 border-t border-white/60 dark:border-white/10">
           <div className="flex flex-wrap gap-2">
             {filters.status !== 'all' && (
               <span className="inline-flex items-center gap-1 px-3 py-1 bg-blue-600 dark:bg-blue-500 text-white text-xs font-medium rounded-full">

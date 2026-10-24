@@ -21,7 +21,7 @@ export default function SettingsPage() {
         {/* My Tasks - Mobile Only */}
         <Link
           href="/my-tasks"
-          className="block md:hidden bg-white dark:bg-gray-dark border border-gray-200 dark:border-gray-700 rounded-lg p-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+          className="block md:hidden glass-surface border border-white/60 dark:border-white/10 rounded-lg p-4 hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
         >
           <div className="flex items-center gap-4">
             <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
@@ -52,7 +52,7 @@ export default function SettingsPage() {
         </Link>
 
         {/* Coming Soon Section */}
-        <div className="bg-white dark:bg-gray-dark border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+        <div className="glass-surface border border-white/60 dark:border-white/10 rounded-lg p-6">
           <div className="text-center space-y-4">
             <div className="flex justify-center">
               <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-full">

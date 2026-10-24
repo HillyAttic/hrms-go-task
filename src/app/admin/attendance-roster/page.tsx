@@ -342,7 +342,7 @@ export default function AttendanceRosterPage() {
       </div>
 
       {/* Legend */}
-      <div className="mb-6 flex flex-wrap gap-4 items-center bg-white dark:bg-gray-800 p-4 rounded-lg">
+      <div className="mb-6 flex flex-wrap gap-4 items-center glass-surface p-4 rounded-lg">
         <div className="flex items-center gap-2">
           <div className="w-4 h-4 bg-green-500 rounded"></div>
           <span className="text-sm text-gray-700 dark:text-gray-300">Present</span>
@@ -378,7 +378,7 @@ export default function AttendanceRosterPage() {
       </div>
 
       {/* Attendance Table */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
+      <div className="glass-surface rounded-lg shadow overflow-hidden">
         {loading ? (
           <div className="p-8 text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
@@ -404,7 +404,7 @@ export default function AttendanceRosterPage() {
               <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                 {employees.map((employee) => (
                   <tr key={employee.employeeId} className="hover:bg-gray-50 dark:hover:bg-gray-700">
-                    <td className="px-4 py-3 sticky left-0 bg-white dark:bg-gray-800">
+                    <td className="px-4 py-3 sticky left-0 glass-surface">
                       <button
                         onClick={() => openEmployeeModal(employee)}
                         className="text-left hover:text-blue-600"
@@ -444,7 +444,7 @@ export default function AttendanceRosterPage() {
       {/* Employee Detail Modal */}
       {showEmployeeModal && selectedEmployee && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-2 sm:p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+          <div className="glass-surface rounded-lg p-3 sm:p-6 max-w-4xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-start mb-4 sm:mb-6 gap-2">
               <div className="flex-1 min-w-0">
                 <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white truncate">{selectedEmployee.employeeName}</h3>

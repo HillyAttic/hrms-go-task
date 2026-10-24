@@ -1,119 +1,161 @@
 import React from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { ChevronDown, PieChart } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+
+export type DistributionRange = 'week' | 'month' | 'all';
 
 interface TaskDistributionChartProps {
   completed: number;
   inProgress: number;
   todo: number;
   total: number;
+  range: DistributionRange;
+  onRangeChange: (range: DistributionRange) => void;
 }
+
+const RANGES: { value: DistributionRange; label: string }[] = [
+  { value: 'week', label: 'This Week' },
+  { value: 'month', label: 'This Month' },
+  { value: 'all', label: 'All Time' },
+];
+
+const selectClass =
+  'appearance-none rounded-xl border border-slate-200/80 bg-white/70 py-1 pl-2.5 pr-7 text-[11px] font-medium text-slate-600 outline-none backdrop-blur transition-colors hover:border-indigo-300 focus:border-indigo-400 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:border-white/20';
 
 export function TaskDistributionChart({
   completed,
   inProgress,
   todo,
-  total
+  total,
+  range,
+  onRangeChange,
 }: TaskDistributionChartProps) {
-  const completedPercent = total > 0 ? (completed / total) * 100 : 0;
-  const inProgressPercent = total > 0 ? (inProgress / total) * 100 : 0;
-  const todoPercent = total > 0 ? (todo / total) * 100 : 0;
-
-  // Calculate pie chart segments
   const radius = 40;
   const circumference = 2 * Math.PI * radius;
-  
-  const completedDash = (completedPercent / 100) * circumference;
-  const inProgressDash = (inProgressPercent / 100) * circumference;
-  const todoDash = (todoPercent / 100) * circumference;
+  const gap = 3;
+
+  const segments = [
+    {
+      label: 'Completed',
+      value: completed,
+      color: '#10b981',
+      row: 'bg-emerald-50/80 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300',
+      dot: 'bg-emerald-500',
+    },
+    {
+      label: 'In Progress',
+      value: inProgress,
+      color: '#f59e0b',
+      row: 'bg-orange-50/80 text-orange-700 dark:bg-orange-500/10 dark:text-orange-300',
+      dot: 'bg-orange-500',
+    },
+    {
+      label: 'To Do',
+      value: todo,
+      color: '#ef4444',
+      row: 'bg-red-50/80 text-red-600 dark:bg-red-500/10 dark:text-red-300',
+      dot: 'bg-red-500',
+    },
+  ];
+
+  const pct = (value: number) => (total > 0 ? Math.round((value / total) * 100) : 0);
+
+  let offset = 0;
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Task Distribution</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="flex flex-col items-center justify-center">
-          {/* Pie Chart */}
-          <div className="relative w-48 h-48 mb-6">
-            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-              {/* Completed segment */}
-              <circle
-                cx="50"
-                cy="50"
-                r={radius}
-                fill="none"
-                stroke="#10b981"
-                strokeWidth="15"
-                strokeDasharray={`${completedDash} ${circumference}`}
-                strokeDashoffset="0"
-              />
-              {/* In Progress segment */}
-              <circle
-                cx="50"
-                cy="50"
-                r={radius}
-                fill="none"
-                stroke="#f59e0b"
-                strokeWidth="15"
-                strokeDasharray={`${inProgressDash} ${circumference}`}
-                strokeDashoffset={`-${completedDash}`}
-              />
-              {/* Todo segment */}
-              <circle
-                cx="50"
-                cy="50"
-                r={radius}
-                fill="none"
-                stroke="#ef4444"
-                strokeWidth="15"
-                strokeDasharray={`${todoDash} ${circumference}`}
-                strokeDashoffset={`-${completedDash + inProgressDash}`}
-              />
-            </svg>
-            
-            {/* Center label */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center">
-                <div className="text-2xl font-bold">{total}</div>
-                <div className="text-xs text-gray-500 dark:text-gray-400">Total</div>
-              </div>
-            </div>
-          </div>
+    <Card className="flex h-full min-h-[250px] flex-col overflow-hidden rounded-2xl border-white/60 bg-white/60 p-5 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.22)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05]">
+      <div className="flex shrink-0 items-center justify-between gap-2">
+        <h3 className="flex items-center gap-1.5 text-[15px] font-semibold text-slate-900 dark:text-white">
+          <PieChart className="h-4 w-4 text-indigo-500/70" />
+          Task Distribution
+        </h3>
+        <div className="relative shrink-0">
+          <select
+            value={range}
+            onChange={(e) => onRangeChange(e.target.value as DistributionRange)}
+            className={selectClass}
+            aria-label="Task distribution time range"
+          >
+            {RANGES.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          <ChevronDown
+            className="pointer-events-none absolute right-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-400"
+            aria-hidden="true"
+          />
+        </div>
+      </div>
 
-          {/* Legend */}
-          <div className="w-full space-y-2">
-            <div className="flex items-center justify-between p-2 bg-green-50 rounded">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                <span className="text-sm font-medium text-gray-700">Completed</span>
-              </div>
-              <span className="text-sm font-bold text-gray-900 dark:text-white">
-                {completed} ({Math.round(completedPercent)}%)
-              </span>
-            </div>
-            
-            <div className="flex items-center justify-between p-2 bg-orange-50 rounded">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-orange-500"></div>
-                <span className="text-sm font-medium text-gray-700">In Progress</span>
-              </div>
-              <span className="text-sm font-bold text-gray-900 dark:text-white">
-                {inProgress} ({Math.round(inProgressPercent)}%)
-              </span>
-            </div>
-            
-            <div className="flex items-center justify-between p-2 bg-red-50 rounded">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                <span className="text-sm font-medium text-gray-700">To Do</span>
-              </div>
-              <span className="text-sm font-bold text-gray-900 dark:text-white">
-                {todo} ({Math.round(todoPercent)}%)
-              </span>
-            </div>
+      <div className="mt-4 flex flex-1 flex-wrap items-center justify-center gap-3 2xl:flex-nowrap 2xl:gap-5">
+        <div className="relative h-28 w-28 shrink-0 2xl:h-36 2xl:w-36">
+          <svg viewBox="0 0 100 100" className="h-full w-full -rotate-90" aria-hidden="true">
+            <defs>
+              <linearGradient id="task-distribution-track" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#C7D2FE" />
+                <stop offset="55%" stopColor="#DDD6FE" />
+                <stop offset="100%" stopColor="#BBF7D0" />
+              </linearGradient>
+            </defs>
+            <circle
+              cx="50"
+              cy="50"
+              r={radius}
+              fill="none"
+              strokeWidth="12"
+              className={total > 0 ? 'stroke-gray-100 dark:stroke-gray-800' : ''}
+              stroke={total > 0 ? undefined : 'url(#task-distribution-track)'}
+            />
+            {total > 0 &&
+              segments.map((segment) => {
+                const length = (segment.value / total) * circumference;
+                const dashOffset = -offset;
+                offset += length;
+                if (length === 0) return null;
+                const visible = length > gap * 2 ? length - gap : length;
+                return (
+                  <circle
+                    key={segment.label}
+                    cx="50"
+                    cy="50"
+                    r={radius}
+                    fill="none"
+                    stroke={segment.color}
+                    strokeWidth="12"
+                    strokeDasharray={`${visible} ${circumference - visible}`}
+                    strokeDashoffset={dashOffset}
+                  />
+                );
+              })}
+          </svg>
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <span className="text-2xl font-bold leading-none text-slate-900 dark:text-white">{total}</span>
+            <span className="mt-1 text-[11px] text-slate-500 dark:text-slate-400">Total</span>
           </div>
         </div>
-      </CardContent>
+
+        <ul className="min-w-[132px] flex-1 space-y-2">
+          {segments.map((segment) => (
+            <li
+              key={segment.label}
+              className={`flex items-center justify-between gap-2 rounded-lg px-2 py-2 2xl:px-3 ${segment.row}`}
+            >
+              <span className="flex min-w-0 items-center gap-2 truncate text-[11.5px] font-medium 2xl:text-[12px]">
+                <span className={`h-2 w-2 shrink-0 rounded-full ${segment.dot}`} />
+                <span className="truncate">{segment.label}</span>
+              </span>
+              <span className="shrink-0 text-[11.5px] font-semibold text-gray-900 2xl:text-[12px] dark:text-white">
+                {segment.value}{' '}
+                <span className="font-normal text-gray-400 dark:text-gray-500">
+                  ({pct(segment.value)}%)
+                </span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </Card>
   );
 }

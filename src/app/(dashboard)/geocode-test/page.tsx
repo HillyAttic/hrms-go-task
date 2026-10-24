@@ -204,7 +204,7 @@ export default function GeocodeTestPage() {
       <h1 className="text-2xl font-bold mb-2">Geocoding Diagnostic</h1>
       <p className="text-gray-600 dark:text-gray-400 mb-6">Tests whether reverse geocoding (coordinates → address) is working end-to-end.</p>
 
-      <div className="bg-white dark:bg-gray-800 rounded-lg border p-4 mb-6">
+      <div className="glass-surface rounded-lg border p-4 mb-6">
         <div className="flex flex-wrap gap-4 items-end">
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Latitude</label>

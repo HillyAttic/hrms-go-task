@@ -119,7 +119,7 @@ export default function NotificationTestPage() {
     <div className="p-8 max-w-4xl mx-auto">
       <h1 className="text-3xl font-bold mb-6">Notification Test</h1>
 
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg mb-6">
+      <div className="glass-surface p-6 rounded-lg mb-6">
         <h2 className="text-xl font-bold mb-4">Quick Test</h2>
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
           This page will help you verify that push notifications are working correctly.

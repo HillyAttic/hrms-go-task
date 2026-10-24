@@ -166,9 +166,9 @@ export function RosterMobileCalendarView({
   }, [calendarDays]);
 
   return (
-    <div className="bg-white dark:bg-[#1a1a2e] rounded-2xl shadow-lg max-w-md mx-auto overflow-hidden border border-gray-200 dark:border-gray-800">
+    <div className="glass-surface rounded-2xl shadow-lg max-w-md mx-auto overflow-hidden border border-white/60 dark:border-white/10">
       {/* Mobile Header - Google Calendar Style */}
-      <div className="flex items-center justify-between px-4 py-3 bg-white dark:bg-[#1a1a2e]">
+      <div className="flex items-center justify-between px-4 py-3 glass-surface">
         <div className="flex items-center gap-3">
           <Bars3Icon className="w-6 h-6 text-gray-500 dark:text-gray-400" />
           <div className="flex items-center gap-1">
@@ -237,7 +237,7 @@ export function RosterMobileCalendarView({
       {/* Calendar Grid - Google Calendar Monthly View Style */}
       <div>
         {calendarRows.map((row, rowIndex) => (
-          <div key={rowIndex} className="grid grid-cols-7 border-t border-gray-100 dark:border-gray-800/60">
+          <div key={rowIndex} className="grid grid-cols-7 border-t border-white/60 dark:border-white/10/60">
             {row.map((calDay, colIndex) => {
               const todayHighlight = calDay.isCurrentMonth && isToday(calDay.date);
               const allTasks = [...calDay.tasks, ...calDay.nonRecurringTasks];
@@ -350,14 +350,14 @@ export function RosterMobileCalendarView({
             onClick={() => { setShowBottomSheet(false); closeModal(); }}
           />
           {/* Sheet */}
-          <div className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-[#1e1e36] rounded-t-2xl shadow-2xl max-h-[60vh] animate-slide-up">
+          <div className="fixed bottom-0 left-0 right-0 z-50 glass-surface rounded-t-2xl shadow-2xl max-h-[60vh] animate-slide-up">
             {/* Handle */}
             <div className="flex justify-center pt-3 pb-1">
               <div className="w-10 h-1 rounded-full bg-gray-300 dark:bg-gray-600" />
             </div>
 
             {/* Header */}
-            <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100 dark:border-gray-800">
+            <div className="flex items-center justify-between px-5 py-3 border-b border-white/60 dark:border-white/10">
               <div>
                 <h3 className="text-base font-semibold text-gray-900 dark:text-white">
                   Tasks for {formatDate(selectedDate)}
@@ -399,7 +399,7 @@ export function RosterMobileCalendarView({
                     return (
                       <div
                         key={task.id}
-                        className={`flex items-start gap-3 p-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-gray-700/50 transition-all active:scale-[0.98] ${
+                        className={`flex items-start gap-3 p-3 rounded-xl bg-gray-50 dark:bg-white/5 border border-white/60 dark:border-white/10/50 transition-all active:scale-[0.98] ${
                           isLeave ? 'cursor-default' : 'cursor-pointer hover:bg-gray-100 dark:hover:bg-white/10'
                         }`}
                         onClick={(e) => {

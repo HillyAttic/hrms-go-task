@@ -30,7 +30,7 @@ const AttendanceCalendarModal = dynamic(
 );
 
 const cardClass =
-  'bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700';
+  'glass-surface rounded-xl shadow-sm border border-white/60 dark:border-white/10';
 const thClass =
   'px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider';
 
@@ -144,7 +144,7 @@ export default function SalaryConfigPage() {
 
           <TabsContent value="employees" className="mt-4">
             <div className={cardClass}>
-              <div className="p-5 border-b border-gray-200 dark:border-gray-700">
+              <div className="p-5 border-b border-white/60 dark:border-white/10">
                 <h2 className="text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2">
                   Configure Employee Salaries
                 </h2>
@@ -237,7 +237,7 @@ export default function SalaryConfigPage() {
                           </td>
                           <td
                             className={cn(
-                              'sticky right-0 px-4 py-3 text-right bg-white dark:bg-gray-800',
+                              'sticky right-0 px-4 py-3 text-right glass-surface',
                               'group-hover:bg-gray-50 dark:group-hover:bg-gray-700/50',
                               'shadow-[-4px_0_6px_-2px_rgba(0,0,0,0.05)]'
                             )}

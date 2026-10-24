@@ -152,7 +152,7 @@ function ExportDialog({ task, clients, completions, isTeamMemberView, teamMember
 
   return (
     <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black bg-opacity-50">
-      <div className="bg-white dark:bg-gray-dark rounded-xl shadow-2xl p-6 w-full max-w-sm border border-gray-200 dark:border-gray-700">
+      <div className="glass-surface rounded-xl shadow-2xl p-6 w-full max-w-sm border border-white/60 dark:border-white/10">
         <div className="flex items-center justify-between mb-5">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Export Report</h3>
           <button onClick={onClose} className="text-gray-400 hover:text-gray-600 transition-colors">
@@ -168,7 +168,7 @@ function ExportDialog({ task, clients, completions, isTeamMemberView, teamMember
             <select
               value={exportYear}
               onChange={e => setExportYear(e.target.value)}
-              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm glass-surface text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="all">All Years</option>
               {financialYears.map(fy => (
@@ -184,7 +184,7 @@ function ExportDialog({ task, clients, completions, isTeamMemberView, teamMember
             <select
               value={exportMonth}
               onChange={e => setExportMonth(e.target.value)}
-              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm glass-surface text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="all">All Months</option>
               {MONTH_NAMES.map(m => (
@@ -232,7 +232,7 @@ function StatusFilterTabs({ value, onChange }: { value: StatusFilter; onChange: 
           onClick={() => onChange(f)}
           className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${
             value === f
-              ? 'bg-white dark:bg-gray-dark text-gray-900 dark:text-white shadow-sm'
+              ? 'glass-surface text-gray-900 dark:text-white shadow-sm'
               : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
           }`}
         >
@@ -281,10 +281,10 @@ function ReportTable({
           ))}
         </tr>
       </thead>
-      <tbody className="bg-white dark:bg-gray-dark divide-y divide-gray-200">
+      <tbody className="glass-surface divide-y divide-gray-200">
         {clients.map(client => (
           <tr key={client.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
-            <td className="px-3 sm:px-4 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium text-gray-900 dark:text-white sticky left-0 bg-white dark:bg-gray-dark">
+            <td className="px-3 sm:px-4 py-3 sm:py-4 whitespace-nowrap text-xs sm:text-sm font-medium text-gray-900 dark:text-white sticky left-0 glass-surface">
               {client.clientName}
             </td>
             {months.map(month => {
@@ -324,7 +324,7 @@ function ReportTable({
     {/* Remark View Dialog */}
     {viewingRemark && (
       <div className="fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black bg-opacity-50" onClick={() => setViewingRemark(null)}>
-        <div className="bg-white dark:bg-gray-dark rounded-xl shadow-2xl p-6 w-full max-w-md border border-gray-200 dark:border-gray-700" onClick={e => e.stopPropagation()}>
+        <div className="glass-surface rounded-xl shadow-2xl p-6 w-full max-w-md border border-white/60 dark:border-white/10" onClick={e => e.stopPropagation()}>
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Remark</h3>
             <button onClick={() => setViewingRemark(null)} className="text-gray-400 hover:text-gray-600 transition-colors">
@@ -355,7 +355,7 @@ function ModalShell({ onClose, onFullscreenToggle, isFullscreen, children }: { o
   return (
     <div className={`fixed inset-0 z-50 flex flex-col ${isFullscreen ? 'items-stretch justify-stretch p-0' : 'sm:items-center sm:justify-center sm:p-4'}`}>
       <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" onClick={onClose} />
-      <div className={`relative ${isFullscreen ? 'w-full h-full' : 'w-full h-full sm:h-auto sm:max-h-[90vh] sm:max-w-6xl'} flex flex-col bg-white dark:bg-gray-dark sm:rounded-lg shadow-xl overflow-hidden`}>
+      <div className={`relative ${isFullscreen ? 'w-full h-full' : 'w-full h-full sm:h-auto sm:max-h-[90vh] sm:max-w-6xl'} flex flex-col glass-surface sm:rounded-lg shadow-xl overflow-hidden`}>
         {children}
       </div>
     </div>
@@ -366,7 +366,7 @@ function ModalShell({ onClose, onFullscreenToggle, isFullscreen, children }: { o
 
 function LegendFooter() {
   return (
-    <div className="flex-shrink-0 bg-gray-50 dark:bg-gray-800 px-4 sm:px-6 py-3 flex flex-wrap items-center gap-3 sm:gap-6 text-xs sm:text-sm border-t border-gray-200 dark:border-gray-700">
+    <div className="flex-shrink-0 bg-gray-50 dark:bg-gray-800 px-4 sm:px-6 py-3 flex flex-wrap items-center gap-3 sm:gap-6 text-xs sm:text-sm border-t border-white/60 dark:border-white/10">
       <div className="flex items-center">
         <CheckIcon className="w-4 h-4 text-green-600 mr-2" />
         <span className="text-gray-700 dark:text-gray-300">Completed</span>
@@ -501,7 +501,7 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
     <>
       <ModalShell onClose={onClose} onFullscreenToggle={() => setIsFullscreen(!isFullscreen)} isFullscreen={isFullscreen}>
         {/* Header */}
-        <div className="flex-shrink-0 border-b border-gray-200 dark:border-gray-700 px-4 sm:px-6 py-4">
+        <div className="flex-shrink-0 border-b border-white/60 dark:border-white/10 px-4 sm:px-6 py-4">
           {/* Title row */}
           <div className="flex items-start justify-between gap-3 mb-4">
             <div className="min-w-0">
@@ -546,7 +546,7 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
             <select
               value={selectedFY}
               onChange={e => { setSelectedFY(e.target.value); setSelectedMonth('all'); }}
-              className="border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-1 text-xs bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-1 text-xs glass-surface text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               {financialYears.map(fy => (
                 <option key={fy} value={fy}>FY {fy}</option>
@@ -555,7 +555,7 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
             <select
               value={selectedMonth}
               onChange={e => setSelectedMonth(e.target.value)}
-              className="border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-1 text-xs bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-1 text-xs glass-surface text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="all">All Months</option>
               {months.length > 1 && MONTH_NAMES.map(m => (
@@ -573,7 +573,7 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
                 className={`p-2.5 sm:p-4 rounded-lg border-2 transition-all text-left ${
                   selectedMemberId === report.userId
                     ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
-                    : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-dark hover:border-blue-300'
+                    : 'border-white/60 dark:border-white/10 glass-surface hover:border-blue-300'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1.5">
@@ -607,7 +607,7 @@ function TeamMemberReportModal({ task, clients, completions, onClose }: TaskRepo
                 className={`p-2.5 sm:p-4 rounded-lg border-2 transition-all text-left ${
                   selectedMemberId === UNASSIGNED_KEY
                     ? 'border-orange-500 bg-orange-50 dark:bg-orange-900/20'
-                    : 'border-orange-200 dark:border-orange-800 bg-white dark:bg-gray-dark hover:border-orange-300'
+                    : 'border-orange-200 dark:border-orange-800 glass-surface hover:border-orange-300'
                 }`}
               >
                 <div className="flex items-center justify-between mb-1.5">
@@ -752,7 +752,7 @@ function RegularTaskReportModal({ task, clients, completions, onClose }: TaskRep
     <>
       <ModalShell onClose={onClose} onFullscreenToggle={() => setIsFullscreen(!isFullscreen)} isFullscreen={isFullscreen}>
         {/* Header */}
-        <div className="flex-shrink-0 border-b border-gray-200 dark:border-gray-700 px-4 sm:px-6 py-4">
+        <div className="flex-shrink-0 border-b border-white/60 dark:border-white/10 px-4 sm:px-6 py-4">
           {/* Title + actions row */}
           <div className="flex items-start justify-between gap-3 mb-3">
             <div className="min-w-0">
@@ -794,7 +794,7 @@ function RegularTaskReportModal({ task, clients, completions, onClose }: TaskRep
             <select
               value={selectedFY}
               onChange={e => { setSelectedFY(e.target.value); setSelectedMonth('all'); }}
-              className="border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-1 text-xs bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-1 text-xs glass-surface text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               {financialYears.map(fy => (
                 <option key={fy} value={fy}>FY {fy}</option>
@@ -803,7 +803,7 @@ function RegularTaskReportModal({ task, clients, completions, onClose }: TaskRep
             <select
               value={selectedMonth}
               onChange={e => setSelectedMonth(e.target.value)}
-              className="border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-1 text-xs bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="border border-gray-300 dark:border-gray-600 rounded-lg px-2 py-1 text-xs glass-surface text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="all">All Months</option>
               {months.length > 1 && MONTH_NAMES.map(m => (

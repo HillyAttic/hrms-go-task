@@ -305,7 +305,7 @@ export function ClientBulkImportModal({
               <h4 className="font-medium text-gray-900 dark:text-white mb-2">
                 Preview (First 5 rows)
               </h4>
-              <div className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-x-auto">
+              <div className="border border-white/60 dark:border-white/10 rounded-lg overflow-x-auto">
                 <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700 text-sm">
                   <thead className="bg-gray-50 dark:bg-gray-800">
                     <tr>
@@ -325,7 +325,7 @@ export function ClientBulkImportModal({
                       <th className="px-3 py-2 text-left text-xs font-medium text-gray-500 dark:text-gray-400">Bank</th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white dark:bg-gray-900 divide-y divide-gray-200 dark:divide-gray-700">
+                  <tbody className="glass-surface divide-y divide-gray-200 dark:divide-gray-700">
                     {previewData.map((row, index) => (
                       <tr key={index}>
                         <td className="px-3 py-2 whitespace-nowrap">{row['Client Name']}</td>

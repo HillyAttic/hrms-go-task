@@ -204,7 +204,7 @@ export function TemplateManager() {
         </Button>
       </div>
 
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700">
+      <div className="glass-surface rounded-lg shadow border border-white/60 dark:border-white/10">
         {loading ? (
           <p className="p-6 text-sm text-gray-500 dark:text-gray-400">Loading templates…</p>
         ) : templates.length === 0 ? (
@@ -269,7 +269,7 @@ export function TemplateManager() {
             // A stray click outside must not discard an unsaved template.
             onPointerDownOutside={(event) => event.preventDefault()}
             onInteractOutside={(event) => event.preventDefault()}
-            className="fixed inset-y-0 right-0 w-full max-w-2xl bg-white dark:bg-gray-800 z-50 overflow-y-auto shadow-xl"
+            className="fixed inset-y-0 right-0 w-full max-w-2xl glass-surface z-50 overflow-y-auto shadow-xl"
           >
             <div className="sticky top-0 z-10 flex items-center justify-between border-b border-gray-200 bg-white px-4 py-3 dark:border-gray-700 dark:bg-gray-800">
               <DialogPrimitive.Title className="text-base font-semibold text-gray-900 dark:text-white">
@@ -294,14 +294,14 @@ export function TemplateManager() {
                   <input
                     value={draft.title}
                     onChange={(event) => patchDraft({ title: event.target.value })}
-                    className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full rounded-lg border border-gray-300 dark:border-gray-600 glass-surface px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
 
                 {draft.sections.map((section, sectionIndex) => (
                   <div
                     key={section.key}
-                    className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden"
+                    className="border border-white/60 dark:border-white/10 rounded-lg overflow-hidden"
                   >
                     <div className="flex items-center justify-between gap-3 bg-gray-50 dark:bg-gray-900/40 px-3 py-2">
                       <label className="flex items-center gap-2 min-w-0">
@@ -348,7 +348,7 @@ export function TemplateManager() {
                           <input
                             value={field.label}
                             onChange={(event) => relabelField(sectionIndex, fieldIndex, event.target.value)}
-                            className="h-8 w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="h-8 w-full rounded-md border border-gray-300 dark:border-gray-600 glass-surface px-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                           />
                         </div>
                       ))}

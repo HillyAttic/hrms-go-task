@@ -98,7 +98,7 @@ export default function SyncRolesPage() {
       </div>
 
       {/* Sync Button */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-6">
+      <div className="glass-surface rounded-lg shadow p-6 mb-6">
         <button
           onClick={handleSync}
           disabled={syncing}
@@ -120,7 +120,7 @@ export default function SyncRolesPage() {
 
       {/* Results */}
       {result && (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+        <div className="glass-surface rounded-lg shadow p-6">
           <div className="flex items-start space-x-3 mb-4">
             {result.success ? (
               <CheckCircle className="w-6 h-6 text-green-600 flex-shrink-0" />

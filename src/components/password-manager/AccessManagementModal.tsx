@@ -120,10 +120,10 @@ export default function AccessManagementModal({
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search users..."
-              className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full rounded-lg border border-gray-300 dark:border-gray-600 glass-surface px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
 
-            <div className="max-h-72 overflow-y-auto space-y-1 rounded-lg border border-gray-200 dark:border-gray-700 p-1">
+            <div className="max-h-72 overflow-y-auto space-y-1 rounded-lg border border-white/60 dark:border-white/10 p-1">
               {filteredUsers.length === 0 ? (
                 <p className="text-sm text-gray-500 dark:text-gray-400 text-center py-4">
                   No users found

@@ -841,7 +841,7 @@ export function AttendanceExportModal({
                 No employees found matching your search
               </div>
             ) : (
-              <div className="border border-gray-200 dark:border-gray-700 rounded-md max-h-60 overflow-y-auto">
+              <div className="border border-white/60 dark:border-white/10 rounded-md max-h-60 overflow-y-auto">
                 {filteredEmployees.map((employee) => {
                   const isPreSelected = employee.id === preSelectedEmployeeId;
                   return (
@@ -893,7 +893,7 @@ export function AttendanceExportModal({
                 className={`flex items-center gap-2 sm:gap-3 p-2 sm:p-3 border-2 rounded-lg transition-all ${
                   exportFormat === 'excel'
                     ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
-                    : 'border-gray-200 dark:border-gray-600 hover:border-green-300'
+                    : 'border-white/60 dark:border-white/10 hover:border-green-300'
                 }`}
               >
                 <FileSpreadsheet className={`w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 ${exportFormat === 'excel' ? 'text-green-600' : 'text-gray-400'}`} />
@@ -908,7 +908,7 @@ export function AttendanceExportModal({
                 className={`flex items-center gap-2 sm:gap-3 p-2 sm:p-3 border-2 rounded-lg transition-all ${
                   exportFormat === 'pdf'
                     ? 'border-red-500 bg-red-50 dark:bg-red-900/20'
-                    : 'border-gray-200 dark:border-gray-600 hover:border-red-300'
+                    : 'border-white/60 dark:border-white/10 hover:border-red-300'
                 }`}
               >
                 <FileText className={`w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 ${exportFormat === 'pdf' ? 'text-red-600' : 'text-gray-400'}`} />

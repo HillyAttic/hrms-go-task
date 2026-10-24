@@ -287,39 +287,41 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
 
   const displayPhoto = previewURL || currentPhotoURL;
   const tabClass = (tab: Tab) =>
-    `px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+    `rounded-xl px-4 py-2 text-sm font-medium transition-all ${
       activeTab === tab
-        ? 'bg-blue-600 text-white'
-        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+        ? 'bg-gradient-to-r from-[#0447FD] to-[#7F1BFF] text-white shadow-lg shadow-indigo-500/25'
+        : 'border border-white/60 bg-white/50 text-slate-600 backdrop-blur hover:bg-white/80 hover:text-slate-900 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white'
     }`;
 
   return (
-    <form onSubmit={handleSubmit(onSubmit, handleInvalidSubmit)} className="space-y-6">
-      {/* Profile Photo Section */}
-      <div className="flex flex-col items-center gap-4">
-        <Label htmlFor="photo">Profile Photo</Label>
-        <div className="relative">
-          {displayPhoto ? (
-            <div className="relative w-32 h-32 rounded-full overflow-hidden ring-4 ring-white dark:ring-gray-800">
-              <img src={displayPhoto} alt="Profile preview" className="w-full h-full object-cover" />
-              <button
-                type="button"
-                onClick={handleRemoveFile}
-                className="absolute top-2 right-2 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white hover:bg-red-600 transition-colors"
-              >
-                <XMarkIcon className="w-5 h-5" />
-              </button>
-            </div>
-          ) : (
-            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center ring-4 ring-white dark:ring-gray-800">
-              <span className="text-4xl font-bold text-white">
-                {getInitials([firstName, lastName].filter(Boolean).join(' ') || initialData.displayName)}
-              </span>
-            </div>
-          )}
-        </div>
+    <form onSubmit={handleSubmit(onSubmit, handleInvalidSubmit)} className="space-y-3">
+      {/* Header — photo, upload control and tab switch share one row so the form
+          fits the viewport instead of forcing a vertical scroll */}
+      <div className="flex flex-col gap-3 border-b border-white/60 pb-3 dark:border-white/10 xl:flex-row xl:items-center xl:justify-between">
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="relative shrink-0">
+            {displayPhoto ? (
+              <div className="relative h-12 w-12 overflow-hidden rounded-full ring-2 ring-white shadow-[0_14px_35px_-14px_rgba(4,71,253,0.55)] dark:ring-white/10">
+                <img src={displayPhoto} alt="Profile preview" className="w-full h-full object-cover" />
+                <button
+                  type="button"
+                  onClick={handleRemoveFile}
+                  className="absolute right-0 top-0 flex h-5 w-5 items-center justify-center rounded-full bg-gradient-to-r from-rose-500 to-red-600 text-white shadow-lg shadow-rose-500/25 transition-all hover:brightness-110"
+                  aria-label="Remove photo"
+                >
+                  <XMarkIcon className="h-3 w-3" />
+                </button>
+              </div>
+            ) : (
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-[#0447FD] to-[#7F1BFF] ring-2 ring-white dark:ring-white/10">
+                <span className="text-base font-bold text-white">
+                  {getInitials([firstName, lastName].filter(Boolean).join(' ') || initialData.displayName)}
+                </span>
+              </div>
+            )}
+          </div>
 
-        <div className="flex items-center gap-3">
+          <Label htmlFor="photo" className="text-sm font-medium text-slate-900 dark:text-white">Photo</Label>
           <input
             ref={fileInputRef}
             type="file"
@@ -333,31 +335,32 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
             variant="outline"
             onClick={() => fileInputRef.current?.click()}
             disabled={isSubmitting}
+            className="rounded-xl"
           >
-            <PhotoIcon className="w-5 h-5 mr-2" />
+            <PhotoIcon className="w-4 h-4 mr-1.5" />
             {displayPhoto ? 'Change Photo' : 'Upload Photo'}
           </Button>
           {selectedFile && (
-            <span className="text-sm text-gray-600 dark:text-gray-400">{selectedFile.name}</span>
+            <span className="hidden min-w-0 truncate text-xs text-slate-500 dark:text-slate-400 sm:inline">
+              {selectedFile.name}
+            </span>
           )}
         </div>
-        <p className="text-sm text-gray-500 dark:text-gray-400">Maximum file size: 5MB</p>
-      </div>
 
-      {/* Tab Navigation */}
-      <div className="flex flex-wrap gap-2 border-b border-gray-200 dark:border-gray-700 pb-3">
-        {TABS.map((tab) => (
-          <button key={tab.id} type="button" onClick={() => setActiveTab(tab.id)} className={tabClass(tab.id)}>
-            {tab.label}
-          </button>
-        ))}
+        {/* Tab Navigation */}
+        <div className="flex flex-wrap gap-2">
+          {TABS.map((tab) => (
+            <button key={tab.id} type="button" onClick={() => setActiveTab(tab.id)} className={tabClass(tab.id)}>
+              {tab.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Tab: Personal Info */}
       {activeTab === 'personal' && (
-        <div className="space-y-4">
-          <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">Personal Information</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-3">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
             <Input
               id="firstName"
               label="First Name"
@@ -414,9 +417,8 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
 
       {/* Tab: Employment */}
       {activeTab === 'employment' && (
-        <div className="space-y-4">
-          <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">Employment Details</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-3">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
             <Input
               id="employeeId"
               label="Employee ID"
@@ -451,9 +453,9 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
           </div>
 
           {/* Bank Details */}
-          <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
-            <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Bank Details</h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="border-t border-white/60 pt-2 dark:border-white/10">
+            <h4 className="mb-2 text-sm font-semibold text-slate-900 dark:text-white">Bank Details</h4>
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
               <Input
                 id="bankName"
                 label="Bank Name"
@@ -483,24 +485,20 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
           </div>
 
           {/* Password */}
-          <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
-            <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+          <div className="border-t border-white/60 pt-2 dark:border-white/10">
+            <h4 className="mb-2 text-sm font-semibold text-slate-900 dark:text-white">
               Change Password (optional)
             </h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="md:col-span-2">
-                <Input
-                  id="currentPassword"
-                  type="password"
-                  label="Current Password"
-                  {...register('currentPassword')}
-                  placeholder="Enter current password to change"
-                  disabled={isSubmitting}
-                />
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
-                  Required only if you want to change the password
-                </p>
-              </div>
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
+              <Input
+                id="currentPassword"
+                type="password"
+                label="Current Password"
+                {...register('currentPassword')}
+                placeholder="Enter current password"
+                helperText="Only if changing password"
+                disabled={isSubmitting}
+              />
               <Input
                 id="newPassword"
                 type="password"
@@ -524,9 +522,8 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
 
       {/* Tab: Probation & Promotion */}
       {activeTab === 'probation' && (
-        <div className="space-y-4">
-          <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">Probation Details</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-3">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
             <Input
               id="probationDuration"
               type="number"
@@ -544,9 +541,9 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
             />
           </div>
 
-          <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
-            <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">Promotion Details</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
+          <div className="border-t border-white/60 pt-2 dark:border-white/10">
+            <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Promotion Details</h3>
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3 mt-3">
               <Input
                 id="promotionDate"
                 type="date"
@@ -568,14 +565,13 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
 
       {/* Tab: Documents */}
       {activeTab === 'documents' && (
-        <div className="space-y-4">
-          <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">My Documents</h3>
-          <p className="text-xs text-gray-500 dark:text-gray-400">
+        <div className="space-y-3">
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             Upload from your computer (JPG, PNG, PDF — max 10MB each).
           </p>
 
           {documentError && (
-            <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg p-3 text-sm text-red-700 dark:text-red-400 flex items-center justify-between">
+            <div className="flex items-center justify-between rounded-xl border border-red-200/80 bg-red-50/80 p-3 text-sm text-red-700 backdrop-blur dark:border-red-400/20 dark:bg-red-500/10 dark:text-red-300">
               <span>{documentError}</span>
               <button type="button" onClick={() => setDocumentError(null)} className="text-red-500 hover:text-red-700">
                 <XMarkIcon className="w-4 h-4" />
@@ -583,7 +579,7 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
             </div>
           )}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-2 xl:grid-cols-3">
             {DOCUMENT_FIELDS.map((field) => (
               <DocumentUploadField
                 key={field}
@@ -599,12 +595,12 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
         </div>
       )}
 
-      {/* Action Buttons */}
-      <div className="flex justify-end gap-3 pt-4">
-        <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting}>
+      {/* Action Buttons — sticky so Save stays reachable regardless of viewport height */}
+      <div className="sticky bottom-0 z-10 flex justify-end gap-3 border-t border-white/60 bg-white/80 py-2 backdrop-blur-xl dark:border-white/10 dark:bg-[#0B1430]/80">
+        <Button type="button" variant="outline" onClick={onCancel} disabled={isSubmitting} className="rounded-xl">
           Cancel
         </Button>
-        <Button type="submit" loading={isSubmitting} disabled={isSubmitting} className="text-white">
+        <Button type="submit" loading={isSubmitting} disabled={isSubmitting} className="rounded-xl text-white">
           {isSubmitting ? 'Saving...' : 'Save Changes'}
         </Button>
       </div>

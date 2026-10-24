@@ -79,14 +79,14 @@ export function DocumentUploadField({
   };
 
   return (
-    <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
-      <Label className="text-sm font-medium mb-2 block">{label || DOCUMENT_LABELS[field]}</Label>
+    <div className="rounded-xl border border-white/60 bg-white/40 p-3 backdrop-blur dark:border-white/10 dark:bg-white/[0.03]">
+      <Label className="mb-2 block text-sm font-medium text-slate-900 dark:text-white">{label || DOCUMENT_LABELS[field]}</Label>
 
       {url && (
-        <div className="flex items-center justify-between bg-gray-50 dark:bg-gray-800 rounded-md px-3 py-2 mb-2">
-          <div className="flex items-center gap-2 min-w-0 flex-1">
-            <DocumentIcon className="w-5 h-5 text-blue-500 flex-shrink-0" />
-            <span className="text-sm text-gray-700 dark:text-gray-300 truncate">
+        <div className="mb-2 flex items-center justify-between rounded-xl bg-white/60 px-3 py-2 dark:bg-white/[0.06]">
+          <div className="flex min-w-0 flex-1 items-center gap-2">
+            <DocumentIcon className="h-5 w-5 flex-shrink-0 text-indigo-500" />
+            <span className="truncate text-sm text-slate-700 dark:text-slate-300">
               {name || 'Uploaded document'}
             </span>
           </div>
@@ -94,7 +94,7 @@ export function DocumentUploadField({
             <button
               type="button"
               onClick={() => viewDocument(url)}
-              className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/30 rounded transition-colors"
+              className="rounded p-1.5 text-slate-500 transition-colors hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-indigo-500/10 dark:hover:text-indigo-300"
               title="View document"
             >
               <EyeIcon className="w-4 h-4" />
@@ -103,7 +103,7 @@ export function DocumentUploadField({
               type="button"
               onClick={handleDelete}
               disabled={disabled}
-              className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 rounded transition-colors disabled:opacity-50"
+              className="rounded p-1.5 text-slate-500 transition-colors hover:bg-rose-50 hover:text-rose-600 disabled:opacity-50 dark:hover:bg-rose-500/10 dark:hover:text-rose-300"
               title="Delete document"
             >
               <TrashIcon className="w-4 h-4" />
@@ -114,22 +114,22 @@ export function DocumentUploadField({
 
       {isUploading && (
         <div className="mb-2">
-          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+          <div className="h-2 w-full rounded-full bg-slate-200/70 dark:bg-white/10">
             <div
-              className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+              className="h-2 rounded-full bg-gradient-to-r from-[#0447FD] to-[#7F1BFF] transition-all duration-300"
               style={{ width: `${progress}%` }}
             />
           </div>
-          <p className="text-xs text-gray-500 mt-1">{progress}% uploaded</p>
+          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{progress}% uploaded</p>
         </div>
       )}
 
       <div className="flex items-center gap-2">
         <label
-          className={`flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
+          className={`flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm font-medium transition-all ${
             isUploading || disabled
-              ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-              : 'bg-blue-50 text-blue-700 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50 cursor-pointer'
+              ? 'cursor-not-allowed bg-white/50 text-slate-400 dark:bg-white/5 dark:text-slate-500'
+              : 'cursor-pointer bg-gradient-to-r from-[#0447FD] to-[#7F1BFF] text-white shadow-lg shadow-indigo-500/25 hover:brightness-110'
           }`}
         >
           <ArrowUpTrayIcon className="w-4 h-4" />

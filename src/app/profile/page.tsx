@@ -63,9 +63,9 @@ export default function Page() {
   // Edit Mode
   if (isEditMode) {
     return (
-      <div className="mx-auto w-full max-w-[700px]">
+      <div className="mx-auto w-full max-w-[1000px]">
         <Breadcrumb pageName="Edit Profile" />
-        <div className="rounded-2xl bg-white p-8 shadow-xl dark:bg-gray-dark">
+        <div className="rounded-[2rem] border border-white/70 bg-white/85 p-4 shadow-[0_30px_80px_-20px_rgba(15,23,42,0.45)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#0B1430]/90 sm:p-6">
           <ProfileEditForm
             initialData={{
               uid: auth.user?.uid,
@@ -103,9 +103,9 @@ export default function Page() {
     <div className="mx-auto w-full max-w-[1000px]">
       <Breadcrumb pageName="Profile" />
 
-      <div className="overflow-hidden rounded-2xl bg-white shadow-xl dark:bg-gray-dark dark:shadow-2xl transition-all duration-300 hover:shadow-2xl">
+      <div className="overflow-hidden rounded-[2rem] border border-white/70 bg-white/85 shadow-[0_30px_80px_-20px_rgba(15,23,42,0.45)] backdrop-blur-2xl transition-all duration-300 dark:border-white/10 dark:bg-[#0B1430]/90">
         {/* Cover Photo Section */}
-        <div className="relative h-48 md:h-64 overflow-hidden">
+        <div className="relative h-32 overflow-hidden sm:h-36">
           <Image
             src={data?.coverPhoto}
             alt="Profile Cover"
@@ -113,24 +113,24 @@ export default function Page() {
             width={1000}
             height={300}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0B1430]/65 via-[#0B1430]/10 to-transparent"></div>
         </div>
 
         {/* Profile Content */}
-        <div className="relative px-6 pb-8 -mt-16">
+        <div className="relative -mt-14 px-6 pb-6">
           {/* Profile Avatar */}
-          <div className="flex justify-center mb-6">
-            <div className="relative flex h-36 w-36 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-purple-600 shadow-2xl ring-4 ring-white dark:ring-gray-800 transition-transform hover:scale-105 duration-300">
+          <div className="mb-4 flex justify-center">
+            <div className="relative flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-[#0447FD] to-[#7F1BFF] shadow-[0_18px_45px_-14px_rgba(4,71,253,0.65)] ring-4 ring-white transition-transform duration-300 hover:scale-105 dark:ring-white/10">
               {data.photoURL ? (
                 <Image
                   src={data.photoURL}
                   alt="Profile Photo"
                   className="w-full h-full object-cover rounded-full"
-                  width={144}
-                  height={144}
+                  width={112}
+                  height={112}
                 />
               ) : (
-                <span className="text-5xl font-bold text-white">
+                <span className="text-4xl font-bold text-white">
                   {data?.name?.charAt(0)?.toUpperCase() || "U"}
                 </span>
               )}
@@ -138,12 +138,12 @@ export default function Page() {
           </div>
 
           {/* User Info */}
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-dark dark:text-white mb-2">
+          <div className="mb-5 text-center">
+            <h1 className="mb-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
               {data?.name}
             </h1>
-            <div className="inline-flex items-center px-4 py-1 rounded-full bg-blue-100 dark:bg-blue-900/30">
-              <span className="text-blue-800 dark:text-blue-200 font-medium">
+            <div className="inline-flex items-center rounded-full border border-indigo-100 bg-indigo-50/80 px-4 py-1 dark:border-indigo-400/20 dark:bg-indigo-500/10">
+              <span className="font-medium text-indigo-600 dark:text-indigo-300">
                 {data?.position}
               </span>
             </div>
@@ -151,48 +151,48 @@ export default function Page() {
 
           {/* User Details Grid */}
           <div className="max-w-2xl mx-auto">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-gray-50 dark:bg-dark-2 rounded-xl p-5 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-dark-3 transition-colors duration-200">
-                <div className="flex items-center mb-2">
-                  <div className="w-3 h-3 rounded-full bg-blue-500 mr-2"></div>
-                  <h4 className="font-semibold text-dark dark:text-white">Email</h4>
+            <div className="grid grid-cols-1 gap-3 md:grid-cols-2">
+              <div className="rounded-2xl border border-white/70 bg-white/60 p-4 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.22)] backdrop-blur-xl transition-all duration-200 hover:-translate-y-0.5 hover:border-indigo-300/70 hover:shadow-[0_18px_35px_-18px_rgba(4,71,253,0.5)] dark:border-white/10 dark:bg-white/[0.05] dark:hover:border-indigo-400/40">
+                <div className="mb-1.5 flex items-center">
+                  <div className="mr-2 h-3 w-3 rounded-full bg-[#0447FD]"></div>
+                  <h4 className="font-semibold text-slate-900 dark:text-white">Email</h4>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300 truncate">{data.email}</p>
+                <p className="truncate text-slate-600 dark:text-slate-300">{data.email}</p>
               </div>
 
-              <div className="bg-gray-50 dark:bg-dark-2 rounded-xl p-5 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-dark-3 transition-colors duration-200">
-                <div className="flex items-center mb-2">
-                  <div className="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
-                  <h4 className="font-semibold text-dark dark:text-white">Role</h4>
+              <div className="rounded-2xl border border-white/70 bg-white/60 p-4 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.22)] backdrop-blur-xl transition-all duration-200 hover:-translate-y-0.5 hover:border-indigo-300/70 hover:shadow-[0_18px_35px_-18px_rgba(4,71,253,0.5)] dark:border-white/10 dark:bg-white/[0.05] dark:hover:border-indigo-400/40">
+                <div className="mb-1.5 flex items-center">
+                  <div className="mr-2 h-3 w-3 rounded-full bg-emerald-500"></div>
+                  <h4 className="font-semibold text-slate-900 dark:text-white">Role</h4>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300 capitalize">{data.role}</p>
+                <p className="capitalize text-slate-600 dark:text-slate-300">{data.role}</p>
               </div>
 
-              <div className="bg-gray-50 dark:bg-dark-2 rounded-xl p-5 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-dark-3 transition-colors duration-200">
-                <div className="flex items-center mb-2">
-                  <div className="w-3 h-3 rounded-full bg-purple-500 mr-2"></div>
-                  <h4 className="font-semibold text-dark dark:text-white">Department</h4>
+              <div className="rounded-2xl border border-white/70 bg-white/60 p-4 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.22)] backdrop-blur-xl transition-all duration-200 hover:-translate-y-0.5 hover:border-indigo-300/70 hover:shadow-[0_18px_35px_-18px_rgba(4,71,253,0.5)] dark:border-white/10 dark:bg-white/[0.05] dark:hover:border-indigo-400/40">
+                <div className="mb-1.5 flex items-center">
+                  <div className="mr-2 h-3 w-3 rounded-full bg-[#7F1BFF]"></div>
+                  <h4 className="font-semibold text-slate-900 dark:text-white">Department</h4>
                 </div>
-                <p className="text-gray-600 dark:text-gray-300">{data.department || 'Not specified'}</p>
+                <p className="text-slate-600 dark:text-slate-300">{data.department || 'Not specified'}</p>
               </div>
 
-              <div className="bg-gray-50 dark:bg-dark-2 rounded-xl p-5 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-dark-3 transition-colors duration-200">
-                <div className="flex items-center mb-2">
-                  <div className="w-3 h-3 rounded-full bg-emerald-500 mr-2"></div>
-                  <h4 className="font-semibold text-dark dark:text-white">Status</h4>
+              <div className="rounded-2xl border border-white/70 bg-white/60 p-4 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.22)] backdrop-blur-xl transition-all duration-200 hover:-translate-y-0.5 hover:border-indigo-300/70 hover:shadow-[0_18px_35px_-18px_rgba(4,71,253,0.5)] dark:border-white/10 dark:bg-white/[0.05] dark:hover:border-indigo-400/40">
+                <div className="mb-1.5 flex items-center">
+                  <div className="mr-2 h-3 w-3 rounded-full bg-sky-500"></div>
+                  <h4 className="font-semibold text-slate-900 dark:text-white">Status</h4>
                 </div>
-                <span className="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800 dark:bg-green-900/30 dark:text-green-200">
-                  <span className="w-2 h-2 rounded-full bg-green-500 mr-2 animate-pulse"></span>
+                <span className="inline-flex items-center rounded-full border border-emerald-200/70 bg-emerald-50 px-3 py-1 text-sm font-medium text-emerald-700 dark:border-emerald-400/20 dark:bg-emerald-500/10 dark:text-emerald-300">
+                  <span className="mr-2 h-2 w-2 animate-pulse rounded-full bg-emerald-500"></span>
                   Active
                 </span>
               </div>
             </div>
 
             {/* Edit Profile Button */}
-            <div className="mt-8 flex justify-center">
+            <div className="mt-4 flex justify-center">
               <Button
                 onClick={() => setIsEditMode(true)}
-                className="flex items-center gap-2 px-6 py-3 text-white"
+                className="flex items-center gap-2 rounded-xl px-6 text-white shadow-lg shadow-indigo-500/25 transition-all hover:-translate-y-0.5 hover:brightness-110"
               >
                 <PencilIcon className="w-5 h-5" />
                 Edit Profile

@@ -331,7 +331,7 @@ export default function AttendanceHistoryPage() {
   }
 
   return (
-    <div className="container mx-auto py-4 sm:py-8 px-4">
+    <div className="container mx-auto w-full min-w-0 px-4 py-4 sm:py-8">
       {/* Header Section - Mobile Responsive */}
       <div className="mb-6 sm:mb-8">
         <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
@@ -377,13 +377,13 @@ export default function AttendanceHistoryPage() {
       ) : (
         <div className="space-y-4 sm:space-y-6">
           {attendances.map((record) => (
-            <Card key={record.id} className="hover:shadow-md transition-shadow">
+            <Card key={record.id} className="overflow-hidden hover:shadow-md transition-shadow">
               <CardHeader className="px-3 sm:px-6 py-3 sm:py-4 pb-3 sm:pb-6">
                 <div className="flex justify-between items-start gap-2 sm:gap-3">
                   <div className="flex-1 min-w-0">
-                    <CardTitle className="flex items-center gap-1 sm:gap-2 leading-tight sm:leading-normal pb-2 sm:pb-0 border-b sm:border-b-0 border-gray-200 dark:border-gray-700">
+                    <CardTitle className="flex min-w-0 items-center gap-1 sm:gap-2 leading-tight sm:leading-normal pb-2 sm:pb-0 border-b sm:border-b-0 border-white/60 dark:border-white/10">
                       <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-gray-500 dark:text-gray-400 flex-shrink-0" />
-                      <span className="whitespace-nowrap text-sm sm:text-xl">{formatDate(record.clockIn)}</span>
+                      <span className="truncate text-sm sm:text-xl">{formatDate(record.clockIn)}</span>
                     </CardTitle>
                     <p className="hidden sm:block text-[9px] sm:text-sm text-gray-500 dark:text-gray-400 mt-1 truncate ml-2.5 sm:ml-7">
                       {record.employeeName}
@@ -416,7 +416,7 @@ export default function AttendanceHistoryPage() {
                       </div>
                       <div className="flex-1 min-w-0 overflow-hidden">
                         <h4 className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mb-0.5 sm:mb-1 whitespace-nowrap">Clock In</h4>
-                        <p className="text-sm sm:text-lg font-semibold text-gray-900 dark:text-white whitespace-nowrap">{formatTime(record.clockIn)}</p>
+                        <p className="truncate text-sm sm:text-lg font-semibold text-gray-900 dark:text-white">{formatTime(record.clockIn)}</p>
                         {record.location?.clockIn && (
                           <button
                             onClick={() => handleLocationClick(
@@ -445,7 +445,7 @@ export default function AttendanceHistoryPage() {
                       </div>
                       <div className="flex-1 min-w-0 overflow-hidden">
                         <h4 className="text-xs sm:text-sm font-medium text-gray-500 dark:text-gray-400 mb-0.5 sm:mb-1 whitespace-nowrap">Clock Out</h4>
-                        <p className="text-sm sm:text-lg font-semibold text-gray-900 dark:text-white whitespace-nowrap">{formatTime(record.clockOut)}</p>
+                        <p className="truncate text-sm sm:text-lg font-semibold text-gray-900 dark:text-white">{formatTime(record.clockOut)}</p>
                         {record.location?.clockOut && (
                           <button
                             onClick={() => handleLocationClick(
@@ -540,8 +540,8 @@ export default function AttendanceHistoryPage() {
     
       {/* Delete Confirmation Modal - Mobile Responsive */}
       {showDeleteModal && recordToDelete && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-dark rounded-lg max-w-md w-full p-4 sm:p-6 mx-4">
+        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black bg-opacity-50 p-4">
+          <div className="glass-surface w-full max-w-md rounded-lg p-4 sm:p-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center flex-shrink-0">
                 <AlertTriangle className="w-5 h-5 text-red-600" />

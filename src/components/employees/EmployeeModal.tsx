@@ -478,7 +478,7 @@ export function EmployeeModal({
     const progress = uploadProgress[fieldName] || 0;
 
     return (
-      <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg p-3 mb-2">
+      <div key={index} className="border border-white/60 dark:border-white/10 rounded-lg p-3 mb-2">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
             Salary Slip #{index + 1}
@@ -522,7 +522,7 @@ export function EmployeeModal({
               value={typeof slip === 'string' ? slip : ''}
               onChange={(e) => updateSalarySlipUrl(index, e.target.value)}
               placeholder={`Salary slip ${index + 1} URL (optional)`}
-              className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100 text-sm"
+              className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 glass-surface text-gray-900 dark:text-gray-100 text-sm"
               disabled={isUploading || isLoading}
             />
           </div>
@@ -606,7 +606,7 @@ export function EmployeeModal({
           </div>
 
           {/* Tab Navigation */}
-          <div className="flex flex-wrap gap-2 border-b border-gray-200 dark:border-gray-700 pb-3">
+          <div className="flex flex-wrap gap-2 border-b border-white/60 dark:border-white/10 pb-3">
             <button type="button" onClick={() => setActiveTab('personal')} className={tabClass('personal')}>
               Personal Info
             </button>
@@ -747,7 +747,7 @@ export function EmployeeModal({
                   <select
                     id="role"
                     {...register('role')}
-                    className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100"
+                    className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed glass-surface text-gray-900 dark:text-gray-100"
                     disabled={isLoading}
                   >
                     <option value="Employee">Employee</option>
@@ -765,7 +765,7 @@ export function EmployeeModal({
                   <select
                     id="status"
                     {...register('status')}
-                    className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100"
+                    className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed glass-surface text-gray-900 dark:text-gray-100"
                     disabled={isLoading}
                   >
                     <option value="active">Active</option>
@@ -779,7 +779,7 @@ export function EmployeeModal({
               </div>
 
               {/* Bank Details */}
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
+              <div className="border-t border-white/60 dark:border-white/10 pt-4 mt-4">
                 <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Bank Details</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
@@ -817,7 +817,7 @@ export function EmployeeModal({
               </div>
 
               {/* Manager Assignment */}
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
+              <div className="border-t border-white/60 dark:border-white/10 pt-4 mt-4">
                 <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Manager Assignment</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
@@ -825,7 +825,7 @@ export function EmployeeModal({
                     <select
                       id="managerId"
                       {...register('managerId')}
-                      className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100"
+                      className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed glass-surface text-gray-900 dark:text-gray-100"
                       disabled={isLoading}
                       onChange={(e) => {
                         const selectedManager = managers.find(m => m.id === e.target.value);
@@ -847,7 +847,7 @@ export function EmployeeModal({
               </div>
 
               {/* Attendance Settings — Location Tracking Toggle */}
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
+              <div className="border-t border-white/60 dark:border-white/10 pt-4 mt-4">
                 <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Attendance Settings</h4>
                 <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                   <div className="flex-1">
@@ -879,7 +879,7 @@ export function EmployeeModal({
 
               {/* Reportees Section — shown when role is Manager */}
               {watch('role') === 'Manager' && (
-                <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
+                <div className="border-t border-white/60 dark:border-white/10 pt-4 mt-4">
                   <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                     Employees Reporting to this Manager
                   </h4>
@@ -900,7 +900,7 @@ export function EmployeeModal({
               )}
 
               {/* Password fields */}
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
+              <div className="border-t border-white/60 dark:border-white/10 pt-4 mt-4">
                 <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
                   {employee ? 'Change Password (optional)' : 'Set Password'}
                 </h4>
@@ -1012,7 +1012,7 @@ export function EmployeeModal({
               </div>
 
               {/* Promotion */}
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
+              <div className="border-t border-white/60 dark:border-white/10 pt-4 mt-4">
                 <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">Promotion Details</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
                   <div>
@@ -1037,7 +1037,7 @@ export function EmployeeModal({
               </div>
 
               {/* Salary Changes */}
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-4">
+              <div className="border-t border-white/60 dark:border-white/10 pt-4 mt-4">
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">Salary Changes</h3>
                   <Button
@@ -1059,7 +1059,7 @@ export function EmployeeModal({
                 )}
 
                 {salaryChanges.map((change, index) => (
-                  <div key={index} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 mb-3 relative">
+                  <div key={index} className="border border-white/60 dark:border-white/10 rounded-lg p-4 mb-3 relative">
                     <button
                       type="button"
                       onClick={() => removeSalaryChange(index)}
@@ -1075,7 +1075,7 @@ export function EmployeeModal({
                           type="date"
                           value={change.date}
                           onChange={(e) => updateSalaryChange(index, 'date', e.target.value)}
-                          className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100 text-sm"
+                          className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 glass-surface text-gray-900 dark:text-gray-100 text-sm"
                         />
                       </div>
                       <div>
@@ -1083,7 +1083,7 @@ export function EmployeeModal({
                         <select
                           value={change.reason}
                           onChange={(e) => updateSalaryChange(index, 'reason', e.target.value)}
-                          className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100 text-sm"
+                          className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 glass-surface text-gray-900 dark:text-gray-100 text-sm"
                         >
                           <option value="probation">After Probation</option>
                           <option value="promotion">Promotion</option>
@@ -1096,7 +1096,7 @@ export function EmployeeModal({
                           type="number"
                           value={change.oldSalary}
                           onChange={(e) => updateSalaryChange(index, 'oldSalary', parseFloat(e.target.value) || 0)}
-                          className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100 text-sm"
+                          className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 glass-surface text-gray-900 dark:text-gray-100 text-sm"
                         />
                       </div>
                       <div>
@@ -1105,7 +1105,7 @@ export function EmployeeModal({
                           type="number"
                           value={change.newSalary}
                           onChange={(e) => updateSalaryChange(index, 'newSalary', parseFloat(e.target.value) || 0)}
-                          className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100 text-sm"
+                          className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 glass-surface text-gray-900 dark:text-gray-100 text-sm"
                         />
                       </div>
                       <div className="md:col-span-2">
@@ -1115,7 +1115,7 @@ export function EmployeeModal({
                           value={change.notes || ''}
                           onChange={(e) => updateSalaryChange(index, 'notes', e.target.value)}
                           placeholder="Reason or details about this change"
-                          className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-dark text-gray-900 dark:text-gray-100 text-sm"
+                          className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 glass-surface text-gray-900 dark:text-gray-100 text-sm"
                         />
                       </div>
                     </div>
@@ -1169,7 +1169,7 @@ export function EmployeeModal({
               </div>
 
               {/* Salary Slips (last 3 months) */}
-              <div className="border-t border-gray-200 dark:border-gray-700 pt-4 mt-2">
+              <div className="border-t border-white/60 dark:border-white/10 pt-4 mt-2">
                 <div className="flex items-center justify-between mb-3">
                   <Label className="text-md font-semibold text-gray-800 dark:text-gray-200">
                     Salary Slips (Last 3 months)

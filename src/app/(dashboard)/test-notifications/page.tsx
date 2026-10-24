@@ -49,7 +49,7 @@ export default function TestNotificationsPage() {
       <h1 className="text-2xl font-bold mb-6">Test Push Notifications</h1>
 
       <div className="space-y-4">
-        <div className="bg-white dark:bg-gray-dark p-6 rounded-lg shadow">
+        <div className="glass-surface p-6 rounded-lg shadow">
           <h2 className="text-lg font-semibold mb-4">Quick Actions</h2>
           <div className="flex gap-4">
             <button

@@ -4,7 +4,7 @@ export default function OfflineContent() {
   return (
     <div className="min-h-screen bg-gray-1 dark:bg-gray-dark flex items-center justify-center p-4">
       <div className="max-w-md w-full text-center">
-        <div className="bg-white dark:bg-gray-dark rounded-lg shadow-card p-8">
+        <div className="glass-surface rounded-lg shadow-card p-8">
           {/* Offline Icon */}
           <div className="w-16 h-16 mx-auto mb-6 text-gray-4 dark:text-gray-6">
             <svg 

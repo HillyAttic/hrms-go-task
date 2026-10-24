@@ -118,7 +118,7 @@ export const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
   // For auth pages, render without sidebar and header
   if (isPublicRoute) {
     return (
-      <div className="min-h-screen bg-gray-2 dark:bg-[#020d1a]">
+      <div className="min-h-screen bg-gradient-to-br from-[#EEF2FF] via-[#F8FAFC] to-[#F5F3FF] dark:from-[#060B18] dark:via-[#080F22] dark:to-[#0B1430]">
         <main className="flex-1 mx-auto w-full max-w-screen-2xl overflow-hidden p-4 md:p-6 2xl:p-10">
           {children}
         </main>
@@ -131,7 +131,13 @@ export const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
 
   // For protected pages, render with sidebar and conditionally with header
   return (
-    <div className="flex min-h-screen bg-gray-2 dark:bg-[#020d1a]">
+    <div className="relative isolate flex min-h-screen overflow-x-clip bg-gradient-to-br from-[#EEF2FF] via-[#F8FAFC] to-[#F5F3FF] dark:from-[#060B18] dark:via-[#080F22] dark:to-[#0B1430]">
+      {/* Ambient gradient wash shared by every page */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+        <div className="absolute -left-32 -top-32 h-[28rem] w-[28rem] rounded-full bg-[#0447FD]/15 blur-3xl dark:bg-[#0447FD]/20" />
+        <div className="absolute right-[-10rem] top-24 h-96 w-96 rounded-full bg-[#7F1BFF]/15 blur-3xl dark:bg-[#7F1BFF]/20" />
+        <div className="absolute bottom-0 left-1/3 h-80 w-80 rounded-full bg-[#22D3EE]/10 blur-3xl dark:bg-[#22D3EE]/10" />
+      </div>
       <Sidebar />
       <div className="flex-1 flex flex-col min-w-0">
         {/* Show header on mobile always, hide on desktop for specific routes */}
@@ -140,7 +146,7 @@ export const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
         </div>
         <main
           id="main-content"
-          className={`flex-1 mx-auto w-full max-w-screen-2xl overflow-x-hidden pb-20 md:pb-10 ${
+          className={`min-w-0 flex-1 mx-auto w-full max-w-screen-2xl overflow-x-clip pb-20 md:pb-10 ${
             shouldHideHeaderOnDesktop ? '' : 'p-4 md:p-6 2xl:p-10'
           }`}
           role="main"

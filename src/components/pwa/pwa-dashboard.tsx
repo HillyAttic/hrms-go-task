@@ -11,7 +11,7 @@ export function PWADashboard() {
   const { isInstalled, isInstallable, promptInstall } = usePWAInstall();
 
   return (
-    <div className="bg-white dark:bg-gray-dark border border-stroke dark:border-stroke-dark rounded-lg shadow-card">
+    <div className="glass-surface border border-stroke dark:border-stroke-dark rounded-lg shadow-card">
       {/* Tabs */}
       <div className="border-b border-stroke dark:border-stroke-dark">
         <div className="flex">

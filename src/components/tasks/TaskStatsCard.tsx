@@ -105,7 +105,7 @@ export function TaskStatsCard({ tasks }: TaskStatsCardProps) {
 
         {/* Progress Bar */}
         {totalTasks > 0 && (
-          <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+          <div className="mt-6 pt-6 border-t border-white/60 dark:border-white/10">
             <div className="flex items-center justify-between mb-2">
               <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Completion Rate</span>
               <span className="text-sm font-semibold text-gray-900 dark:text-white">

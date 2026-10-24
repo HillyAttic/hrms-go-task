@@ -205,7 +205,7 @@ export default function MyTasksPage() {
 
             {/* Selected list content */}
             {selectedList ? (
-                <div className="bg-white dark:bg-[#2c2c2e] rounded-2xl shadow-sm overflow-hidden">
+                <div className="glass-surface rounded-2xl shadow-sm overflow-hidden">
                     {/* List header */}
                     <div className="flex items-center justify-between px-4 pt-4 pb-2">
                         <div className="flex items-center gap-2">
@@ -407,7 +407,7 @@ function CreateListModal({ onClose, onCreate }: CreateListModalProps) {
 
             {/* Sheet */}
             <div
-                className="relative bg-white dark:bg-[#2c2c2e] rounded-2xl shadow-2xl w-full max-w-md p-6 sm:p-6"
+                className="relative glass-surface rounded-2xl shadow-2xl w-full max-w-md p-6 sm:p-6"
                 onClick={e => e.stopPropagation()}
             >
                 <div className="flex items-center justify-between mb-5">

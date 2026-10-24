@@ -306,7 +306,7 @@ export function PlanTaskModal({
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white dark:bg-gray-dark divide-y divide-green-200">
+                  <tbody className="glass-surface divide-y divide-green-200">
                     {existingVisits.map((visit, index) => (
                       <tr key={`existing-${index}`} className="hover:bg-green-50">
                         <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">{visit.clientName}</td>
@@ -356,7 +356,7 @@ export function PlanTaskModal({
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white dark:bg-gray-dark divide-y divide-blue-200">
+                  <tbody className="glass-surface divide-y divide-blue-200">
                     {visits.map((visit, index) => (
                       <tr key={`new-${index}`} className="hover:bg-blue-50">
                         <td className="px-4 py-3 text-sm text-gray-900 dark:text-white">{visit.clientName}</td>
@@ -384,7 +384,7 @@ export function PlanTaskModal({
           )}
 
           {/* Add Visit Form */}
-          <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 bg-gray-50 dark:bg-gray-800">
+          <div className="border border-white/60 dark:border-white/10 rounded-lg p-4 bg-gray-50 dark:bg-gray-800">
             <Label className="mb-3 block font-semibold">
               {visits.length === 0 ? 'Add Visit' : 'Add More Visit'}
             </Label>
@@ -508,7 +508,7 @@ export function PlanTaskModal({
         </div>
 
         {/* Footer Actions */}
-        <div className="flex items-center justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-end gap-3 pt-4 border-t border-white/60 dark:border-white/10">
           <Button
             type="button"
             variant="outline"

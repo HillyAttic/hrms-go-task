@@ -41,7 +41,7 @@ export function TeamFilter({
   const hasActiveFilters = filters.status !== 'all' || filters.department !== 'all';
 
   return (
-    <div className="bg-white dark:bg-gray-dark rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-5 shadow-sm">
+    <div className="glass-surface rounded-xl border border-white/60 dark:border-white/10 p-4 sm:p-5 shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
           <div className="p-1.5 bg-gray-100 dark:bg-gray-800 rounded-lg">
@@ -72,7 +72,7 @@ export function TeamFilter({
               id="status-filter"
               value={filters.status}
               onChange={handleStatusChange}
-              className="w-full appearance-none px-3 py-2.5 pr-10 text-sm border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all"
+              className="w-full appearance-none px-3 py-2.5 pr-10 text-sm border border-white/60 dark:border-white/10 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800 glass-surface text-gray-900 dark:text-white transition-all"
               aria-label="Filter by status"
             >
               <option value="all">All Statuses</option>
@@ -94,7 +94,7 @@ export function TeamFilter({
               id="department-filter"
               value={filters.department}
               onChange={handleDepartmentChange}
-              className="w-full appearance-none px-3 py-2.5 pr-10 text-sm border border-gray-200 dark:border-gray-700 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800 bg-white dark:bg-gray-800 text-gray-900 dark:text-white transition-all"
+              className="w-full appearance-none px-3 py-2.5 pr-10 text-sm border border-white/60 dark:border-white/10 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800 glass-surface text-gray-900 dark:text-white transition-all"
               aria-label="Filter by department"
             >
               <option value="all">All Departments</option>
@@ -124,7 +124,7 @@ export function TeamFilter({
 
       {/* Active Filter Indicators */}
       {hasActiveFilters && (
-        <div className="mt-4 pt-4 border-t border-gray-100 dark:border-gray-800">
+        <div className="mt-4 pt-4 border-t border-white/60 dark:border-white/10">
           <div className="flex flex-wrap gap-2">
             {filters.status !== 'all' && (
               <Badge variant="info" className="gap-1">

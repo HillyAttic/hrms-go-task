@@ -237,9 +237,9 @@ export function TaskListView({
   return (
     <>
       {/* Desktop Table View - Hidden on mobile */}
-      <div className="hidden md:block bg-white dark:bg-gray-dark rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="hidden md:block glass-surface rounded-lg border border-white/60 dark:border-white/10 overflow-hidden">
         {/* Table Header */}
-        <div className="grid grid-cols-12 gap-2 px-3 py-2.5 bg-gray-50 dark:bg-gray-800 text-[11px] font-medium text-gray-700 dark:text-gray-300 border-b border-gray-200 dark:border-gray-700">
+        <div className="grid grid-cols-12 gap-2 px-3 py-2.5 bg-gray-50 dark:bg-gray-800 text-[11px] font-medium text-gray-700 dark:text-gray-300 border-b border-white/60 dark:border-white/10">
           <div className="col-span-2">Title</div>
           <div className="col-span-2">Client</div>
           <div className="col-span-1">Category</div>
@@ -260,7 +260,7 @@ export function TaskListView({
               className={`grid grid-cols-12 gap-2 px-3 py-2.5 text-[11px] transition-colors hover:bg-gray-50 dark:hover:bg-gray-800 border-l-2 ${
                 (task.commentCount != null && task.commentCount > 0) || (task.attachments && task.attachments.length > 0)
                   ? 'border-l-blue-400 bg-blue-50/30 dark:bg-blue-900/10'
-                  : 'border-l-transparent bg-white dark:bg-gray-dark'
+                  : 'border-l-transparent glass-surface'
               }`}
             >
               {/* Title */}
@@ -393,7 +393,7 @@ export function TaskListView({
             className={`rounded-lg border p-3 space-y-2.5 ${
               (task.commentCount != null && task.commentCount > 0) || (task.attachments && task.attachments.length > 0)
                 ? 'border-blue-300 dark:border-blue-700 bg-blue-50/40 dark:bg-blue-900/10'
-                : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-dark'
+                : 'border-white/60 dark:border-white/10 glass-surface'
             }`}
           >
             {/* Title and Description */}
@@ -470,7 +470,7 @@ export function TaskListView({
             </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-2 pt-2 border-t border-gray-200 dark:border-gray-700">
+            <div className="flex gap-2 pt-2 border-t border-white/60 dark:border-white/10">
               {onView && (
                 <button
                   onClick={() => onView(task)}

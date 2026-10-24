@@ -6,6 +6,7 @@ import { useResponsive } from "@/hooks/use-responsive";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ArrowRight, GraduationCap } from "lucide-react";
 import { NAV_DATA } from "./data";
 import { ArrowLeftIcon, ChevronUp } from "./icons";
 import { MenuItem } from "./menu-item";
@@ -21,9 +22,8 @@ export function Sidebar() {
   const { device, isTouchDevice } = useResponsive();
   const { hasRole, user } = useAuthEnhanced();
   const [expandedItems, setExpandedItems] = useState<string[]>([]);
-  const [collapsedSections, setCollapsedSections] = useState<string[]>(
-    NAV_DATA.filter((s) => s.label !== 'MAIN MENU').map((s) => s.label)
-  );
+  // Every section opens by default so the day-to-day tools stay one click away.
+  const [collapsedSections, setCollapsedSections] = useState<string[]>([]);
   const [misConfig, setMisConfig] = useState<any>(null);
   const [misConfigLoaded, setMisConfigLoaded] = useState(false);
   const [isExclusivityLocked, setIsExclusivityLocked] = useState(true);
@@ -145,7 +145,7 @@ export function Sidebar() {
   };
 
   const getSidebarClasses = () => {
-    const baseClasses = "overflow-hidden border-r border-gray-100 bg-white text-dark transition-all duration-200 ease-in-out dark:border-white/[0.06] dark:bg-[#1c1c1e]";
+    const baseClasses = "overflow-hidden border-r border-white/60 bg-white/70 text-slate-700 backdrop-blur-2xl transition-all duration-200 ease-in-out dark:border-white/10 dark:bg-[#080F22]/80 dark:text-slate-300";
     
     if (variant === 'mobile') {
       return cn(
@@ -215,7 +215,7 @@ export function Sidebar() {
               page title share one centre line. ponytail: the logo heights are derived
               from the header's content height — retune both if <Header>'s padding or
               title block changes. */}
-          <div className="flex items-center px-3.5 py-4 md:py-5">
+          <div className="flex items-center px-3.5 py-3 md:py-4">
             {/* Light mode logo */}
             <img
               src="/images/branding_edVenture-5.png"
@@ -278,8 +278,8 @@ export function Sidebar() {
                     onClick={() => toggleSection(section.label)}
                     className={cn(
                       "flex flex-1 items-center justify-between",
-                      "text-sm font-semibold uppercase tracking-widest text-dark-4 dark:text-gray-500",
-                      "hover:text-dark dark:hover:text-gray-300 transition-colors duration-200"
+                      "text-sm font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500",
+                      "hover:text-slate-700 dark:hover:text-slate-300 transition-colors duration-200"
                     )}
                     aria-expanded={!isSectionCollapsed}
                   >
@@ -463,6 +463,31 @@ export function Sidebar() {
             );
             })}
           </div>
+
+          {/* Promo card */}
+          {!(variant === "tablet" && !isOpen) && (
+            <div className="mt-3 shrink-0 pr-3">
+              <div className="relative overflow-hidden rounded-2xl bg-[linear-gradient(135deg,#B6BFFF_0%,#9E92FA_38%,#8A79F7_68%,#7F9DF8_100%)] p-4 shadow-[0_10px_30px_-12px_rgba(99,102,241,0.55)]">
+                {/* Soft light spills that give the card its 3D depth */}
+                <div className="pointer-events-none absolute -right-8 -top-10 h-28 w-28 rounded-full bg-white/25 blur-2xl" />
+                <div className="pointer-events-none absolute -bottom-12 -left-10 h-32 w-32 rounded-full bg-[#5B8DEF]/40 blur-2xl" />
+                <div className="relative flex h-[52px] w-[52px] items-center justify-center rounded-2xl bg-white shadow-[0_10px_20px_-10px_rgba(15,23,42,0.45)]">
+                  <GraduationCap className="h-7 w-7 text-[#3559F5]" aria-hidden="true" />
+                </div>
+                <p className="relative mt-3 text-[14.5px] font-semibold leading-snug text-white">
+                  Empowering Better Learning Together.
+                </p>
+                <Link
+                  href="/reports"
+                  onClick={() => isMobile && setIsOpen(false)}
+                  className="relative mt-3 inline-flex w-full items-center justify-center gap-1.5 rounded-lg bg-white px-3 py-2 text-[12px] font-semibold text-[#3559F5] shadow-sm transition-colors hover:bg-indigo-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+                >
+                  View Reports
+                  <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
       </aside>
     </>

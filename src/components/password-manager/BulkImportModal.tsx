@@ -264,7 +264,7 @@ export default function BulkImportModal({
               </div>
             )}
 
-            <div className="overflow-x-auto max-h-64 border border-gray-200 dark:border-gray-700 rounded-lg">
+            <div className="overflow-x-auto max-h-64 border border-white/60 dark:border-white/10 rounded-lg">
               <table className="w-full text-xs">
                 <thead className="bg-gray-50 dark:bg-gray-700 sticky top-0">
                   <tr>

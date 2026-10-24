@@ -120,7 +120,7 @@ export function ProjectCard({ project, onEdit, onDelete }: ProjectCardProps) {
         </div>
 
         {/* Footer: Value + Invoice */}
-        <div className="flex items-center justify-between pt-3 border-t border-gray-100 dark:border-gray-700">
+        <div className="flex items-center justify-between pt-3 border-t border-white/60 dark:border-white/10">
           <div className="flex items-center gap-1.5 text-sm font-medium text-gray-900 dark:text-white">
             <CurrencyRupeeIcon className="w-4 h-4" />
             {formatCurrency(project.projectValue || 0)}

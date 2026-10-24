@@ -88,12 +88,12 @@ export default function UserMultiSelect({
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           placeholder={placeholder}
-          className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg glass-surface text-gray-900 dark:text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
         />
       </div>
 
-      <div className="border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800">
-        <div className="border-b border-gray-200 dark:border-gray-700 px-4 py-2">
+      <div className="border border-gray-300 dark:border-gray-600 rounded-lg glass-surface">
+        <div className="border-b border-white/60 dark:border-white/10 px-4 py-2">
           <label className="flex items-center gap-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 -mx-2 px-2 py-1 rounded">
             <input
               type="checkbox"
@@ -116,7 +116,7 @@ export default function UserMultiSelect({
             filteredUsers.map((user) => (
               <label
                 key={user.uid}
-                className="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 border-b border-gray-100 dark:border-gray-700 last:border-b-0"
+                className="flex items-center gap-3 px-4 py-3 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 border-b border-white/60 dark:border-white/10 last:border-b-0"
               >
                 <input
                   type="checkbox"

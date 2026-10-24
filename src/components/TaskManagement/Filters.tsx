@@ -35,7 +35,7 @@ export const Filters: React.FC<FiltersProps> = ({ onFilterChange }) => {
   };
 
   return (
-    <div className="bg-white dark:bg-boxdark rounded-lg border border-stroke dark:border-strokedark p-4 mb-6">
+    <div className="glass-surface rounded-lg border border-stroke dark:border-strokedark p-4 mb-6">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         {/* Status Filter */}
         <div>

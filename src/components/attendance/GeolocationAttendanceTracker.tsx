@@ -698,18 +698,18 @@ export function GeolocationAttendanceTracker() {
                       </ol>
                       
                       {/* Visual reference images */}
-                      <div className="mt-3 p-2 bg-white dark:bg-gray-dark rounded border border-red-300">
+                      <div className="mt-3 p-2 glass-surface rounded border border-red-300">
                         <p className="text-xs text-red-800 font-medium mb-2">Visual Guide:</p>
                         <div className="space-y-2">
                           <img 
                             src="/images/icons/tune_icon_chrome.webp" 
                             alt="Step 1: Click the lock icon in browser address bar"
-                            className="w-full rounded border border-gray-200 dark:border-gray-700"
+                            className="w-full rounded border border-white/60 dark:border-white/10"
                           />
                           <img 
                             src="/images/icons/location_allow.jpg" 
                             alt="Step 2: Allow location access"
-                            className="w-full rounded border border-gray-200 dark:border-gray-700"
+                            className="w-full rounded border border-white/60 dark:border-white/10"
                           />
                         </div>
                       </div>
@@ -854,7 +854,7 @@ export function GeolocationAttendanceTracker() {
       {/* Persistent Location Denied Modal */}
       {showLocationDeniedModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-4 sm:p-6 max-w-md w-full shadow-xl max-h-[90vh] overflow-y-auto">
+          <div className="glass-surface rounded-lg p-4 sm:p-6 max-w-md w-full shadow-xl max-h-[90vh] overflow-y-auto">
             <div className="flex items-center gap-3 mb-4">
               <div className="bg-red-100 dark:bg-red-900/30 p-3 rounded-full shrink-0">
                 <MapPin className="h-6 w-6 text-red-600" />
@@ -908,18 +908,18 @@ export function GeolocationAttendanceTracker() {
                   </ol>
                   
                   {/* Visual reference images */}
-                  <div className="mt-3 p-2 bg-white dark:bg-gray-900 rounded border border-blue-300 dark:border-blue-700">
+                  <div className="mt-3 p-2 glass-surface rounded border border-blue-300 dark:border-blue-700">
                     <p className="text-xs text-blue-900 dark:text-blue-100 font-medium mb-2">Visual Guide:</p>
                     <div className="space-y-2">
                       <img 
                         src="/images/icons/tune_icon_chrome.webp" 
                         alt="Step 1: Click the lock icon in browser address bar"
-                        className="w-full rounded border border-gray-200 dark:border-gray-700"
+                        className="w-full rounded border border-white/60 dark:border-white/10"
                       />
                       <img 
                         src="/images/icons/location_allow.jpg" 
                         alt="Step 2: Allow location access"
-                        className="w-full rounded border border-gray-200 dark:border-gray-700"
+                        className="w-full rounded border border-white/60 dark:border-white/10"
                       />
                     </div>
                   </div>

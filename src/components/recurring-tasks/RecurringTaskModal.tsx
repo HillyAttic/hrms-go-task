@@ -640,7 +640,7 @@ export function RecurringTaskModal({
 
             {/* Selected Clients Display */}
             {selectedClients.length > 0 && (
-              <div className="mt-2 mb-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+              <div className="mt-2 mb-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-white/60 dark:border-white/10">
                 <div className="flex items-center justify-between mb-2">
                   <p className="text-xs font-medium text-gray-600 dark:text-gray-400">Selected Clients ({selectedClients.length})</p>
                   <Button
@@ -661,7 +661,7 @@ export function RecurringTaskModal({
                   {selectedClients.map((client) => (
                     <div
                       key={client.id}
-                      className="flex items-center gap-2 bg-white dark:bg-gray-dark border border-gray-300 dark:border-gray-600 rounded-md px-2.5 py-1.5 shadow-sm"
+                      className="flex items-center gap-2 glass-surface border border-gray-300 dark:border-gray-600 rounded-md px-2.5 py-1.5 shadow-sm"
                     >
                       <div className="flex flex-col">
                         <span className="text-sm font-medium text-gray-900 dark:text-white">{client.clientName}</span>
@@ -753,7 +753,7 @@ export function RecurringTaskModal({
           </div>
 
           {/* Enable ARN / Remark Checkboxes */}
-          <div className="flex flex-wrap items-center gap-4 p-3 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg">
+          <div className="flex flex-wrap items-center gap-4 p-3 bg-gray-50 dark:bg-gray-800 border border-white/60 dark:border-white/10 rounded-lg">
             <label className="flex items-center gap-2 cursor-pointer">
               <input
                 type="checkbox"

@@ -304,7 +304,7 @@ export default function AttendancePage() {
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-center py-4 sm:py-8 bg-white dark:bg-gray-800 rounded-lg shadow-sm">
+      <div className="flex flex-col items-center justify-center py-4 sm:py-8 glass-surface rounded-lg shadow-sm">
         <GeolocationAttendanceTracker key="geolocation-tracker" />
       </div>
 
@@ -321,7 +321,7 @@ export default function AttendancePage() {
             <CardContent className="pt-6">
               <div className="space-y-4">
                 {pendingLeaves.map((request) => (
-                  <div key={request.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border rounded-lg bg-white dark:bg-gray-800 shadow-sm">
+                  <div key={request.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border rounded-lg glass-surface shadow-sm">
                     <div className="mb-4 sm:mb-0">
                       <div className="flex items-center gap-2">
                         <p className="font-semibold text-lg">{request.employeeName}</p>
@@ -386,7 +386,7 @@ export default function AttendancePage() {
             <CardContent className="pt-6">
               <div className="space-y-4">
                 {pendingWfhRequests.map((request) => (
-                  <div key={request.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border rounded-lg bg-white dark:bg-gray-800 shadow-sm">
+                  <div key={request.id} className="flex flex-col sm:flex-row items-start sm:items-center justify-between p-4 border rounded-lg glass-surface shadow-sm">
                     <div className="mb-4 sm:mb-0">
                       <div className="flex items-center gap-2">
                         <p className="font-semibold text-lg">{request.employeeName}</p>
@@ -662,7 +662,7 @@ export default function AttendancePage() {
       {/* Approve with Reason Modal */}
       {showApproveModal && selectedLeaveRequest && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full">
+          <div className="glass-surface rounded-lg p-6 max-w-md w-full">
             <h3 className="text-lg font-bold mb-4 text-gray-900 dark:text-white">Approve Leave Request</h3>
             <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
               <p className="text-sm text-gray-600 dark:text-gray-400">

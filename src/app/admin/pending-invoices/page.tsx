@@ -163,7 +163,7 @@ export default function PendingInvoicesPage() {
 
       {/* Tabs */}
       <div className="mb-6">
-        <div className="border-b border-gray-200 dark:border-gray-700">
+        <div className="border-b border-white/60 dark:border-white/10">
           <nav className="-mb-px flex gap-2 sm:gap-4 overflow-x-auto">
             <button
               onClick={() => setActiveTab('pending')}
@@ -227,7 +227,7 @@ export default function PendingInvoicesPage() {
           {invoices.map((invoice) => (
             <div
               key={invoice.id}
-              className={`bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-4 sm:p-5 shadow-sm hover:shadow-md transition-shadow ${
+              className={`glass-surface rounded-xl border border-white/60 dark:border-white/10 p-4 sm:p-5 shadow-sm hover:shadow-md transition-shadow ${
                 activeTab === 'archived' ? 'opacity-80' : ''
               }`}
             >
@@ -276,14 +276,14 @@ export default function PendingInvoicesPage() {
                   <p className="text-xs text-gray-500 dark:text-gray-400 italic break-words">📌 {invoice.remark}</p>
                 )}
                 {activeTab === 'archived' && invoice.archivedAt && (
-                  <div className="text-xs text-gray-400 dark:text-gray-500 pt-2 border-t border-gray-100 dark:border-gray-700">
+                  <div className="text-xs text-gray-400 dark:text-gray-500 pt-2 border-t border-white/60 dark:border-white/10">
                     Archived: {formatDate(invoice.archivedAt)}
                   </div>
                 )}
               </div>
 
               {/* Actions */}
-              <div className="pt-3 border-t border-gray-100 dark:border-gray-700">
+              <div className="pt-3 border-t border-white/60 dark:border-white/10">
                 {activeTab === 'pending' ? (
                   <div className="grid grid-cols-2 gap-1.5">
                     <Button
@@ -375,7 +375,7 @@ export default function PendingInvoicesPage() {
           {viewingInvoice && (
             <div className="space-y-4 sm:space-y-6 py-4">
               {/* Status Banner */}
-              <div className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-600">
+              <div className="bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-700 rounded-lg p-3 sm:p-4 border border-white/60 dark:border-white/10">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                   <div className="flex items-center gap-3">
                     {viewingInvoice.archivedAt ? (
@@ -417,7 +417,7 @@ export default function PendingInvoicesPage() {
               {/* Main Information Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                 {viewingInvoice.clientName && (
-                  <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-primary transition-colors">
+                  <div className="glass-surface rounded-lg p-3 sm:p-4 border border-white/60 dark:border-white/10 hover:border-primary dark:hover:border-primary transition-colors">
                     <div className="flex items-start gap-3">
                       <div className="p-2 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                         <UserCircleIcon className="w-5 h-5 text-blue-600 dark:text-blue-400" />
@@ -431,7 +431,7 @@ export default function PendingInvoicesPage() {
                 )}
 
                 {viewingInvoice.services && (
-                  <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-700 hover:border-primary dark:hover:border-primary transition-colors">
+                  <div className="glass-surface rounded-lg p-3 sm:p-4 border border-white/60 dark:border-white/10 hover:border-primary dark:hover:border-primary transition-colors">
                     <div className="flex items-start gap-3">
                       <div className="p-2 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
                         <BriefcaseIcon className="w-5 h-5 text-purple-600 dark:text-purple-400" />
@@ -462,7 +462,7 @@ export default function PendingInvoicesPage() {
 
               {/* Description */}
               {viewingInvoice.description && (
-                <div className="bg-white dark:bg-gray-800 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
+                <div className="glass-surface rounded-lg p-3 sm:p-4 border border-white/60 dark:border-white/10">
                   <div className="flex items-start gap-3">
                     <div className="p-2 bg-gray-50 dark:bg-gray-700 rounded-lg">
                       <DocumentTextIcon className="w-5 h-5 text-gray-600 dark:text-gray-400" />
@@ -491,7 +491,7 @@ export default function PendingInvoicesPage() {
               )}
 
               {/* Timeline */}
-              <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 sm:p-4 border border-gray-200 dark:border-gray-700">
+              <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-3 sm:p-4 border border-white/60 dark:border-white/10">
                 <div className="flex items-center gap-2 mb-3">
                   <ClockIcon className="w-4 h-4 text-gray-500 dark:text-gray-400" />
                   <h3 className="text-xs font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide">Timeline</h3>
@@ -508,7 +508,7 @@ export default function PendingInvoicesPage() {
                     </div>
                   )}
                   {viewingInvoice.archivedAt && (
-                    <div className="flex items-center justify-between text-sm pt-2 border-t border-gray-200 dark:border-gray-700">
+                    <div className="flex items-center justify-between text-sm pt-2 border-t border-white/60 dark:border-white/10">
                       <span className="text-green-600 dark:text-green-400 font-medium">Archived</span>
                       <span className="font-medium text-gray-900 dark:text-white">{formatDate(viewingInvoice.archivedAt)}</span>
                     </div>

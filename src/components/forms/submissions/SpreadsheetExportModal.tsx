@@ -161,9 +161,9 @@ export function SpreadsheetExportModal({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999] p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-md w-full">
+      <div className="glass-surface rounded-lg shadow-xl max-w-md w-full">
         {/* Header */}
-        <div className="border-b border-gray-200 dark:border-gray-700 px-6 py-4 flex items-center justify-between">
+        <div className="border-b border-white/60 dark:border-white/10 px-6 py-4 flex items-center justify-between">
           <h2 className="text-xl font-semibold text-gray-900 dark:text-white">Export to Excel</h2>
           <button
             onClick={onClose}
@@ -186,7 +186,7 @@ export function SpreadsheetExportModal({
                 <select
                   value={selectedMonth}
                   onChange={(e) => setSelectedMonth(Number(e.target.value))}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent glass-surface text-gray-900 dark:text-white"
                 >
                   {monthOptions.map((month) => (
                     <option key={month.value} value={month.value}>
@@ -200,7 +200,7 @@ export function SpreadsheetExportModal({
                 <select
                   value={selectedYear}
                   onChange={(e) => setSelectedYear(Number(e.target.value))}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent glass-surface text-gray-900 dark:text-white"
                 >
                   {yearOptions.map((year) => (
                     <option key={year} value={year}>
@@ -224,7 +224,7 @@ export function SpreadsheetExportModal({
                   type="date"
                   value={startDate}
                   onChange={(e) => setStartDate(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent glass-surface text-gray-900 dark:text-white"
                 />
               </div>
               <div>
@@ -233,7 +233,7 @@ export function SpreadsheetExportModal({
                   type="date"
                   value={endDate}
                   onChange={(e) => setEndDate(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent glass-surface text-gray-900 dark:text-white"
                 />
               </div>
             </div>
@@ -261,11 +261,11 @@ export function SpreadsheetExportModal({
         </div>
 
         {/* Footer */}
-        <div className="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 px-6 py-4 flex items-center justify-end space-x-3">
+        <div className="bg-gray-50 dark:bg-gray-900 border-t border-white/60 dark:border-white/10 px-6 py-4 flex items-center justify-end space-x-3">
           <button
             onClick={onClose}
             disabled={exporting}
-            className="px-4 py-2 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50"
+            className="px-4 py-2 text-gray-700 dark:text-gray-300 glass-surface border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50"
           >
             Cancel
           </button>

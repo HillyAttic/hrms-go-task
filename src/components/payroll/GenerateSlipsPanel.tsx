@@ -41,9 +41,9 @@ const currency = new Intl.NumberFormat('en-IN', {
 });
 
 const cardClass =
-  'bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700';
+  'glass-surface rounded-xl shadow-sm border border-white/60 dark:border-white/10';
 const inputClass =
-  'w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500';
+  'w-full rounded-lg border border-gray-300 dark:border-gray-600 glass-surface px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500';
 const thClass =
   'px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider';
 
@@ -278,7 +278,7 @@ export function GenerateSlipsPanel({
       )}
 
       <div className={cardClass}>
-        <div className="p-5 border-b border-gray-200 dark:border-gray-700">
+        <div className="p-5 border-b border-white/60 dark:border-white/10">
           <h2 className="text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2">
             Select Period
           </h2>
@@ -336,7 +336,7 @@ export function GenerateSlipsPanel({
       )}
 
       <div className={cardClass}>
-        <div className="flex items-center justify-between gap-4 p-5 border-b border-gray-200 dark:border-gray-700">
+        <div className="flex items-center justify-between gap-4 p-5 border-b border-white/60 dark:border-white/10">
           <h2 className="text-base font-semibold text-gray-900 dark:text-white flex items-center gap-2">
             Employees ({employees.length})
           </h2>

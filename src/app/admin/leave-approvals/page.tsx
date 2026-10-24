@@ -271,7 +271,7 @@ export default function LeaveApprovalsPage() {
       </div>
 
       {/* Leave Requests */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
+      <div className="glass-surface rounded-lg shadow overflow-hidden">
         {loading ? (
           <div className="p-8 text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
@@ -497,7 +497,7 @@ export default function LeaveApprovalsPage() {
       {/* Reject with Reason Modal */}
       {showRejectModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
+          <div className="glass-surface rounded-lg p-6 max-w-md w-full mx-4">
             <h3 className="text-lg font-bold mb-1 text-gray-900 dark:text-white">Reject Leave Request</h3>
             {selectedRequest && (
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">
@@ -542,7 +542,7 @@ export default function LeaveApprovalsPage() {
       {/* Approve with Reason Modal */}
       {showApproveModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4">
+          <div className="glass-surface rounded-lg p-6 max-w-md w-full mx-4">
             <h3 className="text-lg font-bold mb-1 text-gray-900 dark:text-white">Approve Leave Request with Reason</h3>
             {selectedRequest && (
               <p className="text-sm text-gray-500 dark:text-gray-400 mb-4">

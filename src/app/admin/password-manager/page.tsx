@@ -210,7 +210,7 @@ export default function PasswordManagerPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-1 mb-6 border-b border-gray-200 dark:border-gray-700">
+      <div className="flex gap-1 mb-6 border-b border-white/60 dark:border-white/10">
         {ALL_TABS.map((tab) => (
           <button
             key={tab.value}
@@ -238,7 +238,7 @@ export default function PasswordManagerPage() {
             </p>
           </div>
 
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="glass-surface rounded-lg shadow border border-white/60 dark:border-white/10 overflow-hidden">
             {accessLoading ? (
               <div className="p-8 text-center">
                 <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-purple-600 mx-auto" />
@@ -350,7 +350,7 @@ export default function PasswordManagerPage() {
           </div>
 
           {/* Table */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="glass-surface rounded-lg shadow border border-white/60 dark:border-white/10 overflow-hidden">
             {loading ? (
               <div className="p-8 text-center">
                 <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mx-auto" />

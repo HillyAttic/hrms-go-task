@@ -199,7 +199,7 @@ export default function DashboardFormEmbed() {
   // Show loading animation while fetching form data
   if (loading) {
     return (
-      <Card className="col-span-full">
+      <Card className="col-span-full rounded-2xl border-white/60 bg-white/60 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.22)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05]">
         <CardContent className="pt-6">
           <div className="flex items-center justify-center py-12">
             <DotLottieReact
@@ -230,7 +230,7 @@ export default function DashboardFormEmbed() {
     // If form has been submitted today, show success message
     if (form.isSubmitted) {
       return (
-        <Card className="col-span-full">
+        <Card className="col-span-full rounded-2xl border-white/60 bg-white/60 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.22)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05]">
           <CardContent className="pt-6">
             <div className="p-6 space-y-6">
               <div className="space-y-3">
@@ -270,7 +270,7 @@ export default function DashboardFormEmbed() {
     }
 
     return (
-      <Card className="col-span-full">
+      <Card className="col-span-full rounded-2xl border-white/60 bg-white/60 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.22)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05]">
         <CardContent className="pt-6">
           <div className="w-full">
             {/* Warning banner if user is clocked in and hasn't submitted */}
@@ -363,7 +363,7 @@ export default function DashboardFormEmbed() {
               return (
                 <div
                   key={form.formId}
-                  className="border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden"
+                  className="border border-white/60 dark:border-white/10 rounded-lg overflow-hidden"
                 >
                   {/* Accordion Header */}
                   <button
@@ -410,7 +410,7 @@ export default function DashboardFormEmbed() {
 
                   {/* Accordion Content */}
                   {isExpanded && form.template && (
-                    <div className="p-4 bg-white dark:bg-gray-dark">
+                    <div className="p-4 glass-surface">
                       {form.isSubmitted ? (
                         <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-md border border-green-200 dark:border-green-800">
                           <svg

@@ -125,7 +125,7 @@ export function MobileBottomNav() {
                 className={cn(
                   "flex items-center justify-center transition-all duration-200",
                   isActive
-                    ? "bg-primary/10 dark:bg-primary/20 rounded-[12px] px-3 py-1"
+                    ? "rounded-[12px] bg-gradient-to-r from-[#0447FD] to-[#7F1BFF] px-3 py-1 shadow-lg shadow-indigo-500/25"
                     : "px-3 py-1"
                 )}
               >
@@ -135,7 +135,7 @@ export function MobileBottomNav() {
                     className={cn(
                       "transition-all duration-200",
                       isActive
-                        ? "w-[22px] h-[22px] text-primary"
+                        ? "w-[22px] h-[22px] text-white"
                         : "w-[22px] h-[22px] text-gray-400 dark:text-gray-500"
                     )}
                     aria-hidden="true"

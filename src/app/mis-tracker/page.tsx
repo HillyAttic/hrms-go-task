@@ -252,7 +252,7 @@ export default function MISTrackerPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-3 sm:px-4 md:px-6 py-3 sm:py-4">
+      <div className="glass-surface border-b border-white/60 dark:border-white/10 px-3 sm:px-4 md:px-6 py-3 sm:py-4">
         <div className="flex flex-col gap-2 sm:gap-3 md:gap-4">
           <div>
             <h1 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 dark:text-white">MIS Tracker</h1>
@@ -267,7 +267,7 @@ export default function MISTrackerPage() {
               <select
                 value={selectedFormId || ''}
                 onChange={(e) => handleFormChange(e.target.value)}
-                className="flex-1 sm:flex-none sm:min-w-[250px] px-3 sm:px-4 py-2 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="flex-1 sm:flex-none sm:min-w-[250px] px-3 sm:px-4 py-2 text-xs sm:text-sm border border-gray-300 dark:border-gray-600 rounded-lg glass-surface text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 {availableForms.map((form) => (
                   <option key={form.id} value={form.id}>
@@ -283,7 +283,7 @@ export default function MISTrackerPage() {
                 onClick={() => setViewMode('table')}
                 className={`flex-1 sm:flex-none px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-md transition-colors ${
                   viewMode === 'table'
-                    ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm'
+                    ? 'glass-surface text-gray-900 dark:text-white shadow-sm'
                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                 }`}
               >
@@ -298,7 +298,7 @@ export default function MISTrackerPage() {
                 onClick={() => setViewMode('spreadsheet')}
                 className={`flex-1 sm:flex-none px-2 sm:px-3 md:px-4 py-1.5 sm:py-2 text-xs sm:text-sm font-medium rounded-md transition-colors ${
                   viewMode === 'spreadsheet'
-                    ? 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-sm'
+                    ? 'glass-surface text-gray-900 dark:text-white shadow-sm'
                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
                 }`}
               >

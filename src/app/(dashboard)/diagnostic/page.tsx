@@ -208,7 +208,7 @@ export default function DiagnosticPage() {
       )}
 
       {/* Detailed Checks */}
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg mb-6">
+      <div className="glass-surface p-6 rounded-lg mb-6">
         <h3 className="text-lg font-bold mb-4">Detailed Check Results</h3>
         <div className="space-y-3">
           {results.checks.map((check: any, i: number) => (

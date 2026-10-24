@@ -363,7 +363,7 @@ export function ProjectModal({
                   <select
                     id="status"
                     {...register('status')}
-                    className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-dark disabled:opacity-50"
+                    className="mt-1 w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 glass-surface disabled:opacity-50"
                     disabled={isLoading}
                   >
                     <option value="wip">WIP</option>
@@ -447,15 +447,15 @@ export function ProjectModal({
             )}
 
             {/* Search + list */}
-            <div className="border border-gray-200 dark:border-gray-700 rounded-md">
-              <div className="relative p-2 border-b border-gray-200 dark:border-gray-700">
+            <div className="border border-white/60 dark:border-white/10 rounded-md">
+              <div className="relative p-2 border-b border-white/60 dark:border-white/10">
                 <MagnifyingGlassIcon className="absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                 <input
                   type="text"
                   placeholder="Search team members..."
                   value={memberSearch}
                   onChange={(e) => setMemberSearch(e.target.value)}
-                  className="w-full pl-9 pr-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-dark focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full pl-9 pr-3 py-1.5 text-sm border border-gray-300 dark:border-gray-600 rounded-md glass-surface focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div className="max-h-40 overflow-y-auto">
@@ -660,7 +660,7 @@ export function ProjectModal({
                   {milestones.map((milestone, index) => (
                     <div
                       key={milestone.id}
-                      className="flex items-center gap-2 p-2 border border-gray-200 dark:border-gray-700 rounded-md"
+                      className="flex items-center gap-2 p-2 border border-white/60 dark:border-white/10 rounded-md"
                     >
                       <button
                         type="button"
@@ -677,7 +677,7 @@ export function ProjectModal({
                         type="text"
                         {...register(`milestones.${index}.title` as const)}
                         placeholder="Milestone title"
-                        className={`flex-1 px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-dark focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                        className={`flex-1 px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 rounded glass-surface focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                           watchedMilestones?.[index]?.completed ? 'line-through text-gray-400' : ''
                         }`}
                         disabled={isLoading}

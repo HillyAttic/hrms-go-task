@@ -293,7 +293,7 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
   };
 
   return (
-    <div className="bg-white dark:bg-gray-dark rounded-lg shadow">
+    <div className="glass-surface rounded-lg shadow">
       <div className="p-6">
         {/* Calendar Header */}
         <div className="flex items-center justify-between mb-6">
@@ -469,7 +469,7 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
                   return (
                     <div
                       key={task.id}
-                      className={`p-3 bg-white dark:bg-gray-dark rounded border transition-colors ${
+                      className={`p-3 glass-surface rounded border transition-colors ${
                         isLoading
                           ? 'cursor-wait opacity-70'
                           : 'cursor-pointer hover:bg-gray-50 dark:bg-gray-800'

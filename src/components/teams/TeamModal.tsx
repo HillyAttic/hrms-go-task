@@ -305,13 +305,13 @@ export function TeamModal({
             
             {/* Selected Members Display */}
             {selectedMembers.length > 0 && (
-              <div className="mt-2 mb-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
+              <div className="mt-2 mb-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg border border-white/60 dark:border-white/10">
                 <p className="text-xs font-medium text-gray-600 dark:text-gray-400 mb-2">Selected Members ({selectedMembers.length})</p>
                 <div className="flex flex-wrap gap-2">
                   {selectedMembers.map((member) => (
                     <div
                       key={member.id}
-                      className="flex items-center gap-2 bg-white dark:bg-gray-dark border border-gray-300 dark:border-gray-600 rounded-md px-2.5 py-1.5 shadow-sm hover:shadow-md transition-shadow"
+                      className="flex items-center gap-2 glass-surface border border-gray-300 dark:border-gray-600 rounded-md px-2.5 py-1.5 shadow-sm hover:shadow-md transition-shadow"
                     >
                       <Avatar
                         alt={member.name}

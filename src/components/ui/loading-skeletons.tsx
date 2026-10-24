@@ -6,7 +6,7 @@ import { Skeleton } from './skeleton';
  */
 export function CardSkeleton() {
   return (
-    <div className="rounded-lg border border-stroke bg-white p-6 shadow-sm dark:border-dark-3 dark:bg-gray-dark">
+    <div className="rounded-2xl border border-white/60 bg-white/60 p-6 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.22)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05]">
       {/* Avatar/Icon */}
       <div className="mb-4 flex items-start justify-between">
         <Skeleton className="size-12 rounded-full" />
@@ -49,7 +49,7 @@ export function CardGridSkeleton({ count = 6 }: { count?: number }) {
  */
 export function ListItemSkeleton() {
   return (
-    <div className="flex items-center gap-4 rounded-lg border border-stroke bg-white p-4 dark:border-dark-3 dark:bg-gray-dark">
+    <div className="flex items-center gap-4 rounded-2xl border border-white/60 bg-white/60 p-4 backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05]">
       {/* Avatar */}
       <Skeleton className="size-12 shrink-0 rounded-full" />
 
@@ -128,7 +128,7 @@ export function FormSkeleton() {
  */
 export function TableSkeleton({ rows = 5, columns = 4 }: { rows?: number; columns?: number }) {
   return (
-    <div className="rounded-lg border border-stroke bg-white dark:border-dark-3 dark:bg-gray-dark">
+    <div className="rounded-2xl border border-white/60 bg-white/60 backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05]">
       {/* Table header */}
       <div className="grid gap-4 border-b border-stroke p-4 dark:border-dark-3" style={{ gridTemplateColumns: `repeat(${columns}, 1fr)` }}>
         {Array.from({ length: columns }).map((_, index) => (
@@ -158,7 +158,7 @@ export function TableSkeleton({ rows = 5, columns = 4 }: { rows?: number; column
  */
 export function StatsCardSkeleton() {
   return (
-    <div className="rounded-lg border border-stroke bg-white p-6 shadow-sm dark:border-dark-3 dark:bg-gray-dark">
+    <div className="rounded-2xl border border-white/60 bg-white/60 p-6 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.22)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05]">
       <div className="flex items-center justify-between">
         <div className="flex-1">
           <Skeleton className="mb-2 h-4 w-24" />

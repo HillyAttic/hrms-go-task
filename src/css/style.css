@@ -3,10 +3,23 @@
 @tailwind utilities;
 
 @layer base {
+  /* Root-level guard: a stray wide element anywhere in the app must never produce a
+     horizontal scrollbar. `clip` (not `hidden`) keeps the document's single vertical
+     scroller, so sticky header/sidebar and scroll position behave normally. */
+  html {
+    overflow-x: clip;
+  }
+
   body {
     @apply bg-[#F8FAFC] text-dark-5 dark:bg-[#020D1A] dark:text-dark-6;
     margin: 0;
     font-family: system-ui, -apple-system, sans-serif;
+    /* Decorative blobs and other intentionally overflowing elements must never
+       create a horizontal scrollbar. `clip` (not `hidden`) so sticky sidebar/header
+       positioning is unaffected and no horizontal scroll box is created. */
+    overflow-x: clip;
+    /* Never let a child's intrinsic width widen the page. */
+    min-width: 0;
   }
 
   /* Loading skeleton animation */
@@ -57,6 +70,13 @@
   /* Skip to main content link */
   .skip-to-main {
     @apply absolute left-0 top-0 z-[9999] -translate-y-full bg-primary px-4 py-2 text-white transition-transform focus:translate-y-0;
+  }
+}
+
+@layer components {
+  /* Shared glass surface for cards, panels, tables and modals. */
+  .glass-surface {
+    @apply bg-white/75 backdrop-blur-md dark:bg-[#0B1430]/80;
   }
 }
 

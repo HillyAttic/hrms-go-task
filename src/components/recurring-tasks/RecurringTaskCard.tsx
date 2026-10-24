@@ -387,7 +387,7 @@ export function RecurringTaskCard({
           const hasGoToReportsButton = isManager;
           if (!hasClientsButton && !hasTeamButton && !hasPlanButton && !hasDelegateButton && !hasScheduleButton && !hasViewReportButton && !hasGoToReportsButton) return null;
           return (
-            <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700 flex flex-wrap gap-2">
+            <div className="mt-3 pt-3 border-t border-white/60 dark:border-white/10 flex flex-wrap gap-2">
               {hasClientsButton && onClientsClick && (
                 <button onClick={() => onClientsClick(task)} className="px-3 py-1.5 text-xs font-medium bg-indigo-100 text-indigo-700 hover:bg-indigo-200 dark:bg-indigo-900/30 dark:text-indigo-300 dark:hover:bg-indigo-900/50 rounded-md transition-colors flex items-center gap-1 min-h-[35px]">
                   <UserGroupIcon className="w-4 h-4" />Clients ({clientCount})

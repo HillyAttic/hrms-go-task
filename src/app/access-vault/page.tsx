@@ -186,7 +186,7 @@ export default function AccessVaultPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex gap-2 mb-6 border-b border-gray-200 dark:border-gray-700">
+      <div className="flex gap-2 mb-6 border-b border-white/60 dark:border-white/10">
         {TABS.map((tab) => (
           <button
             key={tab.value}
@@ -219,7 +219,7 @@ export default function AccessVaultPage() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder={SEARCH_PLACEHOLDER[activeTab]}
-            className="w-full pl-9 pr-9 py-2 text-sm rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full pl-9 pr-9 py-2 text-sm rounded-lg border border-gray-300 dark:border-gray-600 glass-surface text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
           {search && (
             <button
@@ -262,7 +262,7 @@ export default function AccessVaultPage() {
       </div>
 
       {/* Table */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow border border-gray-200 dark:border-gray-700 overflow-hidden">
+      <div className="glass-surface rounded-lg shadow border border-white/60 dark:border-white/10 overflow-hidden">
         {loading ? (
           <div className="p-8 text-center">
             <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-blue-600 mx-auto" />
