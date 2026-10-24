@@ -147,21 +147,21 @@ export function Notification() {
 
       <DropdownContent
         align={isMobile ? "end" : "center"}
-        className="border border-stroke bg-white px-3.5 py-3 shadow-md dark:border-dark-3 dark:bg-gray-dark min-[350px]:min-w-[24rem]"
+        className="overflow-hidden rounded-2xl border border-white/70 bg-white/85 px-3.5 py-3 shadow-[0_30px_80px_-20px_rgba(15,23,42,0.45)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#0B1430]/90 min-[350px]:min-w-[24rem]"
       >
         <div className="mb-1 flex items-center justify-between px-2 py-1.5">
-          <span className="text-lg font-medium text-dark dark:text-white">
+          <span className="text-lg font-semibold text-slate-900 dark:text-white">
             Notifications
           </span>
           <div className="flex items-center gap-2">
             {unreadCount > 0 && (
               <>
-                <span className="rounded-md bg-primary px-[9px] py-0.5 text-xs font-medium text-white">
+                <span className="rounded-full bg-gradient-to-r from-[#0447FD] to-[#7F1BFF] px-2.5 py-0.5 text-xs font-semibold text-white shadow-sm shadow-indigo-500/25">
                   {unreadCount} new
                 </span>
                 <button
                   onClick={handleMarkAllAsRead}
-                  className="text-xs text-primary hover:underline"
+                  className="text-xs font-medium text-indigo-600 hover:text-indigo-700 hover:underline dark:text-indigo-400 dark:hover:text-indigo-300"
                   title="Mark all as read"
                 >
                   Mark all read
@@ -191,8 +191,8 @@ export function Notification() {
                     href={notification.data?.url || notification.actionUrl || '#'}
                     onClick={() => handleNotificationClick(notification)}
                     className={cn(
-                      "flex items-start gap-3 rounded-lg px-2 py-2.5 outline-none hover:bg-gray-2 focus-visible:bg-gray-2 dark:hover:bg-dark-3 dark:focus-visible:bg-dark-3 transition-colors",
-                      !notification.read && "bg-blue-50 dark:bg-blue-900/10"
+                      "flex items-start gap-3 rounded-xl px-2 py-2.5 outline-none transition-colors hover:bg-white/70 focus-visible:bg-white/70 dark:hover:bg-white/10 dark:focus-visible:bg-white/10",
+                      !notification.read && "bg-indigo-50/80 dark:bg-indigo-500/10"
                     )}
                   >
                     <div className="flex-shrink-0 mt-0.5">
@@ -202,28 +202,28 @@ export function Notification() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-2">
                         <strong className={cn(
-                          "block text-sm font-medium text-dark dark:text-white",
+                          "block text-sm font-medium text-slate-900 dark:text-white",
                           !notification.read && "font-semibold"
                         )}>
                           {notification.title}
                         </strong>
                         {!notification.read && (
-                          <span className="flex-shrink-0 w-2 h-2 bg-primary rounded-full mt-1.5"></span>
+                          <span className="flex-shrink-0 w-2 h-2 bg-gradient-to-br from-[#0447FD] to-[#7F1BFF] rounded-full mt-1.5"></span>
                         )}
                       </div>
 
-                      <p className="text-sm text-dark-5 dark:text-dark-6 line-clamp-2 mt-0.5">
+                      <p className="text-sm text-slate-600 dark:text-slate-400 line-clamp-2 mt-0.5">
                         {notification.body || notification.message}
                       </p>
 
-                      <span className="text-xs text-gray-500 dark:text-gray-400 mt-1 block">
+                      <span className="text-xs text-slate-400 dark:text-slate-500 mt-1 block">
                         {timeAgo(notification.createdAt)}
                       </span>
                     </div>
 
                     <button
                       onClick={(e) => handleDeleteNotification(e, notification.id!)}
-                      className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-red-50 dark:hover:bg-red-900/20 rounded"
+                      className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded"
                       title="Delete notification"
                     >
                       <TrashIcon className="w-4 h-4 text-red-600" />
@@ -237,7 +237,7 @@ export function Notification() {
               <Link
                 href="/notifications"
                 onClick={() => setIsOpen(false)}
-                className="block rounded-lg border border-primary p-2 text-center text-sm font-medium tracking-wide text-primary outline-none transition-colors hover:bg-blue-light-5 focus:bg-blue-light-5 focus:text-primary focus-visible:border-primary dark:border-dark-3 dark:text-dark-6 dark:hover:border-dark-5 dark:hover:bg-dark-3 dark:hover:text-dark-7 dark:focus-visible:border-dark-5 dark:focus-visible:bg-dark-3 dark:focus-visible:text-dark-7"
+                className="block rounded-xl border border-white/60 bg-white/60 p-2 text-center text-sm font-medium tracking-wide text-indigo-600 outline-none transition-colors hover:bg-white/80 focus:bg-white/80 focus:text-indigo-700 dark:border-white/10 dark:bg-white/[0.05] dark:text-indigo-400 dark:hover:bg-white/10 dark:hover:text-indigo-300"
               >
                 See all notifications
               </Link>

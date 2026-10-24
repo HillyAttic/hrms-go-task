@@ -131,7 +131,7 @@ export const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
 
   // For protected pages, render with sidebar and conditionally with header
   return (
-    <div className="relative isolate flex min-h-screen bg-gradient-to-br from-[#EEF2FF] via-[#F8FAFC] to-[#F5F3FF] dark:from-[#060B18] dark:via-[#080F22] dark:to-[#0B1430]">
+    <div className="relative isolate flex min-h-screen overflow-x-clip bg-gradient-to-br from-[#EEF2FF] via-[#F8FAFC] to-[#F5F3FF] dark:from-[#060B18] dark:via-[#080F22] dark:to-[#0B1430]">
       {/* Ambient gradient wash shared by every page */}
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <div className="absolute -left-32 -top-32 h-[28rem] w-[28rem] rounded-full bg-[#0447FD]/15 blur-3xl dark:bg-[#0447FD]/20" />

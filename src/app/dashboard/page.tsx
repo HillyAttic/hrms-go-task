@@ -976,8 +976,9 @@ export default function DashboardPage() {
 
   return (
     <div className="relative isolate flex flex-col gap-4 overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#EEF2FF] via-white to-[#F5F3FF] p-4 dark:from-[#060B18] dark:via-[#080F22] dark:to-[#0B1430] sm:p-6 xl:gap-5">
-      {/* Ambient gradient wash */}
-      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
+      {/* Ambient gradient wash — `overflow-clip` (not hidden) so the decorative
+          blobs cannot extend the page's scrollable area in any direction */}
+      <div aria-hidden className="pointer-events-none absolute inset-0 -z-10 overflow-clip">
         <div className="absolute -left-24 -top-28 h-80 w-80 rounded-full bg-[#0447FD]/20 blur-3xl dark:bg-[#0447FD]/25" />
         <div className="absolute -right-20 top-10 h-72 w-72 rounded-full bg-[#7F1BFF]/20 blur-3xl dark:bg-[#7F1BFF]/25" />
         <div className="absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-[#22D3EE]/15 blur-3xl" />

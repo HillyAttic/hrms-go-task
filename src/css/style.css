@@ -7,6 +7,10 @@
     @apply bg-[#F8FAFC] text-dark-5 dark:bg-[#020D1A] dark:text-dark-6;
     margin: 0;
     font-family: system-ui, -apple-system, sans-serif;
+    /* Decorative blobs and other intentionally overflowing elements must never
+       create a horizontal scrollbar. `clip` (not `hidden`) so sticky sidebar/header
+       positioning is unaffected and no horizontal scroll box is created. */
+    overflow-x: clip;
   }
 
   /* Loading skeleton animation */

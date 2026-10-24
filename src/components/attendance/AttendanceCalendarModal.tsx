@@ -261,9 +261,9 @@ export function AttendanceCalendarModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto w-[98vw] sm:w-full p-3 sm:p-6">
+      <DialogContent className="flex max-h-[92vh] w-[98vw] max-w-4xl flex-col gap-0 overflow-hidden p-3 sm:p-4">
         {/* Header */}
-        <div className="flex justify-between items-start mb-4 sm:mb-5 gap-2 pr-8">
+        <div className="flex shrink-0 justify-between items-start mb-3 gap-2 pr-8">
           <div className="flex-1 min-w-0">
             <DialogTitle className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white truncate">
               {employeeName}
@@ -278,7 +278,7 @@ export function AttendanceCalendarModal({
         </div>
 
         {/* Month Navigation + Export */}
-        <div className="flex items-center justify-between gap-2 mb-4 sm:mb-6">
+        <div className="flex shrink-0 items-center justify-between gap-2 mb-3">
           <Button variant="outline" size="sm" onClick={previousMonth} className="flex items-center gap-1 text-xs sm:text-sm">
             <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
             <span className="hidden sm:inline">Previous</span>
@@ -306,47 +306,47 @@ export function AttendanceCalendarModal({
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
           </div>
         ) : (
-          <>
-            {/* Stats Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-4 mb-4 sm:mb-6">
-              <div className="bg-green-50 dark:bg-green-900/20 p-2 sm:p-4 rounded-lg">
-                <div className="text-lg sm:text-2xl font-bold text-green-600">{stats.present}</div>
-                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Present</div>
+          <div className="flex min-h-0 flex-1 flex-col">
+            {/* Stats Grid — compact strip so the calendar below stays visible */}
+            <div className="mb-3 grid shrink-0 grid-cols-2 gap-1.5 sm:grid-cols-4 sm:gap-2.5">
+              <div className="bg-green-50 dark:bg-green-900/20 p-1.5 sm:p-2.5 rounded-lg">
+                <div className="text-base sm:text-lg font-bold text-green-600">{stats.present}</div>
+                <div className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">Present</div>
               </div>
-              <div className="bg-red-50 dark:bg-red-900/20 p-2 sm:p-4 rounded-lg">
-                <div className="text-lg sm:text-2xl font-bold text-red-600">{stats.absent}</div>
-                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Absent</div>
+              <div className="bg-red-50 dark:bg-red-900/20 p-1.5 sm:p-2.5 rounded-lg">
+                <div className="text-base sm:text-lg font-bold text-red-600">{stats.absent}</div>
+                <div className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">Absent</div>
               </div>
-              <div className="bg-purple-50 dark:bg-purple-900/20 p-2 sm:p-4 rounded-lg">
-                <div className="text-lg sm:text-2xl font-bold text-purple-600">{stats.approvedLeave}</div>
-                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Approved Leave</div>
+              <div className="bg-purple-50 dark:bg-purple-900/20 p-1.5 sm:p-2.5 rounded-lg">
+                <div className="text-base sm:text-lg font-bold text-purple-600">{stats.approvedLeave}</div>
+                <div className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">Approved Leave</div>
               </div>
-              <div className="bg-orange-50 dark:bg-orange-900/20 p-2 sm:p-4 rounded-lg">
-                <div className="text-lg sm:text-2xl font-bold text-orange-600">{stats.halfDay}</div>
-                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Half Day</div>
+              <div className="bg-orange-50 dark:bg-orange-900/20 p-1.5 sm:p-2.5 rounded-lg">
+                <div className="text-base sm:text-lg font-bold text-orange-600">{stats.halfDay}</div>
+                <div className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">Half Day</div>
               </div>
-              <div className="bg-gray-100 dark:bg-gray-800 p-2 sm:p-4 rounded-lg">
-                <div className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">{stats.wfh}</div>
-                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">WFH</div>
+              <div className="bg-gray-100 dark:bg-gray-800 p-1.5 sm:p-2.5 rounded-lg">
+                <div className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">{stats.wfh}</div>
+                <div className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">WFH</div>
               </div>
-              <div className="bg-red-50 dark:bg-red-900/20 p-2 sm:p-4 rounded-lg">
-                <div className="text-lg sm:text-2xl font-bold text-red-600">{stats.unapprovedLeave}</div>
-                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Unapproved</div>
+              <div className="bg-red-50 dark:bg-red-900/20 p-1.5 sm:p-2.5 rounded-lg">
+                <div className="text-base sm:text-lg font-bold text-red-600">{stats.unapprovedLeave}</div>
+                <div className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">Unapproved</div>
               </div>
-              <div className="bg-blue-50 dark:bg-blue-900/20 p-2 sm:p-4 rounded-lg">
-                <div className="text-lg sm:text-2xl font-bold text-blue-600">{stats.holidays}</div>
-                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Holidays</div>
+              <div className="bg-blue-50 dark:bg-blue-900/20 p-1.5 sm:p-2.5 rounded-lg">
+                <div className="text-base sm:text-lg font-bold text-blue-600">{stats.holidays}</div>
+                <div className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">Holidays</div>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-700 p-2 sm:p-4 rounded-lg col-span-2">
-                <div className="text-lg sm:text-2xl font-bold text-gray-900 dark:text-white">{stats.totalHours.toFixed(1)}</div>
-                <div className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">Total Hours</div>
+              <div className="bg-gray-50 dark:bg-gray-700 p-1.5 sm:p-2.5 rounded-lg">
+                <div className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">{stats.totalHours.toFixed(1)}</div>
+                <div className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">Total Hours</div>
               </div>
             </div>
 
-            {/* Calendar Grid */}
-            <div className="overflow-x-auto -mx-3 sm:mx-0 px-3 sm:px-0">
+            {/* Calendar Grid — fills the remaining height so it never scrolls */}
+            <div className="flex min-h-0 flex-1 flex-col overflow-x-auto overflow-y-hidden">
               {/* Weekday headers */}
-              <div className="grid grid-cols-7 gap-1 sm:gap-2 mb-1 min-w-[280px]">
+              <div className="grid grid-cols-7 gap-1 sm:gap-1.5 mb-1 min-w-[280px] shrink-0">
                 {weekDays.map(day => (
                   <div key={day} className="text-center text-[10px] sm:text-xs font-semibold text-gray-500 dark:text-gray-400 py-1">
                     {day}
@@ -354,7 +354,7 @@ export function AttendanceCalendarModal({
                 ))}
               </div>
 
-              <div className="grid grid-cols-7 gap-1 sm:gap-2 min-w-[280px]">
+              <div className="grid min-h-0 flex-1 auto-rows-fr grid-cols-7 gap-1 sm:gap-1.5 min-w-[280px]">
                 {days.map((date, index) => {
                   if (!date) return <div key={`empty-${index}`} />;
 
@@ -364,9 +364,9 @@ export function AttendanceCalendarModal({
                   return (
                     <div
                       key={date.toISOString()}
-                      className={`p-1.5 sm:p-3 rounded-lg border ${getStatusColor(status.status)} bg-opacity-20 border-opacity-50 ${isToday ? 'ring-2 ring-blue-500' : ''}`}
+                      className={`overflow-hidden p-1 sm:p-1.5 rounded-lg border ${getStatusColor(status.status)} bg-opacity-20 border-opacity-50 ${isToday ? 'ring-2 ring-inset ring-blue-500' : ''}`}
                     >
-                      <div className="text-xs sm:text-sm font-medium text-gray-900 dark:text-white">
+                      <div className="text-[11px] sm:text-sm font-medium text-gray-900 dark:text-white">
                         {date.getDate()}
                       </div>
                       <div className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 capitalize truncate">
@@ -382,7 +382,7 @@ export function AttendanceCalendarModal({
             </div>
 
             {/* Legend */}
-            <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-[10px] sm:text-sm mt-4">
+            <div className="flex shrink-0 flex-wrap items-center gap-2 sm:gap-4 text-[10px] sm:text-sm mt-3">
               {[
                 { color: 'bg-green-500', label: 'Present' },
                 { color: 'bg-red-500', label: 'Absent' },
@@ -399,7 +399,7 @@ export function AttendanceCalendarModal({
                 </div>
               ))}
             </div>
-          </>
+          </div>
         )}
       </DialogContent>
     </Dialog>

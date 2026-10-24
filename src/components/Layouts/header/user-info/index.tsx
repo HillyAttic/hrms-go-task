@@ -73,7 +73,7 @@ export function UserInfo() {
               height={48}
             />
           ) : (
-            <div className="size-12 rounded-full bg-primary flex items-center justify-center text-white font-semibold shadow-sm">
+            <div className="size-12 rounded-full bg-gradient-to-br from-[#0447FD] to-[#7F1BFF] flex items-center justify-center text-white font-semibold shadow-sm">
               {userInitials}
             </div>
           )}
@@ -93,7 +93,7 @@ export function UserInfo() {
       </DropdownTrigger>
 
       <DropdownContent
-        className="border border-stroke bg-white shadow-md dark:border-dark-3 dark:bg-gray-dark min-[230px]:min-w-[17.5rem]"
+        className="overflow-hidden rounded-2xl border border-white/70 bg-white/85 shadow-[0_30px_80px_-20px_rgba(15,23,42,0.45)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#0B1430]/90 min-[230px]:min-w-[17.5rem]"
         align="end"
       >
         <h2 className="sr-only">User information</h2>
@@ -109,31 +109,31 @@ export function UserInfo() {
               height={48}
             />
           ) : (
-            <div className="size-12 rounded-full bg-primary flex items-center justify-center text-white font-semibold">
+            <div className="size-12 rounded-full bg-gradient-to-br from-[#0447FD] to-[#7F1BFF] flex items-center justify-center text-white font-semibold ring-2 ring-white/70 dark:ring-white/10">
               {userInitials}
             </div>
           )}
 
           <figcaption className="space-y-1 text-base font-medium">
-            <div className="mb-2 leading-none text-dark dark:text-white">
+            <div className="mb-2 font-semibold leading-none text-slate-900 dark:text-white">
               {displayName}
             </div>
 
-            <div className="leading-none text-gray-6">{displayEmail}</div>
+            <div className="leading-none text-slate-500 dark:text-slate-400">{displayEmail}</div>
             
-            <div className="text-xs text-primary font-medium">
+            <div className="text-xs font-medium text-indigo-600 dark:text-indigo-400">
               {userRole}
             </div>
           </figcaption>
         </figure>
 
-        <hr className="border-[#E8E8E8] dark:border-dark-3" />
+        <hr className="border-white/60 dark:border-white/10" />
 
-        <div className="p-2 text-base text-[#4B5563] dark:text-dark-6">
+        <div className="p-2 text-base text-slate-600 dark:text-slate-300">
           <Link
             href="/profile"
             onClick={() => setIsOpen(false)}
-            className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-[9px] hover:bg-gray-2 hover:text-dark dark:hover:bg-dark-3 dark:hover:text-white cursor-pointer"
+            className="flex w-full items-center gap-2.5 rounded-xl px-2.5 py-[9px] transition-colors hover:bg-white/70 hover:text-slate-900 dark:hover:bg-white/10 dark:hover:text-white cursor-pointer"
           >
             <UserIcon />
         
@@ -143,7 +143,7 @@ export function UserInfo() {
           <Link
             href="/my-tasks"
             onClick={() => setIsOpen(false)}
-            className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-[9px] hover:bg-gray-2 hover:text-dark dark:hover:bg-dark-3 dark:hover:text-white cursor-pointer"
+            className="flex w-full items-center gap-2.5 rounded-xl px-2.5 py-[9px] transition-colors hover:bg-white/70 hover:text-slate-900 dark:hover:bg-white/10 dark:hover:text-white cursor-pointer"
           >
             <ChecklistIcon />
 
@@ -153,7 +153,7 @@ export function UserInfo() {
           <Link
             href="/auth/forgot-password"
             onClick={() => setIsOpen(false)}
-            className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-[9px] hover:bg-gray-2 hover:text-dark dark:hover:bg-dark-3 dark:hover:text-white cursor-pointer"
+            className="flex w-full items-center gap-2.5 rounded-xl px-2.5 py-[9px] transition-colors hover:bg-white/70 hover:text-slate-900 dark:hover:bg-white/10 dark:hover:text-white cursor-pointer"
           >
             <KeyIcon />
 
@@ -161,11 +161,11 @@ export function UserInfo() {
           </Link>
         </div>
         
-        <hr className="border-[#E8E8E8] dark:border-dark-3" />
+        <hr className="border-white/60 dark:border-white/10" />
         
-        <div className="p-2 text-base text-[#4B5563] dark:text-dark-6">
+        <div className="p-2 text-base text-slate-600 dark:text-slate-300">
           <button
-            className="flex w-full items-center gap-2.5 rounded-lg px-2.5 py-[9px] hover:bg-gray-2 hover:text-dark dark:hover:bg-dark-3 dark:hover:text-white disabled:opacity-50 disabled:cursor-not-allowed"
+            className="flex w-full items-center gap-2.5 rounded-xl px-2.5 py-[9px] transition-colors hover:bg-rose-50 hover:text-rose-600 dark:hover:bg-rose-500/10 dark:hover:text-rose-400 disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={handleSignOut}
             disabled={isSigningOut}
           >
