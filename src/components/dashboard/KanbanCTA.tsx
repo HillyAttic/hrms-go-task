@@ -1,9 +1,10 @@
 'use client';
 
-import React, { useId, useState } from 'react';
+import React, { useCallback, useId, useMemo, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { ArrowRight } from 'lucide-react';
 import { useEnhancedAuth } from '@/contexts/enhanced-auth.context';
+import type { CalendarViewTarget } from '@/components/attendance/CalendarUserPickerModal';
 
 // Lazy-load the attendance calendar modal (heavy, client-only, pulls in Firestore).
 const AttendanceCalendarModal = dynamic(
@@ -14,10 +15,59 @@ const AttendanceCalendarModal = dynamic(
   { ssr: false },
 );
 
+// Admin-only: choose whose calendar to open before the calendar itself loads.
+const CalendarUserPickerModal = dynamic(
+  () =>
+    import('@/components/attendance/CalendarUserPickerModal').then(
+      (mod) => mod.CalendarUserPickerModal,
+    ),
+  { ssr: false },
+);
+
 export function KanbanCTA() {
   const artId = useId().replace(/:/g, '');
-  const { user, userProfile } = useEnhancedAuth();
+  const { user, userProfile, isAdmin } = useEnhancedAuth();
+  const [showPicker, setShowPicker] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
+  const [target, setTarget] = useState<CalendarViewTarget | null>(null);
+
+  const selfTarget = useMemo<CalendarViewTarget | null>(
+    () =>
+      user?.uid
+        ? {
+            id: user.uid,
+            name: userProfile?.displayName || user.email || 'User',
+            email: user.email || '',
+            role: userProfile?.role,
+            photoURL: userProfile?.photoURL || user.photoURL || undefined,
+          }
+        : null,
+    [user, userProfile],
+  );
+
+  // Admins pick an employee/manager first; everyone else opens their own calendar.
+  const handleViewCalendar = () => {
+    if (isAdmin) {
+      setShowPicker(true);
+      return;
+    }
+    setTarget(selfTarget);
+    setShowCalendar(true);
+  };
+
+  const handleSelect = (picked: CalendarViewTarget) => {
+    setTarget(picked);
+    setShowPicker(false);
+    setShowCalendar(true);
+  };
+
+  const handleSwitchUser = useCallback(() => {
+    setShowCalendar(false);
+    setShowPicker(true);
+  }, []);
+
+  // The person whose calendar is open (the admin's own until they pick someone).
+  const active = target ?? selfTarget;
 
   return (
     <section className="relative flex h-full min-h-[210px] flex-col overflow-hidden rounded-3xl bg-[linear-gradient(100deg,#2A54F5_0%,#4640EE_42%,#6231E8_72%,#7A2BE3_100%)] px-7 py-7 text-white shadow-[0_24px_50px_-28px_rgba(98,49,232,0.75)] md:px-10 md:py-9">
@@ -62,7 +112,8 @@ export function KanbanCTA() {
 
         <button
           type="button"
-          onClick={() => setShowCalendar(true)}
+          onClick={handleViewCalendar}
+          aria-haspopup="dialog"
           className="inline-flex shrink-0 items-center gap-2 self-start rounded-md bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-[0_6px_18px_-6px_rgba(15,23,42,0.45)] transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_24px_-8px_rgba(15,23,42,0.55)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent sm:self-center"
         >
           View Calendar
@@ -70,14 +121,25 @@ export function KanbanCTA() {
         </button>
       </div>
 
-      {/* Personal attendance calendar for the logged-in user */}
-      {user?.uid && (
+      {/* Admin only: pick the employee/manager whose calendar to review */}
+      {isAdmin && (
+        <CalendarUserPickerModal
+          open={showPicker}
+          onOpenChange={setShowPicker}
+          onSelect={handleSelect}
+          currentUser={selfTarget}
+        />
+      )}
+
+      {/* Attendance calendar for the selected person (own calendar for non-admins) */}
+      {active && (
         <AttendanceCalendarModal
           isOpen={showCalendar}
           onClose={() => setShowCalendar(false)}
-          employeeId={user.uid}
-          employeeName={userProfile?.displayName || user.email || 'User'}
-          employeeEmail={user.email || ''}
+          employeeId={active.id}
+          employeeName={active.name}
+          employeeEmail={active.email || ''}
+          onSwitchUser={isAdmin ? handleSwitchUser : undefined}
         />
       )}
     </section>

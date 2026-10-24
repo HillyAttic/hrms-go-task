@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Users } from 'lucide-react';
 import { collection, query, where, getDocs, Timestamp } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 
@@ -13,6 +13,8 @@ interface AttendanceCalendarModalProps {
   employeeId: string;
   employeeName: string;
   employeeEmail?: string;
+  /** Admins viewing somebody else's calendar can jump back to the picker. */
+  onSwitchUser?: () => void;
 }
 
 interface DayStatus {
@@ -30,6 +32,7 @@ export function AttendanceCalendarModal({
   employeeId,
   employeeName,
   employeeEmail,
+  onSwitchUser,
 }: AttendanceCalendarModalProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [attendanceData, setAttendanceData] = useState<Map<string, DayStatus>>(new Map());
@@ -263,7 +266,7 @@ export function AttendanceCalendarModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="flex max-h-[92vh] w-[98vw] max-w-4xl flex-col gap-0 overflow-hidden p-3 sm:p-4">
         {/* Header */}
-        <div className="flex shrink-0 justify-between items-start mb-3 gap-2 pr-8">
+        <div className="flex shrink-0 justify-between items-start mb-2 gap-2 pr-8">
           <div className="flex-1 min-w-0">
             <DialogTitle className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white truncate">
               {employeeName}
@@ -271,14 +274,27 @@ export function AttendanceCalendarModal({
             {employeeEmail && (
               <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 truncate">{employeeEmail}</p>
             )}
-            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-1">
-              {currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })} — Attendance Overview
-            </p>
+            {/* Month + switch action share one row to save vertical space for the grid */}
+            <div className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+              <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
+                {currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })} — Attendance Overview
+              </p>
+              {onSwitchUser && (
+                <button
+                  type="button"
+                  onClick={onSwitchUser}
+                  className="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-indigo-200 bg-indigo-50 px-2.5 py-0.5 text-[11px] font-semibold text-indigo-700 transition-colors hover:bg-indigo-100 dark:border-indigo-400/30 dark:bg-indigo-500/10 dark:text-indigo-300 dark:hover:bg-indigo-500/20"
+                >
+                  <Users className="h-3.5 w-3.5" />
+                  Switch employee
+                </button>
+              )}
+            </div>
           </div>
         </div>
 
         {/* Month Navigation + Export */}
-        <div className="flex shrink-0 items-center justify-between gap-2 mb-3">
+        <div className="flex shrink-0 items-center justify-between gap-2 mb-2">
           <Button variant="outline" size="sm" onClick={previousMonth} className="flex items-center gap-1 text-xs sm:text-sm">
             <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
             <span className="hidden sm:inline">Previous</span>
@@ -308,43 +324,45 @@ export function AttendanceCalendarModal({
         ) : (
           <div className="flex min-h-0 flex-1 flex-col">
             {/* Stats Grid — compact strip so the calendar below stays visible */}
-            <div className="mb-3 grid shrink-0 grid-cols-2 gap-1.5 sm:grid-cols-4 sm:gap-2.5">
-              <div className="bg-green-50 dark:bg-green-900/20 p-1.5 sm:p-2.5 rounded-lg">
+            <div className="mb-2 grid shrink-0 grid-cols-2 gap-1.5 sm:grid-cols-4 sm:gap-2.5">
+              <div className="bg-green-50 dark:bg-green-900/20 p-1.5 sm:p-2 rounded-lg">
                 <div className="text-base sm:text-lg font-bold text-green-600">{stats.present}</div>
                 <div className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">Present</div>
               </div>
-              <div className="bg-red-50 dark:bg-red-900/20 p-1.5 sm:p-2.5 rounded-lg">
+              <div className="bg-red-50 dark:bg-red-900/20 p-1.5 sm:p-2 rounded-lg">
                 <div className="text-base sm:text-lg font-bold text-red-600">{stats.absent}</div>
                 <div className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">Absent</div>
               </div>
-              <div className="bg-purple-50 dark:bg-purple-900/20 p-1.5 sm:p-2.5 rounded-lg">
+              <div className="bg-purple-50 dark:bg-purple-900/20 p-1.5 sm:p-2 rounded-lg">
                 <div className="text-base sm:text-lg font-bold text-purple-600">{stats.approvedLeave}</div>
                 <div className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">Approved Leave</div>
               </div>
-              <div className="bg-orange-50 dark:bg-orange-900/20 p-1.5 sm:p-2.5 rounded-lg">
+              <div className="bg-orange-50 dark:bg-orange-900/20 p-1.5 sm:p-2 rounded-lg">
                 <div className="text-base sm:text-lg font-bold text-orange-600">{stats.halfDay}</div>
                 <div className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">Half Day</div>
               </div>
-              <div className="bg-gray-100 dark:bg-gray-800 p-1.5 sm:p-2.5 rounded-lg">
+              <div className="bg-gray-100 dark:bg-gray-800 p-1.5 sm:p-2 rounded-lg">
                 <div className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">{stats.wfh}</div>
                 <div className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">WFH</div>
               </div>
-              <div className="bg-red-50 dark:bg-red-900/20 p-1.5 sm:p-2.5 rounded-lg">
+              <div className="bg-red-50 dark:bg-red-900/20 p-1.5 sm:p-2 rounded-lg">
                 <div className="text-base sm:text-lg font-bold text-red-600">{stats.unapprovedLeave}</div>
                 <div className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">Unapproved</div>
               </div>
-              <div className="bg-blue-50 dark:bg-blue-900/20 p-1.5 sm:p-2.5 rounded-lg">
+              <div className="bg-blue-50 dark:bg-blue-900/20 p-1.5 sm:p-2 rounded-lg">
                 <div className="text-base sm:text-lg font-bold text-blue-600">{stats.holidays}</div>
                 <div className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">Holidays</div>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-700 p-1.5 sm:p-2.5 rounded-lg">
+              <div className="bg-gray-50 dark:bg-gray-700 p-1.5 sm:p-2 rounded-lg">
                 <div className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">{stats.totalHours.toFixed(1)}</div>
                 <div className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">Total Hours</div>
               </div>
             </div>
 
-            {/* Calendar Grid — fills the remaining height so it never scrolls */}
-            <div className="flex min-h-0 flex-1 flex-col overflow-x-auto overflow-y-hidden">
+            {/* Calendar — fills the remaining height. Rows keep a minimum height so the
+                day / status / hours lines are never clipped; on short viewports the
+                calendar area scrolls instead of squeezing the cells. */}
+            <div className="flex min-h-0 flex-1 flex-col overflow-auto">
               {/* Weekday headers */}
               <div className="grid grid-cols-7 gap-1 sm:gap-1.5 mb-1 min-w-[280px] shrink-0">
                 {weekDays.map(day => (
@@ -354,7 +372,7 @@ export function AttendanceCalendarModal({
                 ))}
               </div>
 
-              <div className="grid min-h-0 flex-1 auto-rows-fr grid-cols-7 gap-1 sm:gap-1.5 min-w-[280px]">
+              <div className="grid min-h-0 flex-1 auto-rows-[minmax(3.5rem,1fr)] grid-cols-7 gap-1 sm:auto-rows-[minmax(4.25rem,1fr)] sm:gap-1.5 min-w-[280px]">
                 {days.map((date, index) => {
                   if (!date) return <div key={`empty-${index}`} />;
 
@@ -382,7 +400,7 @@ export function AttendanceCalendarModal({
             </div>
 
             {/* Legend */}
-            <div className="flex shrink-0 flex-wrap items-center gap-2 sm:gap-4 text-[10px] sm:text-sm mt-3">
+            <div className="flex shrink-0 flex-wrap items-center gap-2 sm:gap-4 text-[10px] sm:text-sm mt-2">
               {[
                 { color: 'bg-green-500', label: 'Present' },
                 { color: 'bg-red-500', label: 'Absent' },
