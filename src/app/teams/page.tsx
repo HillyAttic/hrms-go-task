@@ -17,6 +17,7 @@ import { ManagerGuard } from '@/components/Auth/PermissionGuard';
 import {
   PlusIcon,
   UserGroupIcon,
+  UserIcon,
   ExclamationTriangleIcon,
   ShieldExclamationIcon,
   FolderIcon,
@@ -331,7 +332,7 @@ export default function TeamsPage() {
 
         {/* View Toggle Buttons - Icon based */}
         <div className="flex justify-end">
-          <div className="inline-flex overflow-hidden rounded-md border border-white/60 bg-white/60 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
+          <div className="inline-flex overflow-hidden rounded-xl border border-slate-200/70 bg-white/70 shadow-[4px_4px_10px_rgba(163,177,198,0.4)] backdrop-blur dark:border-white/10 dark:bg-white/5 dark:shadow-[4px_4px_10px_rgba(0,0,0,0.5)]">
             <button
               onClick={() => setViewMode('grid')}
               className={`p-2.5 transition-all ${viewMode === 'grid' ? 'bg-gradient-to-r from-[#0447FD] to-[#7F1BFF] text-white shadow-lg shadow-indigo-500/25' : 'text-slate-600 hover:bg-white/80 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white'}`}
@@ -381,21 +382,21 @@ export default function TeamsPage() {
                 ))}
               </div>
             ) : (
-              /* List View - Redesigned */
-              <div className="glass-surface rounded-xl border border-white/60 dark:border-white/10 overflow-hidden shadow-sm">
-                {/* Table Header */}
-                <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-3.5 bg-gray-50 dark:bg-gray-800/80 border-b-2 border-white/60 dark:border-white/10">
+              /* List View - Neumorphism (soft-UI) plates */
+              <div className="overflow-hidden rounded-2xl border border-slate-200/70 bg-white/80 shadow-[10px_10px_28px_rgba(163,177,198,0.45)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#0B1430]/90 dark:shadow-[10px_10px_28px_rgba(0,0,0,0.6)]">
+                {/* Table Header - recessed trough */}
+                <div className="hidden md:grid grid-cols-12 gap-4 mx-4 mt-4 px-6 py-3.5 rounded-xl border border-slate-200/70 bg-gray-100/70 shadow-[inset_3px_3px_7px_rgba(163,177,198,0.35)] dark:border-white/10 dark:bg-black/20 dark:shadow-[inset_3px_3px_7px_rgba(0,0,0,0.45)]">
                   <div className="col-span-4 text-[11px] uppercase tracking-wider font-semibold text-gray-500 dark:text-gray-400">Team Name</div>
                   <div className="col-span-3 text-[11px] uppercase tracking-wider font-semibold text-gray-500 dark:text-gray-400">Leader</div>
                   <div className="col-span-2 text-[11px] uppercase tracking-wider font-semibold text-gray-500 dark:text-gray-400">Members</div>
                   <div className="col-span-1 text-[11px] uppercase tracking-wider font-semibold text-gray-500 dark:text-gray-400">Status</div>
                   <div className="col-span-2 text-[11px] uppercase tracking-wider font-semibold text-gray-500 dark:text-gray-400 text-right">Actions</div>
                 </div>
-                <div className="divide-y divide-gray-100 dark:divide-gray-800">
+                <div className="space-y-3 p-3 md:p-4">
                   {teams.map((team) => (
                     <div
                       key={team.id}
-                      className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 px-4 md:px-6 py-4 text-sm glass-surface hover:bg-gray-50/80 dark:hover:bg-gray-800/50 transition-colors"
+                      className="grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-4 px-4 md:px-6 py-4 text-sm rounded-xl border border-slate-200/70 bg-white/70 shadow-[4px_4px_10px_rgba(163,177,198,0.3)] transition-all hover:bg-white/90 hover:shadow-[6px_6px_14px_rgba(163,177,198,0.4)] dark:border-white/10 dark:bg-white/5 dark:shadow-[4px_4px_10px_rgba(0,0,0,0.45)] dark:hover:bg-white/10"
                     >
                       {/* Mobile card view */}
                       <div className="md:hidden space-y-3">
@@ -404,7 +405,7 @@ export default function TeamsPage() {
                             <div className="flex items-center gap-2 flex-wrap">
                               <span className="font-semibold text-gray-900 dark:text-white">{team.name}</span>
                               {team.linkedProjectId && (
-                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-medium bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-800">
+                                <span className="inline-flex items-center gap-1 rounded-lg border border-slate-200/80 bg-gray-100/70 px-2 py-0.5 text-[10px] font-medium text-indigo-700 shadow-[inset_2px_2px_5px_rgba(163,177,198,0.4)] dark:border-white/10 dark:bg-black/20 dark:text-indigo-300 dark:shadow-[inset_2px_2px_5px_rgba(0,0,0,0.45)]">
                                   <FolderIcon className="w-2.5 h-2.5" />
                                   {team.linkedProjectName || 'Project Team'}
                                 </span>
@@ -416,38 +417,42 @@ export default function TeamsPage() {
                               </div>
                             )}
                           </div>
-                          <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium flex-shrink-0 ${team.status === 'active' ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-800' : team.status === 'inactive' ? 'bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border border-amber-100 dark:border-amber-800' : 'bg-gray-50 text-gray-600 dark:bg-gray-800 dark:text-gray-400 border border-white/60 dark:border-white/10'}`}>
+                          <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium flex-shrink-0 border shadow-[2px_2px_5px_rgba(163,177,198,0.4)] dark:shadow-[2px_2px_5px_rgba(0,0,0,0.45)] ${team.status === 'active' ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-800' : team.status === 'inactive' ? 'bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border border-amber-100 dark:border-amber-800' : 'bg-gray-50 text-gray-600 dark:bg-gray-800 dark:text-gray-400 border border-slate-200/70 dark:border-white/10'}`}>
                             {team.status}
                           </span>
                         </div>
                         <div className="flex items-center gap-4 text-xs text-gray-600 dark:text-gray-400">
                           <div className="flex items-center gap-1.5">
-                            <UserGroupIcon className="w-3.5 h-3.5" />
+                            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-white/80 shadow-[2px_2px_4px_rgba(163,177,198,0.45)] dark:bg-white/5 dark:shadow-[2px_2px_4px_rgba(0,0,0,0.5)]">
+                              <UserIcon className="w-3.5 h-3.5 text-gray-400" />
+                            </span>
                             <span>Leader: <span className="font-medium text-gray-800 dark:text-gray-200">{team.leaderName || 'Unassigned'}</span></span>
                           </div>
                           <div className="flex items-center gap-1.5">
-                            <UserGroupIcon className="w-3.5 h-3.5" />
+                            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-white/80 shadow-[2px_2px_4px_rgba(163,177,198,0.45)] dark:bg-white/5 dark:shadow-[2px_2px_4px_rgba(0,0,0,0.5)]">
+                              <UserGroupIcon className="w-3.5 h-3.5 text-gray-400" />
+                            </span>
                             <span>{team.members.length} {team.members.length === 1 ? 'member' : 'members'}</span>
                           </div>
                         </div>
-                        <div className="flex gap-2 pt-2 border-t border-white/60 dark:border-white/10">
+                        <div className="flex gap-2 pt-3 border-t border-slate-200/70 dark:border-white/10">
                           <button
                             onClick={() => handleViewDetails(team.id!)}
-                            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-600 bg-blue-50 rounded-md hover:bg-blue-100 dark:text-blue-400 dark:bg-blue-900/20 dark:hover:bg-blue-900/40 transition-colors"
+                            className="flex items-center gap-1.5 rounded-xl border border-slate-200/70 bg-white/70 px-3 py-1.5 text-xs font-medium text-blue-600 shadow-[3px_3px_7px_rgba(163,177,198,0.4)] transition-all hover:bg-white/90 hover:text-blue-700 active:shadow-[inset_2px_2px_5px_rgba(163,177,198,0.45)] dark:border-white/10 dark:bg-white/5 dark:text-blue-400 dark:shadow-[3px_3px_7px_rgba(0,0,0,0.45)] dark:hover:bg-white/10 dark:active:shadow-[inset_2px_2px_5px_rgba(0,0,0,0.5)]"
                             aria-label="View details"
                           >
                             <EyeIcon className="w-3.5 h-3.5" />View
                           </button>
                           <button
                             onClick={() => handleEditClick(team)}
-                            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-indigo-600 bg-indigo-50 rounded-md hover:bg-indigo-100 dark:text-indigo-400 dark:bg-indigo-900/20 dark:hover:bg-indigo-900/40 transition-colors"
+                            className="flex items-center gap-1.5 rounded-xl border border-slate-200/70 bg-white/70 px-3 py-1.5 text-xs font-medium text-indigo-600 shadow-[3px_3px_7px_rgba(163,177,198,0.4)] transition-all hover:bg-white/90 hover:text-indigo-700 active:shadow-[inset_2px_2px_5px_rgba(163,177,198,0.45)] dark:border-white/10 dark:bg-white/5 dark:text-indigo-400 dark:shadow-[3px_3px_7px_rgba(0,0,0,0.45)] dark:hover:bg-white/10 dark:active:shadow-[inset_2px_2px_5px_rgba(0,0,0,0.5)]"
                             aria-label="Edit team"
                           >
                             <PencilIcon className="w-3.5 h-3.5" />Edit
                           </button>
                           <button
                             onClick={() => handleDeleteTeam(team.id!)}
-                            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-red-600 bg-red-50 rounded-md hover:bg-red-100 dark:text-red-400 dark:bg-red-900/20 dark:hover:bg-red-900/40 transition-colors"
+                            className="flex items-center gap-1.5 rounded-xl border border-slate-200/70 bg-white/70 px-3 py-1.5 text-xs font-medium text-red-600 shadow-[3px_3px_7px_rgba(163,177,198,0.4)] transition-all hover:bg-white/90 hover:text-red-700 active:shadow-[inset_2px_2px_5px_rgba(163,177,198,0.45)] dark:border-white/10 dark:bg-white/5 dark:text-red-400 dark:shadow-[3px_3px_7px_rgba(0,0,0,0.45)] dark:hover:bg-white/10 dark:active:shadow-[inset_2px_2px_5px_rgba(0,0,0,0.5)]"
                             aria-label="Delete team"
                           >
                             <TrashIcon className="w-3.5 h-3.5" />Delete
@@ -458,14 +463,14 @@ export default function TeamsPage() {
                       {/* Desktop grid view */}
                       <div className="hidden md:contents">
                         <div className="col-span-4 flex items-center gap-3">
-                          <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-gradient-to-br from-blue-500 to-blue-600 flex items-center justify-center text-white text-sm font-bold shadow-sm">
+                          <div className="flex-shrink-0 w-9 h-9 rounded-xl bg-gradient-to-br from-[#0447FD] to-[#7F1BFF] flex items-center justify-center text-white text-sm font-bold shadow-[3px_3px_7px_rgba(163,177,198,0.5)] dark:shadow-[3px_3px_7px_rgba(0,0,0,0.5)]">
                             {team.name.charAt(0).toUpperCase()}
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center gap-2 flex-wrap">
                               <span className="font-semibold text-gray-900 dark:text-white truncate">{team.name}</span>
                               {team.linkedProjectId && (
-                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-medium bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-800 flex-shrink-0">
+                                <span className="inline-flex items-center gap-1 rounded-lg border border-slate-200/80 bg-gray-100/70 px-2 py-0.5 text-[10px] font-medium text-indigo-700 shadow-[inset_2px_2px_5px_rgba(163,177,198,0.4)] dark:border-white/10 dark:bg-black/20 dark:text-indigo-300 dark:shadow-[inset_2px_2px_5px_rgba(0,0,0,0.45)] flex-shrink-0">
                                   <FolderIcon className="w-2.5 h-2.5" />
                                   {team.linkedProjectName || 'Project Team'}
                                 </span>
@@ -478,22 +483,27 @@ export default function TeamsPage() {
                             )}
                           </div>
                         </div>
-                        <div className="col-span-3 text-gray-700 dark:text-gray-300 flex items-center">
-                          <span className="text-gray-600 dark:text-gray-400">{team.leaderName || 'Unassigned'}</span>
+                        <div className="col-span-3 text-gray-700 dark:text-gray-300 flex items-center gap-2">
+                          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-white/80 shadow-[2px_2px_4px_rgba(163,177,198,0.45)] dark:bg-white/5 dark:shadow-[2px_2px_4px_rgba(0,0,0,0.5)]">
+                            <UserIcon className="w-3.5 h-3.5 text-gray-400" />
+                          </span>
+                          <span className="text-gray-600 dark:text-gray-400 truncate">{team.leaderName || 'Unassigned'}</span>
                         </div>
                         <div className="col-span-2 text-gray-700 dark:text-gray-300 flex items-center gap-2">
-                          <UserGroupIcon className="w-4 h-4 text-gray-400" />
+                          <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-white/80 shadow-[2px_2px_4px_rgba(163,177,198,0.45)] dark:bg-white/5 dark:shadow-[2px_2px_4px_rgba(0,0,0,0.5)]">
+                            <UserGroupIcon className="w-3.5 h-3.5 text-gray-400" />
+                          </span>
                           <span className="font-medium">{team.members.length}</span>
                         </div>
                         <div className="col-span-1 flex items-center">
-                          <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium ${team.status === 'active' ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-800' : team.status === 'inactive' ? 'bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border border-amber-100 dark:border-amber-800' : 'bg-gray-50 text-gray-600 dark:bg-gray-800 dark:text-gray-400 border border-white/60 dark:border-white/10'}`}>
+                          <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-medium border shadow-[2px_2px_5px_rgba(163,177,198,0.4)] dark:shadow-[2px_2px_5px_rgba(0,0,0,0.45)] ${team.status === 'active' ? 'bg-emerald-50 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-800' : team.status === 'inactive' ? 'bg-amber-50 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400 border border-amber-100 dark:border-amber-800' : 'bg-gray-50 text-gray-600 dark:bg-gray-800 dark:text-gray-400 border border-slate-200/70 dark:border-white/10'}`}>
                             {team.status}
                           </span>
                         </div>
-                        <div className="col-span-2 flex items-center justify-end gap-1">
+                        <div className="col-span-2 flex items-center justify-end gap-2">
                           <button
                             onClick={() => handleViewDetails(team.id!)}
-                            className="p-2 rounded-lg text-blue-600 hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-900/20 transition-colors"
+                            className="p-2 rounded-lg border border-slate-200/70 bg-white/70 text-blue-600 shadow-[3px_3px_7px_rgba(163,177,198,0.4)] transition-all hover:bg-white/90 hover:text-blue-700 active:shadow-[inset_2px_2px_5px_rgba(163,177,198,0.45)] dark:border-white/10 dark:bg-white/5 dark:text-blue-400 dark:shadow-[3px_3px_7px_rgba(0,0,0,0.45)] dark:hover:bg-white/10 dark:hover:text-blue-300 dark:active:shadow-[inset_2px_2px_5px_rgba(0,0,0,0.5)]"
                             aria-label="View details"
                             title="View details"
                           >
@@ -501,7 +511,7 @@ export default function TeamsPage() {
                           </button>
                           <button
                             onClick={() => handleEditClick(team)}
-                            className="p-2 rounded-lg text-indigo-600 hover:bg-indigo-50 dark:text-indigo-400 dark:hover:bg-indigo-900/20 transition-colors"
+                            className="p-2 rounded-lg border border-slate-200/70 bg-white/70 text-indigo-600 shadow-[3px_3px_7px_rgba(163,177,198,0.4)] transition-all hover:bg-white/90 hover:text-indigo-700 active:shadow-[inset_2px_2px_5px_rgba(163,177,198,0.45)] dark:border-white/10 dark:bg-white/5 dark:text-indigo-400 dark:shadow-[3px_3px_7px_rgba(0,0,0,0.45)] dark:hover:bg-white/10 dark:hover:text-indigo-300 dark:active:shadow-[inset_2px_2px_5px_rgba(0,0,0,0.5)]"
                             aria-label="Edit team"
                             title="Edit team"
                           >
@@ -509,7 +519,7 @@ export default function TeamsPage() {
                           </button>
                           <button
                             onClick={() => handleDeleteTeam(team.id!)}
-                            className="p-2 rounded-lg text-red-600 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20 transition-colors"
+                            className="p-2 rounded-lg border border-slate-200/70 bg-white/70 text-red-600 shadow-[3px_3px_7px_rgba(163,177,198,0.4)] transition-all hover:bg-white/90 hover:text-red-700 active:shadow-[inset_2px_2px_5px_rgba(163,177,198,0.45)] dark:border-white/10 dark:bg-white/5 dark:text-red-400 dark:shadow-[3px_3px_7px_rgba(0,0,0,0.45)] dark:hover:bg-white/10 dark:hover:text-red-300 dark:active:shadow-[inset_2px_2px_5px_rgba(0,0,0,0.5)]"
                             aria-label="Delete team"
                             title="Delete team"
                           >

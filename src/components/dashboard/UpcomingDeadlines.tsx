@@ -41,7 +41,7 @@ export function UpcomingDeadlines({ tasks, onTaskClick }: UpcomingDeadlinesProps
   };
 
   return (
-    <Card className="flex h-full min-h-[250px] flex-col overflow-hidden rounded-2xl border-white/60 bg-white/60 p-5 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.22)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05]">
+    <Card className="flex h-full min-h-[250px] flex-col overflow-hidden rounded-2xl border-slate-200/80 bg-white/70 p-5 shadow-[6px_6px_14px_rgba(148,163,199,0.35),-6px_-6px_14px_rgba(255,255,255,0.95)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05] dark:shadow-[6px_6px_14px_rgba(0,0,0,0.55),-6px_-6px_14px_rgba(255,255,255,0.04)]">
       <div className="mb-1 flex shrink-0 items-center justify-between gap-2">
         <h3 className="flex items-center gap-1.5 text-[15px] font-semibold text-slate-900 dark:text-white">
           <CalendarDays className="h-4 w-4 text-indigo-500/70" />
@@ -72,7 +72,7 @@ export function UpcomingDeadlines({ tasks, onTaskClick }: UpcomingDeadlinesProps
               <button
                 key={task.id}
                 onClick={() => onTaskClick?.(task.id)}
-                className="flex w-full items-center justify-between gap-2 rounded-md px-2 py-2 text-left transition-colors hover:bg-white/70 dark:hover:bg-white/10"
+                className="flex w-full items-center justify-between gap-2 rounded-lg border border-transparent px-2 py-2 text-left transition-all hover:border-slate-200/70 hover:bg-white/80 hover:shadow-[2px_2px_5px_rgba(148,163,199,0.35),-2px_-2px_5px_rgba(255,255,255,0.9)] active:shadow-[inset_2px_2px_4px_rgba(148,163,199,0.35)] dark:hover:border-white/10 dark:hover:bg-white/[0.08] dark:hover:shadow-[2px_2px_6px_rgba(0,0,0,0.45)]"
               >
                 <div className="min-w-0">
                   <p className="truncate text-xs font-medium text-slate-900 dark:text-white">{task.title}</p>

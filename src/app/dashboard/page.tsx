@@ -1173,7 +1173,7 @@ export default function DashboardPage() {
                   closeModal(); // Close modal context to show header
                   router.push('/tasks/non-recurring');
                 }}
-                className="w-full rounded-2xl border border-slate-200/70 bg-white/50 p-4 text-left transition-all hover:border-indigo-300 hover:bg-white/80 dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-indigo-400/40 dark:hover:bg-white/[0.06]"
+                className="w-full rounded-2xl border border-slate-200/70 bg-white/70 p-4 text-left shadow-[4px_4px_10px_rgba(148,163,199,0.35),-4px_-4px_10px_rgba(255,255,255,0.95)] transition-all hover:border-indigo-300 hover:bg-white/90 hover:shadow-[6px_6px_14px_rgba(148,163,199,0.45),-5px_-5px_12px_rgba(255,255,255,1)] active:shadow-[inset_3px_3px_6px_rgba(148,163,199,0.4),inset_-3px_-3px_6px_rgba(255,255,255,0.85)] dark:border-white/10 dark:bg-white/[0.03] dark:shadow-[4px_4px_10px_rgba(0,0,0,0.5),-4px_-4px_10px_rgba(255,255,255,0.03)] dark:hover:border-indigo-400/40 dark:hover:bg-white/[0.06] dark:active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.5)]"
               >
                 <h4 className="font-semibold">Non-Recurring Task</h4>
                 <p className="text-sm text-gray-600">One-time task with a single due date</p>
@@ -1184,7 +1184,7 @@ export default function DashboardPage() {
                   closeModal(); // Close modal context to show header
                   router.push('/tasks/recurring');
                 }}
-                className="w-full rounded-2xl border border-slate-200/70 bg-white/50 p-4 text-left transition-all hover:border-emerald-300 hover:bg-white/80 dark:border-white/10 dark:bg-white/[0.03] dark:hover:border-emerald-400/40 dark:hover:bg-white/[0.06]"
+                className="w-full rounded-2xl border border-slate-200/70 bg-white/70 p-4 text-left shadow-[4px_4px_10px_rgba(148,163,199,0.35),-4px_-4px_10px_rgba(255,255,255,0.95)] transition-all hover:border-emerald-300 hover:bg-white/90 hover:shadow-[6px_6px_14px_rgba(148,163,199,0.45),-5px_-5px_12px_rgba(255,255,255,1)] active:shadow-[inset_3px_3px_6px_rgba(148,163,199,0.4),inset_-3px_-3px_6px_rgba(255,255,255,0.85)] dark:border-white/10 dark:bg-white/[0.03] dark:shadow-[4px_4px_10px_rgba(0,0,0,0.5),-4px_-4px_10px_rgba(255,255,255,0.03)] dark:hover:border-emerald-400/40 dark:hover:bg-white/[0.06] dark:active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.5)]"
               >
                 <h4 className="font-semibold">Recurring Task</h4>
                 <p className="text-sm text-gray-600">Task that repeats on a schedule</p>

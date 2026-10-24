@@ -69,7 +69,7 @@ const actionClass =
   'inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-md px-2.5 py-1.5 text-[11px] font-semibold transition-colors';
 
 const secondaryActionClass =
-  `${actionClass} border border-slate-200/80 bg-white/70 text-slate-600 backdrop-blur hover:bg-white/90 hover:text-slate-900 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white`;
+  `${actionClass} border border-slate-200/80 bg-white/70 text-slate-600 shadow-[2px_2px_5px_rgba(148,163,199,0.4),-2px_-2px_5px_rgba(255,255,255,0.95)] backdrop-blur hover:bg-white/90 hover:text-slate-900 active:shadow-[inset_2px_2px_4px_rgba(148,163,199,0.4)] dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:shadow-[2px_2px_6px_rgba(0,0,0,0.45),-2px_-2px_5px_rgba(255,255,255,0.04)] dark:hover:bg-white/10 dark:hover:text-white dark:active:shadow-[inset_2px_2px_4px_rgba(0,0,0,0.5)]`;
 
 export function AttendanceTrackingCard({ userId }: AttendanceTrackingCardProps) {
   const { user, userProfile } = useEnhancedAuth();
@@ -277,7 +277,7 @@ export function AttendanceTrackingCard({ userId }: AttendanceTrackingCardProps) 
 
   return (
     <>
-      <Card className="flex h-full min-h-[220px] flex-col overflow-hidden rounded-2xl border-white/60 bg-white/60 p-5 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.22)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05]">
+      <Card className="flex h-full min-h-[220px] flex-col overflow-hidden rounded-2xl border-slate-200/80 bg-white/70 p-5 shadow-[6px_6px_14px_rgba(148,163,199,0.35),-6px_-6px_14px_rgba(255,255,255,0.95)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05] dark:shadow-[6px_6px_14px_rgba(0,0,0,0.55),-6px_-6px_14px_rgba(255,255,255,0.04)]">
         <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-start sm:justify-between sm:gap-3">
           <div className="min-w-0">
             <div className="flex items-center gap-2">
@@ -404,7 +404,7 @@ export function AttendanceTrackingCard({ userId }: AttendanceTrackingCardProps) 
             <button
               onClick={refresh}
               disabled={loading}
-              className="flex h-10 w-full items-center justify-center gap-1.5 rounded-md border border-slate-200/80 bg-white/70 px-4 text-sm font-medium text-slate-600 transition-colors hover:bg-white/90 hover:text-slate-900 disabled:opacity-60 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"
+              className="flex h-10 w-full items-center justify-center gap-1.5 rounded-xl border border-slate-200/80 bg-white/70 px-4 text-sm font-medium text-slate-600 shadow-[3px_3px_7px_rgba(148,163,199,0.4),-3px_-3px_7px_rgba(255,255,255,0.95)] transition-all hover:bg-white/90 hover:text-slate-900 active:shadow-[inset_3px_3px_6px_rgba(148,163,199,0.4)] disabled:opacity-60 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:shadow-[3px_3px_7px_rgba(0,0,0,0.45),-3px_-3px_7px_rgba(255,255,255,0.04)] dark:hover:bg-white/10 dark:hover:text-white dark:active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.5)]"
             >
               <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
               Refresh Status

@@ -68,7 +68,7 @@ export function QuickActions({
     : actions;
 
   return (
-    <Card className="flex h-full min-h-[250px] flex-col overflow-hidden rounded-2xl border-white/60 bg-white/60 p-5 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.22)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05]">
+    <Card className="flex h-full min-h-[250px] flex-col overflow-hidden rounded-2xl border-slate-200/80 bg-white/70 p-5 shadow-[6px_6px_14px_rgba(148,163,199,0.35),-6px_-6px_14px_rgba(255,255,255,0.95)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05] dark:shadow-[6px_6px_14px_rgba(0,0,0,0.55),-6px_-6px_14px_rgba(255,255,255,0.04)]">
       <h3 className="flex shrink-0 items-center gap-1.5 text-[15px] font-semibold text-slate-900 dark:text-white">
         <Bars3BottomLeftIcon className="h-4 w-4 text-indigo-500/70" />
         Quick Actions
@@ -78,7 +78,7 @@ export function QuickActions({
           <button
             key={index}
             onClick={action.onClick}
-            className={`relative flex min-h-[34px] items-center justify-center gap-1.5 rounded-md px-1.5 py-1.5 text-center text-[11px] font-semibold leading-tight text-white shadow-sm transition-all 2xl:text-[11.5px] ${action.color}`}
+            className={`relative flex min-h-[34px] items-center justify-center gap-1.5 rounded-md px-1.5 py-1.5 text-center text-[11px] font-semibold leading-tight text-white shadow-[2px_2px_5px_rgba(148,163,199,0.45),-2px_-2px_5px_rgba(255,255,255,0.7)] transition-all active:shadow-[inset_2px_2px_4px_rgba(15,23,42,0.3)] dark:shadow-[2px_2px_6px_rgba(0,0,0,0.45),-2px_-2px_5px_rgba(255,255,255,0.05)] 2xl:text-[11.5px] ${action.color}`}
           >
             {action.icon}
             <span className="min-w-0">{action.label}</span>

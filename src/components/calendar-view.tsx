@@ -293,37 +293,36 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
   };
 
   return (
-    <div className="glass-surface rounded-lg shadow">
-      <div className="p-6">
-        {/* Calendar Header */}
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+    <div className="glass-surface rounded-xl border border-white/60 dark:border-white/10 p-4 md:p-6">
+      {/* Calendar Header */}
+      <div className="flex items-center justify-between mb-6">
+        <button
+          onClick={() => navigateMonth('prev')}
+          className="p-2 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-700 rounded-lg transition-colors"
+        >
+          <ChevronLeftIcon className="w-5 h-5" />
+        </button>
+        <div className="flex items-center gap-3">
+          <h2 className="text-xl font-semibold">
             {currentDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
           </h2>
-          <div className="flex items-center space-x-2">
-            <button
-              onClick={() => navigateMonth('prev')}
-              className="p-2 rounded-full hover:bg-gray-100 dark:bg-gray-700"
-            >
-              <ChevronLeftIcon className="w-5 h-5" />
-            </button>
-            <button
-              onClick={() => setCurrentDate(new Date())}
-              className="px-3 py-1 text-sm rounded-md bg-blue-600 text-white hover:bg-blue-700"
-            >
-              Today
-            </button>
-            <button
-              onClick={() => navigateMonth('next')}
-              className="p-2 rounded-full hover:bg-gray-100 dark:bg-gray-700"
-            >
-              <ChevronRightIcon className="w-5 h-5" />
-            </button>
-          </div>
+          <button
+            onClick={() => setCurrentDate(new Date())}
+            className="px-3 py-1 text-sm rounded-md bg-blue-600 text-white hover:bg-blue-700"
+          >
+            Today
+          </button>
         </div>
+        <button
+          onClick={() => navigateMonth('next')}
+          className="p-2 hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-700 rounded-lg transition-colors"
+        >
+          <ChevronRightIcon className="w-5 h-5" />
+        </button>
+      </div>
 
         {/* Legend - Responsive */}
-        <div className="mb-4 flex flex-col md:flex-row md:items-center gap-2 md:gap-4 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">
+        <div className="mb-4 rounded-lg border border-white/60 dark:border-white/10 bg-white/50 dark:bg-white/5 p-3 flex flex-col md:flex-row md:items-center gap-2 md:gap-4 text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">
           <div className="flex items-center gap-1">
             <ArrowPathIcon className="w-3 h-3 sm:w-4 sm:h-4" />
             <span>Recurring Task</span>
@@ -357,16 +356,16 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
         </div>
 
         {/* Weekday Headers - Desktop only */}
-        <div className="hidden md:grid grid-cols-7 gap-1 mb-2">
+        <div className="hidden md:grid grid-cols-7 gap-2 mb-2">
           {weekdays.map(day => (
-            <div key={day} className="p-2 text-center text-sm font-medium text-gray-500 dark:text-gray-400">
+            <div key={day} className="text-center font-semibold text-sm text-gray-600 dark:text-gray-400 py-2">
               {day}
             </div>
           ))}
         </div>
 
         {/* Calendar Grid - Desktop: 7 columns, Mobile: Vertical list */}
-        <div className="md:grid md:grid-cols-7 md:gap-1 space-y-2 md:space-y-0">
+        <div className="md:grid md:grid-cols-7 md:gap-2 space-y-2 md:space-y-0">
           {days.map((day, index) => {
             const dayTasks = day ? getTasksForDate(day) : [];
             const isToday = day &&
@@ -380,16 +379,21 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
 
             // Skip rendering empty days on mobile (days from prev/next month)
             if (!day) {
-              return <div key={index} className="hidden md:block border-transparent" />;
+              return (
+                <div
+                  key={index}
+                  className="hidden md:block bg-gray-100/70 dark:bg-black/20 border border-slate-200/70 dark:border-white/10 rounded-xl min-h-[100px] shadow-[inset_4px_4px_8px_rgba(163,177,198,0.3),inset_-4px_-4px_8px_rgba(255,255,255,0.8)] dark:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.45),inset_-4px_-4px_8px_rgba(255,255,255,0.03)]"
+                />
+              );
             }
 
             return (
               <div
                 key={index}
-                className={`min-h-24 p-3 md:p-1 border rounded flex flex-col ${
-                  day ? 'border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer' : 'border-transparent'
-                } ${isToday ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-300' : ''} ${
-                  isSelected ? 'bg-blue-100 dark:bg-blue-900/30 border-blue-400' : ''
+                className={`relative min-h-[100px] flex flex-col rounded-xl border border-slate-200/80 dark:border-white/10 p-3 md:p-2 glass-surface transition-all duration-200 group ${
+                  isSelected
+                    ? 'bg-blue-50/60 dark:bg-blue-900/20 shadow-[inset_4px_4px_8px_rgba(163,177,198,0.4),inset_-4px_-4px_8px_rgba(255,255,255,0.8)] dark:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.5),inset_-4px_-4px_8px_rgba(255,255,255,0.04)]'
+                    : 'cursor-pointer shadow-[5px_5px_12px_rgba(163,177,198,0.35),-5px_-5px_12px_rgba(255,255,255,0.95)] dark:shadow-[5px_5px_12px_rgba(0,0,0,0.5),-5px_-5px_12px_rgba(255,255,255,0.04)] hover:bg-blue-50/60 dark:hover:bg-blue-900/20 hover:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.4),inset_-4px_-4px_8px_rgba(255,255,255,0.8)] dark:hover:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.5),inset_-4px_-4px_8px_rgba(255,255,255,0.04)]'
                 }`}
                 onClick={() => day && setSelectedDate(day)}
               >
@@ -403,8 +407,14 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
                   )}
                 </div>
 
-                {/* Desktop: Show just day number */}
-                <div className={`hidden md:block text-sm font-medium ${isToday ? 'text-blue-700 dark:text-blue-400' : 'text-gray-900 dark:text-white'}`}>
+                {/* Desktop: Show just day number in a soft-UI chip (today gets the brand gradient) */}
+                <div
+                  className={`hidden md:flex w-7 h-7 items-center justify-center rounded-full text-sm font-semibold transition-colors ${
+                    isToday
+                      ? 'bg-gradient-to-br from-[#0447FD] to-[#7F1BFF] text-white shadow-[0_4px_10px_-2px_rgba(4,71,253,0.5)]'
+                      : 'bg-gray-50/90 dark:bg-white/5 text-gray-900 dark:text-white shadow-[2px_2px_5px_rgba(163,177,198,0.5),-2px_-2px_5px_rgba(255,255,255,0.95)] dark:shadow-[2px_2px_5px_rgba(0,0,0,0.45),-2px_-2px_5px_rgba(255,255,255,0.04)]'
+                  }`}
+                >
                   {day.getDate()}
                 </div>
 
@@ -458,7 +468,7 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
 
         {/* Selected Date Details */}
         {selectedDate && (
-          <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
+          <div className="mt-6 glass-surface rounded-xl border border-white/60 dark:border-white/10 p-4">
             <h3 className="font-medium text-gray-900 dark:text-white mb-2">
               Tasks for {formatDate(selectedDate)}
             </h3>
@@ -469,10 +479,10 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
                   return (
                     <div
                       key={task.id}
-                      className={`p-3 glass-surface rounded border transition-colors ${
+                      className={`p-3 glass-surface rounded-lg border border-white/60 dark:border-white/10 shadow-[4px_4px_10px_rgba(163,177,198,0.25)] dark:shadow-[4px_4px_10px_rgba(0,0,0,0.4)] transition-colors ${
                         isLoading
                           ? 'cursor-wait opacity-70'
-                          : 'cursor-pointer hover:bg-gray-50 dark:bg-gray-800'
+                          : 'cursor-pointer hover:bg-blue-50/60 dark:hover:bg-blue-900/20'
                       }`}
                       onClick={(e) => handleTaskClick(task, e, selectedDate)}
                     >
@@ -513,7 +523,6 @@ export function CalendarView({ tasks, onTaskClick }: CalendarViewProps) {
             )}
           </div>
         )}
-      </div>
 
       {/* Client Tracking Modal */}
       {selectedTask && fullRecurringTask && (

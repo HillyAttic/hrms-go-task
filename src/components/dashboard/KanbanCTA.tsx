@@ -70,7 +70,7 @@ export function KanbanCTA() {
   const active = target ?? selfTarget;
 
   return (
-    <section className="relative flex h-full min-h-[210px] flex-col overflow-hidden rounded-3xl bg-[linear-gradient(100deg,#2A54F5_0%,#4640EE_42%,#6231E8_72%,#7A2BE3_100%)] px-7 py-7 text-white shadow-[0_24px_50px_-28px_rgba(98,49,232,0.75)] md:px-10 md:py-9">
+    <section className="relative flex h-full min-h-[210px] flex-col overflow-hidden rounded-3xl bg-[linear-gradient(100deg,#2A54F5_0%,#4640EE_42%,#6231E8_72%,#7A2BE3_100%)] px-7 py-7 text-white shadow-[8px_8px_20px_rgba(98,49,232,0.35),-6px_-6px_18px_rgba(255,255,255,0.9)] ring-1 ring-white/15 md:px-10 md:py-9 dark:shadow-[8px_8px_20px_rgba(0,0,0,0.55),-6px_-6px_18px_rgba(255,255,255,0.04)] dark:ring-white/10">
       {/* Soft translucent waves rising from the bottom edge */}
       <svg
         className="pointer-events-none absolute inset-0 h-full w-full"
@@ -114,7 +114,7 @@ export function KanbanCTA() {
           type="button"
           onClick={handleViewCalendar}
           aria-haspopup="dialog"
-          className="inline-flex shrink-0 items-center gap-2 self-start rounded-md bg-white px-5 py-3 text-sm font-semibold text-slate-900 shadow-[0_6px_18px_-6px_rgba(15,23,42,0.45)] transition-all hover:-translate-y-0.5 hover:shadow-[0_10px_24px_-8px_rgba(15,23,42,0.55)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent sm:self-center"
+          className="inline-flex shrink-0 items-center gap-2 self-end mb-6 rounded-xl bg-white px-5 py-3 text-sm font-semibold text-slate-900 transition-all hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
         >
           View Calendar
           <ArrowRight className="h-4 w-4" />
@@ -140,6 +140,7 @@ export function KanbanCTA() {
           employeeName={active.name}
           employeeEmail={active.email || ''}
           onSwitchUser={isAdmin ? handleSwitchUser : undefined}
+          softUI
         />
       )}
     </section>

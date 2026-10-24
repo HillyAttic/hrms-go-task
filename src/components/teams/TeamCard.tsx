@@ -22,8 +22,10 @@ interface TeamCardProps {
 }
 
 /**
- * TeamCard Component - Enhanced with richer visual design
- * Displays team information in a card format with improved hierarchy
+ * TeamCard Component - Neumorphism (soft-UI) plate
+ * Displays team information in a card format with improved hierarchy.
+ * Shadows use the cool-grey depth layer only, so the plates read as extruded
+ * rather than haloed on the dimmed backdrop.
  */
 export function TeamCard({ team, onEdit, onDelete, onViewDetails, selected = false, onSelect }: TeamCardProps) {
   // Generate initials from name for avatar fallback
@@ -59,14 +61,11 @@ export function TeamCard({ team, onEdit, onDelete, onViewDetails, selected = fal
 
   return (
     <Card
-      className={`group hover:shadow-xl transition-all duration-300 cursor-pointer overflow-hidden ${selected ? 'ring-2 ring-blue-500' : ''}`}
+      className={`group overflow-hidden rounded-2xl border border-slate-200/70 bg-white/80 shadow-[10px_10px_28px_rgba(163,177,198,0.45)] backdrop-blur-2xl transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[14px_14px_34px_rgba(163,177,198,0.55)] dark:border-white/10 dark:bg-[#0B1430]/90 dark:shadow-[10px_10px_28px_rgba(0,0,0,0.6)] dark:hover:shadow-[14px_14px_34px_rgba(0,0,0,0.7)] ${selected ? 'ring-2 ring-[#0447FD]/70' : ''} cursor-pointer`}
       onClick={() => {
         onViewDetails(team.id!);
       }}
     >
-      {/* Colored top accent bar */}
-      <div className={`h-1 ${team.status === 'active' ? 'bg-gradient-to-r from-emerald-400 to-emerald-500' : team.status === 'inactive' ? 'bg-gradient-to-r from-amber-400 to-amber-500' : 'bg-gradient-to-r from-gray-400 to-gray-500'}`} />
-
       <CardContent className="p-5">
         {/* Header with Team Name and Status Badge */}
         <div className="flex items-start justify-between mb-3">
@@ -75,14 +74,14 @@ export function TeamCard({ team, onEdit, onDelete, onViewDetails, selected = fal
               <h3 className="text-base font-bold text-gray-900 dark:text-white truncate leading-tight">
                 {team.name}
               </h3>
-              <Badge variant={getStatusVariant(team.status)}>
+              <Badge variant={getStatusVariant(team.status)} className="border border-slate-200/70 shadow-[2px_2px_5px_rgba(163,177,198,0.4)] dark:border-white/10 dark:shadow-[2px_2px_5px_rgba(0,0,0,0.45)]">
                 {team.status}
               </Badge>
             </div>
             {/* Show linked project if this team is auto-synced from a project */}
             {team.linkedProjectId && (
               <div className="mt-1">
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-medium bg-indigo-50 text-indigo-700 dark:bg-indigo-900/30 dark:text-indigo-300 border border-indigo-100 dark:border-indigo-800">
+                <span className="inline-flex items-center gap-1 rounded-lg border border-slate-200/80 bg-gray-100/70 px-2.5 py-1 text-[10px] font-medium text-indigo-700 shadow-[inset_2px_2px_5px_rgba(163,177,198,0.4)] dark:border-white/10 dark:bg-black/20 dark:text-indigo-300 dark:shadow-[inset_2px_2px_5px_rgba(0,0,0,0.45)]">
                   <FolderIcon className="w-3 h-3" />
                   {team.linkedProjectName || 'Project Team'}
                 </span>
@@ -99,7 +98,7 @@ export function TeamCard({ team, onEdit, onDelete, onViewDetails, selected = fal
               size="icon"
               variant="ghost"
               onClick={() => onEdit(team)}
-              className="h-8 w-8 text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:text-blue-400 dark:hover:bg-blue-900/20"
+              className="h-8 w-8 rounded-lg bg-white/70 text-blue-600 shadow-[3px_3px_7px_rgba(163,177,198,0.4)] transition-all hover:bg-white/90 hover:text-blue-700 active:shadow-[inset_2px_2px_5px_rgba(163,177,198,0.45)] dark:bg-white/5 dark:text-blue-400 dark:shadow-[3px_3px_7px_rgba(0,0,0,0.45)] dark:hover:bg-white/10 dark:hover:text-blue-300 dark:active:shadow-[inset_2px_2px_5px_rgba(0,0,0,0.5)]"
               aria-label={`Edit ${team.name}`}
             >
               <PencilSquareIcon className="w-4 h-4" />
@@ -108,7 +107,7 @@ export function TeamCard({ team, onEdit, onDelete, onViewDetails, selected = fal
               size="icon"
               variant="ghost"
               onClick={() => onDelete(team.id!)}
-              className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
+              className="h-8 w-8 rounded-lg bg-white/70 text-red-600 shadow-[3px_3px_7px_rgba(163,177,198,0.4)] transition-all hover:bg-white/90 hover:text-red-700 active:shadow-[inset_2px_2px_5px_rgba(163,177,198,0.45)] dark:bg-white/5 dark:text-red-400 dark:shadow-[3px_3px_7px_rgba(0,0,0,0.45)] dark:hover:bg-white/10 dark:hover:text-red-300 dark:active:shadow-[inset_2px_2px_5px_rgba(0,0,0,0.5)]"
               aria-label={`Delete ${team.name}`}
             >
               <TrashIcon className="w-4 h-4" />
@@ -123,18 +122,22 @@ export function TeamCard({ team, onEdit, onDelete, onViewDetails, selected = fal
           </p>
         )}
 
-        {/* Team Details - Stats Row */}
-        <div className="flex items-center gap-4 mb-4 pb-4 border-b border-white/60 dark:border-white/10">
+        {/* Team Details - Stats row recessed into the plate */}
+        <div className="mb-4 flex items-center gap-4 rounded-xl border border-slate-200/70 bg-gray-100/70 px-3 py-2.5 shadow-[inset_3px_3px_7px_rgba(163,177,198,0.35)] dark:border-white/10 dark:bg-black/20 dark:shadow-[inset_3px_3px_7px_rgba(0,0,0,0.45)]">
           {/* Team Leader */}
-          <div className="flex items-center gap-1.5 text-sm">
-            <UserIcon className="w-4 h-4 text-gray-400" />
+          <div className="flex min-w-0 items-center gap-1.5 text-sm">
+            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-white/80 shadow-[2px_2px_4px_rgba(163,177,198,0.45)] dark:bg-white/5 dark:shadow-[2px_2px_4px_rgba(0,0,0,0.5)]">
+              <UserIcon className="w-3.5 h-3.5 text-gray-400" />
+            </span>
             <span className="text-gray-600 dark:text-gray-400 text-xs">Leader:</span>
             <span className="font-medium text-gray-800 dark:text-gray-200 text-xs truncate max-w-[120px]">{team.leaderName || 'Unassigned'}</span>
           </div>
 
           {/* Member Count */}
           <div className="flex items-center gap-1.5 text-sm">
-            <UserGroupIcon className="w-4 h-4 text-gray-400" />
+            <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-white/80 shadow-[2px_2px_4px_rgba(163,177,198,0.45)] dark:bg-white/5 dark:shadow-[2px_2px_4px_rgba(0,0,0,0.5)]">
+              <UserGroupIcon className="w-3.5 h-3.5 text-gray-400" />
+            </span>
             <span className="text-gray-600 dark:text-gray-400 text-xs">Members:</span>
             <span className="font-semibold text-gray-800 dark:text-gray-200 text-xs">{memberCount}</span>
           </div>
@@ -156,14 +159,14 @@ export function TeamCard({ team, onEdit, onDelete, onViewDetails, selected = fal
                   alt={member.name}
                   fallback={getInitials(member.name)}
                   size="sm"
-                  className="border-2 border-white dark:border-gray-dark"
+                  className="border-2 border-white shadow-[2px_2px_5px_rgba(163,177,198,0.5)] dark:border-[#0B1430] dark:shadow-[2px_2px_5px_rgba(0,0,0,0.5)]"
                   title={member.name}
                 />
               ))}
               {/* Show count indicator for additional members */}
               {remainingCount > 0 && (
                 <div
-                  className="h-8 w-8 rounded-full bg-gray-100 dark:bg-gray-800 border-2 border-white dark:border-gray-dark flex items-center justify-center text-[10px] font-semibold text-gray-600 dark:text-gray-400"
+                  className="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-gray-100 text-[10px] font-semibold text-gray-600 shadow-[2px_2px_5px_rgba(163,177,198,0.5)] dark:border-[#0B1430] dark:bg-white/5 dark:text-gray-400 dark:shadow-[2px_2px_5px_rgba(0,0,0,0.5)]"
                   title={`${remainingCount} more ${remainingCount === 1 ? 'member' : 'members'}`}
                 >
                   +{remainingCount}
@@ -175,7 +178,7 @@ export function TeamCard({ team, onEdit, onDelete, onViewDetails, selected = fal
 
         {/* Footer with creation date */}
         {team.createdAt && (
-          <div className="mt-4 pt-3 border-t border-white/60 dark:border-white/10 text-[11px] text-gray-400 dark:text-gray-500">
+          <div className="mt-4 border-t border-slate-200/70 pt-3 text-[11px] text-gray-400 dark:border-white/10 dark:text-gray-500">
             Created {new Date(team.createdAt).toLocaleDateString()}
           </div>
         )}

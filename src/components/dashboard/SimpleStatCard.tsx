@@ -119,9 +119,9 @@ export function SimpleStatCard({
     <Card
       onClick={onClick}
       className={glass
-        ? `group relative h-full overflow-hidden rounded-2xl border-white/60 bg-white/60 p-4 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.22)] backdrop-blur-xl transition-all duration-200 dark:border-white/10 dark:bg-white/[0.05] ${
+        ? `group relative h-full overflow-hidden rounded-2xl border-slate-200/80 bg-white/70 p-4 shadow-[6px_6px_14px_rgba(148,163,199,0.35),-6px_-6px_14px_rgba(255,255,255,0.95)] backdrop-blur-xl transition-all duration-200 dark:border-white/10 dark:bg-white/[0.05] dark:shadow-[6px_6px_14px_rgba(0,0,0,0.55),-6px_-6px_14px_rgba(255,255,255,0.04)] ${
             onClick
-              ? 'cursor-pointer hover:-translate-y-1 hover:border-indigo-300/70 hover:shadow-[0_18px_35px_-18px_rgba(4,71,253,0.5)] dark:hover:border-indigo-400/40'
+              ? 'cursor-pointer hover:-translate-y-1 hover:border-indigo-300/70 hover:shadow-[10px_16px_28px_-10px_rgba(148,163,199,0.6),-8px_-8px_16px_rgba(255,255,255,1)] active:translate-y-0 active:shadow-[inset_3px_3px_6px_rgba(148,163,199,0.4),inset_-3px_-3px_6px_rgba(255,255,255,0.9)] dark:hover:border-indigo-400/40 dark:hover:shadow-[10px_16px_28px_-10px_rgba(0,0,0,0.7),-8px_-8px_16px_rgba(255,255,255,0.05)] dark:active:shadow-[inset_3px_3px_6px_rgba(0,0,0,0.5),inset_-3px_-3px_6px_rgba(255,255,255,0.04)]'
               : ''
           }`
         : `group relative h-full overflow-hidden rounded-2xl border-gray-100/90 p-4 shadow-sm transition-all duration-200 dark:border-gray-800 ${

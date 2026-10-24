@@ -15,6 +15,12 @@ interface AttendanceCalendarModalProps {
   employeeEmail?: string;
   /** Admins viewing somebody else's calendar can jump back to the picker. */
   onSwitchUser?: () => void;
+  /**
+   * Opt-in neumorphic soft-UI treatment, matching the dashboard/roster calendar.
+   * Off by default so the other consumers (attendance tray, payroll slips,
+   * admin salary config) keep their current flat look.
+   */
+  softUI?: boolean;
 }
 
 interface DayStatus {
@@ -33,6 +39,7 @@ export function AttendanceCalendarModal({
   employeeName,
   employeeEmail,
   onSwitchUser,
+  softUI = false,
 }: AttendanceCalendarModalProps) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [attendanceData, setAttendanceData] = useState<Map<string, DayStatus>>(new Map());
@@ -262,9 +269,25 @@ export function AttendanceCalendarModal({
   const days = getDaysInMonth();
   const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
+  /* Soft-UI depth tiers. Each is '' when softUI is off, and every conflicting
+     utility (rounded / border / shadow) is swapped rather than appended, so the
+     default render stays byte-identical to the previous markup. Shadows carry a
+     single cool-grey layer only — no white highlight, which would bloom against
+     the dimmed dialog backdrop. */
+  const plateSoft = softUI
+    ? ' border-slate-200/70 bg-white/80 shadow-[10px_10px_28px_rgba(163,177,198,0.45)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#0B1430]/90 dark:shadow-[10px_10px_28px_rgba(0,0,0,0.6)]'
+    : '';
+  const btnSoft = softUI
+    ? ' rounded-xl border-slate-200/80 bg-white/70 shadow-[3px_3px_7px_rgba(163,177,198,0.4)] transition-all hover:bg-white/90 active:shadow-[inset_2px_2px_5px_rgba(163,177,198,0.4)] dark:border-white/10 dark:bg-white/5 dark:shadow-[3px_3px_7px_rgba(0,0,0,0.45)] dark:hover:bg-white/10 dark:active:shadow-[inset_2px_2px_5px_rgba(0,0,0,0.5)]'
+    : '';
+  // The stats grid children are the 8 tiles; a child selector keeps them untouched.
+  const tileSoft = softUI
+    ? ' [&>div]:rounded-xl [&>div]:border [&>div]:border-white/80 [&>div]:shadow-[3px_3px_7px_rgba(163,177,198,0.35)] dark:[&>div]:border-white/10 dark:[&>div]:shadow-[3px_3px_7px_rgba(0,0,0,0.45)]'
+    : '';
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="flex max-h-[92vh] w-[98vw] max-w-4xl flex-col gap-0 overflow-hidden p-3 sm:p-4">
+      <DialogContent className={`flex max-h-[92vh] w-[98vw] max-w-4xl flex-col gap-0 overflow-hidden p-3 sm:p-4${plateSoft}`}>
         {/* Header */}
         <div className="flex shrink-0 justify-between items-start mb-2 gap-2 pr-8">
           <div className="flex-1 min-w-0">
@@ -283,7 +306,11 @@ export function AttendanceCalendarModal({
                 <button
                   type="button"
                   onClick={onSwitchUser}
-                  className="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-indigo-200 bg-indigo-50 px-2.5 py-0.5 text-[11px] font-semibold text-indigo-700 transition-colors hover:bg-indigo-100 dark:border-indigo-400/30 dark:bg-indigo-500/10 dark:text-indigo-300 dark:hover:bg-indigo-500/20"
+                  className={`inline-flex shrink-0 items-center gap-1.5 border border-indigo-200 bg-indigo-50 px-2.5 py-0.5 text-[11px] font-semibold text-indigo-700 hover:bg-indigo-100 dark:border-indigo-400/30 dark:bg-indigo-500/10 dark:text-indigo-300 dark:hover:bg-indigo-500/20 ${
+                    softUI
+                      ? 'rounded-xl shadow-[2px_2px_5px_rgba(163,177,198,0.4)] transition-all active:shadow-[inset_2px_2px_4px_rgba(163,177,198,0.45)] dark:shadow-[2px_2px_6px_rgba(0,0,0,0.45)] dark:active:shadow-[inset_2px_2px_4px_rgba(0,0,0,0.5)]'
+                      : 'rounded-md transition-colors'
+                  }`}
                 >
                   <Users className="h-3.5 w-3.5" />
                   Switch employee
@@ -295,7 +322,7 @@ export function AttendanceCalendarModal({
 
         {/* Month Navigation + Export */}
         <div className="flex shrink-0 items-center justify-between gap-2 mb-2">
-          <Button variant="outline" size="sm" onClick={previousMonth} className="flex items-center gap-1 text-xs sm:text-sm">
+          <Button variant="outline" size="sm" onClick={previousMonth} className={`flex items-center gap-1 text-xs sm:text-sm${btnSoft}`}>
             <ChevronLeft className="w-3 h-3 sm:w-4 sm:h-4" />
             <span className="hidden sm:inline">Previous</span>
           </Button>
@@ -304,13 +331,13 @@ export function AttendanceCalendarModal({
             <h3 className="text-sm sm:text-base font-semibold text-gray-900 dark:text-white">
               {currentMonth.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
             </h3>
-            <Button variant="outline" size="sm" onClick={goToToday} className="text-xs h-7 sm:h-8 px-2">
+            <Button variant="outline" size="sm" onClick={goToToday} className={`h-7 px-2 text-xs sm:h-8${btnSoft}`}>
               Today
             </Button>
           </div>
 
           <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={nextMonth} className="flex items-center gap-1 text-xs sm:text-sm">
+            <Button variant="outline" size="sm" onClick={nextMonth} className={`flex items-center gap-1 text-xs sm:text-sm${btnSoft}`}>
               <span className="hidden sm:inline">Next</span>
               <ChevronRight className="w-3 h-3 sm:w-4 sm:h-4" />
             </Button>
@@ -324,7 +351,7 @@ export function AttendanceCalendarModal({
         ) : (
           <div className="flex min-h-0 flex-1 flex-col">
             {/* Stats Grid — compact strip so the calendar below stays visible */}
-            <div className="mb-2 grid shrink-0 grid-cols-2 gap-1.5 sm:grid-cols-4 sm:gap-2.5">
+            <div className={`mb-2 grid shrink-0 grid-cols-2 gap-1.5 sm:grid-cols-4 sm:gap-2.5${tileSoft}`}>
               <div className="bg-green-50 dark:bg-green-900/20 p-1.5 sm:p-2 rounded-lg">
                 <div className="text-base sm:text-lg font-bold text-green-600">{stats.present}</div>
                 <div className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">Present</div>
@@ -372,26 +399,70 @@ export function AttendanceCalendarModal({
                 ))}
               </div>
 
-              <div className="grid min-h-0 flex-1 auto-rows-[minmax(3.5rem,1fr)] grid-cols-7 gap-1 sm:auto-rows-[minmax(4.25rem,1fr)] sm:gap-1.5 min-w-[280px]">
+              {/* softUI rows carry a 3-line cell (chip + status + hours), so the row
+                  track has to be taller than the flat layout's 2-line cells. */}
+              <div
+                className={`grid min-h-0 flex-1 grid-cols-7 min-w-[280px] ${
+                  softUI
+                    ? 'gap-1.5 auto-rows-[minmax(4.25rem,1fr)] sm:auto-rows-[minmax(5rem,1fr)] sm:gap-2'
+                    : 'gap-1 auto-rows-[minmax(3.5rem,1fr)] sm:auto-rows-[minmax(4.25rem,1fr)] sm:gap-1.5'
+                }`}
+              >
                 {days.map((date, index) => {
-                  if (!date) return <div key={`empty-${index}`} />;
+                  if (!date)
+                    return softUI ? (
+                      /* Out-of-month slot: recessed tray slot rather than blank */
+                      <div
+                        key={`empty-${index}`}
+                        className="rounded-xl border border-slate-200/70 bg-gray-100/70 shadow-[inset_2px_2px_5px_rgba(163,177,198,0.22)] dark:border-white/10 dark:bg-black/20 dark:shadow-[inset_2px_2px_5px_rgba(0,0,0,0.28)]"
+                      />
+                    ) : (
+                      <div key={`empty-${index}`} />
+                    );
 
                   const status = getDateStatus(date);
                   const isToday = date.toDateString() === new Date().toDateString();
+                  const todayRing = isToday ? 'ring-2 ring-inset ring-blue-500' : '';
+                  // Recessed tray look: every slot sits sunken at rest and pops out on
+                  // hover. Today stays pushed forward so it reads without the ring alone.
+                  // One tier per state so the shadow layers never fight each other.
+                  const depthClass = !softUI
+                    ? ''
+                    : isToday
+                      ? 'shadow-[5px_5px_12px_rgba(163,177,198,0.45)] hover:shadow-[inset_2px_2px_5px_rgba(163,177,198,0.22)] dark:shadow-[5px_5px_12px_rgba(0,0,0,0.55)] dark:hover:shadow-[inset_2px_2px_5px_rgba(0,0,0,0.28)]'
+                      : 'shadow-[inset_2px_2px_5px_rgba(163,177,198,0.22)] hover:shadow-[4px_4px_10px_rgba(163,177,198,0.35)] dark:shadow-[inset_2px_2px_5px_rgba(0,0,0,0.28)] dark:hover:shadow-[4px_4px_10px_rgba(0,0,0,0.5)]';
 
                   return (
                     <div
                       key={date.toISOString()}
-                      className={`overflow-hidden p-1 sm:p-1.5 rounded-lg border ${getStatusColor(status.status)} bg-opacity-20 border-opacity-50 ${isToday ? 'ring-2 ring-inset ring-blue-500' : ''}`}
+                      className={
+                        softUI
+                          ? `overflow-hidden rounded-xl border border-slate-200/80 p-1 transition-shadow duration-200 sm:p-1.5 ${getStatusColor(status.status)} bg-opacity-20 dark:border-white/10 ${depthClass} ${todayRing}`
+                          : `overflow-hidden p-1 sm:p-1.5 rounded-lg border ${getStatusColor(status.status)} bg-opacity-20 border-opacity-50 ${todayRing}`
+                      }
                     >
-                      <div className="text-[11px] sm:text-sm font-medium text-gray-900 dark:text-white">
-                        {date.getDate()}
-                      </div>
-                      <div className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 capitalize truncate">
+                      {softUI ? (
+                        /* Day number as a soft-UI chip; today carries the brand gradient */
+                        <div
+                          className={`mb-0.5 flex h-6 w-6 items-center justify-center rounded-full text-[11px] font-semibold sm:text-xs ${
+                            isToday
+                              ? 'bg-gradient-to-br from-[#0447FD] to-[#7F1BFF] text-white shadow-[0_4px_10px_-2px_rgba(4,71,253,0.5)]'
+                              : 'bg-white/85 text-gray-900 shadow-[2px_2px_5px_rgba(163,177,198,0.5)] dark:bg-white/10 dark:text-white dark:shadow-[2px_2px_5px_rgba(0,0,0,0.45)]'
+                          }`}
+                        >
+                          {date.getDate()}
+                        </div>
+                      ) : (
+                        <div className="text-[11px] sm:text-sm font-medium text-gray-900 dark:text-white">
+                          {date.getDate()}
+                        </div>
+                      )}
+                      <div className={`text-[10px] sm:text-xs text-gray-600 dark:text-gray-400 capitalize truncate${softUI ? ' pl-0.5' : ''}`}
+                      >
                         {getStatusLabel(status.status)}
                       </div>
                       {status.status === 'present' && status.duration && status.duration !== 'In Progress' && (
-                        <div className="text-[10px] sm:text-xs text-gray-600 dark:text-gray-400">{status.duration}</div>
+                        <div className={`text-[10px] sm:text-xs text-gray-600 dark:text-gray-400${softUI ? ' pl-0.5' : ''}`}>{status.duration}</div>
                       )}
                     </div>
                   );
@@ -412,7 +483,7 @@ export function AttendanceCalendarModal({
                 { color: 'bg-gray-200', label: 'Upcoming' },
               ].map(({ color, label }) => (
                 <div key={label} className="flex items-center gap-1 sm:gap-2">
-                  <div className={`w-3 h-3 sm:w-4 sm:h-4 ${color} rounded`}></div>
+                  <div className={`w-3 h-3 sm:w-4 sm:h-4 ${color} ${softUI ? 'rounded-md shadow-[1px_1px_3px_rgba(163,177,198,0.5)] dark:shadow-[1px_1px_3px_rgba(0,0,0,0.5)]' : 'rounded'}`}></div>
                   <span className="text-gray-700 dark:text-gray-300">{label}</span>
                 </div>
               ))}

@@ -301,7 +301,7 @@ export function MobileCalendarView({ tasks, onTaskClick }: MobileCalendarViewPro
       </div>
 
       {/* Month Navigation - Compact */}
-      <div className="flex items-center justify-between px-4 py-2 bg-gray-50 dark:bg-[#16162a]">
+      <div className="flex items-center justify-between px-4 py-2 glass-surface border-y border-white/60 dark:border-white/10">
         <button
           onClick={() => navigateMonth('prev')}
           className="p-1.5 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
@@ -322,7 +322,7 @@ export function MobileCalendarView({ tasks, onTaskClick }: MobileCalendarViewPro
       {/* Calendar Grid - Google Calendar Monthly View Style */}
       <div ref={calendarGridRef}>
         {calendarRows.map((row, rowIndex) => (
-          <div key={rowIndex} className="grid grid-cols-7 border-t border-white/60 dark:border-white/10/60">
+          <div key={rowIndex} className="grid grid-cols-7 border-t border-white/60 dark:border-white/10">
             {row.map((dayObj, colIndex) => {
               const { date: day, isCurrentMonth } = dayObj;
               const dayTasks = getTasksForDate(day);
@@ -346,7 +346,7 @@ export function MobileCalendarView({ tasks, onTaskClick }: MobileCalendarViewPro
                   <div className="flex justify-center mb-1">
                     <div className={`w-7 h-7 flex items-center justify-center text-sm font-medium rounded-full transition-colors ${
                       todayHighlight
-                        ? 'bg-blue-600 text-white shadow-sm shadow-blue-600/30'
+                        ? 'bg-gradient-to-br from-[#0447FD] to-[#7F1BFF] text-white shadow-[0_4px_10px_-2px_rgba(4,71,253,0.5)]'
                         : isCurrentMonth
                           ? 'text-gray-800 dark:text-gray-200'
                           : 'text-gray-400 dark:text-gray-600'
@@ -508,48 +508,50 @@ export function MobileCalendarView({ tasks, onTaskClick }: MobileCalendarViewPro
                           'bg-teal-500'
                         }`} />
 
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2">
-                            {isLoading && (
-                              <svg className="animate-spin h-4 w-4 shrink-0 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                              </svg>
+                        <div className="flex items-center gap-2">
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-center gap-2">
+                              {isLoading && (
+                                <svg className="animate-spin h-4 w-4 shrink-0 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                              )}
+                              <h4 className="font-medium text-sm text-gray-900 dark:text-white truncate">{task.title}</h4>
+                              {task.isRecurring && !isLoading && (
+                                <ArrowPathIcon className="w-3.5 h-3.5 text-purple-500 dark:text-purple-400 flex-shrink-0" />
+                              )}
+                            </div>
+                            {task.description && (
+                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">{task.description}</p>
                             )}
-                            <h4 className="font-medium text-sm text-gray-900 dark:text-white truncate">{task.title}</h4>
-                            {task.isRecurring && !isLoading && (
-                              <ArrowPathIcon className="w-3.5 h-3.5 text-purple-500 dark:text-purple-400 flex-shrink-0" />
-                            )}
+                            <div className="flex items-center gap-2 mt-1.5">
+                              <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium ${
+                                task.status === 'completed' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300' :
+                                task.status === 'in-progress' ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300' :
+                                'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300'
+                              }`}>
+                                {task.status.replace('-', ' ')}
+                              </span>
+                              <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium ${
+                                task.priority === 'urgent' ? 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300' :
+                                task.priority === 'high' ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300' :
+                                task.priority === 'medium' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300' :
+                                'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300'
+                              }`}>
+                                {task.priority}
+                              </span>
+                              {task.isRecurring && task.recurrencePattern && (
+                                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300 font-medium">
+                                  {task.recurrencePattern.replace('-', ' ')}
+                                </span>
+                              )}
+                            </div>
                           </div>
-                        {task.description && (
-                          <p className="text-xs text-gray-500 dark:text-gray-400 mt-1 line-clamp-2">{task.description}</p>
-                        )}
-                        <div className="flex items-center gap-2 mt-1.5">
-                          <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium ${
-                            task.status === 'completed' ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300' :
-                            task.status === 'in-progress' ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300' :
-                            'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/40 dark:text-yellow-300'
-                          }`}>
-                            {task.status.replace('-', ' ')}
-                          </span>
-                          <span className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium ${
-                            task.priority === 'urgent' ? 'bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300' :
-                            task.priority === 'high' ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/40 dark:text-orange-300' :
-                            task.priority === 'medium' ? 'bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300' :
-                            'bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300'
-                          }`}>
-                            {task.priority}
-                          </span>
-                          {task.isRecurring && task.recurrencePattern && (
-                            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300 font-medium">
-                              {task.recurrencePattern.replace('-', ' ')}
-                            </span>
-                          )}
+
+                          <ChevronRightIcon className="w-4 h-4 text-gray-400 dark:text-gray-500 flex-shrink-0 mt-1" />
                         </div>
                       </div>
-
-                      <ChevronRightIcon className="w-4 h-4 text-gray-400 dark:text-gray-500 flex-shrink-0 mt-1" />
-                    </div>
                     );
                   })}
                 </div>
