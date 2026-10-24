@@ -46,13 +46,13 @@ export function KanbanColumn({
   return (
     <div
       className={glass
-        ? `relative flex min-h-[560px] w-full flex-col rounded-3xl border border-white/60 bg-white/45 p-4 shadow-[0_10px_30px_-16px_rgba(15,23,42,0.25)] backdrop-blur-xl transition-colors dark:border-white/10 dark:bg-white/[0.04] ${compact ? 'max-h-[400px] overflow-y-auto' : ''}`
+        ? `relative flex min-h-[560px] w-full flex-col rounded-3xl border border-slate-200/70 bg-white/40 p-4 shadow-[inset_6px_6px_12px_rgba(148,163,199,0.3),inset_-6px_-6px_12px_rgba(255,255,255,0.85)] backdrop-blur-md transition-colors dark:border-white/10 dark:bg-white/[0.03] dark:shadow-[inset_6px_6px_12px_rgba(0,0,0,0.5),inset_-6px_-6px_12px_rgba(255,255,255,0.03)] ${compact ? 'max-h-[400px] overflow-y-auto' : ''}`
         : `${color} rounded-lg p-4 ${compact ? 'min-h-[250px] max-h-[400px] overflow-y-auto' : 'min-h-[600px]'} w-full transition-all`}
       onDragOver={onDragOver}
       onDrop={(e) => onDrop(e, id)}
     >
       {/* Column Header */}
-      <div className={`flex items-center justify-between mb-4 pb-3 ${glass ? 'border-b border-white/50 dark:border-white/10' : 'border-b border-gray-300 dark:border-gray-600'}`}>
+      <div className={`flex items-center justify-between mb-4 pb-3 ${glass ? 'border-b border-slate-200/60 dark:border-white/10' : 'border-b border-gray-300 dark:border-gray-600'}`}>
         <div className="flex items-center gap-2.5">
           {glass && (
             <span
@@ -66,7 +66,7 @@ export function KanbanColumn({
         </div>
         <span
           className={glass
-            ? 'rounded-full border border-white/60 bg-white/60 px-2.5 py-0.5 text-xs font-semibold tabular-nums text-slate-600 dark:border-white/10 dark:bg-white/5 dark:text-slate-300'
+            ? 'rounded-full border border-slate-200/70 bg-white/70 px-2.5 py-0.5 text-xs font-semibold tabular-nums text-slate-600 shadow-[inset_2px_2px_4px_rgba(148,163,199,0.35),inset_-2px_-2px_4px_rgba(255,255,255,0.95)] dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:shadow-[inset_2px_2px_4px_rgba(0,0,0,0.5),inset_-2px_-2px_4px_rgba(255,255,255,0.04)]'
             : 'bg-white dark:bg-gray-dark bg-opacity-70 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 dark:text-gray-300'}
         >
           {tasks.length}
@@ -78,7 +78,7 @@ export function KanbanColumn({
         {tasks.length === 0 ? (
           <div
             className={glass
-              ? 'rounded-2xl border border-dashed border-slate-200/90 bg-white/30 py-12 text-center text-slate-400 dark:border-white/10 dark:bg-white/[0.02] dark:text-slate-500'
+              ? 'rounded-2xl border border-dashed border-slate-300/80 bg-white/30 py-12 text-center text-slate-400 shadow-[inset_4px_4px_8px_rgba(148,163,199,0.25),inset_-4px_-4px_8px_rgba(255,255,255,0.8)] dark:border-white/10 dark:bg-white/[0.02] dark:text-slate-500 dark:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.45),inset_-4px_-4px_8px_rgba(255,255,255,0.03)]'
               : 'text-center py-12 text-gray-400'}
           >
             <svg

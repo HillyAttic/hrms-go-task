@@ -9,7 +9,7 @@ import { kanbanService } from '@/services/kanban.service';
 import { useRouter } from 'next/navigation';
 
 const GLASS =
-  'rounded-2xl border border-white/60 bg-white/60 shadow-[0_10px_30px_-12px_rgba(15,23,42,0.16)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05] dark:shadow-[0_10px_30px_-12px_rgba(0,0,0,0.6)]';
+  'rounded-2xl border border-slate-200/70 bg-white/70 shadow-[6px_6px_14px_rgba(148,163,199,0.35),-6px_-6px_14px_rgba(255,255,255,0.95)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05] dark:shadow-[6px_6px_14px_rgba(0,0,0,0.55),-6px_-6px_14px_rgba(255,255,255,0.04)]';
 
 const STAT_ACCENTS = {
   todo: 'from-amber-400 to-orange-500',
@@ -262,7 +262,7 @@ export default function KanbanPage() {
               Manage tasks across multiple businesses
             </p>
           </div>
-          <span className="rounded-full border border-slate-200/70 bg-white/60 px-3 py-1 text-xs font-medium text-slate-600 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:shadow-none">
+          <span className="rounded-full border border-slate-200/70 bg-white/60 px-3 py-1 text-xs font-medium text-slate-600 shadow-[inset_2px_2px_5px_rgba(148,163,199,0.35),inset_-2px_-2px_5px_rgba(255,255,255,0.9)] backdrop-blur dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:shadow-[inset_2px_2px_5px_rgba(0,0,0,0.5),inset_-2px_-2px_5px_rgba(255,255,255,0.04)]">
             {currentTasks.length} task{currentTasks.length !== 1 ? 's' : ''} in this board
           </span>
         </div>
@@ -315,7 +315,7 @@ export default function KanbanPage() {
                   { id: 'completed', label: 'Completed' },
                 ] as const
               ).map((stat) => (
-                <div key={stat.id} className={`${GLASS} p-4`}>
+                <div key={stat.id} className={`${GLASS} p-4 transition-shadow duration-200 hover:shadow-[inset_4px_4px_9px_rgba(148,163,199,0.3),inset_-4px_-4px_9px_rgba(255,255,255,0.85)] dark:hover:shadow-[inset_4px_4px_9px_rgba(0,0,0,0.5),inset_-4px_-4px_9px_rgba(255,255,255,0.03)]`}>
                   <p className="text-xs font-medium text-slate-500 dark:text-slate-400">
                     {stat.label}
                   </p>

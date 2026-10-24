@@ -93,7 +93,7 @@ export function KanbanTaskCard({ task, onDragStart, onClick, onStatusChange, onD
       onDragStart={(e) => onDragStart(e, task)}
       onClick={() => onClick(task)}
       className={glass
-        ? 'group mb-2.5 cursor-move rounded-2xl border border-white/70 bg-white/75 p-3.5 shadow-[0_2px_10px_-4px_rgba(15,23,42,0.18)] backdrop-blur-md transition-all duration-200 hover:-translate-y-1 hover:border-indigo-300/70 hover:shadow-[0_18px_35px_-18px_rgba(4,71,253,0.55)] focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/60 dark:border-white/10 dark:bg-white/[0.06] dark:hover:border-indigo-400/40'
+        ? 'group mb-2.5 cursor-move rounded-2xl border border-slate-200/70 bg-white/80 p-3.5 shadow-[4px_4px_9px_rgba(148,163,199,0.4),-4px_-4px_9px_rgba(255,255,255,0.98)] backdrop-blur-md transition-all duration-200 hover:-translate-y-1 hover:border-indigo-300/70 hover:shadow-[10px_16px_28px_-10px_rgba(148,163,199,0.6),-8px_-8px_16px_rgba(255,255,255,1)] active:shadow-[inset_3px_3px_6px_rgba(148,163,199,0.4),inset_-3px_-3px_6px_rgba(255,255,255,0.9)] focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/60 dark:border-white/10 dark:bg-white/[0.06] dark:shadow-[4px_4px_9px_rgba(0,0,0,0.5),-4px_-4px_9px_rgba(255,255,255,0.04)] dark:hover:border-indigo-400/40 dark:hover:shadow-[10px_16px_28px_-10px_rgba(0,0,0,0.7),-8px_-8px_16px_rgba(255,255,255,0.05)]'
         : 'p-2.5 mb-2 cursor-move hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500'}
       tabIndex={0}
       onKeyDown={(e) => {
@@ -151,7 +151,7 @@ export function KanbanTaskCard({ task, onDragStart, onClick, onStatusChange, onD
       )}
 
       {/* Footer with Date and Action Buttons */}
-      <div className={`flex items-center justify-between mt-2 pt-2 ${glass ? 'border-t border-white/60 dark:border-white/10' : 'border-t border-gray-100 dark:border-gray-700'}`}>
+      <div className={`flex items-center justify-between mt-2 pt-2 ${glass ? 'border-t border-slate-200/60 dark:border-white/10' : 'border-t border-gray-100 dark:border-gray-700'}`}>
         {/* Due Date */}
         {glass ? (
           <span className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-[11px] font-medium ${isOverdue ? 'bg-rose-100/70 text-rose-600 dark:bg-rose-500/15 dark:text-rose-300' : 'bg-slate-100/70 text-slate-600 dark:bg-white/5 dark:text-slate-300'}`}>

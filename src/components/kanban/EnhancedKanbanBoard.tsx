@@ -177,7 +177,7 @@ export function EnhancedKanbanBoard({ tasks, onTaskUpdate, onTaskAdd, onTaskDele
             onClick={() => setShowFilterModal(true)}
             variant="outline"
             className={glass
-              ? 'flex items-center gap-1.5 sm:gap-2 rounded-xl border-slate-200/70 bg-white/60 text-slate-700 shadow-sm backdrop-blur hover:bg-white/90 hover:text-slate-900 focus-visible:ring-2 focus-visible:ring-indigo-500/50 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10 dark:shadow-none text-sm px-3 py-1.5 sm:px-4 sm:py-2'
+              ? 'flex items-center gap-1.5 sm:gap-2 rounded-xl border border-slate-200/70 bg-white/70 text-slate-700 shadow-[3px_3px_7px_rgba(148,163,199,0.4),-3px_-3px_7px_rgba(255,255,255,0.95)] backdrop-blur transition hover:bg-white/90 hover:text-slate-900 active:shadow-[inset_2px_2px_5px_rgba(148,163,199,0.4),inset_-2px_-2px_5px_rgba(255,255,255,0.9)] focus-visible:ring-2 focus-visible:ring-indigo-500/50 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:shadow-[3px_3px_7px_rgba(0,0,0,0.5),-3px_-3px_7px_rgba(255,255,255,0.04)] dark:hover:bg-white/10 text-sm px-3 py-1.5 sm:px-4 sm:py-2'
               : 'flex items-center gap-1.5 sm:gap-2 hover:bg-gray-50 dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 text-sm sm:text-base px-3 py-1.5 sm:px-4 sm:py-2'}
           >
             <FunnelIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
