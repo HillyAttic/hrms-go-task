@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { ManagerHierarchy, EmployeeInfo } from '@/types/manager-hierarchy.types';
 import { toast } from 'react-toastify';
 import { useModal } from '@/contexts/modal-context';
+import { Button } from '@/components/ui/button';
+import { PlusIcon } from '@heroicons/react/24/outline';
 
 export default function ManagerHierarchyPage() {
   const [hierarchies, setHierarchies] = useState<ManagerHierarchy[]>([]);
@@ -134,17 +136,18 @@ export default function ManagerHierarchyPage() {
           <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Manager Hierarchy</h1>
           <p className="text-gray-600 dark:text-gray-400">Assign employees to managers for task management</p>
         </div>
-        <button
+        <Button
           onClick={() => {
             setSelectedManager('');
             setSelectedEmployees([]);
             setShowModal(true);
             openModal();
           }}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+          className="flex items-center gap-2"
         >
+          <PlusIcon className="h-4 w-4" />
           Add Manager Hierarchy
-        </button>
+        </Button>
       </div>
 
       {/* Hierarchies List */}
@@ -166,19 +169,18 @@ export default function ManagerHierarchyPage() {
                     <h3 className="text-lg font-bold text-gray-900 dark:text-white">{hierarchy.managerName}</h3>
                     <p className="text-sm text-gray-600 dark:text-gray-400">{hierarchy.managerEmail}</p>
                   </div>
-                  <div className="flex gap-2">
-                    <button
-                      onClick={() => handleEdit(hierarchy)}
-                      className="px-3 py-1 bg-blue-600 text-white text-sm rounded hover:bg-blue-700"
-                    >
+                  <div className="flex items-center gap-2">
+                    <Button variant="outline" size="sm" onClick={() => handleEdit(hierarchy)}>
                       Edit
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="sm"
                       onClick={() => handleDelete(hierarchy.managerId)}
-                      className="px-3 py-1 bg-red-600 text-white text-sm rounded hover:bg-red-700"
+                      className="text-rose-600 hover:bg-rose-50 hover:text-rose-700 dark:text-rose-400 dark:hover:bg-rose-500/10 dark:hover:text-rose-300"
                     >
                       Delete
-                    </button>
+                    </Button>
                   </div>
                 </div>
                 <div>
@@ -258,23 +260,21 @@ export default function ManagerHierarchyPage() {
 
             {/* Actions */}
             <div className="flex gap-2">
-              <button
-                onClick={handleSave}
-                className="flex-1 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-              >
+              <Button onClick={handleSave} className="flex-1">
                 Save
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="outline"
                 onClick={() => {
                   setShowModal(false);
                   closeModal();
                   setSelectedManager('');
                   setSelectedEmployees([]);
                 }}
-                className="flex-1 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400"
+                className="flex-1"
               >
                 Cancel
-              </button>
+              </Button>
             </div>
           </div>
         </div>

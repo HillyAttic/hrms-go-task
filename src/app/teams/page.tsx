@@ -258,32 +258,40 @@ export default function TeamsPage() {
           </Card>
         )}
 
-        {/* Team Statistics - Redesigned with gradients */}
+        {/* Team Statistics - glass cards with a colour wash, matching the dashboard */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6">
           {/* Total Teams */}
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 p-6 shadow-lg shadow-blue-500/25 border-0">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.15)_1px,transparent_0)] bg-[size:20px_20px]" />
+          <div className="relative overflow-hidden rounded-2xl border border-white/60 bg-white/60 p-5 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.22)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05]">
+            <div
+              className="pointer-events-none absolute inset-0 bg-gradient-to-br from-blue-100/70 via-blue-50/30 to-white dark:from-blue-500/15 dark:via-blue-500/5 dark:to-transparent"
+              aria-hidden="true"
+            />
             <div className="relative flex items-center gap-4">
-              <div className="flex-shrink-0 p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-                <UserGroupIcon className="w-7 h-7 text-white" />
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#0447FD] to-[#7F1BFF] text-white shadow-lg shadow-indigo-500/25">
+                <UserGroupIcon className="h-6 w-6" />
               </div>
               <div>
-                <p className="text-sm text-blue-100 font-medium">Total Teams</p>
-                <p className="text-3xl font-bold text-white">{teams.length}</p>
+                <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Total Teams</p>
+                <p className="mt-0.5 text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+                  {teams.length}
+                </p>
               </div>
             </div>
           </div>
 
           {/* Active Teams */}
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 p-6 shadow-lg shadow-emerald-500/25 border-0">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.15)_1px,transparent_0)] bg-[size:20px_20px]" />
+          <div className="relative overflow-hidden rounded-2xl border border-white/60 bg-white/60 p-5 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.22)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05]">
+            <div
+              className="pointer-events-none absolute inset-0 bg-gradient-to-br from-emerald-100/70 via-emerald-50/30 to-white dark:from-emerald-500/15 dark:via-emerald-500/5 dark:to-transparent"
+              aria-hidden="true"
+            />
             <div className="relative flex items-center gap-4">
-              <div className="flex-shrink-0 p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-                <UserGroupIcon className="w-7 h-7 text-white" />
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white shadow-lg shadow-emerald-500/25">
+                <UserGroupIcon className="h-6 w-6" />
               </div>
               <div>
-                <p className="text-sm text-emerald-100 font-medium">Active Teams</p>
-                <p className="text-3xl font-bold text-white">
+                <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Active Teams</p>
+                <p className="mt-0.5 text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
                   {teams.filter(team => team.status === 'active').length}
                 </p>
               </div>
@@ -291,15 +299,18 @@ export default function TeamsPage() {
           </div>
 
           {/* Total Members */}
-          <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 p-6 shadow-lg shadow-amber-500/25 border-0">
-            <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.15)_1px,transparent_0)] bg-[size:20px_20px]" />
+          <div className="relative overflow-hidden rounded-2xl border border-white/60 bg-white/60 p-5 shadow-[0_10px_30px_-14px_rgba(15,23,42,0.22)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05]">
+            <div
+              className="pointer-events-none absolute inset-0 bg-gradient-to-br from-orange-100/70 via-amber-50/30 to-white dark:from-orange-500/15 dark:via-amber-500/5 dark:to-transparent"
+              aria-hidden="true"
+            />
             <div className="relative flex items-center gap-4">
-              <div className="flex-shrink-0 p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-                <UserGroupIcon className="w-7 h-7 text-white" />
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-amber-600 text-white shadow-lg shadow-amber-500/25">
+                <UserGroupIcon className="h-6 w-6" />
               </div>
               <div>
-                <p className="text-sm text-amber-100 font-medium">Total Members</p>
-                <p className="text-3xl font-bold text-white">
+                <p className="text-sm font-medium text-slate-600 dark:text-slate-400">Total Members</p>
+                <p className="mt-0.5 text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
                   {teams.reduce((total, team) => total + team.members.length + 1, 0)}
                 </p>
               </div>
@@ -320,17 +331,17 @@ export default function TeamsPage() {
 
         {/* View Toggle Buttons - Icon based */}
         <div className="flex justify-end">
-          <div className="inline-flex rounded-lg border border-gray-300 dark:border-gray-600 overflow-hidden shadow-sm">
+          <div className="inline-flex overflow-hidden rounded-md border border-white/60 bg-white/60 shadow-sm backdrop-blur dark:border-white/10 dark:bg-white/5">
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-2.5 transition-colors ${viewMode === 'grid' ? 'bg-blue-600 text-white' : 'glass-surface text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
+              className={`p-2.5 transition-all ${viewMode === 'grid' ? 'bg-gradient-to-r from-[#0447FD] to-[#7F1BFF] text-white shadow-lg shadow-indigo-500/25' : 'text-slate-600 hover:bg-white/80 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white'}`}
               aria-label="Grid view"
             >
               <Squares2X2Icon className="w-5 h-5" />
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`p-2.5 border-l border-gray-300 dark:border-gray-600 transition-colors ${viewMode === 'list' ? 'bg-blue-600 text-white' : 'glass-surface text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'}`}
+              className={`border-l border-white/60 p-2.5 transition-all dark:border-white/10 ${viewMode === 'list' ? 'bg-gradient-to-r from-[#0447FD] to-[#7F1BFF] text-white shadow-lg shadow-indigo-500/25' : 'text-slate-600 hover:bg-white/80 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white'}`}
               aria-label="List view"
             >
               <ListBulletIcon className="w-5 h-5" />

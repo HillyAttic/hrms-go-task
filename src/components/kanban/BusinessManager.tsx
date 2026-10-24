@@ -84,7 +84,7 @@ export function BusinessManager({
   return (
     <div className="space-y-3 sm:space-y-4">
       {/* Business Tabs */}
-      <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto pb-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
+      <div className="flex items-center gap-2 sm:gap-3 overflow-x-auto pb-2">
         {businesses.map((business) => (
           <div key={business.id} className="flex items-center gap-1 sm:gap-2 flex-shrink-0">
             <button

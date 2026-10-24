@@ -91,50 +91,18 @@
     scrollbar-width: none; /* Firefox */
   }
 
-   .custom-scrollbar {
+  /* Scrollbar *appearance* comes from the global macOS-style rules at the end of
+     this file; `.custom-scrollbar` only marks the scroll container. */
+  .custom-scrollbar {
     @apply overflow-auto;
   }
 
-  .custom-scrollbar::-webkit-scrollbar {
-    @apply size-2;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-track {
-    @apply bg-transparent;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    @apply relative flex-1 rounded-full bg-neutral-200/40 dark:bg-stroke-dark;
-  }
-
-  
   .chat-height {
     @apply h-[calc(100vh_-_8.125rem)] lg:h-[calc(100vh_-_5.625rem)];
   }
 
   .inbox-height {
     @apply h-[calc(100vh_-_8.125rem)] lg:h-[calc(100vh_-_5.625rem)];
-  }
-
-  /* Form Builder Custom Styles */
-  .custom-scrollbar::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-track {
-    background: #f1f5f9;
-    border-radius: 4px;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
-    border-radius: 4px;
-    transition: background 0.2s;
-  }
-
-  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #94a3b8;
   }
 
   /* Drag and drop visual feedback */
@@ -672,36 +640,9 @@ img {
   outline-offset: 2px;
 }
 
-/* Custom scrollbar for better mobile experience */
-.custom-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: theme('colors.gray.400') transparent;
-}
-
-.custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: theme('colors.gray.400');
-  border-radius: 3px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: theme('colors.gray.500');
-}
-
-/* Sidebar scrollbar - always visible with gray color */
-.custom-sidebar-scrollbar {
-  scrollbar-width: thin;
-  scrollbar-color: #d1d5db transparent;
-}
-
+/* Sidebar scrollbar - always visible with gray color. Only the ::-webkit rules
+   live here; the `scrollbar-width`/`scrollbar-color` fallbacks sit in the
+   @supports block at the end of the file (see the macOS scrollbar section). */
 .custom-sidebar-scrollbar::-webkit-scrollbar {
   width: 8px;
 }
@@ -717,10 +658,6 @@ img {
 
 .custom-sidebar-scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: #9ca3af;
-}
-
-.dark .custom-sidebar-scrollbar {
-  scrollbar-color: #4b5563 transparent;
 }
 
 .dark .custom-sidebar-scrollbar::-webkit-scrollbar-thumb {
@@ -1133,5 +1070,116 @@ img {
 
   .auth-field-action {
     --auth-field-pad: 11px 52px 11px 44px;
+  }
+}
+
+/* ------------------------------------------------------------------
+   macOS-style scrollbars
+   Thin, translucent, rounded thumb on a fully transparent track, with the
+   native Windows chrome (arrow buttons, grey trough) removed. Applies to
+   every scroll area — page, dialogs, dropdown lists.
+
+   IMPORTANT: Chrome/Edge ignore every ::-webkit-scrollbar-* rule on an element
+   as soon as the standard `scrollbar-width` / `scrollbar-color` properties are
+   set on it (Chromium 121+). Those two properties are therefore only declared
+   in the @supports block at the end of this file, for engines without the
+   pseudo-elements (Firefox).
+   ------------------------------------------------------------------ */
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track,
+*::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Arrow buttons are the main "cheap" tell of the default Windows scrollbar.
+   Every button variant is neutralised: some platform scrollbars still paint the
+   up/down steppers even when the base pseudo-element is hidden. */
+*::-webkit-scrollbar-button,
+*::-webkit-scrollbar-button:single-button,
+*::-webkit-scrollbar-button:vertical:start:decrement,
+*::-webkit-scrollbar-button:vertical:end:increment,
+*::-webkit-scrollbar-button:horizontal:start:decrement,
+*::-webkit-scrollbar-button:horizontal:end:increment {
+  display: none;
+  width: 0;
+  height: 0;
+  background: transparent;
+  -webkit-appearance: none;
+}
+
+*::-webkit-scrollbar-thumb {
+  min-height: 2.5rem;
+  border: 2px solid transparent; /* 6px pill floating inside a 10px lane */
+  border-radius: 999px;
+  background-color: rgba(100, 116, 139, 0.35);
+  background-clip: content-box;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(71, 85, 105, 0.55);
+}
+
+*::-webkit-scrollbar-thumb:active {
+  background-color: rgba(51, 65, 85, 0.7);
+}
+
+.dark *::-webkit-scrollbar-thumb {
+  background-color: rgba(203, 213, 225, 0.3);
+}
+
+.dark *::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(226, 232, 240, 0.5);
+}
+
+.dark *::-webkit-scrollbar-thumb:active {
+  background-color: rgba(241, 245, 249, 0.65);
+}
+
+/* Lane trimming — the floating half of the macOS look.
+   Chromium paints the scrollbar along the scroller's whole padding box, so a
+   scroller that reaches the edge of a rounded card drags the thumb flat into
+   the corner arc and it reads as a chopped-off bar. Trimming the track at both
+   ends shortens the lane *and* the thumb's travel, so the pill floats clear of
+   every rounded corner: dialogs, dashboard cards, kanban columns, member
+   lists, table wrappers. Verified against 24px-radius clipped cards. */
+*::-webkit-scrollbar-track:vertical {
+  margin-block: 12px;
+}
+
+*::-webkit-scrollbar-track:horizontal {
+  margin-inline: 12px;
+}
+
+/* The window scrollbar has no rounded corner to clear — keep it full height so
+   the page thumb stays flush with the viewport edges. The sidebar keeps its own
+   always-visible bar too (see .custom-sidebar-scrollbar above). */
+html::-webkit-scrollbar-track:vertical,
+.custom-sidebar-scrollbar::-webkit-scrollbar-track:vertical {
+  margin-block: 0;
+}
+
+/* Standard scrollbar properties — engines without ::-webkit-scrollbar (Firefox).
+   Declaring these next to the webkit rules would disable those rules in Chrome. */
+@supports not selector(::-webkit-scrollbar) {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(100, 116, 139, 0.35) transparent;
+  }
+
+  .dark * {
+    scrollbar-color: rgba(203, 213, 225, 0.3) transparent;
+  }
+
+  .custom-sidebar-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db transparent;
+  }
+
+  .dark .custom-sidebar-scrollbar {
+    scrollbar-color: #4b5563 transparent;
   }
 }

@@ -17,6 +17,14 @@ interface TaskFilters {
   assignee?: string;
 }
 
+// Date chips follow the dashboard theme: glass at rest, brand gradient when active
+const filterChipClass = (active: boolean) =>
+  `px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 border ${
+    active
+      ? 'border-transparent bg-gradient-to-r from-[#0447FD] to-[#7F1BFF] text-white shadow-lg shadow-indigo-500/25'
+      : 'border-white/60 bg-white/60 text-slate-600 backdrop-blur hover:bg-white/90 hover:text-slate-900 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white'
+  }`;
+
 export default function TasksPage() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [filteredTasks, setFilteredTasks] = useState<Task[]>([]);
@@ -155,81 +163,49 @@ export default function TasksPage() {
       <div className="flex flex-wrap gap-2">
         <button
           onClick={() => setDateFilter('all')}
-          className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 border ${
-            dateFilter === 'all'
-              ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/25 scale-105'
-              : 'bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-white/60 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500'
-          }`}
+          className={filterChipClass(dateFilter === 'all')}
         >
           All Tasks
         </button>
         <button
           onClick={() => setDateFilter('today')}
-          className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 border ${
-            dateFilter === 'today'
-              ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/25 scale-105'
-              : 'bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-white/60 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500'
-          }`}
+          className={filterChipClass(dateFilter === 'today')}
         >
           Today
         </button>
         <button
           onClick={() => setDateFilter('yesterday')}
-          className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 border ${
-            dateFilter === 'yesterday'
-              ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/25 scale-105'
-              : 'bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-white/60 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500'
-          }`}
+          className={filterChipClass(dateFilter === 'yesterday')}
         >
           Yesterday
         </button>
         <button
           onClick={() => setDateFilter('thisWeek')}
-          className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 border ${
-            dateFilter === 'thisWeek'
-              ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/25 scale-105'
-              : 'bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-white/60 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500'
-          }`}
+          className={filterChipClass(dateFilter === 'thisWeek')}
         >
           This Week
         </button>
         <button
           onClick={() => setDateFilter('lastWeek')}
-          className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 border ${
-            dateFilter === 'lastWeek'
-              ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/25 scale-105'
-              : 'bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-white/60 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500'
-          }`}
+          className={filterChipClass(dateFilter === 'lastWeek')}
         >
           Last Week
         </button>
         <button
           onClick={() => setDateFilter('thisMonth')}
-          className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 border ${
-            dateFilter === 'thisMonth'
-              ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/25 scale-105'
-              : 'bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-white/60 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500'
-          }`}
+          className={filterChipClass(dateFilter === 'thisMonth')}
         >
           This Month
         </button>
         <button
           onClick={() => setDateFilter('lastMonth')}
-          className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 border ${
-            dateFilter === 'lastMonth'
-              ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/25 scale-105'
-              : 'bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-white/60 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500'
-          }`}
+          className={filterChipClass(dateFilter === 'lastMonth')}
         >
           Last Month
         </button>
         <button
           onClick={() => setDateFilter('older')}
-          className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 border ${
-            dateFilter === 'older'
-              ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/25 scale-105'
-              : 'bg-gray-50 dark:bg-gray-800 text-gray-700 dark:text-gray-300 border-white/60 dark:border-white/10 hover:bg-gray-100 dark:hover:bg-gray-700 hover:border-gray-300 dark:hover:border-gray-500'
-          }`}
+          className={filterChipClass(dateFilter === 'older')}
         >
           Older
         </button>

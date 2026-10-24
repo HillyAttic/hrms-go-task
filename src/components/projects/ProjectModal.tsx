@@ -310,14 +310,21 @@ export function ProjectModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
+      {/* A little bottom inset keeps the scrollbar thumb clear of the 24px corner
+          radius, where the dialog's overflow clip would shave it off. */}
+      <DialogContent className="flex max-h-[90vh] flex-col gap-0 overflow-hidden p-0 pb-3 sm:max-w-[800px]">
+        <DialogHeader className="shrink-0 border-b border-white/60 px-6 pb-4 pr-14 pt-8 dark:border-white/10">
           <DialogTitle>
             {project ? 'Edit Project' : 'Create New Project'}
           </DialogTitle>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit(handleFormSubmit)} className="space-y-6">
+        {/* Header stays put; only the form scrolls, so the scrollbar never runs
+            through the rounded corners of the dialog. */}
+        <form
+          onSubmit={handleSubmit(handleFormSubmit)}
+          className="min-h-0 flex-1 space-y-6 overflow-y-auto px-6 pb-5 pt-5"
+        >
           {/* ── Basic Info ───────────────────────────────────────────── */}
           <section>
             <h3 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3 border-b pb-2">
