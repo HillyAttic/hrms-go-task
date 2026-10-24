@@ -287,10 +287,10 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
 
   const displayPhoto = previewURL || currentPhotoURL;
   const tabClass = (tab: Tab) =>
-    `px-4 py-2 text-sm font-medium rounded-md transition-colors ${
+    `rounded-xl px-4 py-2 text-sm font-medium transition-all ${
       activeTab === tab
-        ? 'bg-blue-600 text-white'
-        : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+        ? 'bg-gradient-to-r from-[#0447FD] to-[#7F1BFF] text-white shadow-lg shadow-indigo-500/25'
+        : 'border border-white/60 bg-white/50 text-slate-600 backdrop-blur hover:bg-white/80 hover:text-slate-900 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white'
     }`;
 
   return (
@@ -300,18 +300,18 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
         <Label htmlFor="photo">Profile Photo</Label>
         <div className="relative">
           {displayPhoto ? (
-            <div className="relative w-32 h-32 rounded-full overflow-hidden ring-4 ring-white dark:ring-gray-800">
+            <div className="relative h-32 w-32 overflow-hidden rounded-full ring-4 ring-white shadow-[0_14px_35px_-14px_rgba(4,71,253,0.55)] dark:ring-white/10">
               <img src={displayPhoto} alt="Profile preview" className="w-full h-full object-cover" />
               <button
                 type="button"
                 onClick={handleRemoveFile}
-                className="absolute top-2 right-2 w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white hover:bg-red-600 transition-colors"
+                className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-rose-500 to-red-600 text-white shadow-lg shadow-rose-500/25 transition-all hover:brightness-110"
               >
                 <XMarkIcon className="w-5 h-5" />
               </button>
             </div>
           ) : (
-            <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center ring-4 ring-white dark:ring-gray-800">
+            <div className="flex h-32 w-32 items-center justify-center rounded-full bg-gradient-to-br from-[#0447FD] to-[#7F1BFF] ring-4 ring-white dark:ring-white/10">
               <span className="text-4xl font-bold text-white">
                 {getInitials([firstName, lastName].filter(Boolean).join(' ') || initialData.displayName)}
               </span>
@@ -338,10 +338,10 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
             {displayPhoto ? 'Change Photo' : 'Upload Photo'}
           </Button>
           {selectedFile && (
-            <span className="text-sm text-gray-600 dark:text-gray-400">{selectedFile.name}</span>
+            <span className="text-sm text-slate-500 dark:text-slate-400">{selectedFile.name}</span>
           )}
         </div>
-        <p className="text-sm text-gray-500 dark:text-gray-400">Maximum file size: 5MB</p>
+        <p className="text-sm text-slate-500 dark:text-slate-400">Maximum file size: 5MB</p>
       </div>
 
       {/* Tab Navigation */}
@@ -356,7 +356,7 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
       {/* Tab: Personal Info */}
       {activeTab === 'personal' && (
         <div className="space-y-4">
-          <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">Personal Information</h3>
+          <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Personal Information</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
               id="firstName"
@@ -415,7 +415,7 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
       {/* Tab: Employment */}
       {activeTab === 'employment' && (
         <div className="space-y-4">
-          <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">Employment Details</h3>
+          <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Employment Details</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
               id="employeeId"
@@ -452,7 +452,7 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
 
           {/* Bank Details */}
           <div className="border-t border-white/60 dark:border-white/10 pt-4 mt-4">
-            <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Bank Details</h4>
+            <h4 className="mb-3 text-sm font-semibold text-slate-900 dark:text-white">Bank Details</h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Input
                 id="bankName"
@@ -484,7 +484,7 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
 
           {/* Password */}
           <div className="border-t border-white/60 dark:border-white/10 pt-4 mt-4">
-            <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+            <h4 className="mb-3 text-sm font-semibold text-slate-900 dark:text-white">
               Change Password (optional)
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -497,7 +497,7 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
                   placeholder="Enter current password to change"
                   disabled={isSubmitting}
                 />
-                <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                   Required only if you want to change the password
                 </p>
               </div>
@@ -525,7 +525,7 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
       {/* Tab: Probation & Promotion */}
       {activeTab === 'probation' && (
         <div className="space-y-4">
-          <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">Probation Details</h3>
+          <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Probation Details</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
               id="probationDuration"
@@ -545,7 +545,7 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
           </div>
 
           <div className="border-t border-white/60 dark:border-white/10 pt-4 mt-4">
-            <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">Promotion Details</h3>
+            <h3 className="text-sm font-semibold text-slate-900 dark:text-white">Promotion Details</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
               <Input
                 id="promotionDate"
@@ -569,13 +569,13 @@ export default function ProfileEditForm({ initialData, onSuccess, onCancel }: Pr
       {/* Tab: Documents */}
       {activeTab === 'documents' && (
         <div className="space-y-4">
-          <h3 className="text-md font-semibold text-gray-800 dark:text-gray-200">My Documents</h3>
-          <p className="text-xs text-gray-500 dark:text-gray-400">
+          <h3 className="text-sm font-semibold text-slate-900 dark:text-white">My Documents</h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             Upload from your computer (JPG, PNG, PDF — max 10MB each).
           </p>
 
           {documentError && (
-            <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-lg p-3 text-sm text-red-700 dark:text-red-400 flex items-center justify-between">
+            <div className="flex items-center justify-between rounded-xl border border-red-200/80 bg-red-50/80 p-3 text-sm text-red-700 backdrop-blur dark:border-red-400/20 dark:bg-red-500/10 dark:text-red-300">
               <span>{documentError}</span>
               <button type="button" onClick={() => setDocumentError(null)} className="text-red-500 hover:text-red-700">
                 <XMarkIcon className="w-4 h-4" />
