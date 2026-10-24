@@ -18,7 +18,7 @@ interface ProjectListProps {
   onEdit: (project: Project) => void;
   onDelete: (id: string) => void;
   isLoading?: boolean;
-  viewMode?: 'grid' | 'list';
+  viewMode?: 'bento' | 'grid' | 'list';
   selectedIds?: Set<string>;
   onToggleSelection?: (id: string) => void;
   onToggleSelectAll?: () => void;
@@ -58,8 +58,13 @@ export function ProjectList({
       );
     }
 
+    // Bento view: highest-value projects first among the showcase tiles
+    if (viewMode === 'bento') {
+      filtered.sort((a, b) => (b.projectValue || 0) - (a.projectValue || 0));
+    }
+
     return filtered;
-  }, [projects, searchQuery, statusFilter]);
+  }, [projects, searchQuery, statusFilter, viewMode]);
 
   // Pagination
   const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
@@ -183,14 +188,30 @@ export function ProjectList({
           onToggleSelection={onToggleSelection}
           onToggleSelectAll={onToggleSelectAll}
         />
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      ) : viewMode === 'bento' ? (
+        /* Bento grid: every project rendered as a rich showcase tile */
+        <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 lg:gap-5">
           {paginatedProjects.map((project) => (
             <ProjectCard
               key={project.id}
               project={project}
               onEdit={onEdit}
               onDelete={onDelete}
+              variant="featured"
+            />
+          ))}
+        </div>
+      ) : (
+        /* Grid view: same bento showcase tiles, rendered a bit smaller and denser */
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
+          {paginatedProjects.map((project) => (
+            <ProjectCard
+              key={project.id}
+              project={project}
+              onEdit={onEdit}
+              onDelete={onDelete}
+              variant="featured"
+              size="sm"
             />
           ))}
         </div>

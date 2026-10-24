@@ -634,7 +634,7 @@ export default function UpdateSchedulePage() {
           </div>
 
           {/* Calendar Grid - Desktop: 7 columns, Mobile: Vertical list */}
-        <div className="md:grid md:grid-cols-7 md:gap-1 space-y-2 md:space-y-0">
+        <div className="md:grid md:grid-cols-7 md:gap-2 space-y-2 md:space-y-0">
           {/* Day Headers - Desktop only */}
           {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(day => (
             <div key={day} className="hidden md:block text-center font-semibold text-sm text-gray-600 dark:text-gray-400 py-2">
@@ -646,15 +646,22 @@ export default function UpdateSchedulePage() {
           {calendarDays.map((calDay, index) => {
             // Skip rendering days from prev/next month on mobile
             if (!calDay.isCurrentMonth) {
-              return <div key={index} className="hidden md:block bg-gray-50 dark:bg-gray-800 border border-white/60 dark:border-white/10 min-h-[100px]" />;
+              return (
+                <div
+                  key={index}
+                  className="hidden md:block bg-gray-100/70 dark:bg-black/20 border border-slate-200/70 dark:border-white/10 rounded-xl min-h-[100px] shadow-[inset_4px_4px_8px_rgba(163,177,198,0.3),inset_-4px_-4px_8px_rgba(255,255,255,0.8)] dark:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.45),inset_-4px_-4px_8px_rgba(255,255,255,0.03)]"
+                />
+              );
             }
 
             return (
               <div
                 key={index}
-                className={`relative min-h-[100px] border border-white/60 dark:border-white/10 p-3 md:p-2 ${
-                  calDay.isCurrentMonth ? 'glass-surface hover:bg-blue-50 dark:hover:bg-blue-900/20 cursor-pointer' : ''
-                } transition-colors group`}
+                className={`relative min-h-[100px] rounded-xl border border-slate-200/80 dark:border-white/10 p-3 md:p-2 glass-surface transition-all duration-200 group ${
+                  calDay.isCurrentMonth
+                    ? 'cursor-pointer shadow-[5px_5px_12px_rgba(163,177,198,0.35),-5px_-5px_12px_rgba(255,255,255,0.95)] dark:shadow-[5px_5px_12px_rgba(0,0,0,0.5),-5px_-5px_12px_rgba(255,255,255,0.04)] hover:bg-blue-50/60 dark:hover:bg-blue-900/20 hover:shadow-[inset_4px_4px_8px_rgba(163,177,198,0.4),inset_-4px_-4px_8px_rgba(255,255,255,0.8)] dark:hover:shadow-[inset_4px_4px_8px_rgba(0,0,0,0.5),inset_-4px_-4px_8px_rgba(255,255,255,0.04)]'
+                    : ''
+                }`}
                 onMouseEnter={() => calDay.isCurrentMonth && setHoveredDay(index)}
                 onMouseLeave={() => setHoveredDay(null)}
                 onClick={() => calDay.isCurrentMonth && handleDateClick(calDay.date)}
@@ -669,8 +676,14 @@ export default function UpdateSchedulePage() {
                   )}
                 </div>
 
-                {/* Desktop: Show just day number */}
-                <div className="hidden md:block text-sm font-medium text-gray-900 dark:text-white">
+                {/* Desktop: Show just day number in a soft-UI chip (today gets the brand gradient) */}
+                <div
+                  className={`hidden md:flex w-7 h-7 items-center justify-center rounded-full text-sm font-semibold transition-colors ${
+                    calDay.date.toDateString() === new Date().toDateString()
+                      ? 'bg-gradient-to-br from-[#0447FD] to-[#7F1BFF] text-white shadow-[0_4px_10px_-2px_rgba(4,71,253,0.5)]'
+                      : 'bg-gray-50/90 dark:bg-white/5 text-gray-900 dark:text-white shadow-[2px_2px_5px_rgba(163,177,198,0.5),-2px_-2px_5px_rgba(255,255,255,0.95)] dark:shadow-[2px_2px_5px_rgba(0,0,0,0.45),-2px_-2px_5px_rgba(255,255,255,0.04)]'
+                  }`}
+                >
                   {calDay.day}
                 </div>
 
