@@ -4,7 +4,9 @@ import Link from "next/link";
 import { useSidebarContext } from "./sidebar-context";
 
 const menuItemBaseStyles = cva(
-  "rounded-xl px-3.5 text-sm font-medium text-slate-600 transition-all duration-200 dark:text-slate-400",
+  // Radius matches the primary CTA buttons (e.g. "Add New Project"): a rounded
+  // rectangle rather than a pill.
+  "rounded-md px-3.5 text-sm font-medium text-slate-600 transition-all duration-200 dark:text-slate-400",
   {
     variants: {
       isActive: {

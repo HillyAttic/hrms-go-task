@@ -66,7 +66,7 @@ function formatTime(value?: string) {
 }
 
 const actionClass =
-  'inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-lg px-2.5 py-1.5 text-[11px] font-semibold transition-colors';
+  'inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-md px-2.5 py-1.5 text-[11px] font-semibold transition-colors';
 
 const secondaryActionClass =
   `${actionClass} border border-slate-200/80 bg-white/70 text-slate-600 backdrop-blur hover:bg-white/90 hover:text-slate-900 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white`;
@@ -368,44 +368,48 @@ export function AttendanceTrackingCard({ userId }: AttendanceTrackingCardProps) 
             </div>
           )}
 
-          {!loading && status && (
-            <button
-              type="button"
-              onClick={status.isClockedIn ? handleClockOut : handleClockIn}
-              disabled={busy !== null}
-              className={`mt-3 flex items-center justify-center gap-1.5 self-center rounded-xl px-8 py-2 text-xs font-semibold text-white shadow-lg transition-all hover:brightness-110 disabled:opacity-60 ${
-                status.isClockedIn
-                  ? 'bg-gradient-to-r from-rose-500 to-red-600 shadow-rose-500/25'
-                  : 'bg-gradient-to-r from-[#0447FD] to-[#7F1BFF] shadow-indigo-500/25'
-              }`}
-            >
-              {busy ? (
-                <>
-                  <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
-                  {busy === 'in' ? 'Clocking in...' : 'Clocking out...'}
-                </>
-              ) : status.isClockedIn ? (
-                <>
-                  <LogOut className="h-3.5 w-3.5" />
-                  Clock Out
-                </>
-              ) : (
-                <>
-                  <LogIn className="h-3.5 w-3.5" />
-                  Clock In
-                </>
-              )}
-            </button>
-          )}
+          {/* Actions — medium buttons (h-10 / text-sm, same recipe as Button size="md"),
+              stretched to one column so Clock In and Refresh Status are identical in size */}
+          <div className="mt-3 flex w-full max-w-[13rem] flex-col gap-2 self-center">
+            {!loading && status && (
+              <button
+                type="button"
+                onClick={status.isClockedIn ? handleClockOut : handleClockIn}
+                disabled={busy !== null}
+                className={`flex h-10 w-full items-center justify-center gap-1.5 rounded-md px-4 text-sm font-semibold text-white shadow-lg transition-all hover:brightness-110 disabled:opacity-60 ${
+                  status.isClockedIn
+                    ? 'bg-gradient-to-r from-rose-500 to-red-600 shadow-rose-500/25'
+                    : 'bg-gradient-to-r from-[#0447FD] to-[#7F1BFF] shadow-indigo-500/25'
+                }`}
+              >
+                {busy ? (
+                  <>
+                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                    {busy === 'in' ? 'Clocking in...' : 'Clocking out...'}
+                  </>
+                ) : status.isClockedIn ? (
+                  <>
+                    <LogOut className="h-4 w-4" />
+                    Clock Out
+                  </>
+                ) : (
+                  <>
+                    <LogIn className="h-4 w-4" />
+                    Clock In
+                  </>
+                )}
+              </button>
+            )}
 
-          <button
-            onClick={refresh}
-            disabled={loading}
-            className="mt-2 flex items-center justify-center gap-1.5 self-center rounded-xl border border-slate-200/80 bg-white/70 px-8 py-2 text-xs font-medium text-slate-600 transition-colors hover:bg-white/90 hover:text-slate-900 disabled:opacity-60 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"
-          >
-            <RefreshCw className={`h-3.5 w-3.5 ${loading ? 'animate-spin' : ''}`} />
-            Refresh Status
-          </button>
+            <button
+              onClick={refresh}
+              disabled={loading}
+              className="flex h-10 w-full items-center justify-center gap-1.5 rounded-md border border-slate-200/80 bg-white/70 px-4 text-sm font-medium text-slate-600 transition-colors hover:bg-white/90 hover:text-slate-900 disabled:opacity-60 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"
+            >
+              <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
+              Refresh Status
+            </button>
+          </div>
         </div>
       </Card>
 

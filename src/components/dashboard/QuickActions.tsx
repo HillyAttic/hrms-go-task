@@ -78,7 +78,7 @@ export function QuickActions({
           <button
             key={index}
             onClick={action.onClick}
-            className={`relative flex min-h-[34px] items-center justify-center gap-1.5 rounded-xl px-1.5 py-1.5 text-center text-[11px] font-semibold leading-tight text-white shadow-sm transition-all 2xl:text-[11.5px] ${action.color}`}
+            className={`relative flex min-h-[34px] items-center justify-center gap-1.5 rounded-md px-1.5 py-1.5 text-center text-[11px] font-semibold leading-tight text-white shadow-sm transition-all 2xl:text-[11.5px] ${action.color}`}
           >
             {action.icon}
             <span className="min-w-0">{action.label}</span>

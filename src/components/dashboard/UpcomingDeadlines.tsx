@@ -72,7 +72,7 @@ export function UpcomingDeadlines({ tasks, onTaskClick }: UpcomingDeadlinesProps
               <button
                 key={task.id}
                 onClick={() => onTaskClick?.(task.id)}
-                className="flex w-full items-center justify-between gap-2 rounded-xl px-2 py-2 text-left transition-colors hover:bg-white/70 dark:hover:bg-white/10"
+                className="flex w-full items-center justify-between gap-2 rounded-md px-2 py-2 text-left transition-colors hover:bg-white/70 dark:hover:bg-white/10"
               >
                 <div className="min-w-0">
                   <p className="truncate text-xs font-medium text-slate-900 dark:text-white">{task.title}</p>
