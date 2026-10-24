@@ -146,7 +146,7 @@ export const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
         </div>
         <main
           id="main-content"
-          className={`flex-1 mx-auto w-full max-w-screen-2xl overflow-x-hidden pb-20 md:pb-10 ${
+          className={`min-w-0 flex-1 mx-auto w-full max-w-screen-2xl overflow-x-clip pb-20 md:pb-10 ${
             shouldHideHeaderOnDesktop ? '' : 'p-4 md:p-6 2xl:p-10'
           }`}
           role="main"

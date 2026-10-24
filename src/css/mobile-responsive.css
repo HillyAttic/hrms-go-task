@@ -18,11 +18,15 @@ body.modal-open header {
     -webkit-font-smoothing: antialiased;
   }
 
-  /* Prevent horizontal scroll */
+  /* Prevent horizontal scroll.
+     `clip` instead of `hidden`: `hidden` turns html/body into a scroll container,
+     which silently breaks the sticky header/sidebar. `100%` instead of `100vw`
+     because `100vw` already includes the vertical scrollbar width and would itself
+     overflow the viewport by ~15px. */
   html,
   body {
-    overflow-x: hidden;
-    max-width: 100vw;
+    overflow-x: clip;
+    max-width: 100%;
   }
 
   /* Optimize spacing for mobile */

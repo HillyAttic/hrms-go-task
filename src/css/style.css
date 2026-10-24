@@ -3,6 +3,13 @@
 @tailwind utilities;
 
 @layer base {
+  /* Root-level guard: a stray wide element anywhere in the app must never produce a
+     horizontal scrollbar. `clip` (not `hidden`) keeps the document's single vertical
+     scroller, so sticky header/sidebar and scroll position behave normally. */
+  html {
+    overflow-x: clip;
+  }
+
   body {
     @apply bg-[#F8FAFC] text-dark-5 dark:bg-[#020D1A] dark:text-dark-6;
     margin: 0;
@@ -11,6 +18,8 @@
        create a horizontal scrollbar. `clip` (not `hidden`) so sticky sidebar/header
        positioning is unaffected and no horizontal scroll box is created. */
     overflow-x: clip;
+    /* Never let a child's intrinsic width widen the page. */
+    min-width: 0;
   }
 
   /* Loading skeleton animation */

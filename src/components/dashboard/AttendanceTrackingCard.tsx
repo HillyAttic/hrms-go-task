@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { Card } from '@/components/ui/card';
 import { authenticatedFetch } from '@/lib/api-client';
 import { useEnhancedAuth } from '@/contexts/enhanced-auth.context';
@@ -24,6 +24,16 @@ import {
   MapPin,
   RefreshCw,
 } from 'lucide-react';
+
+// Lazy-loaded: the history dialog fetches its own data on open and portals out of
+// the dashboard card, so it is kept out of the dashboard's initial bundle.
+const AttendanceHistoryModal = dynamic(
+  () =>
+    import('@/components/attendance/AttendanceHistoryModal').then(
+      (mod) => mod.AttendanceHistoryModal,
+    ),
+  { ssr: false },
+);
 
 interface AttendanceTrackingCardProps {
   userId?: string;
@@ -72,6 +82,7 @@ export function AttendanceTrackingCard({ userId }: AttendanceTrackingCardProps) 
   // Leave / WFH state
   const [showLeaveModal, setShowLeaveModal] = useState(false);
   const [showWfhModal, setShowWfhModal] = useState(false);
+  const [showHistoryModal, setShowHistoryModal] = useState(false);
   const [leaveTypes, setLeaveTypes] = useState<LeaveType[]>([]);
   const [leaveBalances, setLeaveBalances] = useState<LeaveBalance[]>([]);
   const [submitting, setSubmitting] = useState(false);
@@ -311,10 +322,15 @@ export function AttendanceTrackingCard({ userId }: AttendanceTrackingCardProps) 
               <Clock className="h-3.5 w-3.5" />
               Apply WFH
             </button>
-            <Link href="/attendance/history" className={secondaryActionClass}>
+            <button
+              type="button"
+              onClick={() => setShowHistoryModal(true)}
+              aria-haspopup="dialog"
+              className={secondaryActionClass}
+            >
               <History className="h-3.5 w-3.5" />
               History
-            </Link>
+            </button>
           </div>
         </div>
 
@@ -407,6 +423,12 @@ export function AttendanceTrackingCard({ userId }: AttendanceTrackingCardProps) 
         onOpenChange={setShowWfhModal}
         onSubmit={handleApplyWfh}
         loading={submitting}
+      />
+
+      <AttendanceHistoryModal
+        open={showHistoryModal}
+        onOpenChange={setShowHistoryModal}
+        userId={userId}
       />
     </>
   );

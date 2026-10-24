@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { usePushNotifications } from '@/hooks/use-push-notifications';
-import { TouchOptimizedButton } from '@/components/ui/touch-optimized-input';
+import { Button } from '@/components/ui/button';
 import { useResponsive } from '@/hooks/use-responsive';
 import { useEnhancedAuth } from '@/contexts/enhanced-auth.context';
 import { checkNotificationSupport } from '@/lib/firebase-messaging';
@@ -42,13 +42,14 @@ export function NotificationPermissionPrompt() {
 
   return (
     <div className="fixed top-20 left-4 right-4 md:left-auto md:right-4 md:max-w-sm z-[9998]">
-      <div className="glass-surface border border-stroke dark:border-stroke-dark rounded-lg shadow-card-2 p-4">
-        <div className="flex items-start space-x-3">
-          <div className="flex-shrink-0">
-            <svg 
-              className="w-10 h-10 text-primary" 
-              fill="none" 
-              stroke="currentColor" 
+      <div className="overflow-hidden rounded-2xl border border-white/70 bg-white/85 p-4 shadow-[0_30px_80px_-20px_rgba(15,23,42,0.45)] backdrop-blur-2xl dark:border-white/10 dark:bg-[#0B1430]/90">
+        <div className="flex items-start gap-3">
+          {/* Brand gradient badge — matches the dashboard/header glass cards */}
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-[#0447FD] to-[#7F1BFF] shadow-lg shadow-indigo-500/25">
+            <svg
+              className="h-5 w-5 text-white"
+              fill="none"
+              stroke="currentColor"
               viewBox="0 0 24 24"
             >
               <path 
@@ -59,28 +60,27 @@ export function NotificationPermissionPrompt() {
               />
             </svg>
           </div>
-          <div className="flex-1 min-w-0">
-            <h4 className="text-sm font-semibold text-dark dark:text-white">
+          <div className="min-w-0 flex-1">
+            <h4 className="text-sm font-semibold text-slate-900 dark:text-white">
               Enable Push Notifications
             </h4>
-            <p className="text-sm text-dark-4 dark:text-dark-6 mt-1">
+            <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
               Get instant updates about tasks, attendance, and team activities even when the app is closed.
               {notificationInfo?.isIOS && notificationInfo?.isPWA && (
-                <span className="block mt-1 text-xs text-primary">
+                <span className="mt-1 block text-xs font-medium text-emerald-600 dark:text-emerald-400">
                   ✓ Running as PWA - notifications supported
                 </span>
               )}
             </p>
-            <div className="flex space-x-2 mt-3">
-              <TouchOptimizedButton
-                variant="primary"
-                size="sm"
-                touchTargetSize={isTouchDevice ? 'md' : 'sm'}
+            <div className="mt-3 flex gap-2">
+              <Button
                 onClick={handleEnable}
-                disabled={isLoading}
+                loading={isLoading}
+                size={isTouchDevice ? 'lg' : 'default'}
+                className="rounded-xl text-white transition-all hover:-translate-y-0.5"
               >
                 {isLoading ? 'Enabling...' : 'Enable Notifications'}
-              </TouchOptimizedButton>
+              </Button>
             </div>
           </div>
         </div>
