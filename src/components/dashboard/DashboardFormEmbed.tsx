@@ -199,7 +199,7 @@ export default function DashboardFormEmbed() {
   // Show loading animation while fetching form data
   if (loading) {
     return (
-      <Card className="col-span-full rounded-2xl border border-slate-200/80 bg-white/70 shadow-[6px_6px_14px_rgba(148,163,199,0.35),-6px_-6px_14px_rgba(255,255,255,0.95)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05] dark:shadow-[6px_6px_14px_rgba(0,0,0,0.55),-6px_-6px_14px_rgba(255,255,255,0.04)]">
+      <Card className="col-span-full rounded-2xl border border-slate-200/80 bg-white/70 shadow-[6px_6px_14px_rgba(148,163,199,0.35)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05] dark:shadow-[6px_6px_14px_rgba(0,0,0,0.55)]">
         <CardContent className="pt-6">
           <div className="flex items-center justify-center py-12">
             <DotLottieReact
@@ -230,7 +230,7 @@ export default function DashboardFormEmbed() {
     // If form has been submitted today, show success message
     if (form.isSubmitted) {
       return (
-        <Card className="col-span-full rounded-2xl border border-slate-200/80 bg-white/70 shadow-[6px_6px_14px_rgba(148,163,199,0.35),-6px_-6px_14px_rgba(255,255,255,0.95)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05] dark:shadow-[6px_6px_14px_rgba(0,0,0,0.55),-6px_-6px_14px_rgba(255,255,255,0.04)]">
+        <Card className="col-span-full rounded-2xl border border-slate-200/80 bg-white/70 shadow-[6px_6px_14px_rgba(148,163,199,0.35)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05] dark:shadow-[6px_6px_14px_rgba(0,0,0,0.55)]">
           <CardContent className="pt-6">
             <div className="p-6 space-y-6">
               <div className="space-y-3">
@@ -270,7 +270,7 @@ export default function DashboardFormEmbed() {
     }
 
     return (
-      <Card className="col-span-full rounded-2xl border border-slate-200/80 bg-white/70 shadow-[6px_6px_14px_rgba(148,163,199,0.35),-6px_-6px_14px_rgba(255,255,255,0.95)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05] dark:shadow-[6px_6px_14px_rgba(0,0,0,0.55),-6px_-6px_14px_rgba(255,255,255,0.04)]">
+      <Card className="col-span-full rounded-2xl border border-slate-200/80 bg-white/70 shadow-[6px_6px_14px_rgba(148,163,199,0.35)] backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.05] dark:shadow-[6px_6px_14px_rgba(0,0,0,0.55)]">
         <CardContent className="pt-6">
           <div className="w-full">
             {/* Warning banner if user is clocked in and hasn't submitted */}

@@ -8,7 +8,6 @@ import { ProjectModal } from '@/components/projects/ProjectModal';
 import { Button } from '@/components/ui/button';
 import {
   PlusIcon,
-  RectangleGroupIcon,
   Squares2X2Icon,
   ListBulletIcon,
   BanknotesIcon,
@@ -49,7 +48,7 @@ export default function ProjectsPage() {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
-  const [viewMode, setViewMode] = useState<'bento' | 'grid' | 'list'>('bento');
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
   /**
@@ -219,7 +218,6 @@ export default function ProjectsPage() {
   }, [projects]);
 
   const VIEW_OPTIONS = [
-    { id: 'bento', label: 'Bento', icon: RectangleGroupIcon },
     { id: 'grid', label: 'Grid', icon: Squares2X2Icon },
     { id: 'list', label: 'List', icon: ListBulletIcon },
   ] as const;

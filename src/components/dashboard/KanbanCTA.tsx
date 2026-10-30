@@ -70,7 +70,7 @@ export function KanbanCTA() {
   const active = target ?? selfTarget;
 
   return (
-    <section className="relative flex h-full min-h-[210px] flex-col overflow-hidden rounded-3xl bg-[linear-gradient(100deg,#2A54F5_0%,#4640EE_42%,#6231E8_72%,#7A2BE3_100%)] px-7 py-7 text-white shadow-[8px_8px_20px_rgba(98,49,232,0.35),-6px_-6px_18px_rgba(255,255,255,0.9)] ring-1 ring-white/15 md:px-10 md:py-9 dark:shadow-[8px_8px_20px_rgba(0,0,0,0.55),-6px_-6px_18px_rgba(255,255,255,0.04)] dark:ring-white/10">
+    <section className="relative flex h-full min-h-[210px] flex-col overflow-hidden rounded-3xl bg-[linear-gradient(100deg,#2A54F5_0%,#4640EE_42%,#6231E8_72%,#7A2BE3_100%)] px-7 py-7 text-white shadow-[8px_8px_20px_rgba(98,49,232,0.35)] ring-1 ring-white/15 md:px-10 md:py-9 dark:shadow-[8px_8px_20px_rgba(0,0,0,0.55)] dark:ring-white/10">
       {/* Soft translucent waves rising from the bottom edge */}
       <svg
         className="pointer-events-none absolute inset-0 h-full w-full"

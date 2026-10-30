@@ -92,8 +92,8 @@ export function BusinessManager({
               onClick={() => onSelectBusiness(business.id)}
               className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent sm:px-4 sm:py-2 whitespace-nowrap ${
                 selectedBusinessId === business.id
-                  ? 'text-white shadow-[4px_4px_9px_rgba(15,23,42,0.25),-3px_-3px_8px_rgba(255,255,255,0.85)] dark:shadow-[4px_4px_9px_rgba(0,0,0,0.55),-3px_-3px_8px_rgba(255,255,255,0.05)]'
-                  : 'border border-slate-200/70 bg-white/70 text-slate-600 shadow-[3px_3px_7px_rgba(148,163,199,0.4),-3px_-3px_7px_rgba(255,255,255,0.95)] backdrop-blur hover:bg-white/90 hover:text-slate-900 active:shadow-[inset_2px_2px_5px_rgba(148,163,199,0.4),inset_-2px_-2px_5px_rgba(255,255,255,0.9)] dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:shadow-[3px_3px_7px_rgba(0,0,0,0.5),-3px_-3px_7px_rgba(255,255,255,0.04)] dark:hover:bg-white/10 dark:hover:text-white'
+                  ? 'text-white shadow-[4px_4px_9px_rgba(15,23,42,0.25)] dark:shadow-[4px_4px_9px_rgba(0,0,0,0.55)]'
+                  : 'border border-slate-200/70 bg-white/70 text-slate-600 shadow-[3px_3px_7px_rgba(148,163,199,0.4)] backdrop-blur hover:bg-white/90 hover:text-slate-900 active:shadow-[inset_2px_2px_5px_rgba(148,163,199,0.4)] dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:shadow-[3px_3px_7px_rgba(0,0,0,0.5)] dark:hover:bg-white/10 dark:hover:text-white'
               }`}
               style={{
                 backgroundColor: selectedBusinessId === business.id ? business.color : undefined,
@@ -135,7 +135,7 @@ export function BusinessManager({
         <Button
           onClick={() => setShowAddModal(true)}
           variant="outline"
-          className="flex flex-shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-slate-200/70 bg-white/70 px-3 py-1.5 text-sm text-slate-700 shadow-[3px_3px_7px_rgba(148,163,199,0.4),-3px_-3px_7px_rgba(255,255,255,0.95)] backdrop-blur transition hover:bg-white/90 hover:text-slate-900 active:shadow-[inset_2px_2px_5px_rgba(148,163,199,0.4),inset_-2px_-2px_5px_rgba(255,255,255,0.9)] focus-visible:ring-2 focus-visible:ring-indigo-500/50 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:shadow-[3px_3px_7px_rgba(0,0,0,0.5),-3px_-3px_7px_rgba(255,255,255,0.04)] dark:hover:bg-white/10 sm:gap-2 sm:px-4 sm:py-2"
+          className="flex flex-shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-slate-200/70 bg-white/70 px-3 py-1.5 text-sm text-slate-700 shadow-[3px_3px_7px_rgba(148,163,199,0.4)] backdrop-blur transition hover:bg-white/90 hover:text-slate-900 active:shadow-[inset_2px_2px_5px_rgba(148,163,199,0.4)] focus-visible:ring-2 focus-visible:ring-indigo-500/50 dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:shadow-[3px_3px_7px_rgba(0,0,0,0.5)] dark:hover:bg-white/10 sm:gap-2 sm:px-4 sm:py-2"
         >
           <PlusIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           <span className="hidden sm:inline">Add Business</span>
