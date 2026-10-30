@@ -2,10 +2,10 @@
 
 /**
  * THROWAWAY PROTOTYPE — /prototype
- * Ten dashboard directions: 5 KPI-driven (K1–K5) and 5 React/Stitch-dense (R1–R5).
- * K1 and R1 mirror the real /dashboard structure and palette; the rest explore
- * different visual systems while keeping the same operational content.
- * Mock data only. Remove this folder and the AuthWrapper bypass when done.
+ * Ten dashboard directions: 5 KPI-driven (K1–K5) and 5 React/Stitch-dense (R1–R5),
+ * plus nine theme-style skins (S1–S9). Every variant renders K1's layout — the
+ * real /dashboard structure — and only the theme changes between them. R5 uses
+ * the bento grid. Mock data only. Remove this folder and the AuthWrapper bypass when done.
  */
 
 import { useCallback, useEffect, useState } from 'react';
@@ -13,6 +13,7 @@ import './prototype.css';
 import { Kpi1 } from './variants';
 import { Kpi2, Kpi3, Kpi4, Kpi5 } from './kpi';
 import { React1, React2, React3, React4, React5 } from './react';
+import { Style1, Style2, Style3, Style4, Style5, Style6, Style7, Style8, Style9 } from './styles';
 
 const VARIANTS = [
   { key: 'K1', set: 'KPI', name: 'Executive summary', Component: Kpi1 },
@@ -25,6 +26,15 @@ const VARIANTS = [
   { key: 'R3', set: 'React', name: 'Analytics workspace', Component: React3 },
   { key: 'R4', set: 'React', name: 'Tonal glass', Component: React4 },
   { key: 'R5', set: 'React', name: 'Bento', Component: React5 },
+  { key: 'S1', set: 'Styles', name: 'Material', Component: Style1 },
+  { key: 'S2', set: 'Styles', name: 'Glassmorphism', Component: Style2 },
+  { key: 'S3', set: 'Styles', name: 'Neumorphism', Component: Style3 },
+  { key: 'S4', set: 'Styles', name: 'Claymorphism', Component: Style4 },
+  { key: 'S5', set: 'Styles', name: 'Skeumorphism', Component: Style5 },
+  { key: 'S6', set: 'Styles', name: 'Neobrutalism', Component: Style6 },
+  { key: 'S7', set: 'Styles', name: 'Brutalism', Component: Style7 },
+  { key: 'S8', set: 'Styles', name: 'Flat', Component: Style8 },
+  { key: 'S9', set: 'Styles', name: 'Minimal', Component: Style9 },
 ] as const;
 
 export default function PrototypePage() {
@@ -87,6 +97,11 @@ export default function PrototypePage() {
           </optgroup>
           <optgroup label="React dashboards">
             {VARIANTS.filter((variant) => variant.set === 'React').map((variant) => (
+              <option key={variant.key} value={variant.key}>{variant.key} · {variant.name}</option>
+            ))}
+          </optgroup>
+          <optgroup label="Theme styles">
+            {VARIANTS.filter((variant) => variant.set === 'Styles').map((variant) => (
               <option key={variant.key} value={variant.key}>{variant.key} · {variant.name}</option>
             ))}
           </optgroup>

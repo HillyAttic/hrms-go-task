@@ -3000,28 +3000,31 @@
 /* ============================== R5 — Bento ============================== */
 
 .r5 {
-  --v-bg: #f5f5f4;
+  --v-bg: #f8faff;
   --v-surface: #ffffff;
-  --v-surface-2: #f0efec;
-  --v-text: #1c1917;
-  --v-muted: #78716c;
-  --v-line: #e7e5e4;
-  --v-primary: #ea580c;
-  --v-primary-soft: #ffedd5;
-  --v-accent: #0f766e;
-  --v-good: #0f766e;
-  --v-good-soft: #ccfbf1;
-  --v-warn: #d97706;
-  --v-warn-soft: #fef3c7;
-  --v-bad: #be123c;
-  --v-bad-soft: #ffe4e6;
-  --v-info: #0284c7;
-  --v-info-soft: #e0f2fe;
+  --v-surface-2: #f1f5f9;
+  --v-text: #0f172a;
+  --v-muted: #64748b;
+  --v-line: #e2e8f0;
+  --v-primary: #0447fd;
+  --v-primary-soft: #e0e7ff;
+  --v-accent: #7f1bff;
+  --v-good: #10b981;
+  --v-good-soft: #ecfdf5;
+  --v-warn: #f59e0b;
+  --v-warn-soft: #fffbeb;
+  --v-bad: #ef4444;
+  --v-bad-soft: #fef2f2;
+  --v-info: #06b6d4;
+  --v-info-soft: #ecfeff;
   --v-radius: 24px;
-  --v-sans: "Plus Jakarta Sans", "Inter", ui-sans-serif, system-ui, sans-serif;
-  --v-display: "Plus Jakarta Sans", "Inter", sans-serif;
+  --v-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --v-display: "Inter", ui-sans-serif, system-ui, sans-serif;
   --v-mono: "JetBrains Mono", ui-monospace, monospace;
-  background: #f5f5f4;
+  background:
+    radial-gradient(600px 300px at 0% 0%, rgba(4, 71, 253, 0.1), transparent 70%),
+    radial-gradient(600px 300px at 100% 6%, rgba(127, 27, 255, 0.1), transparent 70%),
+    linear-gradient(135deg, #eef2ff 0%, #ffffff 46%, #f5f3ff 100%);
 }
 
 .r5-top { display: flex; align-items: center; gap: 26px; padding: 14px 24px; border-bottom: 1px solid var(--v-line); background: #f5f5f4; }
