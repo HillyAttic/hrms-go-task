@@ -22,6 +22,8 @@ const publicRoutes = [
   '/auth/sign-in',
   '/auth/forgot-password',
   '/auth/reset-password',
+  // Throwaway design prototype — remove with src/app/prototype.
+  '/prototype',
 ];
 
 const authRoutes = [
@@ -87,6 +89,12 @@ export const AuthWrapper: React.FC<AuthWrapperProps> = ({ children }) => {
       isMounted = false;
     };
   }, [user, loading, pathname, router]);
+
+  // Throwaway design prototype: render without the app shell or auth gate.
+  // Remove with src/app/prototype and the publicRoutes entry above.
+  if (pathname.startsWith('/prototype')) {
+    return <>{children}</>;
+  }
 
   // Show loading spinner while checking authentication
   if (loading) {
