@@ -40,6 +40,25 @@
   --pm-e3: 0 4px 8px 3px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(15, 23, 42, 0.1);
   --pm-e4: 0 8px 16px 4px rgba(15, 23, 42, 0.1), 0 2px 6px rgba(15, 23, 42, 0.1);
 
+  /* Mirrors the pm tokens for shared prototype parts (real dashboard sidebar). */
+  --v-surface: #ffffff;
+  --v-surface-2: #f1f5f9;
+  --v-text: #0f172a;
+  --v-muted: #64748b;
+  --v-line: #e2e8f0;
+  --v-primary: #4f46e5;
+  --v-primary-soft: #e0e7ff;
+  --v-accent: #7f1bff;
+  --v-good: #10b981;
+  --v-good-soft: #ecfdf5;
+  --v-warn: #f59e0b;
+  --v-warn-soft: #fffbeb;
+  --v-bad: #ef4444;
+  --v-bad-soft: #fef2f2;
+  --v-info: #2563eb;
+  --v-info-soft: #eff6ff;
+  --v-shadow: 6px 6px 14px rgba(148, 163, 199, 0.35);
+
   display: flex;
   min-height: 100vh;
   background: #f8fafc;

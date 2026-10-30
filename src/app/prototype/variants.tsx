@@ -17,7 +17,6 @@ import {
   ClipboardCheck,
   Clock,
   History,
-  LayoutDashboard,
   ListTodo,
   LogOut,
   Menu,
@@ -25,13 +24,13 @@ import {
   Plus,
   RefreshCw,
   Search,
-  Settings,
   TrendingUp,
   UserRound,
   Users,
   Wallet,
 } from 'lucide-react';
 import { stats, team, weekly } from './data';
+import { DashboardSidebar } from './dashboard-sidebar';
 
 const materialSparks = [
   [8, 12, 9, 14, 11, 16, 13],
@@ -188,43 +187,7 @@ export function Kpi1() {
 
   return (
     <div className="pm">
-      <aside className="pm-rail" aria-label="Main navigation">
-        <div className="pm-brand" aria-label="EdVentureHub">
-          <span className="pm-brand-mark">EV</span>
-        </div>
-
-        <nav className="pm-rail-nav">
-          <a className="pm-rail-item is-active" href="#" aria-current="page">
-            <span className="pm-rail-icon"><LayoutDashboard /></span>
-            <span>Dashboard</span>
-          </a>
-          <a className="pm-rail-item" href="#">
-            <span className="pm-rail-icon"><ListTodo /></span>
-            <span>Tasks</span>
-          </a>
-          <a className="pm-rail-item" href="#">
-            <span className="pm-rail-icon"><Users /></span>
-            <span>Clients</span>
-          </a>
-          <a className="pm-rail-item" href="#">
-            <span className="pm-rail-icon"><CalendarDays /></span>
-            <span>Attendance</span>
-          </a>
-          <a className="pm-rail-item" href="#">
-            <span className="pm-rail-icon"><Users /></span>
-            <span>Team</span>
-          </a>
-          <a className="pm-rail-item" href="#">
-            <span className="pm-rail-icon"><BarChart3 /></span>
-            <span>Reports</span>
-          </a>
-        </nav>
-
-        <a className="pm-rail-item pm-rail-settings" href="#">
-          <span className="pm-rail-icon"><Settings /></span>
-          <span>Settings</span>
-        </a>
-      </aside>
+      <DashboardSidebar />
 
       <div className="pm-main">
         <header className="pm-appbar">

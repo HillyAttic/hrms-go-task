@@ -2,10 +2,10 @@
 
 /**
  * THROWAWAY PROTOTYPE — /prototype
- * Ten dashboard directions: 5 KPI-driven (K1–K5) and 5 React/Stitch-dense (R1–R5),
- * plus nine theme-style skins (S1–S9). Every variant renders K1's layout — the
- * real /dashboard structure — and only the theme changes between them. R5 uses
- * the bento grid. Mock data only. Remove this folder and the AuthWrapper bypass when done.
+ * T1–T10: ten theme skins of one dashboard, matching
+ * public/edVenture Dashboard Theme Showcase.png (opens on T1).
+ * K1–K5 and R1–R5: earlier layout explorations; S1–S9: earlier theme skins.
+ * Mock data only. Remove this folder and the AuthWrapper bypass when done.
  */
 
 import { useCallback, useEffect, useState } from 'react';
@@ -14,8 +14,19 @@ import { Kpi1 } from './variants';
 import { Kpi2, Kpi3, Kpi4, Kpi5 } from './kpi';
 import { React1, React2, React3, React4, React5 } from './react';
 import { Style1, Style2, Style3, Style4, Style5, Style6, Style7, Style8, Style9 } from './styles';
+import { Theme1, Theme2, Theme3, Theme4, Theme5, Theme6, Theme7, Theme8, Theme9, Theme10 } from './showcase';
 
 const VARIANTS = [
+  { key: 'T1', set: 'Showcase', name: 'Neumorphism (Soft UI)', Component: Theme1 },
+  { key: 'T2', set: 'Showcase', name: 'Glassmorphism', Component: Theme2 },
+  { key: 'T3', set: 'Showcase', name: 'Dark Mode (Modern)', Component: Theme3 },
+  { key: 'T4', set: 'Showcase', name: 'Minimalism', Component: Theme4 },
+  { key: 'T5', set: 'Showcase', name: 'Brutalist UI', Component: Theme5 },
+  { key: 'T6', set: 'Showcase', name: 'Claymorphism', Component: Theme6 },
+  { key: 'T7', set: 'Showcase', name: 'Material Design', Component: Theme7 },
+  { key: 'T8', set: 'Showcase', name: 'Fluent Design', Component: Theme8 },
+  { key: 'T9', set: 'Showcase', name: 'Aurora UI', Component: Theme9 },
+  { key: 'T10', set: 'Showcase', name: 'Organic / Biomorphic UI', Component: Theme10 },
   { key: 'K1', set: 'KPI', name: 'Executive summary', Component: Kpi1 },
   { key: 'K2', set: 'KPI', name: 'Strategy tree', Component: Kpi2 },
   { key: 'K3', set: 'KPI', name: 'Real-time ops', Component: Kpi3 },
@@ -90,6 +101,11 @@ export default function PrototypePage() {
           onChange={(event) => select(VARIANTS.findIndex((variant) => variant.key === event.target.value))}
           aria-label="Choose prototype variant"
         >
+          <optgroup label="Theme showcase">
+            {VARIANTS.filter((variant) => variant.set === 'Showcase').map((variant) => (
+              <option key={variant.key} value={variant.key}>{variant.key} · {variant.name}</option>
+            ))}
+          </optgroup>
           <optgroup label="KPI dashboards">
             {VARIANTS.filter((variant) => variant.set === 'KPI').map((variant) => (
               <option key={variant.key} value={variant.key}>{variant.key} · {variant.name}</option>

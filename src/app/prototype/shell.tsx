@@ -22,7 +22,6 @@ import {
   ClipboardCheck,
   Clock,
   History,
-  LayoutDashboard,
   ListTodo,
   LogOut,
   Menu,
@@ -30,26 +29,17 @@ import {
   Plus,
   RefreshCw,
   Search,
-  Settings,
   TrendingUp,
   UserRound,
   Users,
   Wallet,
 } from 'lucide-react';
 import { attendance, notifications, stats, team, weekly } from './data';
+import { DashboardSidebar } from './dashboard-sidebar';
 import { AreaChart, Donut, Spark, TeamTable } from './shared';
 
 const STAT_ICONS = [ClipboardCheck, CheckCircle2, Clock, ListTodo, AlertTriangle];
 const STAT_AREAS = ['sv-bento-s1', 'sv-bento-s2', 'sv-bento-s3', 'sv-bento-s4', 'sv-bento-s5'];
-
-const NAV = [
-  { label: 'Dashboard', icon: LayoutDashboard, active: true },
-  { label: 'Tasks', icon: ListTodo },
-  { label: 'Clients', icon: Users },
-  { label: 'Attendance', icon: CalendarDays },
-  { label: 'Team', icon: Users },
-  { label: 'Reports', icon: BarChart3 },
-];
 
 const QUICK_ACTIONS = [
   { label: 'Create task', icon: Plus, tone: 'primary' },
@@ -302,33 +292,7 @@ export function Shell({
 
   return (
     <div className={`${theme} sv`}>
-      <aside className="sv-rail" aria-label="Main navigation">
-        <div className="sv-brand" aria-label="EdVentureHub">
-          <span className="sv-brand-mark">EV</span>
-        </div>
-
-        <nav className="sv-rail-nav">
-          {NAV.map((item) => {
-            const Icon = item.icon;
-            return (
-              <a
-                key={item.label}
-                className={`sv-rail-item${item.active ? ' is-active' : ''}`}
-                href="#"
-                aria-current={item.active ? 'page' : undefined}
-              >
-                <span className="sv-rail-icon"><Icon /></span>
-                <span>{item.label}</span>
-              </a>
-            );
-          })}
-        </nav>
-
-        <a className="sv-rail-item sv-rail-settings" href="#">
-          <span className="sv-rail-icon"><Settings /></span>
-          <span>Settings</span>
-        </a>
-      </aside>
+      <DashboardSidebar />
 
       <div className="sv-main">
         <header className="sv-appbar">

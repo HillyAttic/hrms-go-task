@@ -213,9 +213,9 @@ export function TeamTable({ rows = team }: { rows?: typeof team }) {
             <th scope="col">Name</th>
             <th scope="col">Total</th>
             <th scope="col">Pending</th>
-            <th scope="col">Active</th>
+            <th scope="col">In Progress</th>
             <th scope="col">Done</th>
-            <th scope="col">Workload</th>
+            <th scope="col">Chart</th>
           </tr>
         </thead>
         <tbody>
