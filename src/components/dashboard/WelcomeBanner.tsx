@@ -11,11 +11,23 @@ interface WelcomeBannerProps {
 export function WelcomeBanner({ name }: WelcomeBannerProps) {
   // Resolved after mount so the server render and first client paint match.
   const [greeting, setGreeting] = useState('Hello');
+  const [today, setToday] = useState('');
   const waveId = useId().replace(/:/g, '');
 
   useEffect(() => {
-    const hour = new Date().getHours();
+    const now = new Date();
+    const hour = now.getHours();
     setGreeting(hour < 12 ? 'Good Morning' : hour < 17 ? 'Good Afternoon' : 'Good Evening');
+    setToday(
+      new Intl.DateTimeFormat('en-GB', {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+      })
+        .format(now)
+        .toUpperCase()
+    );
   }, []);
 
   return (
@@ -52,6 +64,11 @@ export function WelcomeBanner({ name }: WelcomeBannerProps) {
 
       <div className="relative z-10 flex items-center justify-between gap-6">
         <div className="min-w-0">
+          {today && (
+            <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-500 md:text-[12px] dark:text-slate-400">
+              {today}
+            </p>
+          )}
           <h2 className="text-[22px] font-bold leading-tight tracking-tight text-slate-900 md:text-[30px] dark:text-white">
             {greeting}, {name}!
           </h2>

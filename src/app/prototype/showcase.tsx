@@ -76,7 +76,7 @@ const DISTRIBUTION = [
   { label: 'To do', value: 3, pct: 13, color: 'var(--v-bad)' },
 ];
 
-function WelcomeBanner() {
+export function WelcomeBanner() {
   return (
     <section className="dz-welcome" aria-labelledby="dz-greeting">
       <svg className="dz-hills" viewBox="0 0 1200 220" preserveAspectRatio="none" aria-hidden="true">
@@ -111,7 +111,7 @@ function WelcomeBanner() {
   );
 }
 
-function StatCards() {
+export function StatCards() {
   return (
     <div className="dz-stats">
       {STATS.map((stat) => (
@@ -132,7 +132,7 @@ function StatCards() {
   );
 }
 
-function KanbanCTA() {
+export function KanbanCTA() {
   return (
     <section className="dz-kanban" aria-labelledby="dz-kanban-title">
       <svg className="dz-waves" viewBox="0 0 600 220" preserveAspectRatio="none" aria-hidden="true">
@@ -160,7 +160,7 @@ function KanbanCTA() {
   );
 }
 
-function AttendanceCard() {
+export function AttendanceCard() {
   return (
     <section className="dz-card dz-att" aria-labelledby="dz-att-title">
       <div className="dz-card-head">
@@ -188,7 +188,7 @@ function AttendanceCard() {
   );
 }
 
-function DistributionCard() {
+export function DistributionCard() {
   return (
     <section className="dz-card" aria-labelledby="dz-dist-title">
       <div className="dz-card-head">
@@ -214,7 +214,7 @@ function DonutIcon() {
   return <span className="dz-h3-icon"><TrendingUp /></span>;
 }
 
-function DeadlinesCard() {
+export function DeadlinesCard() {
   return (
     <section className="dz-card" aria-labelledby="dz-dead-title">
       <div className="dz-card-head">
@@ -236,7 +236,7 @@ function DeadlinesCard() {
   );
 }
 
-function QuickActionsCard() {
+export function QuickActionsCard() {
   return (
     <section className="dz-card" aria-labelledby="dz-quick-title">
       <div className="dz-card-head">
@@ -258,7 +258,7 @@ function QuickActionsCard() {
   );
 }
 
-function TeamCard() {
+export function TeamCard() {
   return (
     <section className="dz-card" aria-labelledby="dz-team-title">
       <div className="dz-card-head">
@@ -270,7 +270,7 @@ function TeamCard() {
   );
 }
 
-function WeeklyCard({ rate }: { rate: number }) {
+export function WeeklyCard({ rate }: { rate: number }) {
   return (
     <section className="dz-card" aria-labelledby="dz-week-title">
       <div className="dz-card-head">

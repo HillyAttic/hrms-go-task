@@ -32,11 +32,11 @@ const VARIANTS = [
   { key: 'K3', set: 'KPI', name: 'Real-time ops', Component: Kpi3 },
   { key: 'K4', set: 'KPI', name: 'SaaS metrics', Component: Kpi4 },
   { key: 'K5', set: 'KPI', name: 'Board pack', Component: Kpi5 },
-  { key: 'R1', set: 'React', name: 'Dense dashboard', Component: React1 },
-  { key: 'R2', set: 'React', name: 'Command center', Component: React2 },
-  { key: 'R3', set: 'React', name: 'Analytics workspace', Component: React3 },
-  { key: 'R4', set: 'React', name: 'Tonal glass', Component: React4 },
-  { key: 'R5', set: 'React', name: 'Bento', Component: React5 },
+  { key: 'R1', set: 'Layouts', name: 'Layout Variant 1', Component: React1 },
+  { key: 'R2', set: 'Layouts', name: 'Layout Variant 2', Component: React2 },
+  { key: 'R3', set: 'Layouts', name: 'Layout Variant 3', Component: React3 },
+  { key: 'R4', set: 'Layouts', name: 'Layout Variant 4', Component: React4 },
+  { key: 'R5', set: 'Layouts', name: 'Layout Variant 5', Component: React5 },
   { key: 'S1', set: 'Styles', name: 'Material', Component: Style1 },
   { key: 'S2', set: 'Styles', name: 'Glassmorphism', Component: Style2 },
   { key: 'S3', set: 'Styles', name: 'Neumorphism', Component: Style3 },
@@ -111,8 +111,8 @@ export default function PrototypePage() {
               <option key={variant.key} value={variant.key}>{variant.key} · {variant.name}</option>
             ))}
           </optgroup>
-          <optgroup label="React dashboards">
-            {VARIANTS.filter((variant) => variant.set === 'React').map((variant) => (
+          <optgroup label="Layout variants">
+            {VARIANTS.filter((variant) => variant.set === 'Layouts').map((variant) => (
               <option key={variant.key} value={variant.key}>{variant.key} · {variant.name}</option>
             ))}
           </optgroup>
