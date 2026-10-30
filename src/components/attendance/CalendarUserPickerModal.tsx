@@ -180,10 +180,11 @@ export function CalendarUserPickerModal({
             Pick an employee or manager to open their attendance calendar.
           </DialogDescription>
 
-          <div className="relative mt-4 [@media(max-height:560px)]:mt-2">
+          <div className="relative !mt-6 [@media(max-height:560px)]:!mt-2">
             <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
             <input
-              type="search"
+              type="text"
+              inputMode="search"
               value={search}
               onChange={(event) => setSearch(event.target.value)}
               placeholder="Search by name, email or employee ID"
